@@ -1,0 +1,3423 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Área Deportiva FFCV - Panel de Gestión</title>
+    
+    <!-- Google Fonts: Outfit (títulos) e Inter (cuerpo) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js para estadísticas profesionales -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. VARIABLES Y DISEÑO DEL SISTEMA (CSS VARIABLES)
+           ========================================================================== */
+        :root {
+            /* Colores Corporativos FFCV */
+            --primary: #0A2540;        /* Azul Oscuro Premium */
+            --primary-light: #1E3A5F;  /* Azul Medio */
+            --primary-dark: #051424;   /* Azul Muy Oscuro */
+            --accent: #FFB000;         /* Amarillo/Dorado FFCV */
+            --accent-hover: #E09B00;   /* Amarillo Hover */
+            --accent-light: #FFF8E6;   /* Amarillo muy suave */
+            
+            /* Colores de Interfaz */
+            --bg-app: #F8FAFC;         /* Gris azulado muy suave */
+            --bg-card: #FFFFFF;        /* Blanco puro */
+            --text-main: #0F172A;      /* Slate 900 (Texto Principal) */
+            --text-muted: #64748B;    /* Slate 500 (Texto Secundario) */
+            --border-color: #E2E8F0;  /* Slate 200 (Bordes y Líneas) */
+            
+            /* Colores de Estado */
+            --success: #10B981;        /* Esmeralda */
+            --success-light: #E6F4EA;
+            --warning: #F59E0B;        /* Ámbar */
+            --warning-light: #FEF3C7;
+            --danger: #EF4444;         /* Rojo */
+            --danger-light: #FEE2E2;
+            --info: #0EA5E9;           /* Celeste */
+            --info-light: #E0F2FE;
+            
+            /* Dimensiones y Bordes */
+            --sidebar-width: 280px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            
+            /* Sombras (Filtros de elevación modernos) */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 20px -2px rgba(10, 37, 64, 0.05), 0 2px 8px -1px rgba(10, 37, 64, 0.03);
+            --shadow-lg: 0 20px 25px -5px rgba(10, 37, 64, 0.08), 0 8px 10px -6px rgba(10, 37, 64, 0.08);
+            
+            /* Transiciones */
+            --transition-base: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Dark Mode Preferences (Sutil adaptación si se prefiere) */
+        @media (prefers-color-scheme: dark) {
+            /* Se mantiene el tema claro corporativo por defecto pero suavizado */
+        }
+
+        /* ==========================================================================
+           2. ESTILOS BASE Y MAQUETACIÓN GLOBAL
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, .logo, .nav-title {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Contenedor de la Aplicación */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ==========================================================================
+           3. MENÚ LATERAL (SIDEBAR)
+           ========================================================================== */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--primary);
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            transition: var(--transition-base);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Encabezado del Sidebar (Logo) */
+        .sidebar-brand {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .brand-logo-svg {
+            width: 42px;
+            height: 42px;
+            fill: var(--accent);
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .brand-sub {
+            font-size: 11px;
+            color: var(--accent);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+        }
+
+        /* Menú de Navegación */
+        .sidebar-menu {
+            flex: 1;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #94A3B8; /* Gris azulado apagado */
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 500;
+            transition: var(--transition-base);
+            position: relative;
+        }
+
+        .menu-item svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            transition: var(--transition-base);
+        }
+
+        /* Hover de enlaces */
+        .menu-item:hover {
+            color: #FFFFFF;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Enlace Activo */
+        .menu-item.active {
+            color: var(--primary);
+            background-color: var(--accent);
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255, 176, 0, 0.3);
+        }
+
+        .menu-item.active svg {
+            stroke: var(--primary);
+        }
+
+        /* Pie de página de usuario en Sidebar */
+        .sidebar-footer {
+            padding: 20px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background-color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .user-role {
+            font-size: 12px;
+            color: #94A3B8;
+        }
+
+        /* ==========================================================================
+           4. ÁREA PRINCIPAL (MAIN CONTENT)
+           ========================================================================== */
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-base);
+        }
+
+        /* Cabecera Superior */
+        .header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Botón de Hamburguesa Móvil */
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .mobile-toggle svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* Buscador Global */
+        .header-search {
+            position: relative;
+            width: 320px;
+        }
+
+        .header-search svg {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            stroke: var(--text-muted);
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .search-input {
+            width: 100%;
+            background-color: var(--bg-app);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px 16px 10px 42px;
+            font-size: 14px;
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition-base);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-light);
+            background-color: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+        }
+
+        /* Acciones de la Cabecera (Notificaciones, Perfil) */
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .action-btn {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: var(--transition-base);
+            position: relative;
+        }
+
+        .action-btn:hover {
+            background-color: var(--bg-app);
+            border-color: var(--text-muted);
+        }
+
+        .badge-dot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--danger);
+            border-radius: 50%;
+            border: 2.5px solid #FFFFFF;
+        }
+
+        /* Dropdown de Notificaciones Simulado */
+        .notifications-dropdown {
+            position: absolute;
+            top: 70px;
+            right: 80px;
+            width: 320px;
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: none;
+            z-index: 120;
+            overflow: hidden;
+            animation: slideDown 0.2s ease-out;
+        }
+
+        .notifications-header {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary);
+            background-color: var(--bg-app);
+        }
+
+        .notification-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+            color: var(--text-main);
+            transition: var(--transition-base);
+            cursor: pointer;
+        }
+
+        .notification-item:hover {
+            background-color: var(--bg-app);
+        }
+
+        .notification-time {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            display: block;
+        }
+
+        /* Contenedor Principal de la Vista */
+        .view-container {
+            padding: 32px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Secciones de Vista Dinámica (Ocultas por defecto excepto active) */
+        .view {
+            display: none;
+            animation: fadeIn 0.35s ease-in-out;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .view.active {
+            display: flex;
+        }
+
+        /* ==========================================================================
+           5. COMPONENTES REUTILIZABLES (CARDS, BADGES, BOTONES)
+           ========================================================================== */
+        
+        /* Banner de Encabezado Interno */
+        .hero-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: #FFFFFF;
+            padding: 32px;
+            border-radius: var(--radius-lg);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero-banner::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 250px;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 176, 0, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-desc {
+            color: #94A3B8;
+            font-size: 15px;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        /* Cuadrícula de Tarjetas Resumen */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card-stat {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-stat:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .stat-details {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .stat-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.1;
+        }
+
+        .stat-trend {
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .stat-trend.positive {
+            color: var(--success);
+        }
+
+        .stat-trend.neutral {
+            color: var(--text-muted);
+        }
+
+        .stat-icon-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-app);
+            color: var(--primary-light);
+            transition: var(--transition-base);
+        }
+
+        .card-stat:hover .stat-icon-wrapper {
+            background-color: var(--accent-light);
+            color: var(--accent-hover);
+        }
+
+        .stat-icon-wrapper svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* Botones del Sistema */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: var(--transition-base);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(10, 37, 64, 0.15);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: var(--primary);
+        }
+
+        .btn-accent:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 4px 12px rgba(255, 176, 0, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--bg-app);
+            border-color: var(--text-muted);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: var(--radius-sm);
+        }
+
+        /* Etiquetas (Badges / Tags) */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-success {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+
+        .tag-warning {
+            background-color: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .tag-danger {
+            background-color: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .tag-info {
+            background-color: var(--info-light);
+            color: var(--info);
+        }
+
+        /* ==========================================================================
+           6. MAQUETACIÓN DE PANELES Y CONTENIDOS ESPECÍFICOS
+           ========================================================================== */
+        
+        /* Cuadrícula de Doble Columna Principal */
+        .split-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 28px;
+        }
+
+        /* Panel Contenedor Estándar */
+        .panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
+
+        .panel-title {
+            font-size: 18px;
+            color: var(--primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* Listas de Ítems Especiales */
+        .list-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .list-item {
+            background-color: var(--bg-app);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition-base);
+        }
+
+        .list-item:hover {
+            border-color: var(--accent);
+            transform: translateX(3px);
+            background-color: #FFFFFF;
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .item-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .item-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .item-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* Cuadrícula de Accesos Rápidos */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .quick-action-card {
+            background-color: var(--bg-app);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition-base);
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--primary);
+        }
+
+        .quick-action-card:hover {
+            background-color: var(--accent-light);
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .quick-action-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            color: var(--primary);
+            transition: var(--transition-base);
+        }
+
+        .quick-action-card:hover .quick-action-icon {
+            color: var(--accent-hover);
+        }
+
+        .quick-action-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ==========================================================================
+           7. TABLAS DE DATOS (DATA TABLES - VISTA JUGADORES)
+           ========================================================================== */
+        
+        /* Controles de Filtros */
+        .filters-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filters-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .form-select, .form-input {
+            background-color: var(--bg-app);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 8px 14px;
+            font-size: 13px;
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition-base);
+            font-family: inherit;
+        }
+
+        .form-select:focus, .form-input:focus {
+            border-color: var(--primary);
+            background-color: #FFFFFF;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .data-table th {
+            background-color: var(--bg-app);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 16px 20px;
+            border-bottom: 2px solid var(--border-color);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.7px;
+        }
+
+        .data-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-main);
+            vertical-align: middle;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-table tr:hover td {
+            background-color: rgba(248, 250, 252, 0.8);
+        }
+
+        /* Avatar del jugador en la tabla */
+        .player-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .player-photo {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            background-color: var(--primary-light);
+            color: #FFFFFF;
+        }
+
+        .player-info-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .player-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .player-meta-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Acciones de fila */
+        .actions-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ==========================================================================
+           8. VISTAS ESPECÍFICAS (CONVOCATORIAS, PLANIFICACIÓN, SESIONES, INFORMES)
+           ========================================================================== */
+        
+        /* Convocatorias Split Layout */
+        .convocatorias-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 28px;
+        }
+
+        .convocatoria-detail-card {
+            position: sticky;
+            top: 100px;
+        }
+
+        .squad-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .squad-player-badge {
+            background-color: var(--bg-app);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            font-size: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: relative;
+        }
+
+        .squad-player-badge .number {
+            font-weight: 700;
+            color: var(--accent-hover);
+        }
+
+        /* Planificación - Tablero Microciclos */
+        .planning-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .kanban-column {
+            background-color: var(--bg-app);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .kanban-header {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .kanban-card {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .kanban-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background-color: var(--border-color);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 999px;
+            transition: width 0.3s ease;
+        }
+
+        /* Sesiones de Entrenamiento */
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .session-card {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            transition: var(--transition-base);
+        }
+
+        .session-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .session-preview {
+            height: 140px;
+            background-color: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #FFFFFF;
+            font-size: 48px;
+            position: relative;
+            background-image: linear-gradient(rgba(10,37,64,0.8), rgba(10,37,64,0.9)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.05)" stroke-width="2" fill="none"/><line x1="50" y1="10" x2="50" y2="90" stroke="rgba(255,255,255,0.05)" stroke-width="2"/></svg>');
+        }
+
+        .session-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+        }
+
+        .session-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .session-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .session-meta-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            margin-top: auto;
+        }
+
+        /* Informes Técnicos e Individuales */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .report-card {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: var(--transition-base);
+        }
+
+        .report-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .report-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .player-rating-circle {
+            position: relative;
+            width: 64px;
+            height: 64px;
+        }
+
+        .rating-svg {
+            transform: rotate(-90deg);
+        }
+
+        .rating-bg {
+            fill: none;
+            stroke: var(--border-color);
+            stroke-width: 4px;
+        }
+
+        .rating-fill {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 4px;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .rating-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            font-size: 11px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
+        }
+
+        .skill-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+        }
+
+        .skill-name {
+            color: var(--text-muted);
+        }
+
+        .skill-val {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* ==========================================================================
+           9. CALENDARIO INTERACTIVO (VISTA CALENDARIO)
+           ========================================================================== */
+        .calendar-layout {
+            display: grid;
+            grid-template-columns: 2.5fr 1fr;
+            gap: 28px;
+        }
+
+        .calendar-card {
+            padding: 24px;
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-weekday {
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--primary-light);
+            padding: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .calendar-day {
+            min-height: 85px;
+            background-color: var(--bg-app);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+
+        .calendar-day:hover {
+            background-color: #FFFFFF;
+            border-color: var(--accent);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .calendar-day.empty {
+            background-color: transparent;
+            border: none;
+            cursor: default;
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--primary);
+            background-color: #FFFFFF;
+        }
+
+        .day-num {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .day-events {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-top: 6px;
+        }
+
+        .day-event-dot {
+            font-size: 9px;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .event-type-match {
+            background-color: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .event-type-training {
+            background-color: var(--info-light);
+            color: var(--info);
+        }
+
+        .event-type-scouting {
+            background-color: var(--success-light);
+            color: var(--success);
+        }
+
+        /* ==========================================================================
+           10. CONFIGURACIÓN (VISTA CONFIGURACIÓN)
+           ========================================================================== */
+        .settings-layout {
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        .form-row-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .switch-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .switch-label {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .switch-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .switch-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Switch toggle simple */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* ==========================================================================
+           11. VENTANAS MODALES Y NOTIFICACIONES FLOTANTES (TOASTS)
+           ========================================================================== */
+        
+        /* Modales */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(5, 20, 36, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition-base);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-card {
+            background-color: #FFFFFF;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 550px;
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.9);
+            transition: var(--transition-base);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            background-color: var(--primary);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: var(--transition-base);
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .close-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        .modal-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            background-color: var(--bg-app);
+        }
+
+        /* Notificaciones Toast flotantes */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 300;
+            pointer-events: none;
+        }
+
+        .toast {
+            background-color: var(--primary);
+            color: #FFFFFF;
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            pointer-events: all;
+            animation: slideInLeft 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 4px solid var(--accent);
+        }
+
+        .toast.toast-success {
+            border-left-color: var(--success);
+        }
+
+        .toast.toast-danger {
+            border-left-color: var(--danger);
+        }
+
+        .toast svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+        }
+
+        /* ==========================================================================
+           12. ANIMACIONES CSS
+           ========================================================================== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ==========================================================================
+           13. DISEÑO RESPONSIVO (MEDIA QUERIES)
+           ========================================================================== */
+        @media (max-width: 1100px) {
+            .split-grid, .calendar-layout, .convocatorias-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .convocatoria-detail-card {
+                position: static;
+            }
+        }
+
+        @media (max-width: 900px) {
+            :root {
+                --sidebar-width: 250px;
+            }
+
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-active {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .header-search {
+                width: 200px;
+            }
+            
+            .planning-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-search {
+                display: none; /* Ocultar en móviles muy pequeños */
+            }
+            
+            .view-container {
+                padding: 16px;
+                gap: 20px;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-banner {
+                padding: 20px;
+            }
+            
+            .hero-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+
+        <!-- ==========================================================================
+             A. MENÚ LATERAL (SIDEBAR)
+             ========================================================================== -->
+        <aside class="sidebar" id="app-sidebar">
+            <div class="sidebar-brand">
+                <!-- SVG Logo de Fútbol Estilizado -->
+                <svg class="brand-logo-svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.5" />
+                    <path d="M2 12h20" stroke="currentColor" stroke-width="1.5" />
+                    <circle cx="12" cy="12" r="3" fill="currentColor" />
+                </svg>
+                <div class="brand-text">
+                    <span class="brand-name">FFCV</span>
+                    <span class="brand-sub">Área Deportiva</span>
+                </div>
+            </div>
+
+            <!-- Menú de Enlaces de Navegación -->
+            <nav class="sidebar-menu">
+                <a href="#dashboard" class="menu-item active" data-view="dashboard">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#jugadores" class="menu-item" data-view="jugadores">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                    <span>Jugadores</span>
+                </a>
+                <a href="#convocatorias" class="menu-item" data-view="convocatorias">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" /></svg>
+                    <span>Convocatorias</span>
+                </a>
+                <a href="#planificacion" class="menu-item" data-view="planificacion">
+                    <svg viewBox="0 0 24 24"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" /><line x1="9" y1="3" x2="9" y2="18" /><line x1="15" y1="6" x2="15" y2="21" /></svg>
+                    <span>Planificación</span>
+                </a>
+                <a href="#sesiones" class="menu-item" data-view="sesiones">
+                    <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /><path d="M11 18H8a2 2 0 0 1-2-2V9" /></svg>
+                    <span>Sesiones</span>
+                </a>
+                <a href="#informes" class="menu-item" data-view="informes">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>
+                    <span>Informes</span>
+                </a>
+                <a href="#calendario" class="menu-item" data-view="calendario">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                    <span>Calendario</span>
+                </a>
+                <a href="#configuracion" class="menu-item" data-view="configuracion">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+
+            <!-- Pie de Usuario -->
+            <div class="sidebar-footer">
+                <div class="user-avatar" id="sidebar-user-avatar">IJ</div>
+                <div class="user-info">
+                    <span class="user-name" id="sidebar-user-name">I. Jordá</span>
+                    <span class="user-role" id="sidebar-user-role">Director Deportivo</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ==========================================================================
+             B. ÁREA PRINCIPAL (MAIN CONTENT)
+             ========================================================================== -->
+        <main class="main-content">
+            
+            <!-- Cabecera de la Página -->
+            <header class="header">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <button class="mobile-toggle" id="menu-toggle-btn" aria-label="Abrir Menú">
+                        <svg viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="6" x2="21" y2="6" /><line x1="3" y1="18" x2="21" y2="18" /></svg>
+                    </button>
+                    <h2 class="nav-title" id="page-header-title">Dashboard</h2>
+                </div>
+
+                <!-- Buscador de Cabecera -->
+                <div class="header-search">
+                    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+                    <input type="text" class="search-input" id="global-search" placeholder="Buscar jugadores, convocatorias..." />
+                </div>
+
+                <!-- Acciones Rápidas del Sistema -->
+                <div class="header-actions">
+                    <button class="action-btn" id="notif-btn" aria-label="Notificaciones">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
+                        <span class="badge-dot"></span>
+                        
+                        <!-- Dropdown de notificaciones -->
+                        <div class="notifications-dropdown" id="notif-dropdown">
+                            <div class="notifications-header">Notificaciones Recientes</div>
+                            <div class="notification-item">
+                                <strong>Nuevo Informe Sub-16</strong>
+                                <p>Cargado por el seleccionador Rubén Mora.</p>
+                                <span class="notification-time">Hace 10 min</span>
+                            </div>
+                            <div class="notification-item">
+                                <strong>Convocatoria Confirmada</strong>
+                                <p>El listado de la Sub-14 Masculina ha sido cerrado.</p>
+                                <span class="notification-time">Hace 2 horas</span>
+                            </div>
+                            <div class="notification-item">
+                                <strong>Sesión Modificada</strong>
+                                <p>Se actualizó el plan del Microciclo 12.</p>
+                                <span class="notification-time">Ayer</span>
+                            </div>
+                        </div>
+                    </button>
+                    
+                    <button class="btn btn-primary btn-sm" id="btn-add-global" onclick="openModal('modal-convocatoria')">
+                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                        Nueva Convocatoria
+                    </button>
+                </div>
+            </header>
+
+            <!-- Contenedor Principal de Vistas Dinámicas -->
+            <div class="view-container">
+
+                <!-- ==========================================================================
+                     B.1 VISTA: DASHBOARD
+                     ========================================================================== -->
+                <section class="view active" id="view-dashboard">
+                    <!-- Banner de Bienvenida -->
+                    <div class="hero-banner">
+                        <h1 class="hero-title">Panel de gestión deportiva</h1>
+                        <p class="hero-desc">Gestión centralizada de plantillas, convocatorias de partidos oficiales, planificación de microciclos e informes técnicos de rendimiento de la Comunitat Valenciana.</p>
+                    </div>
+
+                    <!-- Fichas de Estadísticas Resumen -->
+                    <div class="summary-grid">
+                        <div class="card-stat">
+                            <div class="stat-details">
+                                <span class="stat-title">Jugadores registrados</span>
+                                <strong class="stat-value" id="count-players">128</strong>
+                                <span class="stat-trend positive">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></svg>
+                                    +8% esta semana
+                                </span>
+                            </div>
+                            <div class="stat-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                            </div>
+                        </div>
+
+                        <div class="card-stat">
+                            <div class="stat-details">
+                                <span class="stat-title">Convocatorias activas</span>
+                                <strong class="stat-value" id="count-calls">6</strong>
+                                <span class="stat-trend neutral">Activas en el mes</span>
+                            </div>
+                            <div class="stat-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
+                            </div>
+                        </div>
+
+                        <div class="card-stat">
+                            <div class="stat-details">
+                                <span class="stat-title">Entrenamientos</span>
+                                <strong class="stat-value" id="count-trainings">14</strong>
+                                <span class="stat-trend positive">Planificados</span>
+                            </div>
+                            <div class="stat-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /><path d="M11 18H8a2 2 0 0 1-2-2V9" /></svg>
+                            </div>
+                        </div>
+
+                        <div class="card-stat">
+                            <div class="stat-details">
+                                <span class="stat-title">Informes pendientes</span>
+                                <strong class="stat-value" id="count-reports">9</strong>
+                                <span class="stat-trend neutral">Evaluaciones</span>
+                            </div>
+                            <div class="stat-icon-wrapper">
+                                <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenido Secundario -->
+                    <div class="split-grid">
+                        
+                        <!-- Columna Izquierda: Gráfico y Próximas Convocatorias -->
+                        <div style="display:flex; flex-direction:column; gap:28px;">
+                            <!-- Panel de Gráfico de Rendimiento -->
+                            <div class="panel">
+                                <div class="panel-header">
+                                    <h3 class="panel-title">
+                                        <svg viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83" /><path d="M22 12A10 10 0 0 0 12 2v10z" /></svg>
+                                        Distribución de Jugadores por Categoría
+                                    </h3>
+                                </div>
+                                <div style="position: relative; height: 260px; width: 100%;">
+                                    <canvas id="dashboardChart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Listado de Convocatorias en Dashboard -->
+                            <div class="panel">
+                                <div class="panel-header">
+                                    <h3 class="panel-title">
+                                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                                        Próximas convocatorias
+                                    </h3>
+                                    <a href="#convocatorias" class="btn btn-outline btn-sm" onclick="navigateToTab('convocatorias')">Ver Todas</a>
+                                </div>
+                                
+                                <div class="list-group" id="dashboard-convocatorias-list">
+                                    <!-- Dinámico mediante JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Columna Derecha: Accesos Rápidos y Últimos Informes -->
+                        <div style="display:flex; flex-direction:column; gap:28px;">
+                            
+                            <!-- Accesos Rápidos -->
+                            <div class="panel">
+                                <div class="panel-header">
+                                    <h3 class="panel-title">
+                                        <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>
+                                        Accesos rápidos
+                                    </h3>
+                                </div>
+                                <div class="quick-actions-grid">
+                                    <div class="quick-action-card" onclick="openModal('modal-convocatoria')">
+                                        <div class="quick-action-icon">
+                                            <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                                        </div>
+                                        <span>+ Convocatoria</span>
+                                    </div>
+                                    <div class="quick-action-card" onclick="openModal('modal-jugador')">
+                                        <div class="quick-action-icon">
+                                            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                                        </div>
+                                        <span>+ Registrar Jugador</span>
+                                    </div>
+                                    <div class="quick-action-card" onclick="navigateToTab('sesiones')">
+                                        <div class="quick-action-icon">
+                                            <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /></svg>
+                                        </div>
+                                        <span>Nueva Sesión</span>
+                                    </div>
+                                    <div class="quick-action-card" onclick="navigateToTab('informes')">
+                                        <div class="quick-action-icon">
+                                            <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /></svg>
+                                        </div>
+                                        <span>Nuevo Informe</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Última Actividad / Alertas -->
+                            <div class="panel">
+                                <div class="panel-header">
+                                    <h3 class="panel-title">
+                                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                                        Últimas alertas
+                                    </h3>
+                                </div>
+                                <div class="list-group">
+                                    <div class="list-item" style="padding: 12px; gap: 10px;">
+                                        <div style="background-color: var(--warning-light); color: var(--warning); padding: 8px; border-radius: 50%;">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+                                        </div>
+                                        <div style="flex:1;">
+                                            <span style="font-size: 13px; font-weight: 600;">Lesión de Jugador</span>
+                                            <p style="font-size: 11px; color: var(--text-muted);">Carlos Soler (Sub-16) baja médica.</p>
+                                        </div>
+                                        <span style="font-size:11px; color: var(--text-muted);">Hoy</span>
+                                    </div>
+
+                                    <div class="list-item" style="padding: 12px; gap: 10px;">
+                                        <div style="background-color: var(--success-light); color: var(--success); padding: 8px; border-radius: 50%;">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12" /></svg>
+                                        </div>
+                                        <div style="flex:1;">
+                                            <span style="font-size: 13px; font-weight: 600;">Viaje Coordinado</span>
+                                            <p style="font-size: 11px; color: var(--text-muted);">Autobús reservado para la Sub-14.</p>
+                                        </div>
+                                        <span style="font-size:11px; color: var(--text-muted);">Ayer</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- ==========================================================================
+                     B.2 VISTA: JUGADORES (DIRECTORIO COMPLETO)
+                     ========================================================================== -->
+                <section class="view" id="view-jugadores">
+                    
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <div>
+                            <h2 style="font-size:24px; color:var(--primary);">Directorio de Jugadores</h2>
+                            <p style="color:var(--text-muted); font-size:14px;">Listado general de futbolistas bajo seguimiento técnico para convocatorias de la FFCV.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal('modal-jugador')">
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                            Registrar Jugador
+                        </button>
+                    </div>
+
+                    <!-- Fila de Filtros -->
+                    <div class="filters-row">
+                        <div class="filters-group">
+                            <input type="text" class="form-input" id="filter-player-search" placeholder="Buscar por nombre o club..." style="width: 250px;" />
+                            
+                            <select class="form-select" id="filter-player-category">
+                                <option value="ALL">Todas las categorías</option>
+                                <option value="Sub-14">Sub-14</option>
+                                <option value="Sub-16">Sub-16</option>
+                                <option value="Sub-19">Sub-19</option>
+                            </select>
+
+                            <select class="form-select" id="filter-player-status">
+                                <option value="ALL">Todos los estados</option>
+                                <option value="Seleccionado">Seleccionado</option>
+                                <option value="En Observación">En Observación</option>
+                                <option value="Lesionado">Lesionado</option>
+                            </select>
+                        </div>
+
+                        <span style="font-size: 13px; font-weight: 500; color: var(--text-muted);" id="filter-count-label">Mostrando 6 jugadores</span>
+                    </div>
+
+                    <!-- Tabla de Jugadores -->
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Futbolista</th>
+                                    <th>Club de Origen</th>
+                                    <th>Categoría</th>
+                                    <th>Posición Principal</th>
+                                    <th>Partidos FFCV</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="players-table-body">
+                                <!-- Dinámico por JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- ==========================================================================
+                     B.3 VISTA: CONVOCATORIAS (GESTIÓN ACTIVA)
+                     ========================================================================== -->
+                <section class="view" id="view-convocatorias">
+                    <div>
+                        <h2 style="font-size:24px; color:var(--primary);">Convocatorias Activas e Historial</h2>
+                        <p style="color:var(--text-muted); font-size:14px;">Gestión de entrenamientos oficiales y convocatorias para partidos de selecciones territoriales.</p>
+                    </div>
+
+                    <div class="convocatorias-grid">
+                        
+                        <!-- Panel de Lista de Convocatorias -->
+                        <div class="panel" style="gap:16px;">
+                            <div class="panel-header">
+                                <h3 class="panel-title">
+                                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /></svg>
+                                    Listado de Convocatorias
+                                </h3>
+                                <button class="btn btn-primary btn-sm" onclick="openModal('modal-convocatoria')">+ Crear Convocatoria</button>
+                            </div>
+                            
+                            <div class="list-group" id="calls-list-container">
+                                <!-- Dinámico en JS -->
+                            </div>
+                        </div>
+
+                        <!-- Panel de Vista Detallada de la Convocatoria Seleccionada -->
+                        <div class="panel convocatoria-detail-card" id="convocatoria-detail-panel">
+                            <!-- Dinámico en JS (Muestra el plantel convocado actual) -->
+                            <div style="text-align: center; padding: 40px 0; color: var(--text-muted);">
+                                <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" fill="none" stroke-width="1.5" style="margin-bottom:12px; opacity:0.6;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                                <p>Haz clic en una convocatoria para visualizar y gestionar el plantel citado.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================================================
+                     B.4 VISTA: PLANIFICACIÓN (BOARD MICROCICLOS)
+                     ========================================================================== -->
+                <section class="view" id="view-planificacion">
+                    <div>
+                        <h2 style="font-size:24px; color:var(--primary);">Planificación Deportiva</h2>
+                        <p style="color:var(--text-muted); font-size:14px;">Seguimiento de objetivos tácticos, físicos y coordinativos divididos en fases y microciclos.</p>
+                    </div>
+
+                    <div class="planning-grid">
+                        <!-- Microciclo 11 -->
+                        <div class="kanban-column">
+                            <div class="kanban-header">
+                                <span>Microciclo 11 (Completado)</span>
+                                <span class="tag tag-success btn-sm" style="font-size:10px;">Cerrado</span>
+                            </div>
+                            
+                            <div class="kanban-card">
+                                <span class="tag tag-info btn-sm" style="width:fit-content; font-size:10px;">Física</span>
+                                <strong style="font-size:14px; color:var(--primary);">Acondicionamiento Aeróbico</strong>
+                                <p style="font-size:12px; color:var(--text-muted);">Foco en resistencia general y transiciones medias.</p>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
+                                    <span>Progreso</span>
+                                    <strong>100%</strong>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 100%; background-color: var(--success);"></div>
+                                </div>
+                            </div>
+
+                            <div class="kanban-card">
+                                <span class="tag tag-warning btn-sm" style="width:fit-content; font-size:10px;">Táctica</span>
+                                <strong style="font-size:14px; color:var(--primary);">Repliegue Defensivo</strong>
+                                <p style="font-size:12px; color:var(--text-muted);">Bloque bajo y coordinación de basculación en línea de 4.</p>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
+                                    <span>Progreso</span>
+                                    <strong>100%</strong>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 100%; background-color: var(--success);"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Microciclo 12 -->
+                        <div class="kanban-column">
+                            <div class="kanban-header">
+                                <span>Microciclo 12 (Actual)</span>
+                                <span class="tag tag-warning btn-sm" style="font-size:10px;">En Curso</span>
+                            </div>
+
+                            <div class="kanban-card" onclick="showToast('Editando Microciclo 12: Presión Tras Pérdida', 'info')">
+                                <span class="tag tag-warning btn-sm" style="width:fit-content; font-size:10px;">Táctica</span>
+                                <strong style="font-size:14px; color:var(--primary);">Presión Tras Pérdida</strong>
+                                <p style="font-size:12px; color:var(--text-muted);">Reducción de espacios tras pérdida en zona 3. Acoso rápido al poseedor.</p>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
+                                    <span>Progreso</span>
+                                    <strong>75%</strong>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 75%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="kanban-card" onclick="showToast('Editando Microciclo 12: Fuerza Explosiva', 'info')">
+                                <span class="tag tag-info btn-sm" style="width:fit-content; font-size:10px;">Física</span>
+                                <strong style="font-size:14px; color:var(--primary);">Fuerza Explosiva</strong>
+                                <p style="font-size:12px; color:var(--text-muted);">Transferencia en saltos pliométricos y sprints de 5 metros.</p>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
+                                    <span>Progreso</span>
+                                    <strong>40%</strong>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 40%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Microciclo 13 -->
+                        <div class="kanban-column">
+                            <div class="kanban-header">
+                                <span>Microciclo 13 (Siguiente)</span>
+                                <span class="tag tag-danger btn-sm" style="font-size:10px; background-color: var(--border-color); color: var(--text-muted);">Pendiente</span>
+                            </div>
+
+                            <div class="kanban-card">
+                                <span class="tag tag-success btn-sm" style="width:fit-content; font-size:10px;">ABP</span>
+                                <strong style="font-size:14px; color:var(--primary);">Saques de Esquina</strong>
+                                <p style="font-size:12px; color:var(--text-muted);">Defensa zonal vs mixta y jugadas ensayadas al segundo palo.</p>
+                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
+                                    <span>Progreso</span>
+                                    <strong>0%</strong>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================================================
+                     B.5 VISTA: SESIONES (CATÁLOGO TÉCNICO)
+                     ========================================================================== -->
+                <section class="view" id="view-sesiones">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <div>
+                            <h2 style="font-size:24px; color:var(--primary);">Sesiones de Entrenamiento</h2>
+                            <p style="color:var(--text-muted); font-size:14px;">Catálogo y plantillas de planificación diaria listas para aplicar en el terreno de juego.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="showToast('Nueva plantilla de sesión iniciada', 'info')">
+                            Nueva Sesión
+                        </button>
+                    </div>
+
+                    <div class="sessions-grid" id="sessions-container">
+                        <!-- Dinámico mediante JS -->
+                    </div>
+                </section>
+
+                <!-- ==========================================================================
+                     B.6 VISTA: INFORMES (SCOUTING E INDIVIDUALES)
+                     ========================================================================== -->
+                <section class="view" id="view-informes">
+                    <div>
+                        <h2 style="font-size:24px; color:var(--primary);">Informes Técnicos</h2>
+                        <p style="color:var(--text-muted); font-size:14px;">Evaluaciones individuales de jugadores de la Comunitat Valenciana y análisis de equipos rivales.</p>
+                    </div>
+
+                    <div class="reports-grid" id="reports-container">
+                        <!-- Dinámico mediante JS -->
+                    </div>
+                </section>
+
+                <!-- ==========================================================================
+                     B.7 VISTA: CALENDARIO (PLANIFICACIÓN DE EVENTOS)
+                     ========================================================================== -->
+                <section class="view" id="view-calendario">
+                    <div>
+                        <h2 style="font-size:24px; color:var(--primary);">Planificador Deportiva - Calendario</h2>
+                        <p style="color:var(--text-muted); font-size:14px;">Calendario interactivo mensual de partidos oficiales, entrenamientos y visorias territoriales.</p>
+                    </div>
+
+                    <div class="calendar-layout">
+                        <!-- Calendario Principal -->
+                        <div class="calendar-card">
+                            <div class="calendar-nav">
+                                <h3 id="calendar-month-year" style="color:var(--primary); font-size:18px;">Junio 2026</h3>
+                                <div style="display:flex; gap:8px;">
+                                    <button class="btn btn-outline btn-sm" id="btn-prev-month">&lt; Anterior</button>
+                                    <button class="btn btn-outline btn-sm" id="btn-next-month">Siguiente &gt;</button>
+                                </div>
+                            </div>
+                            <div class="calendar-grid" id="calendar-grid-body">
+                                <!-- Generado por JS -->
+                            </div>
+                        </div>
+
+                        <!-- Sidebar del Calendario (Añadir evento) -->
+                        <div class="panel">
+                            <h3 class="panel-title">Programar Evento</h3>
+                            
+                            <form id="form-calendar-event" onsubmit="addCalendarEvent(event)">
+                                <div class="form-group" style="margin-bottom:12px;">
+                                    <label class="form-label" for="event-title">Nombre del Evento</label>
+                                    <input type="text" class="form-input" id="event-title" required placeholder="Ej: Amistoso vs Catalunya" />
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:12px;">
+                                    <label class="form-label" for="event-date">Fecha</label>
+                                    <input type="date" class="form-input" id="event-date" required value="2026-06-12" />
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:12px;">
+                                    <label class="form-label" for="event-type">Tipo de Evento</label>
+                                    <select class="form-select" id="event-type">
+                                        <option value="match">Partido Oficial / Amistoso</option>
+                                        <option value="training">Entrenamiento Selección</option>
+                                        <option value="scouting">Visionado / Captación</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom:18px;">
+                                    <label class="form-label" for="event-location">Lugar</label>
+                                    <input type="text" class="form-input" id="event-location" required placeholder="Ej: Camp de Picassent" />
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" style="width:100%;">Agregar al Calendario</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================================================
+                     B.8 VISTA: CONFIGURACIÓN (PERFILES Y PREFERENCIAS)
+                     ========================================================================== -->
+                <section class="view" id="view-configuracion">
+                    <div>
+                        <h2 style="font-size:24px; color:var(--primary);">Configuración del Sistema</h2>
+                        <p style="color:var(--text-muted); font-size:14px;">Ajustes del perfil del cuerpo técnico, selección de categorías activas y preferencias del sistema.</p>
+                    </div>
+
+                    <div class="settings-layout">
+                        <!-- Ajustes de Perfil -->
+                        <div class="panel">
+                            <h3 class="panel-title">Perfil Técnico Personal</h3>
+                            <div class="form-row-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="config-name">Nombre Completo</label>
+                                    <input type="text" class="form-input" id="config-name" value="Israel Jordá" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="config-role">Cargo Técnico</label>
+                                    <input type="text" class="form-input" id="config-role" value="Director Deportivo" />
+                                </div>
+                            </div>
+                            <div class="form-row-grid">
+                                <div class="form-group">
+                                    <label class="form-label" for="config-email">Correo Electrónico</label>
+                                    <input type="email" class="form-input" id="config-email" value="israeljorda@ffcv.es" />
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="config-license">Licencia RFEF</label>
+                                    <input type="text" class="form-input" id="config-license" value="UEFA PRO - 98218" />
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" onclick="saveProfileSettings()">Guardar Cambios de Perfil</button>
+                            </div>
+                        </div>
+
+                        <!-- Preferencias Generales -->
+                        <div class="panel">
+                            <h3 class="panel-title">Notificaciones y Sistema</h3>
+                            
+                            <div class="switch-container">
+                                <div class="switch-label">
+                                    <span class="switch-title">Notificaciones de Lesión por Correo</span>
+                                    <span class="switch-desc">Recibe alertas inmediatas si un jugador bajo seguimiento es reportado lesionado.</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked id="conf-notif-injury" />
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="switch-container">
+                                <div class="switch-label">
+                                    <span class="switch-title">Sincronización de Informes en la Nube</span>
+                                    <span class="switch-desc">Publicación automática de informes técnicos para que los clubes de origen puedan ver evaluaciones generales.</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="conf-cloud-sync" />
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="switch-container">
+                                <div class="switch-label">
+                                    <span class="switch-title">Buscador Inteligente Habilitado</span>
+                                    <span class="switch-desc">Autocompletado predictivo para nombres de jugadores e informes.</span>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked id="conf-smart-search" />
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; flex-wrap:wrap; gap:12px;">
+                                <button class="btn btn-outline" onclick="exportData()">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" style="margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                                    Exportar Base de Datos
+                                </button>
+                                <button class="btn btn-primary" onclick="showToast('Preferencias guardadas con éxito', 'success')">Guardar Preferencias</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ==========================================================================
+         C. MODALES (VENTANAS DIALOGO EMERGENES)
+         ========================================================================== -->
+    
+    <!-- Modal: Registrar Jugador -->
+    <div class="modal-overlay" id="modal-jugador">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">Registrar Nuevo Jugador</h3>
+                <button class="close-btn" onclick="closeModal('modal-jugador')" aria-label="Cerrar modal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                </button>
+            </div>
+            <form id="form-add-player" onsubmit="addPlayer(event)">
+                <div class="modal-body">
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="play-name">Nombre Completo</label>
+                            <input type="text" class="form-input" id="play-name" required placeholder="Ej: Pau Cubarsí" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="play-club">Club de Origen</label>
+                            <input type="text" class="form-input" id="play-club" required placeholder="Ej: Valencia C.F." />
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="play-category">Categoría FFCV</label>
+                            <select class="form-select" id="play-category">
+                                <option value="Sub-14">Sub-14 Femenina / Masculina</option>
+                                <option value="Sub-16">Sub-16 Masculina</option>
+                                <option value="Sub-19">Sub-19 Femenina / Masculina</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="play-position">Posición Principal</label>
+                            <select class="form-select" id="play-position">
+                                <option value="Portero">Portero</option>
+                                <option value="Defensa Central">Defensa Central</option>
+                                <option value="Lateral">Lateral</option>
+                                <option value="Mediocentro">Mediocentro</option>
+                                <option value="Extremo">Extremo</option>
+                                <option value="Delantero Centro">Delantero Centro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="play-matches">Partidos Disputados</label>
+                            <input type="number" class="form-input" id="play-matches" min="0" value="0" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="play-status">Estado Técnico</label>
+                            <select class="form-select" id="play-status">
+                                <option value="Seleccionado">Seleccionado</option>
+                                <option value="En Observación">En Observación</option>
+                                <option value="Lesionado">Lesionado</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-jugador')">Cancelar</button>
+                    <button type="submit" class="btn btn-accent">Guardar Futbolista</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Crear Convocatoria -->
+    <div class="modal-overlay" id="modal-convocatoria">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 class="modal-title">Programar Nueva Convocatoria</h3>
+                <button class="close-btn" onclick="closeModal('modal-convocatoria')" aria-label="Cerrar modal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                </button>
+            </div>
+            <form id="form-add-call" onsubmit="addCall(event)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-label" for="call-name">Título de la Convocatoria</label>
+                        <input type="text" class="form-input" id="call-name" required placeholder="Ej: Selección Sub-16 Masculina" />
+                    </div>
+
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="call-location">Instalaciones / Lugar</label>
+                            <input type="text" class="form-input" id="call-location" required placeholder="Ej: Ciudad Deportiva Paterna" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="call-time">Hora / Detalles</label>
+                            <input type="text" class="form-input" id="call-time" required placeholder="Ej: 18:00 h" />
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="call-status">Estado Inicial</label>
+                            <select class="form-select" id="call-status">
+                                <option value="Confirmada">Confirmada</option>
+                                <option value="Pendiente de cerrar lista">Pendiente de cerrar lista</option>
+                                <option value="Visionado">Visionado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="call-date">Fecha Convocatoria</label>
+                            <input type="date" class="form-input" id="call-date" required value="2026-06-18" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Seleccionar Jugadores Iniciales</label>
+                        <div style="max-height: 120px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 8px;" id="checkbox-players-list">
+                            <!-- Rellenado dinámicamente -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-convocatoria')">Cancelar</button>
+                    <button type="submit" class="btn btn-accent">Publicar Lista</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contenedor Flotante de Avisos Toasts -->
+    <div class="toast-container" id="toast-container"></div>
+
+
+    <!-- ==========================================================================
+         D. LÓGICA DE APLICACIÓN EN JAVASCRIPT
+         ========================================================================== -->
+    <script>
+        /* ==========================================================================
+           D.1 BASE DE DATOS INICIAL DE LA APP (PERSISTENCIA CON LOCALSTORAGE)
+           ========================================================================== */
+        const DEFAULT_PLAYERS = [
+            { id: 1, name: "Iker Albarrán", club: "Valencia C.F. Cadete", category: "Sub-16", position: "Portero", matches: 8, status: "Seleccionado" },
+            { id: 2, name: "Hugo de Mateo", club: "Villarreal C.F. Cadete", category: "Sub-16", position: "Defensa Central", matches: 12, status: "Seleccionado" },
+            { id: 3, name: "Lucas López", club: "Levante U.D. Infantil", category: "Sub-14", position: "Mediocentro", matches: 4, status: "En Observación" },
+            { id: 4, name: "Ainhoa Alguacil", club: "Levante U.D. Femenino", category: "Sub-19", position: "Mediocentro", matches: 15, status: "Seleccionado" },
+            { id: 5, name: "Marc Rodríguez", club: "C.D. Castellón Cadete", category: "Sub-16", position: "Delantero Centro", matches: 6, status: "Lesionado" },
+            { id: 6, name: "Sofia Salvador", club: "Elche C.F. Infantil Femenino", category: "Sub-14", position: "Extremo", matches: 2, status: "En Observación" }
+        ];
+
+        const DEFAULT_CALLS = [
+            {
+                id: 1,
+                name: "Selección Sub-16 Masculina",
+                location: "Ciudad Deportiva",
+                time: "18:00 h",
+                status: "Confirmada",
+                date: "2026-06-18",
+                players: [1, 2, 5]
+            },
+            {
+                id: 2,
+                name: "Selección Sub-14 Femenina",
+                location: "Campo federativo Picassent",
+                time: "17:30 h",
+                status: "Pendiente de cerrar lista",
+                date: "2026-06-20",
+                players: [3, 6]
+            },
+            {
+                id: 3,
+                name: "Visionado jugadores zona norte",
+                location: "Partido Villarreal C.F. vs C.D. Castellón",
+                time: "11:30 h",
+                status: "Visionado",
+                date: "2026-06-25",
+                players: []
+            }
+        ];
+
+        const DEFAULT_SESSIONS = [
+            { id: 1, title: "Sesión 24: Transición Ofensiva", type: "Táctica", duration: 90, intensity: "Media-Alta", focus: "Velocidad de repliegue y pase al espacio", date: "12 Jun 2026" },
+            { id: 2, title: "Sesión 25: ABP Defensivo", type: "ABP", duration: 75, intensity: "Media", focus: "Basculación defensiva ante córner cerrado", date: "15 Jun 2026" },
+            { id: 3, title: "Sesión 26: Resistencia Aeróbica", type: "Física", duration: 80, intensity: "Alta", focus: "Circuitos pliométricos y resistencia", date: "18 Jun 2026" }
+        ];
+
+        const DEFAULT_REPORTS = [
+            { id: 1, player: "Hugo de Mateo", position: "Defensa Central", rating: 88, pace: 82, shoot: 55, pass: 78, dribble: 68, defense: 92, physical: 90, scout: "Rubén Mora", type: "Individual" },
+            { id: 2, player: "Ainhoa Alguacil", position: "Mediocentro", rating: 91, pace: 79, shoot: 78, pass: 95, dribble: 88, defense: 74, physical: 80, scout: "Vicente Ampudia", type: "Individual" },
+            { id: 3, title: "Informe Rival: Hércules C.F. Sub-16", date: "10 Jun 2026", rating: 75, text: "Equipo con bloque bajo muy sólido. Sufren en la espalda de los laterales si hay transiciones rápidas.", scout: "Jose Vicente", type: "Rival" }
+        ];
+
+        const DEFAULT_EVENTS = [
+            { id: 1, title: "Entrenamiento Sub-16", date: "2026-06-18", type: "training", location: "Picassent" },
+            { id: 2, title: "Amistoso Sub-14 vs Catalunya", date: "2026-06-20", type: "match", location: "Campo federativo" },
+            { id: 3, title: "Visionado Villarreal vs Castellón", date: "2026-06-25", type: "scouting", location: "Castellón" }
+        ];
+
+        // Cargar o Inicializar Datos
+        let players = JSON.parse(localStorage.getItem('ffcv_players')) || DEFAULT_PLAYERS;
+        let convocatorias = JSON.parse(localStorage.getItem('ffcv_calls')) || DEFAULT_CALLS;
+        let sessions = JSON.parse(localStorage.getItem('ffcv_sessions')) || DEFAULT_SESSIONS;
+        let reports = JSON.parse(localStorage.getItem('ffcv_reports')) || DEFAULT_REPORTS;
+        let events = JSON.parse(localStorage.getItem('ffcv_events')) || DEFAULT_EVENTS;
+
+        function saveState() {
+            localStorage.setItem('ffcv_players', JSON.stringify(players));
+            localStorage.setItem('ffcv_calls', JSON.stringify(convocatorias));
+            localStorage.setItem('ffcv_sessions', JSON.stringify(sessions));
+            localStorage.setItem('ffcv_reports', JSON.stringify(reports));
+            localStorage.setItem('ffcv_events', JSON.stringify(events));
+            updateCounts();
+        }
+
+        /* ==========================================================================
+           D.2 NAVEGACIÓN Y ENRUTAMIENTO (SPA VIEW SWITCHER)
+           ========================================================================== */
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function (e) {
+                // Prevenir comportamiento por defecto si se requiere
+                const targetViewId = this.getAttribute('data-view');
+                navigateToTab(targetViewId);
+            });
+        });
+
+        function navigateToTab(viewId) {
+            // Desactivar menú activo y activar el actual
+            document.querySelectorAll('.menu-item').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-view') === viewId) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Ocultar vistas y mostrar la activa
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.remove('active');
+            });
+            const targetView = document.getElementById(`view-${viewId}`);
+            if (targetView) {
+                targetView.classList.add('active');
+            }
+
+            // Cambiar título de cabecera superior
+            const capitalizedTitle = viewId.charAt(0).toUpperCase() + viewId.slice(1);
+            document.getElementById('page-header-title').textContent = capitalizedTitle;
+
+            // Cambiar texto de botón añadir en la cabecera
+            const addBtn = document.getElementById('btn-add-global');
+            if (viewId === 'jugadores') {
+                addBtn.style.display = 'inline-flex';
+                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Registrar Jugador`;
+                addBtn.setAttribute('onclick', "openModal('modal-jugador')");
+            } else if (viewId === 'convocatorias') {
+                addBtn.style.display = 'inline-flex';
+                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Nueva Convocatoria`;
+                addBtn.setAttribute('onclick', "openModal('modal-convocatoria')");
+            } else if (viewId === 'calendario') {
+                addBtn.style.display = 'none';
+            } else {
+                addBtn.style.display = 'inline-flex';
+                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Nueva Convocatoria`;
+                addBtn.setAttribute('onclick', "openModal('modal-convocatoria')");
+            }
+
+            // Ocultar barra lateral en móvil al navegar
+            document.getElementById('app-sidebar').classList.remove('mobile-active');
+
+            // Renderizar vistas que requieren refresco dinámico
+            if (viewId === 'jugadores') renderPlayersTable();
+            if (viewId === 'convocatorias') renderConvocatorias();
+            if (viewId === 'sesiones') renderSessions();
+            if (viewId === 'informes') renderReports();
+            if (viewId === 'calendario') renderCalendar();
+        }
+
+        // Hamburguesa en móviles
+        document.getElementById('menu-toggle-btn').addEventListener('click', () => {
+            document.getElementById('app-sidebar').classList.add('mobile-active');
+        });
+
+        // Cerrar menú al hacer clic fuera del sidebar en móvil
+        document.addEventListener('click', (e) => {
+            const sidebar = document.getElementById('app-sidebar');
+            const menuBtn = document.getElementById('menu-toggle-btn');
+            if (window.innerWidth <= 900) {
+                if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('mobile-active');
+                }
+            }
+        });
+
+        /* ==========================================================================
+           D.3 GESTOR DE MODALES GLOBALES Y NOTIFICACIONES TOASTS
+           ========================================================================== */
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+            
+            // Si es convocatoria, cargar la lista de checkboxes de jugadores
+            if (modalId === 'modal-convocatoria') {
+                const checkList = document.getElementById('checkbox-players-list');
+                checkList.innerHTML = '';
+                players.forEach(p => {
+                    checkList.innerHTML += `
+                        <label style="display:flex; align-items:center; gap:8px; font-size:13px; margin-bottom:6px; cursor:pointer;">
+                            <input type="checkbox" value="${p.id}" class="conv-player-checkbox" />
+                            <span>${p.name} (${p.club}) - ${p.category}</span>
+                        </label>
+                    `;
+                });
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Toasts
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            let iconSvg = '';
+            if (type === 'success') {
+                iconSvg = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12" /></svg>`;
+            } else if (type === 'danger') {
+                iconSvg = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="15" y1="9" x2="9" y2="15" /><line x1="9" y1="9" x2="15" y2="15" /></svg>`;
+            } else {
+                iconSvg = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>`;
+            }
+
+            toast.innerHTML = `${iconSvg} <span>${message}</span>`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.4s';
+                setTimeout(() => toast.remove(), 400);
+            }, 3000);
+        }
+
+        // Control del botón de notificaciones
+        const notifBtn = document.getElementById('notif-btn');
+        const notifDropdown = document.getElementById('notif-dropdown');
+        notifBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notifDropdown.style.display = notifDropdown.style.display === 'block' ? 'none' : 'block';
+            // Quitar el punto rojo de notificación activa al abrir
+            document.querySelector('.badge-dot').style.display = 'none';
+        });
+
+        document.addEventListener('click', () => {
+            notifDropdown.style.display = 'none';
+        });
+
+        /* ==========================================================================
+           D.4 RENDERIZACIÓN Y FILTRADO: PANELES
+           ========================================================================== */
+        
+        // Contar ítems y actualizar etiquetas de cabecera/tarjetas
+        function updateCounts() {
+            document.getElementById('count-players').textContent = players.length;
+            document.getElementById('count-calls').textContent = convocatorias.length;
+            document.getElementById('count-trainings').textContent = sessions.length + 11; // 11 simulados completados
+            document.getElementById('count-reports').textContent = reports.length;
+        }
+
+        // 1. Dashboard View
+        function renderDashboardView() {
+            const listContainer = document.getElementById('dashboard-convocatorias-list');
+            listContainer.innerHTML = '';
+
+            // Mostrar las últimas 3 convocatorias ordenadas por fecha
+            convocatorias.slice(0, 3).forEach(c => {
+                let statusClass = 'tag-success';
+                if (c.status === 'Visionado') statusClass = 'tag-info';
+                if (c.status === 'Pendiente de cerrar lista') statusClass = 'tag-warning';
+
+                listContainer.innerHTML += `
+                    <div class="list-item" onclick="navigateToTab('convocatorias')">
+                        <div class="item-details">
+                            <span class="item-title">${c.name}</span>
+                            <span class="item-sub">
+                                <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2" style="margin-right:2px;"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+                                ${c.location} · ${c.time}
+                            </span>
+                        </div>
+                        <div class="item-meta">
+                            <span class="tag ${statusClass}">${c.status}</span>
+                            <span style="font-size:12px; color:var(--text-muted); font-weight:500;">${c.date}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 2. Jugadores View: Filtros e interacción
+        const playSearch = document.getElementById('filter-player-search');
+        const playCategory = document.getElementById('filter-player-category');
+        const playStatus = document.getElementById('filter-player-status');
+
+        [playSearch, playCategory, playStatus].forEach(el => {
+            el.addEventListener('input', renderPlayersTable);
+        });
+
+        function renderPlayersTable() {
+            const tbody = document.getElementById('players-table-body');
+            tbody.innerHTML = '';
+
+            const query = playSearch.value.toLowerCase();
+            const cat = playCategory.value;
+            const stat = playStatus.value;
+
+            let filtered = players.filter(p => {
+                const matchesQuery = p.name.toLowerCase().includes(query) || p.club.toLowerCase().includes(query);
+                const matchesCat = (cat === 'ALL') || (p.category === cat);
+                const matchesStat = (stat === 'ALL') || (p.status === stat);
+                return matchesQuery && matchesCat && matchesStat;
+            });
+
+            document.getElementById('filter-count-label').textContent = `Mostrando ${filtered.length} jugadores`;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">No se encontraron jugadores con los filtros seleccionados.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(p => {
+                let statusClass = 'tag-success';
+                if (p.status === 'Lesionado') statusClass = 'tag-danger';
+                if (p.status === 'En Observación') statusClass = 'tag-warning';
+
+                const initials = p.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>
+                            <div class="player-profile">
+                                <div class="player-photo">${initials}</div>
+                                <div class="player-info-meta">
+                                    <span class="player-name">${p.name}</span>
+                                    <span class="player-meta-sub">ID: FFCV-00${p.id}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><strong>${p.club}</strong></td>
+                        <td>${p.category}</td>
+                        <td>${p.position}</td>
+                        <td style="text-align:center;">${p.matches}</td>
+                        <td><span class="tag ${statusClass}">${p.status}</span></td>
+                        <td>
+                            <div class="actions-group">
+                                <button class="btn btn-outline btn-sm" onclick="viewPlayerReports('${p.name}')">Ver Informe</button>
+                                <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:transparent;" onclick="deletePlayer(${p.id})">Borrar</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Búsqueda Global en Cabecera
+        document.getElementById('global-search').addEventListener('input', function() {
+            const text = this.value;
+            // Si está en jugadores, mapear la búsqueda
+            if (document.getElementById('view-jugadores').classList.contains('active')) {
+                document.getElementById('filter-player-search').value = text;
+                renderPlayersTable();
+            } else {
+                showToast(`Búsqueda: "${text}"`, 'info');
+            }
+        });
+
+        // 3. Convocatorias View
+        function renderConvocatorias() {
+            const listContainer = document.getElementById('calls-list-container');
+            listContainer.innerHTML = '';
+
+            convocatorias.forEach(c => {
+                let statusClass = 'tag-success';
+                if (c.status === 'Visionado') statusClass = 'tag-info';
+                if (c.status === 'Pendiente de cerrar lista') statusClass = 'tag-warning';
+
+                listContainer.innerHTML += `
+                    <div class="list-item" style="cursor:pointer;" onclick="selectConvocatoria(${c.id})">
+                        <div class="item-details">
+                            <span class="item-title" style="font-size:15px;">${c.name}</span>
+                            <span class="item-sub">
+                                <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2" style="margin-right:2px;"><polyline points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" /></svg>
+                                ${c.location}
+                            </span>
+                            <span class="item-sub">
+                                <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2" style="margin-right:2px;"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
+                                Hora: ${c.time}
+                            </span>
+                        </div>
+                        <div class="item-meta" style="flex-direction:column; align-items:flex-end; gap:8px;">
+                            <span class="tag ${statusClass}">${c.status}</span>
+                            <span style="font-size:11px; color:var(--text-muted); font-weight:600;">Fecha: ${c.date}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function selectConvocatoria(callId) {
+            const call = convocatorias.find(c => c.id === callId);
+            if (!call) return;
+
+            const detailPanel = document.getElementById('convocatoria-detail-panel');
+            detailPanel.innerHTML = '';
+
+            let statusClass = 'tag-success';
+            if (call.status === 'Visionado') statusClass = 'tag-info';
+            if (call.status === 'Pendiente de cerrar lista') statusClass = 'tag-warning';
+
+            // Mapear los jugadores citados
+            const citedPlayers = players.filter(p => call.players.includes(p.id));
+
+            let playersHtml = '';
+            if (citedPlayers.length === 0) {
+                playersHtml = '<p style="font-size:13px; color:var(--text-muted); padding:10px;">Ningún jugador asignado a esta lista aún.</p>';
+            } else {
+                citedPlayers.forEach((p, index) => {
+                    playersHtml += `
+                        <div class="squad-player-badge">
+                            <span class="number">#${index + 1}</span>
+                            <span style="font-weight:600; color:var(--primary);">${p.name}</span>
+                            <span style="font-size:10px; color:var(--text-muted);">${p.position}</span>
+                            <button style="position:absolute; top:4px; right:4px; border:none; background:none; color:var(--danger); cursor:pointer; font-weight:bold;" onclick="removePlayerFromCall(${call.id}, ${p.id})">×</button>
+                        </div>
+                    `;
+                });
+            }
+
+            detailPanel.innerHTML = `
+                <div class="panel-header" style="margin-bottom:12px;">
+                    <h3 class="panel-title">${call.name}</h3>
+                    <span class="tag ${statusClass}">${call.status}</span>
+                </div>
+                
+                <div style="font-size:13px; line-height:1.6; color:var(--text-main); display:flex; flex-direction:column; gap:6px; border-bottom:1px solid var(--border-color); padding-bottom:16px;">
+                    <p><strong>Ubicación:</strong> ${call.location}</p>
+                    <p><strong>Horario Citación:</strong> ${call.time}</p>
+                    <p><strong>Fecha Planificada:</strong> ${call.date}</p>
+                </div>
+
+                <div style="margin-top:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                        <span style="font-weight:600; font-size:14px; color:var(--primary);">Futbolistas Convocados (${citedPlayers.length})</span>
+                        <button class="btn btn-outline btn-sm" onclick="openAddPlayersToCallModal(${call.id})">+ Añadir</button>
+                    </div>
+                    <div class="squad-list">
+                        ${playersHtml}
+                    </div>
+                </div>
+
+                <div style="margin-top:20px; display:flex; gap:10px; border-top:1px solid var(--border-color); padding-top:16px;">
+                    <button class="btn btn-primary btn-sm" onclick="showToast('Lista oficial impresa y enviada a los clubes', 'success')" style="flex:1;">Imprimir Convocatoria</button>
+                    <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:transparent;" onclick="deleteConvocatoria(${call.id})">Eliminar</button>
+                </div>
+            `;
+        }
+
+        // 4. Sesiones View
+        function renderSessions() {
+            const container = document.getElementById('sessions-container');
+            container.innerHTML = '';
+
+            sessions.forEach(s => {
+                let badgeClass = 'tag-success';
+                let sessionNum = s.title.split(':')[0];
+                let sessionName = s.title.split(':')[1] || s.title;
+
+                if (s.type === 'Táctica') badgeClass = 'tag-warning';
+                if (s.type === 'Física') badgeClass = 'tag-info';
+
+                container.innerHTML += `
+                    <div class="session-card">
+                        <div class="session-preview">
+                            🏃‍♂️
+                            <span class="tag ${badgeClass} session-badge">${s.type}</span>
+                        </div>
+                        <div class="session-info">
+                            <span style="font-size:11px; color:var(--accent-hover); font-weight:700; text-transform:uppercase;">${sessionNum}</span>
+                            <h4 class="session-title">${sessionName}</h4>
+                            <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">${s.focus}</p>
+                            
+                            <div class="session-meta-row">
+                                <span>⏱ ${s.duration} mins</span>
+                                <span>⚡ Intensidad: <strong>${s.intensity}</strong></span>
+                            </div>
+                            
+                            <div style="margin-top:14px; display:flex; gap:8px;">
+                                <button class="btn btn-primary btn-sm" style="width:100%;" onclick="showToast('Visualizando detalles en pizarra táctica', 'info')">Ver Pizarra</button>
+                                <button class="btn btn-outline btn-sm" onclick="showToast('Descargando sesión en formato RFEF PDF...', 'success')">💾</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // 5. Informes View (Incluye gráficos circulares SVG dinámicos para estadísticas individuales)
+        function renderReports() {
+            const container = document.getElementById('reports-container');
+            container.innerHTML = '';
+
+            reports.forEach(r => {
+                if (r.type === 'Individual') {
+                    // Calcular circunferencia de progreso circular
+                    const radius = 26;
+                    const circumference = 2 * Math.PI * radius;
+                    const strokeDashoffset = circumference - (r.rating / 100) * circumference;
+
+                    container.innerHTML += `
+                        <div class="report-card">
+                            <div class="report-top">
+                                <div>
+                                    <span class="tag tag-info" style="font-size:9px; margin-bottom:8px;">INFORME INDIVIDUAL</span>
+                                    <h4 style="font-size:16px; color:var(--primary); font-weight:700;">${r.player}</h4>
+                                    <span style="font-size:12px; color:var(--text-muted);">${r.position}</span>
+                                </div>
+                                
+                                <div class="player-rating-circle">
+                                    <svg class="rating-svg" width="64" height="64">
+                                        <circle class="rating-bg" cx="32" cy="32" r="${radius}"></circle>
+                                        <circle class="rating-fill" cx="32" cy="32" r="${radius}" 
+                                            stroke-dasharray="${circumference}" 
+                                            stroke-dashoffset="${strokeDashoffset}"></circle>
+                                    </svg>
+                                    <div class="rating-text">${r.rating}</div>
+                                </div>
+                            </div>
+
+                            <p style="font-size:12px; color:var(--text-muted);">Seguimiento por: <strong>${r.scout}</strong></p>
+
+                            <div class="skills-grid">
+                                <div class="skill-stat">
+                                    <span class="skill-name">Ritmo / Pace</span>
+                                    <span class="skill-val">${r.pace}</span>
+                                </div>
+                                <div class="skill-stat">
+                                    <span class="skill-name">Pase / Pass</span>
+                                    <span class="skill-val">${r.pass}</span>
+                                </div>
+                                <div class="skill-stat">
+                                    <span class="skill-name">Táctica / Def</span>
+                                    <span class="skill-val">${r.defense}</span>
+                                </div>
+                                <div class="skill-stat">
+                                    <span class="skill-name">Físico / Phys</span>
+                                    <span class="skill-val">${r.physical}</span>
+                                </div>
+                            </div>
+
+                            <div style="display:flex; gap:10px; margin-top:6px;">
+                                <button class="btn btn-outline btn-sm" style="flex:1;" onclick="viewPlayerReports('${r.player}')">Ver Notas Completas</button>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    container.innerHTML += `
+                        <div class="report-card">
+                            <div class="report-top">
+                                <div>
+                                    <span class="tag tag-warning" style="font-size:9px; margin-bottom:8px;">INFORME DE RIVAL</span>
+                                    <h4 style="font-size:16px; color:var(--primary); font-weight:700;">${r.title}</h4>
+                                    <span style="font-size:12px; color:var(--text-muted);">${r.date}</span>
+                                </div>
+                                <div style="background-color:var(--accent-light); color:var(--accent-hover); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700;">
+                                    ${r.rating}%
+                                </div>
+                            </div>
+
+                            <p style="font-size:13px; color:var(--text-main); line-height:1.5;">${r.text}</p>
+                            <p style="font-size:11px; color:var(--text-muted);">Analista: <strong>${r.scout}</strong></p>
+
+                            <div style="display:flex; gap:10px; margin-top:auto; border-top:1px solid var(--border-color); padding-top:14px;">
+                                <button class="btn btn-outline btn-sm" style="width:100%;" onclick="showToast('Abriendo informe en PDF...', 'info')">Descargar PDF Técnico</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function viewPlayerReports(playerName) {
+            showToast(`Detalles del Scouting para ${playerName}: Excelente rendimiento en el último partido.`, 'info');
+        }
+
+        /* ==========================================================================
+           D.5 IMPLEMENTACIÓN DEL CALENDARIO INTERACTIVO EN JS
+           ========================================================================== */
+        let currentYear = 2026;
+        let currentMonth = 5; // Junio (0-indexado)
+
+        const MONTH_NAMES = [
+            "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+        ];
+
+        document.getElementById('btn-prev-month').addEventListener('click', () => {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar();
+        });
+
+        document.getElementById('btn-next-month').addEventListener('click', () => {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar();
+        });
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid-body');
+            const monthYearTitle = document.getElementById('calendar-month-year');
+            grid.innerHTML = '';
+
+            monthYearTitle.textContent = `${MONTH_NAMES[currentMonth]} ${currentYear}`;
+
+            // Cabeceras de días de la semana
+            const weekDays = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+            weekDays.forEach(day => {
+                grid.innerHTML += `<div class="calendar-weekday">${day}</div>`;
+            });
+
+            // Primer día del mes
+            const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+            // Adaptar Domingo de index 0 a index 6
+            const adjustedFirstDayIndex = firstDayIndex === 0 ? 6 : firstDayIndex - 1;
+
+            // Días totales del mes
+            const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+            // Rellenar espacios vacíos antes del día 1
+            for (let i = 0; i < adjustedFirstDayIndex; i++) {
+                grid.innerHTML += `<div class="calendar-day empty"></div>`;
+            }
+
+            // Rellenar días del mes
+            for (let day = 1; day <= totalDays; day++) {
+                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                // Buscar si hay eventos ese día
+                const dayEvents = events.filter(e => e.date === dateStr);
+
+                // Comprobar si es hoy
+                const today = new Date();
+                const isToday = today.getDate() === day && today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+
+                let eventsHtml = '';
+                dayEvents.forEach(e => {
+                    let typeClass = 'event-type-training';
+                    if (e.type === 'match') typeClass = 'event-type-match';
+                    if (e.type === 'scouting') typeClass = 'event-type-scouting';
+
+                    eventsHtml += `<span class="day-event-dot ${typeClass}" title="${e.title}">${e.title}</span>`;
+                });
+
+                grid.innerHTML += `
+                    <div class="calendar-day ${isToday ? 'today' : ''}" onclick="selectCalendarDay('${dateStr}')">
+                        <span class="day-num">${day}</span>
+                        <div class="day-events">
+                            ${eventsHtml}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function selectCalendarDay(dateStr) {
+            document.getElementById('event-date').value = dateStr;
+            const dayEvents = events.filter(e => e.date === dateStr);
+            
+            if (dayEvents.length > 0) {
+                const list = dayEvents.map(e => `- ${e.title} (${e.location})`).join('\n');
+                showToast(`Eventos el ${dateStr}:\n${list}`, 'info');
+            } else {
+                showToast(`No hay eventos el ${dateStr}. Completa el formulario de la derecha para programar.`, 'info');
+            }
+        }
+
+        function addCalendarEvent(e) {
+            e.preventDefault();
+            const title = document.getElementById('event-title').value;
+            const date = document.getElementById('event-date').value;
+            const type = document.getElementById('event-type').value;
+            const location = document.getElementById('event-location').value;
+
+            const newEvent = {
+                id: events.length + 1,
+                title,
+                date,
+                type,
+                location
+            };
+
+            events.push(newEvent);
+            saveState();
+            renderCalendar();
+            showToast('Evento programado con éxito', 'success');
+
+            document.getElementById('form-calendar-event').reset();
+        }
+
+        /* ==========================================================================
+           D.6 CREACIÓN, REGISTRO Y BORRADO DE ELEMENTOS (FORMULARIOS MODAL)
+           ========================================================================== */
+        
+        // Registrar nuevo Jugador
+        function addPlayer(e) {
+            e.preventDefault();
+            const name = document.getElementById('play-name').value;
+            const club = document.getElementById('play-club').value;
+            const category = document.getElementById('play-category').value;
+            const position = document.getElementById('play-position').value;
+            const matches = parseInt(document.getElementById('play-matches').value) || 0;
+            const status = document.getElementById('play-status').value;
+
+            const newPlayer = {
+                id: players.length + 1,
+                name,
+                club,
+                category,
+                position,
+                matches,
+                status
+            };
+
+            players.push(newPlayer);
+            saveState();
+            closeModal('modal-jugador');
+            renderPlayersTable();
+            showToast(`Futbolista ${name} registrado con éxito`, 'success');
+
+            document.getElementById('form-add-player').reset();
+        }
+
+        // Borrar Jugador
+        function deletePlayer(id) {
+            const player = players.find(p => p.id === id);
+            if (confirm(`¿Estás seguro de que deseas dar de baja a ${player ? player.name : 'este jugador'}?`)) {
+                players = players.filter(p => p.id !== id);
+                saveState();
+                renderPlayersTable();
+                showToast('Jugador eliminado de la base de datos', 'danger');
+            }
+        }
+
+        // Registrar nueva convocatoria
+        function addCall(e) {
+            e.preventDefault();
+            const name = document.getElementById('call-name').value;
+            const location = document.getElementById('call-location').value;
+            const time = document.getElementById('call-time').value;
+            const status = document.getElementById('call-status').value;
+            const date = document.getElementById('call-date').value;
+
+            // Extraer checkboxes marcados
+            const checkedBoxes = document.querySelectorAll('.conv-player-checkbox:checked');
+            const playerIds = Array.from(checkedBoxes).map(cb => parseInt(cb.value));
+
+            const newCall = {
+                id: convocatorias.length + 1,
+                name,
+                location,
+                time,
+                status,
+                date,
+                players: playerIds
+            };
+
+            convocatorias.push(newCall);
+            
+            // Añadir también al calendario automáticamente
+            events.push({
+                id: events.length + 1,
+                title: name,
+                date: date,
+                type: status === 'Visionado' ? 'scouting' : 'match',
+                location: location
+            });
+
+            saveState();
+            closeModal('modal-convocatoria');
+            renderConvocatorias();
+            renderDashboardView();
+            showToast(`Nueva lista para ${name} publicada en vivo`, 'success');
+
+            document.getElementById('form-add-call').reset();
+        }
+
+        // Eliminar convocatoria
+        function deleteConvocatoria(id) {
+            if (confirm('¿Deseas cancelar esta convocatoria?')) {
+                convocatorias = convocatorias.filter(c => c.id !== id);
+                saveState();
+                renderConvocatorias();
+                renderDashboardView();
+                document.getElementById('convocatoria-detail-panel').innerHTML = `
+                    <div style="text-align: center; padding: 40px 0; color: var(--text-muted);">
+                        <p>Convocatoria eliminada con éxito.</p>
+                    </div>
+                `;
+                showToast('Convocatoria cancelada', 'danger');
+            }
+        }
+
+        // Quitar un jugador de una convocatoria
+        function removePlayerFromCall(callId, playerId) {
+            const call = convocatorias.find(c => c.id === callId);
+            if (call) {
+                call.players = call.players.filter(pid => pid !== playerId);
+                saveState();
+                selectConvocatoria(callId);
+                showToast('Jugador desconvocado', 'info');
+            }
+        }
+
+        // Añadir jugadores a convocatoria en panel lateral
+        let activeCallIdForAdding = null;
+        function openAddPlayersToCallModal(callId) {
+            activeCallIdForAdding = callId;
+            const call = convocatorias.find(c => c.id === callId);
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'modal-add-players-temp';
+
+            // Buscar jugadores no convocados
+            const dynamicList = players.filter(p => !call.players.includes(p.id));
+            let checkboxes = '';
+            
+            if (dynamicList.length === 0) {
+                checkboxes = '<p style="color:var(--text-muted); font-size:13px;">Todos los jugadores ya están convocados.</p>';
+            } else {
+                dynamicList.forEach(p => {
+                    checkboxes += `
+                        <label style="display:flex; align-items:center; gap:8px; font-size:13px; margin-bottom:8px; cursor:pointer;">
+                            <input type="checkbox" value="${p.id}" class="temp-player-checkbox" />
+                            <span>${p.name} - ${p.category} (${p.club})</span>
+                        </label>
+                    `;
+                });
+            }
+
+            overlay.innerHTML = `
+                <div class="modal-card">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Agregar a: ${call.name}</h3>
+                        <button class="close-btn" onclick="document.getElementById('modal-add-players-temp').remove()">×</button>
+                    </div>
+                    <div class="modal-body" style="gap:12px;">
+                        <p style="font-size:13px; color:var(--text-muted);">Selecciona los jugadores que deseas incorporar a la convocatoria activa.</p>
+                        <div style="max-height: 200px; overflow-y:auto; border:1px solid var(--border-color); padding:10px; border-radius:var(--radius-sm);">
+                            ${checkboxes}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline" onclick="document.getElementById('modal-add-players-temp').remove()">Cancelar</button>
+                        <button class="btn btn-primary" onclick="confirmAddPlayersToCall()">Agregar Seleccionados</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function confirmAddPlayersToCall() {
+            const boxes = document.querySelectorAll('.temp-player-checkbox:checked');
+            const playerIds = Array.from(boxes).map(b => parseInt(b.value));
+            
+            const call = convocatorias.find(c => c.id === activeCallIdForAdding);
+            if (call && playerIds.length > 0) {
+                call.players.push(...playerIds);
+                saveState();
+                selectConvocatoria(activeCallIdForAdding);
+                showToast(`${playerIds.length} jugadores incorporados`, 'success');
+            }
+            document.getElementById('modal-add-players-temp').remove();
+        }
+
+        /* ==========================================================================
+           D.7 GUARDAR CONFIGURACIÓN Y EXPORTACIÓN DE BASE DE DATOS
+           ========================================================================== */
+        function saveProfileSettings() {
+            const name = document.getElementById('config-name').value;
+            const role = document.getElementById('config-role').value;
+            
+            // Actualizar footer del sidebar
+            document.getElementById('sidebar-user-name').textContent = name.split(' ').map((n, i) => i === 0 ? n : n[0] + '.').slice(0, 2).join(' ');
+            document.getElementById('sidebar-user-role').textContent = role;
+            
+            // Generar iniciales del avatar
+            const initials = name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+            document.getElementById('sidebar-user-avatar').textContent = initials;
+
+            showToast('Perfil técnico actualizado correctamente', 'success');
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
+                players,
+                convocatorias,
+                sessions,
+                reports,
+                events
+            }, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "ffcv_area_deportiva_db.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast('Base de datos exportada en formato JSON', 'success');
+        }
+
+        /* ==========================================================================
+           D.8 INICIALIZACIÓN DE GRÁFICOS INTERACTIVOS (CHART.JS)
+           ========================================================================== */
+        let dashboardChart;
+
+        function initChart() {
+            const ctx = document.getElementById('dashboardChart').getContext('2d');
+            
+            // Contar jugadores por categoría para el gráfico
+            const categories = ['Sub-14', 'Sub-16', 'Sub-19'];
+            const counts = categories.map(cat => players.filter(p => p.category === cat).length);
+
+            dashboardChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        label: 'Número de Jugadores',
+                        data: counts,
+                        backgroundColor: [
+                            'rgba(10, 37, 64, 0.85)',  /* Azul FFCV */
+                            'rgba(255, 176, 0, 0.85)', /* Dorado FFCV */
+                            'rgba(30, 58, 95, 0.85)'   /* Azul Claro */
+                        ],
+                        borderColor: [
+                            '#0A2540',
+                            '#FFB000',
+                            '#1E3A5F'
+                        ],
+                        borderWidth: 1.5,
+                        borderRadius: 6,
+                        barThickness: 45
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#0A2540',
+                            titleFont: { family: 'Outfit', size: 14 },
+                            bodyFont: { family: 'Inter', size: 12 },
+                            padding: 12,
+                            cornerRadius: 8
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#E2E8F0'
+                            },
+                            ticks: {
+                                font: { family: 'Inter', size: 11 },
+                                precision: 0
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: { family: 'Outfit', size: 12, weight: '500' }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Refrescar el gráfico cuando los jugadores cambian
+        function refreshChart() {
+            if (dashboardChart) {
+                const categories = ['Sub-14', 'Sub-16', 'Sub-19'];
+                const counts = categories.map(cat => players.filter(p => p.category === cat).length);
+                dashboardChart.data.datasets[0].data = counts;
+                dashboardChart.update();
+            }
+        }
+
+        // Agregar hook de refrescar gráfico a saveState
+        const originalSaveState = saveState;
+        saveState = function() {
+            originalSaveState();
+            refreshChart();
+        };
+
+        /* ==========================================================================
+           E. ARRANCAR APLICACIÓN
+           ========================================================================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            updateCounts();
+            renderDashboardView();
+            initChart();
+            
+            // Navegar automáticamente a la pestaña indicada en el Hash de URL (si existe)
+            const hash = window.location.hash.substring(1);
+            if (hash && ['dashboard', 'jugadores', 'convocatorias', 'planificacion', 'sesiones', 'informes', 'calendario', 'configuracion'].includes(hash)) {
+                navigateToTab(hash);
+            } else {
+                navigateToTab('dashboard');
+            }
+        });
+    </script>
+</body>
+
+</html>
