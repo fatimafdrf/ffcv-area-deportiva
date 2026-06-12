@@ -2441,67 +2441,17 @@
                         <p class="hero-desc">Área técnica y logística de las Selecciones Territoriales de la Comunitat Valenciana. Gestión centralizada de plantillas, planificación de microciclos, convocatorias de juego e informes de rendimiento.</p>
                     </div>
 
-                    <!-- Fichas de Estadísticas Resumen -->
-                    <div class="summary-grid">
-                        <div class="card-stat">
-                            <div class="stat-details">
-                                <span class="stat-title">Jugadores registrados</span>
-                                <strong class="stat-value" id="count-players">128</strong>
-                                <span class="stat-trend positive">
-                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></svg>
-                                    +8% este mes
-                                </span>
-                            </div>
-                            <div class="stat-icon-wrapper">
-                                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
-                            </div>
-                        </div>
-
-                        <div class="card-stat">
-                            <div class="stat-details">
-                                <span class="stat-title">Convocatorias activas</span>
-                                <strong class="stat-value" id="count-calls">3</strong>
-                                <span class="stat-trend neutral">Planificadas</span>
-                            </div>
-                            <div class="stat-icon-wrapper">
-                                <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
-                            </div>
-                        </div>
-
-                        <div class="card-stat">
-                            <div class="stat-details">
-                                <span class="stat-title">Entrenamientos</span>
-                                <strong class="stat-value" id="count-trainings">14</strong>
-                                <span class="stat-trend positive">Planificados</span>
-                            </div>
-                            <div class="stat-icon-wrapper">
-                                <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /><path d="M11 18H8a2 2 0 0 1-2-2V9" /></svg>
-                            </div>
-                        </div>
-
-                        <div class="card-stat">
-                            <div class="stat-details">
-                                <span class="stat-title">Informes de Scouting</span>
-                                <strong class="stat-value" id="count-reports">9</strong>
-                                <span class="stat-trend neutral">Registrados</span>
-                            </div>
-                            <div class="stat-icon-wrapper">
-                                <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Contenido Secundario -->
                     <div class="split-grid">
                         <!-- Columna Izquierda: Información Principal y Operativa -->
                         <div style="display:flex; flex-direction:column; gap:28px;">
                             
-                            <!-- Panel: Últimas Convocatorias -->
+                            <!-- Panel: Próximas Convocatorias -->
                             <div class="panel">
                                 <div class="panel-header">
                                     <h3 class="panel-title">
                                         <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>
-                                        Últimas Convocatorias
+                                        Próximas Convocatorias
                                     </h3>
                                     <a href="#convocatorias" class="btn btn-outline btn-sm" onclick="navigateToTab('convocatorias')">Ver Todas</a>
                                 </div>
@@ -2511,8 +2461,8 @@
                                             <tr>
                                                 <th>Fecha</th>
                                                 <th>Categoría</th>
+                                                <th>Lugar</th>
                                                 <th>Estado</th>
-                                                <th style="text-align: right;">Acceso Rápido</th>
                                             </tr>
                                         </thead>
                                         <tbody id="dashboard-convocatorias-list">
@@ -2522,59 +2472,21 @@
                                 </div>
                             </div>
 
-                            <!-- Panel: Próximos Entrenamientos -->
+                            <!-- Próximos Eventos -->
                             <div class="panel">
                                 <div class="panel-header">
                                     <h3 class="panel-title">
-                                        <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /><path d="M11 18H8a2 2 0 0 1-2-2V9" /></svg>
-                                        Próximos Entrenamientos
+                                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                                        Próximos Eventos
                                     </h3>
-                                    <a href="#planificacion" class="btn btn-outline btn-sm" onclick="navigateToTab('planificacion')">Planificación</a>
                                 </div>
-                                <div class="table-responsive">
-                                    <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Fecha</th>
-                                                <th>Hora</th>
-                                                <th>Categoría</th>
-                                                <th>Lugar</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dashboard-trainings-list">
-                                            <!-- Relleno dinámico -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <!-- Panel: Últimos Informes de Rendimiento -->
-                            <div class="panel">
-                                <div class="panel-header">
-                                    <h3 class="panel-title">
-                                        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>
-                                        Últimos Informes de Rendimiento
-                                    </h3>
-                                    <a href="#informes" class="btn btn-outline btn-sm" onclick="navigateToTab('informes')">Ver Todos</a>
-                                </div>
-                                <div class="table-responsive">
-                                    <table class="data-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Jugador / Rival</th>
-                                                <th>Fecha</th>
-                                                <th>Scouter</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dashboard-reports-list">
-                                            <!-- Relleno dinámico -->
-                                        </tbody>
-                                    </table>
+                                <div class="list-group" id="dashboard-events-list" style="display:flex; flex-direction:column; gap:12px;">
+                                    <!-- Dinámico mediante JS -->
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Columna Derecha: Accesos Rápidos, Eventos y Actividad -->
+                        <!-- Columna Derecha: Accesos Rápidos y Actividad -->
                         <div style="display:flex; flex-direction:column; gap:28px;">
                             
                             <!-- Accesos Rápidos -->
@@ -2663,25 +2575,12 @@
                                 </div>
                             </div>
 
-                            <!-- Próximos Eventos -->
-                            <div class="panel">
-                                <div class="panel-header">
-                                    <h3 class="panel-title">
-                                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
-                                        Próximos Eventos
-                                    </h3>
-                                </div>
-                                <div class="list-group" id="dashboard-events-list" style="display:flex; flex-direction:column; gap:12px;">
-                                    <!-- Dinámico mediante JS -->
-                                </div>
-                            </div>
-
                             <!-- Última Actividad / Alertas -->
                             <div class="panel">
                                 <div class="panel-header">
                                     <h3 class="panel-title">
                                         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-                                        Actividad Reciente
+                                        Última Actividad
                                     </h3>
                                 </div>
                                 <div class="activity-timeline" id="dashboard-activity-timeline">
@@ -2689,8 +2588,6 @@
                                 </div>
                             </div>
                         </div>
-
-                    </div>
                 </section>
 
                 <!-- ==========================================================================
@@ -5183,7 +5080,7 @@
         }
 
         function renderDashboardView() {
-            // A. Últimas Convocatorias
+            // A. Próximas Convocatorias
             const convContainer = document.getElementById('dashboard-convocatorias-list');
             if (convContainer) {
                 convContainer.innerHTML = '';
@@ -5200,10 +5097,8 @@
                                 <span style="font-weight: 600; color: var(--primary);">${c.category}</span>
                                 <span style="font-size: 11px; color: var(--text-muted); display: block;">${c.name}</span>
                             </td>
+                            <td><span style="font-size: 13px;">${c.location || 'Sede FFCV'}</span></td>
                             <td><span class="tag ${statusClass}">${c.status}</span></td>
-                            <td style="text-align: right;">
-                                <button class="btn btn-outline btn-sm" onclick="navigateToTab('convocatorias')" style="font-size: 11px; padding: 4px 10px; border-radius: 8px;">Gestionar</button>
-                            </td>
                         </tr>
                     `;
                 });
@@ -5212,66 +5107,7 @@
                 }
             }
 
-            // B. Próximos Entrenamientos
-            const trainContainer = document.getElementById('dashboard-trainings-list');
-            if (trainContainer) {
-                trainContainer.innerHTML = '';
-                const upcomingTrainings = events
-                    .filter(e => e.type === 'training')
-                    .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                upcomingTrainings.slice(0, 3).forEach(t => {
-                    let category = 'Sub-16';
-                    if (t.title.includes('Sub-14')) category = 'Sub-14';
-                    if (t.title.includes('Sub-19')) category = 'Sub-19';
-
-                    let time = '18:00 h';
-                    const matchedCall = convocatorias.find(c => c.date === t.date && c.category === category);
-                    if (matchedCall) time = matchedCall.time;
-
-                    trainContainer.innerHTML += `
-                        <tr>
-                            <td><strong>${t.date}</strong></td>
-                            <td>${time}</td>
-                            <td><span style="font-weight: 600; color: var(--primary);">${category}</span></td>
-                            <td>
-                                <span style="font-size: 13px;">${t.location}</span>
-                            </td>
-                        </tr>
-                    `;
-                });
-                if (upcomingTrainings.length === 0) {
-                    trainContainer.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No hay entrenamientos programados.</td></tr>`;
-                }
-            }
-
-            // C. Últimos Informes de Rendimiento
-            const repContainer = document.getElementById('dashboard-reports-list');
-            if (repContainer) {
-                repContainer.innerHTML = '';
-                const sortedReports = [...reports].reverse();
-                sortedReports.slice(0, 3).forEach(r => {
-                    const titleText = r.player || r.title || 'Informe General';
-                    const dateText = r.date || 'Reciente';
-                    const scoutText = r.scout || 'Dirección Técnica';
-
-                    repContainer.innerHTML += `
-                        <tr>
-                            <td>
-                                <span style="font-weight: 600; color: var(--primary);">${titleText}</span>
-                                ${r.position ? `<span style="font-size: 11px; color: var(--text-muted); display: block;">${r.position}</span>` : ''}
-                            </td>
-                            <td><strong>${dateText}</strong></td>
-                            <td>${scoutText}</td>
-                        </tr>
-                    `;
-                });
-                if (sortedReports.length === 0) {
-                    repContainer.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No hay informes registrados.</td></tr>`;
-                }
-            }
-
-            // D. Próximos Eventos
+            // B. Próximos Eventos
             const eventsContainer = document.getElementById('dashboard-events-list');
             if (eventsContainer) {
                 eventsContainer.innerHTML = '';
@@ -5319,7 +5155,7 @@
                 }
             }
 
-            // E. Actividad Reciente
+            // C. Actividad Reciente
             renderRecentActivity();
         }
 
