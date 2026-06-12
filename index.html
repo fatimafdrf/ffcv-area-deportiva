@@ -2160,10 +2160,7 @@
                         </div>
                     </button>
                     
-                    <button class="btn btn-primary btn-sm" id="btn-add-global" onclick="openModal('modal-convocatoria')">
-                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                        Nueva Convocatoria
-                    </button>
+                    <!-- El botón global se ha eliminado para evitar duplicidades de UX -->
                 </div>
             </header>
 
@@ -3927,39 +3924,6 @@
             if (viewId === 'configuracion') capitalizedTitle = 'Configuración del Sistema';
             document.getElementById('page-header-title').textContent = capitalizedTitle;
 
-            // Cambiar texto de botón añadir en la cabecera
-            const addBtn = document.getElementById('btn-add-global');
-            if (viewId === 'jugadores') {
-                addBtn.style.display = 'inline-flex';
-                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Añadir jugador`;
-                addBtn.setAttribute('onclick', "openModal('modal-jugador')");
-            } else if (viewId === 'convocatorias') {
-                addBtn.style.display = 'inline-flex';
-                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Nueva Convocatoria`;
-                addBtn.setAttribute('onclick', "openModal('modal-convocatoria')");
-            } else if (viewId === 'sesiones') {
-                addBtn.style.display = 'inline-flex';
-                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Nueva sesión`;
-                addBtn.setAttribute('onclick', "openModal('modal-sesion')");
-            } else if (viewId === 'informes') {
-                addBtn.style.display = 'inline-flex';
-                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Nuevo informe`;
-                addBtn.setAttribute('onclick', "openModal('modal-informe')");
-            } else if (viewId === 'planificacion') {
-                addBtn.style.display = 'inline-flex';
-                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Nueva planificación`;
-                addBtn.setAttribute('onclick', "showToast('Constructor de planificaciones rápidas habilitado', 'info')");
-            } else if (viewId === 'staff') {
-                addBtn.style.display = 'inline-flex';
-                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Añadir Miembro`;
-                addBtn.setAttribute('onclick', "openAddStaffModal()");
-            } else if (viewId === 'documentacion') {
-                addBtn.style.display = 'inline-flex';
-                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Subir Documento`;
-                addBtn.setAttribute('onclick', "triggerVirtualFileInput()");
-            } else {
-                addBtn.style.display = 'none';
-            }
 
             // Ocultar barra lateral en móvil al navegar
             document.getElementById('app-sidebar').classList.remove('mobile-active');
