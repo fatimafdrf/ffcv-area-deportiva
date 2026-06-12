@@ -1794,6 +1794,44 @@
             color: var(--accent-hover);
         }
 
+        /* Pestañas de Configuración (Mejora Visual) */
+        .config-tabs-container {
+            display: flex;
+            background-color: #F1F5F9; /* Fondo gris muy claro */
+            border-radius: 16px;
+            padding: 8px;
+            gap: 12px; /* Separación uniforme entre pestañas */
+            margin-top: 16px;
+            margin-bottom: 24px;
+            width: fit-content;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        .config-tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--primary); /* Texto azul marino corporativo */
+            border: none;
+            background: transparent; /* Fondo transparente */
+            cursor: pointer;
+            border-radius: 12px; /* Border radius 12px */
+            transition: var(--transition-base); /* Transición suave */
+            white-space: nowrap;
+        }
+        .config-tab-btn:hover {
+            background-color: rgba(255, 107, 0, 0.08); /* Hover con fondo naranja muy suave */
+            color: #FF6B00; /* Subtle text accent on hover */
+        }
+        .config-tab-btn.active {
+            background-color: #FF6B00; /* Fondo naranja corporativo */
+            color: #FFFFFF !important; /* Texto blanco */
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
+        }
+
         /* Vista Staff Técnico */
         .staff-grid {
             display: grid;
@@ -3899,12 +3937,12 @@
                         </div>
                     </div>
 
-                    <div class="tactical-menu-tabs" style="margin-top: 10px;">
-                        <button class="tactical-tab active" onclick="switchConfigSubTab('config-categorias', this)">Categorías</button>
-                        <button class="tactical-tab" onclick="switchConfigSubTab('config-temporada', this)">Temporada</button>
-                        <button class="tactical-tab" onclick="switchConfigSubTab('config-roles', this)">Roles</button>
-                        <button class="tactical-tab" onclick="switchConfigSubTab('config-permisos', this)">Permisos</button>
-                        <button class="tactical-tab" onclick="switchConfigSubTab('config-generales', this)">Datos Generales y Perfil</button>
+                    <div class="config-tabs-container">
+                        <button class="config-tab-btn active" onclick="switchConfigSubTab('config-categorias', this)">📂 Categorías</button>
+                        <button class="config-tab-btn" onclick="switchConfigSubTab('config-temporada', this)">🏆 Temporada</button>
+                        <button class="config-tab-btn" onclick="switchConfigSubTab('config-roles', this)">👥 Roles</button>
+                        <button class="config-tab-btn" onclick="switchConfigSubTab('config-permisos', this)">🔐 Permisos</button>
+                        <button class="config-tab-btn" onclick="switchConfigSubTab('config-generales', this)">⚙️ Datos Generales y Perfil</button>
                     </div>
 
                     <!-- Pestaña Categorías -->
@@ -6149,7 +6187,7 @@
 
         // Cambio de sub-pestañas en configuración
         function switchConfigSubTab(tabId, btn) {
-            btn.parentNode.querySelectorAll('.tactical-tab').forEach(t => t.classList.remove('active'));
+            btn.parentNode.querySelectorAll('.config-tab-btn').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
             
             document.querySelectorAll('.config-sub-view').forEach(v => v.style.display = 'none');
