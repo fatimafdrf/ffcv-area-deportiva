@@ -3072,10 +3072,30 @@
 
                         <!-- Sidebar del Calendario (Filtro y Programación) -->
                         <div style="display:flex; flex-direction:column; gap:20px;">
-                            <div class="panel">
-                                <h3 class="panel-title">Filtros de Eventos</h3>
-                                <div class="form-group" style="margin-top:4px;">
-                                    <select class="form-select" id="calendar-event-filter" onchange="renderCalendar()">
+                            <!-- Tarjeta de Filtros de Eventos -->
+                            <div class="filters-card" style="margin-top: 0; margin-bottom: 0;">
+                                <!-- Franja Superior Corporativa -->
+                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
+                                <!-- Cabecera del Bloque de Filtros -->
+                                <div style="display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 12px; margin-bottom: 12px; margin-top: 4px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="background-color: rgba(15, 35, 80, 0.08); color: #0F2350; width: 36px; height: 36px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 14px; font-weight: 700; color: #0F2350; margin: 0;">Filtros de eventos</h3>
+                                        </div>
+                                    </div>
+                                    <span style="font-size: 11px; color: #6B7280;">Filtra entrenamientos, partidos, convocatorias y reuniones.</span>
+                                    
+                                    <div style="margin-top: 4px;">
+                                        <span style="font-size: 11px; font-weight: 600; color: #0F2350; background-color: rgba(15, 35, 80, 0.08); padding: 5px 10px; border-radius: 999px; display: inline-flex;" id="calendar-event-count-label">Mostrando eventos</span>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <select class="form-select" id="calendar-event-filter" onchange="renderCalendar()" style="width: 100%; height: 38px; background-color: #FFFFFF;">
                                         <option value="ALL">Mostrar todos los eventos</option>
                                         <option value="match">Partidos Oficiales</option>
                                         <option value="training">Entrenamientos Selección</option>
@@ -4956,12 +4976,27 @@
                 grid.innerHTML += `<div class="calendar-day empty"></div>`;
             }
 
+            // Obtener tipo de filtro seleccionado
+            const filterEl = document.getElementById('calendar-event-filter');
+            const filterVal = filterEl ? filterEl.value : 'ALL';
+
+            // Filtrar todos los eventos de la base de datos por tipo
+            const filteredEvents = events.filter(e => {
+                return (filterVal === 'ALL') || (e.type === filterVal);
+            });
+
+            // Actualizar el contador del badge en el panel de filtros
+            const countLabel = document.getElementById('calendar-event-count-label');
+            if (countLabel) {
+                countLabel.textContent = `Mostrando ${filteredEvents.length} eventos`;
+            }
+
             // Rellenar días del mes
             for (let day = 1; day <= totalDays; day++) {
                 const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 
-                // Buscar si hay eventos ese día
-                const dayEvents = events.filter(e => e.date === dateStr);
+                // Buscar si hay eventos ese día dentro de los filtrados
+                const dayEvents = filteredEvents.filter(e => e.date === dateStr);
 
                 // Comprobar si es hoy
                 const today = new Date();
@@ -4972,6 +5007,7 @@
                     let typeClass = 'event-type-training';
                     if (e.type === 'match') typeClass = 'event-type-match';
                     if (e.type === 'scouting') typeClass = 'event-type-scouting';
+                    if (e.type === 'staff') typeClass = 'event-type-staff';
 
                     eventsHtml += `<span class="day-event-dot ${typeClass}" title="${e.title}">${e.title}</span>`;
                 });
