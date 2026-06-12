@@ -762,10 +762,10 @@
         }
 
         .quick-action-card:hover {
-            background-color: var(--accent-light);
-            border-color: var(--accent);
+            background-color: rgba(255, 107, 0, 0.06); /* Hover con fondo naranja muy suave */
+            border-color: #FF6B00; /* Borde naranja en hover */
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.12);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.08);
         }
 
         .quick-action-icon {
@@ -780,11 +780,13 @@
             color: var(--primary);
             transition: var(--transition-base);
             flex-shrink: 0;
+            border: 1px solid transparent;
         }
 
         .quick-action-card:hover .quick-action-icon {
-            background-color: var(--accent);
-            color: #FFFFFF;
+            color: #FF6B00; /* Icono naranja en hover */
+            background-color: #FFFFFF;
+            border-color: rgba(255, 107, 0, 0.2);
         }
 
         .quick-action-icon svg {
@@ -793,6 +795,44 @@
             stroke: currentColor;
             fill: none;
             stroke-width: 2.2;
+        }
+
+        /* Badge naranja para contadores */
+        .quick-badge {
+            background-color: #FF6B00;
+            color: #FFFFFF;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 999px;
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px rgba(255, 107, 0, 0.3);
+            line-height: 1;
+            min-width: 20px;
+            height: 20px;
+        }
+
+        .quick-actions-panel {
+            position: relative !important;
+            border-radius: 18px !important;
+            border: 1px solid var(--border-color) !important;
+            box-shadow: var(--shadow-md) !important;
+            overflow: hidden !important;
+            background-color: var(--bg-card) !important;
+        }
+
+        .quick-actions-panel::before {
+            content: '' !important;
+            position: absolute !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 5px !important;
+            background-color: #FF6B00 !important;
+            z-index: 10 !important;
         }
 
         @media (max-width: 600px) {
@@ -2310,7 +2350,7 @@
                         <div style="display:flex; flex-direction:column; gap:28px;">
                             
                             <!-- Accesos Rápidos -->
-                            <div class="panel">
+                            <div class="panel quick-actions-panel">
                                 <div class="panel-header">
                                     <h3 class="panel-title">
                                         <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>
@@ -2323,14 +2363,16 @@
                                         <div class="quick-action-icon">
                                             <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                                         </div>
-                                        <span>Directorio de Jugadores<span id="quick-count-players" style="font-weight: 500; opacity: 0.85;"></span></span>
+                                        <span>Directorio de Jugadores</span>
+                                        <span id="quick-count-players" class="quick-badge"></span>
                                     </div>
                                     <!-- Gestión de Convocatorias -->
                                     <div class="quick-action-card" onclick="navigateToTab('convocatorias')">
                                         <div class="quick-action-icon">
                                             <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>
                                         </div>
-                                        <span>Gestión de Convocatorias<span id="quick-count-calls" style="font-weight: 500; opacity: 0.85;"></span></span>
+                                        <span>Gestión de Convocatorias</span>
+                                        <span id="quick-count-calls" class="quick-badge"></span>
                                     </div>
                                     <!-- Planificación Deportiva -->
                                     <div class="quick-action-card" onclick="navigateToTab('planificacion')">
@@ -2344,7 +2386,8 @@
                                         <div class="quick-action-icon">
                                             <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /><path d="M11 18H8a2 2 0 0 1-2-2V9" /></svg>
                                         </div>
-                                        <span>Biblioteca de Sesiones<span id="quick-count-sesiones" style="font-weight: 500; opacity: 0.85;"></span></span>
+                                        <span>Biblioteca de Sesiones</span>
+                                        <span id="quick-count-sesiones" class="quick-badge"></span>
                                     </div>
                                     <!-- Modelo de Juego -->
                                     <div class="quick-action-card" onclick="navigateToTab('modelo')">
@@ -2358,7 +2401,8 @@
                                         <div class="quick-action-icon">
                                             <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>
                                         </div>
-                                        <span>Informes de Rendimiento<span id="quick-count-reports" style="font-weight: 500; opacity: 0.85;"></span></span>
+                                        <span>Informes de Rendimiento</span>
+                                        <span id="quick-count-reports" class="quick-badge"></span>
                                     </div>
                                     <!-- Calendario Deportivo -->
                                     <div class="quick-action-card" onclick="navigateToTab('calendario')">
@@ -4891,16 +4935,16 @@
 
             // Contadores en Accesos Rápidos
             const qPlayers = document.getElementById('quick-count-players');
-            if (qPlayers) qPlayers.textContent = ` (${numPlayers})`;
+            if (qPlayers) qPlayers.textContent = `[${numPlayers}]`;
 
             const qCalls = document.getElementById('quick-count-calls');
-            if (qCalls) qCalls.textContent = ` (${numCalls})`;
+            if (qCalls) qCalls.textContent = `[${numCalls}]`;
 
             const qTrainings = document.getElementById('quick-count-sesiones');
-            if (qTrainings) qTrainings.textContent = ` (${numTrainings})`;
+            if (qTrainings) qTrainings.textContent = `[${numTrainings}]`;
 
             const qReports = document.getElementById('quick-count-reports');
-            if (qReports) qReports.textContent = ` (${numReports})`;
+            if (qReports) qReports.textContent = `[${numReports}]`;
         }
 
         // 1. Dashboard View
