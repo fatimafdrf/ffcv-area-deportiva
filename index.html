@@ -2101,7 +2101,7 @@
                 </a>
                 <a href="#jugadores" class="menu-item" data-view="jugadores">
                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-                    <span>Jugadores</span>
+                    <span>Directorio de Jugadores</span>
                 </a>
                 <a href="#convocatorias" class="menu-item" data-view="convocatorias">
                     <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>
@@ -2395,7 +2395,7 @@
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
                         <div>
                             <h2 style="font-size:24px; color:var(--primary);">Directorio de Jugadores</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Seguimiento técnico individualizado y censo de futbolistas de la Comunitat Valenciana.</p>
+                            <p style="color:var(--text-muted); font-size:14px;">Gestión centralizada de futbolistas de la FFCV para seguimiento técnico, convocatorias, observación y planificación deportiva.</p>
                         </div>
                         <button class="btn btn-primary" onclick="openModal('modal-jugador')">
                             <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
@@ -4715,6 +4715,7 @@
 
             // Cambiar título de cabecera superior
             let capitalizedTitle = viewId.charAt(0).toUpperCase() + viewId.slice(1);
+            if (viewId === 'jugadores') capitalizedTitle = '';
             if (viewId === 'planificacion') capitalizedTitle = 'Planificación Deportiva';
             if (viewId === 'modelo') capitalizedTitle = 'Modelo de Juego';
             if (viewId === 'staff') capitalizedTitle = 'Staff Técnico';
