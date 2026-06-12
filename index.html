@@ -764,13 +764,68 @@
             color: var(--text-main);
         }
 
+        /* Estilo de Tarjetas Unificado Corporativo FFCV */
+        .panel,
+        .calendar-card,
+        .report-card,
+        .session-card,
+        .pitch-container,
+        .filters-card,
+        .table-responsive {
+            position: relative;
+            overflow: hidden;
+            background-color: #FFFFFF !important;
+            border: 1px solid var(--border-color) !important;
+            border-radius: var(--radius-lg) !important;
+            box-shadow: var(--shadow-md) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+        }
+
+        .panel::before,
+        .calendar-card::before,
+        .report-card::before,
+        .session-card::before,
+        .pitch-container::before,
+        .filters-card::before,
+        .table-responsive::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: #FF6B00;
+            z-index: 10;
+        }
+
+        .panel:hover,
+        .calendar-card:hover,
+        .report-card:hover,
+        .session-card:hover,
+        .pitch-container:hover,
+        .filters-card:hover,
+        .table-responsive:hover {
+            box-shadow: var(--shadow-lg) !important;
+        }
+
+        /* Prevención de doble línea / doble sombra en tarjetas o tablas anidadas */
+        .panel .panel::before,
+        .panel .table-responsive::before,
+        .calendar-card .table-responsive::before,
+        .filters-card .table-responsive::before {
+            display: none !important;
+        }
+        .panel .panel,
+        .panel .table-responsive,
+        .calendar-card .table-responsive,
+        .filters-card .table-responsive {
+            box-shadow: none !important;
+            border-color: var(--border-color) !important;
+        }
+
         /* Panel Contenedor Estándar */
         .panel {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
             padding: 28px;
-            box-shadow: var(--shadow-md);
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -2647,8 +2702,7 @@
 
                     <!-- Tarjeta de Filtros de Jugadores -->
                     <div class="filters-card">
-                        <!-- Franja Superior Corporativa -->
-                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
 
                         <!-- Cabecera del Bloque de Filtros -->
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 16px; margin-bottom: 16px; margin-top: 4px;">
@@ -2846,8 +2900,7 @@
                         }
                     </style>
                     <div class="filters-card">
-                        <!-- Franja Superior Corporativa -->
-                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
 
                         <!-- Cabecera del Bloque de Filtros -->
                         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 16px; margin-bottom: 16px; margin-top: 4px;">
@@ -3260,8 +3313,7 @@
                             
                             <!-- Tarjeta de Selección de Sistema -->
                             <div class="filters-card" style="margin-top: 0; margin-bottom: 0; background: #0f1e46; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 24px rgba(15, 30, 70, 0.2);">
-                                <!-- Franja Superior Corporativa -->
-                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
 
                                 <!-- Cabecera del Bloque -->
                                 <div style="display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 12px; margin-bottom: 16px; margin-top: 4px;">
@@ -3398,8 +3450,7 @@
                         <div style="display:flex; flex-direction:column; gap:20px;">
                             <!-- Tarjeta de Filtros de Eventos -->
                             <div class="filters-card" style="margin-top: 0; margin-bottom: 0;">
-                                <!-- Franja Superior Corporativa -->
-                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
 
                                 <!-- Cabecera del Bloque de Filtros -->
                                 <div style="display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 12px; margin-bottom: 12px; margin-top: 4px;">
@@ -3431,8 +3482,7 @@
 
                             <!-- Tarjeta de Programar Evento -->
                             <div class="filters-card" style="margin-top: 0; margin-bottom: 0;">
-                                <!-- Franja Superior Corporativa -->
-                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
 
                                 <!-- Cabecera del Bloque -->
                                 <div style="display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 12px; margin-bottom: 16px; margin-top: 4px;">
@@ -3638,8 +3688,7 @@
                     <div id="staff-subview-listado" style="display: none;">
                         <!-- Tarjeta de Filtros de Staff -->
                         <div class="filters-card" style="margin-top: 0; margin-bottom: 24px;">
-                            <!-- Franja Superior Corporativa -->
-                            <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
 
                             <!-- Cabecera -->
                             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 16px; margin-bottom: 16px; margin-top: 4px;">
@@ -3751,24 +3800,8 @@
                         
                         /* Categorías de Documentos (Tarjetas Premium) */
                         .premium-doc-folder {
-                            background: #FFFFFF;
-                            border-radius: 16px;
-                            box-shadow: var(--shadow-sm);
                             padding: 24px;
-                            position: relative;
-                            overflow: hidden;
                             margin-bottom: 20px;
-                            border: 1px solid var(--border-color);
-                        }
-                        .premium-doc-folder::before {
-                            content: '';
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            right: 0;
-                            height: 5px;
-                            background: #FF6B00;
-                            box-shadow: 0 2px 4px rgba(255, 107, 0, 0.2);
                         }
                         .premium-doc-folder-header {
                             display: flex;
@@ -4129,8 +4162,6 @@
 
                         <div style="display:flex; flex-direction:column; gap:28px;">
                             <div class="doc-upload-card">
-                                <!-- Franja Superior Corporativa -->
-                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
                                 
                                 <div class="doc-upload-header">
                                     <div style="display: flex; align-items: center; gap: 10px;">
