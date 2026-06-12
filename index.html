@@ -2950,12 +2950,56 @@
                     <div class="tactic-layout">
                         <!-- Pizarra y Parámetros -->
                         <div style="display:flex; flex-direction:column; gap:20px;">
-                            <div class="panel">
-                                <h3 class="panel-title">Selección de Sistema</h3>
-                                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;">
-                                    <button class="btn btn-outline btn-sm active" style="border-color:var(--accent); color:var(--accent-hover);" onclick="setTacticSystem('1433', this)">1-4-3-3</button>
-                                    <button class="btn btn-outline btn-sm" onclick="setTacticSystem('1442', this)">1-4-4-2</button>
-                                    <button class="btn btn-outline btn-sm" onclick="setTacticSystem('1352', this)">1-3-5-2</button>
+                            <style>
+                                .tactic-system-btn {
+                                    background-color: rgba(255, 255, 255, 0.85) !important;
+                                    color: #0f1e46 !important;
+                                    border: 1px solid rgba(15, 30, 70, 0.1) !important;
+                                    font-weight: 700 !important;
+                                    font-size: 13px !important;
+                                    padding: 8px 18px !important;
+                                    border-radius: 10px !important;
+                                    cursor: pointer;
+                                    transition: all 0.2s ease !important;
+                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+                                .tactic-system-btn:hover {
+                                    background-color: rgba(255, 255, 255, 0.95) !important;
+                                    transform: translateY(-1px);
+                                }
+                                .tactic-system-btn.active {
+                                    background-color: var(--accent) !important;
+                                    color: #FFFFFF !important;
+                                    border-color: var(--accent) !important;
+                                    box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3) !important;
+                                }
+                            </style>
+                            
+                            <!-- Tarjeta de Selección de Sistema -->
+                            <div class="filters-card" style="margin-top: 0; margin-bottom: 0; background: #0f1e46; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 24px rgba(15, 30, 70, 0.2);">
+                                <!-- Franja Superior Corporativa -->
+                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
+                                <!-- Cabecera del Bloque -->
+                                <div style="display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 12px; margin-bottom: 16px; margin-top: 4px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="background-color: rgba(255, 255, 255, 0.10); color: #FFFFFF; width: 36px; height: 36px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="2" x2="12" y2="22" /><line x1="2" y1="12" x2="22" y2="12" /><circle cx="12" cy="12" r="4" /></svg>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 14px; font-weight: 700; color: #FFFFFF; margin: 0;">Selección de Sistema</h3>
+                                        </div>
+                                    </div>
+                                    <span style="font-size: 11px; color: rgba(255, 255, 255, 0.75);">Selecciona el sistema táctico base utilizado por la selección.</span>
+                                </div>
+
+                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                    <button class="tactic-system-btn active" onclick="setTacticSystem('1433', this)">1-4-3-3</button>
+                                    <button class="tactic-system-btn" onclick="setTacticSystem('1442', this)">1-4-4-2</button>
+                                    <button class="tactic-system-btn" onclick="setTacticSystem('1352', this)">1-3-5-2</button>
                                 </div>
                             </div>
                             
@@ -5537,12 +5581,14 @@
             btn.parentNode.querySelectorAll('button').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             
-            btn.parentNode.querySelectorAll('button').forEach(b => {
-                b.style.borderColor = '';
-                b.style.color = '';
-            });
-            btn.style.borderColor = 'var(--accent)';
-            btn.style.color = 'var(--accent-hover)';
+            if (!btn.classList.contains('tactic-system-btn')) {
+                btn.parentNode.querySelectorAll('button').forEach(b => {
+                    b.style.borderColor = '';
+                    b.style.color = '';
+                });
+                btn.style.borderColor = 'var(--accent)';
+                btn.style.color = 'var(--accent-hover)';
+            }
 
             activeSystem = system;
             updatePitchRepresentation();
