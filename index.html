@@ -2914,9 +2914,17 @@
                             <h2 style="font-size:24px; color:var(--primary);">Sesiones de Entrenamiento</h2>
                             <p style="color:var(--text-muted); font-size:14px;">Catálogo y plantillas de hojas de sesión diarias listas para aplicar en el terreno de juego.</p>
                         </div>
-                        <button class="btn btn-primary" onclick="openModal('modal-sesion')">
-                            Crear Hoja de Sesión
-                        </button>
+                        <div style="display:flex; gap:10px;">
+                            <!-- Input invisible para archivo PDF -->
+                            <input type="file" id="import-session-pdf" accept=".pdf,application/pdf" style="display:none;" onchange="handleSessionPDFImport(event)" />
+                            <button class="btn btn-outline" onclick="document.getElementById('import-session-pdf').click()" style="display: inline-flex; align-items: center; gap: 8px;">
+                                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" /></svg>
+                                Importar PDF
+                            </button>
+                            <button class="btn btn-primary" onclick="openModal('modal-sesion')">
+                                Crear Hoja de Sesión
+                            </button>
+                        </div>
                     </div>
 
                     <div class="sessions-grid" id="sessions-container">
@@ -4541,37 +4549,138 @@
 
             sessions.forEach(s => {
                 let badgeClass = 'tag-success';
-                let sessionNum = s.title.split(':')[0];
-                let sessionName = s.title.split(':')[1] || s.title;
+                let sessionNum = '';
+                let sessionName = s.title;
+
+                if (s.title.includes(':')) {
+                    sessionNum = s.title.split(':')[0];
+                    sessionName = s.title.split(':')[1];
+                }
 
                 if (s.type === 'Táctica') badgeClass = 'tag-warning';
                 if (s.type === 'Física') badgeClass = 'tag-info';
                 if (s.type === 'Técnica') badgeClass = 'tag-success';
+                if (s.type === 'Sesión importada') badgeClass = 'tag-danger';
+
+                // Render session card info
+                let subHeader = sessionNum ? `<span style="font-size:11px; color:var(--accent-hover); font-weight:700; text-transform:uppercase;">${sessionNum}</span>` : '';
+                
+                let metaRow = '';
+                if (s.type === 'Sesión importada') {
+                    metaRow = `
+                        <span>⏱ ${s.duration}</span>
+                        <span>📋 Estado: <strong>Importada</strong></span>
+                    `;
+                } else {
+                    metaRow = `
+                        <span>⏱ ${s.duration} mins</span>
+                        <span>⚡ Intensidad: <strong>${s.intensity}</strong></span>
+                    `;
+                }
+
+                let buttonsRow = '';
+                if (s.type === 'Sesión importada') {
+                    buttonsRow = `
+                        <button class="btn btn-primary btn-sm" style="width:100%;" onclick="viewSessionPDF('${s.pdfData || '#'}', '${s.title.replace(/'/g, "\\'")}')">Ver PDF</button>
+                        <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:transparent;" onclick="deleteSession(${s.id})">Eliminar</button>
+                    `;
+                } else {
+                    buttonsRow = `
+                        <button class="btn btn-primary btn-sm" style="width:100%;" onclick="openSessionDetail(${s.id})">Ver Pizarra</button>
+                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando sesión en formato RFEF PDF...', 'success')">💾</button>
+                    `;
+                }
 
                 container.innerHTML += `
                     <div class="session-card">
                         <div class="session-preview">
-                            🏃‍♂️
+                            ${s.type === 'Sesión importada' ? '📄' : '🏃\u200d♂️'}
                             <span class="tag ${badgeClass} session-badge">${s.type}</span>
                         </div>
                         <div class="session-info">
-                            <span style="font-size:11px; color:var(--accent-hover); font-weight:700; text-transform:uppercase;">${sessionNum}</span>
-                            <h4 class="session-title">${sessionName}</h4>
+                            ${subHeader}
+                            <h4 class="session-title" style="word-break: break-all;">${sessionName}</h4>
                             <p style="font-size:13px; color:var(--text-muted); line-height:1.5;">${s.focus}</p>
                             
                             <div class="session-meta-row">
-                                <span>⏱ ${s.duration} mins</span>
-                                <span>⚡ Intensidad: <strong>${s.intensity}</strong></span>
+                                ${metaRow}
                             </div>
                             
                             <div style="margin-top:14px; display:flex; gap:8px;">
-                                <button class="btn btn-primary btn-sm" style="width:100%;" onclick="openSessionDetail(${s.id})">Ver Pizarra</button>
-                                <button class="btn btn-outline btn-sm" onclick="showToast('Descargando sesión en formato RFEF PDF...', 'success')">💾</button>
+                                ${buttonsRow}
                             </div>
                         </div>
                     </div>
                 `;
             });
+        }
+
+        // Funciones auxiliares para importar y visualizar sesiones en PDF
+        function handleSessionPDFImport(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Validar que sea un PDF
+            if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
+                showToast('Solo se permiten archivos PDF', 'danger');
+                event.target.value = '';
+                return;
+            }
+
+            const fileName = file.name;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const pdfData = e.target.result; // base64 representation
+                
+                const newSession = {
+                    id: sessions.length > 0 ? Math.max(...sessions.map(s => s.id)) + 1 : 1,
+                    title: fileName,
+                    type: "Sesión importada",
+                    duration: "Pendiente de revisar",
+                    intensity: "N/A",
+                    focus: "PDF importado correctamente",
+                    pdfData: pdfData,
+                    date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })
+                };
+
+                sessions.push(newSession);
+                saveState();
+                renderSessions();
+                showToast(`Archivo: "${fileName}" - PDF importado correctamente`, 'success');
+            };
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        function viewSessionPDF(pdfData, title) {
+            if (!pdfData || pdfData === '#') {
+                showToast('No hay datos de PDF disponibles para esta sesión', 'danger');
+                return;
+            }
+            try {
+                const parts = pdfData.split(',');
+                const contentType = parts[0].split(':')[1].split(';')[0];
+                const raw = window.atob(parts[1]);
+                const rawLength = raw.length;
+                const uInt8Array = new Uint8Array(rawLength);
+                for (let i = 0; i < rawLength; ++i) {
+                    uInt8Array[i] = raw.charCodeAt(i);
+                }
+                const blob = new Blob([uInt8Array], {type: contentType});
+                const blobUrl = URL.createObjectURL(blob);
+                window.open(blobUrl, '_blank');
+            } catch (err) {
+                window.open(pdfData, '_blank');
+            }
+        }
+
+        function deleteSession(id) {
+            if (confirm('¿Estás seguro de que deseas eliminar esta sesión?')) {
+                sessions = sessions.filter(s => s.id !== id);
+                saveState();
+                renderSessions();
+                showToast('Sesión eliminada', 'info');
+            }
         }
 
         // 5. Informes View (Incluye gráficos circulares SVG dinámicos para estadísticas individuales)
