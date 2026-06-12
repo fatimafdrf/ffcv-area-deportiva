@@ -3206,10 +3206,128 @@
                      B.7.2 VISTA: STAFF TÉCNICO
                      ========================================================================== -->
                 <section class="view" id="view-staff">
+                    <style>
+                        /* Staff Area Dashboard Cards */
+                        .staff-area-card {
+                            background: var(--bg-card);
+                            border: 1px solid var(--border-color);
+                            border-radius: var(--radius-lg);
+                            padding: 24px;
+                            box-shadow: var(--shadow-sm);
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                            transition: var(--transition-base);
+                        }
+                        .staff-area-card:hover {
+                            transform: translateY(-2px);
+                            box-shadow: var(--shadow-md);
+                            border-color: var(--primary);
+                        }
+                        .staff-area-icon {
+                            background-color: rgba(15, 35, 80, 0.08);
+                            color: var(--primary);
+                            width: 48px;
+                            height: 48px;
+                            border-radius: 12px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            margin-bottom: 16px;
+                        }
+                        .staff-area-title {
+                            font-size: 16px;
+                            font-weight: 700;
+                            color: var(--primary);
+                            margin-bottom: 8px;
+                            font-family: 'Outfit', sans-serif;
+                        }
+                        .staff-area-desc {
+                            font-size: 13px;
+                            color: var(--text-muted);
+                            line-height: 1.5;
+                            margin-bottom: 16px;
+                            flex-grow: 1;
+                        }
+                        .staff-area-meta {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            border-top: 1px solid var(--border-color);
+                            padding-top: 12px;
+                            margin-top: auto;
+                        }
+                        .staff-area-count {
+                            font-size: 12px;
+                            font-weight: 700;
+                            color: var(--accent-hover);
+                            background-color: var(--accent-light);
+                            padding: 4px 10px;
+                            border-radius: 20px;
+                        }
+                        
+                        /* Organigrama Jerárquico */
+                        .organigram-container {
+                            background: var(--bg-card);
+                            padding: 30px;
+                            border-radius: var(--radius-lg);
+                            border: 1px solid var(--border-color);
+                            box-shadow: var(--shadow-sm);
+                            overflow-x: auto;
+                            display: flex;
+                            justify-content: center;
+                        }
+                        .organigram-tree {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 16px;
+                            margin: 0 auto;
+                            width: max-content;
+                        }
+                        .organigram-level {
+                            display: flex;
+                            justify-content: center;
+                            gap: 40px;
+                            position: relative;
+                        }
+                        .organigram-node {
+                            background: #FFFFFF;
+                            border: 1px solid var(--border-color);
+                            border-radius: 12px;
+                            padding: 12px 16px;
+                            box-shadow: var(--shadow-sm);
+                            text-align: center;
+                            min-width: 190px;
+                            position: relative;
+                            cursor: pointer;
+                            transition: var(--transition-base);
+                        }
+                        .organigram-node:hover {
+                            transform: translateY(-2px);
+                            box-shadow: var(--shadow-md);
+                            border-color: var(--accent);
+                        }
+                        .organigram-node.director { border-left: 4px solid var(--accent); }
+                        .organigram-node.coordinador { border-left: 4px solid var(--info); }
+                        .organigram-node.seleccionador { border-left: 4px solid var(--success); }
+                        .organigram-node.staff-especifico { border-left: 4px solid var(--warning); }
+                        
+                        .organigram-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 2px; }
+                        .organigram-name { font-size: 13px; font-weight: 700; color: var(--primary); }
+                        .organigram-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+                        
+                        .org-line-y {
+                            width: 2px;
+                            height: 20px;
+                            background-color: var(--border-color);
+                        }
+                    </style>
+
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
                         <div>
                             <h2 style="font-size:24px; color:var(--primary);">Cuerpo Técnico FFCV</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Organigrama oficial de profesionales deportivos a cargo de las Selecciones Valencianas.</p>
+                            <p style="color:var(--text-muted); font-size:14px;">Organigrama oficial y censo de profesionales a cargo de las Selecciones Valencianas.</p>
                         </div>
                         <button class="btn btn-primary" onclick="openAddStaffModal()">
                             <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
@@ -3217,8 +3335,87 @@
                         </button>
                     </div>
 
-                    <div class="staff-grid" id="staff-grid-container">
-                        <!-- Dinámico mediante JS -->
+                    <!-- Sub-Navegación del Staff -->
+                    <div style="display: flex; gap: 10px; margin-top: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; flex-wrap: wrap;">
+                        <button class="btn btn-outline btn-sm active" id="btn-staff-tab-areas" onclick="switchStaffSubTab('areas')" style="font-weight:600; padding: 6px 16px;">📁 Estructura por Áreas</button>
+                        <button class="btn btn-outline btn-sm" id="btn-staff-tab-organigrama" onclick="switchStaffSubTab('organigrama')" style="font-weight:600; padding: 6px 16px;">📊 Organigrama Jerárquico</button>
+                        <button class="btn btn-outline btn-sm" id="btn-staff-tab-listado" onclick="switchStaffSubTab('listado')" style="font-weight:600; padding: 6px 16px;">🔍 Censo y Filtros</button>
+                    </div>
+
+                    <!-- Sub-vista 1: Estructura por Áreas (Dashboard) -->
+                    <div id="staff-subview-areas" style="display: block;">
+                        <!-- Dinámico por JS -->
+                    </div>
+
+                    <!-- Sub-vista 2: Organigrama Jerárquico -->
+                    <div id="staff-subview-organigrama" style="display: none;">
+                        <div class="organigram-container">
+                            <div id="organigram-tree-content"></div>
+                        </div>
+                    </div>
+
+                    <!-- Sub-vista 3: Censo y Filtros -->
+                    <div id="staff-subview-listado" style="display: none;">
+                        <!-- Tarjeta de Filtros de Staff -->
+                        <div class="filters-card" style="margin-top: 0; margin-bottom: 24px;">
+                            <!-- Franja Superior Corporativa -->
+                            <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
+                            <!-- Cabecera -->
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 16px; margin-bottom: 16px; margin-top: 4px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div style="background-color: rgba(15, 35, 80, 0.08); color: #0F2350; width: 44px; height: 44px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                                    </div>
+                                    <div>
+                                        <h3 style="font-size: 15px; font-weight: 700; color: #0F2350; margin: 0;">Filtros de búsqueda</h3>
+                                        <span style="font-size: 12px; color: #6B7280; display: block; margin-top: 2px;">Filtra profesionales por deporte, categoría o género.</span>
+                                    </div>
+                                </div>
+                                <span style="font-size: 12px; font-weight: 600; color: #0F2350; background-color: rgba(15, 35, 80, 0.08); padding: 8px 14px; border-radius: 999px; display: inline-flex;" id="staff-filter-count-label">Mostrando staff</span>
+                            </div>
+
+                            <!-- Filtros -->
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; align-items: flex-end;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-staff-sport">Deporte</label>
+                                    <select class="form-select" id="filter-staff-sport" style="height: 38px; background-color: #FFFFFF;">
+                                        <option value="ALL">Todos los deportes</option>
+                                        <option value="Fútbol">Fútbol</option>
+                                        <option value="Fútbol Sala">Fútbol Sala</option>
+                                        <option value="Fútbol Playa">Fútbol Playa</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-staff-category">Categoría</label>
+                                    <select class="form-select" id="filter-staff-category" style="height: 38px; background-color: #FFFFFF;">
+                                        <option value="ALL">Todas las categorías</option>
+                                        <option value="Absoluta">Absoluta</option>
+                                        <option value="Sub-19">Sub-19</option>
+                                        <option value="Sub-16">Sub-16</option>
+                                        <option value="Sub-14">Sub-14</option>
+                                        <option value="Sub-12">Sub-12</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-staff-gender">Género</label>
+                                    <select class="form-select" id="filter-staff-gender" style="height: 38px; background-color: #FFFFFF;">
+                                        <option value="ALL">Todos</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-light-gray" onclick="resetStaffFilters()" style="height: 38px; padding: 0 16px; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" style="opacity: 0.8;"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                                    Limpiar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Censo Listado de Miembros -->
+                        <div class="staff-grid" id="staff-grid-container">
+                            <!-- Dinámico por JS -->
+                        </div>
                     </div>
                 </section>
 
@@ -5956,39 +6153,398 @@
            D.10 IMPLEMENTACIÓN DEL STAFF TÉCNICO EN JS
            ========================================================================== */
         const DEFAULT_STAFF = [
-            { id: 1, name: "Rubén Mora", role: "Director Deportivo", category: "General FFCV", license: "UEFA Pro", email: "rmora@ffcv.es", status: "Activo" },
-            { id: 2, name: "Vicente Ampudia", role: "Seleccionador", category: "Sub-16 Masculina", license: "UEFA Pro", email: "vampudia@ffcv.es", status: "En Concentración" },
-            { id: 3, name: "Jose Vicente", role: "Analista Técnico", category: "Sub-16 / Sub-14", license: "UEFA A - Videoanálisis", email: "jvicente@ffcv.es", status: "Activo" },
-            { id: 4, name: "Sara Gómez", role: "Preparador Físico", category: "Sub-19 Femenina", license: "Lic. CAFYD - Prep. Física", email: "sgomez@ffcv.es", status: "De Vacaciones" }
+            { 
+                id: 1, 
+                name: "Rubén Mora", 
+                role: "Director Deportivo", 
+                category: "General FFCV", 
+                license: "UEFA Pro", 
+                email: "rmora@ffcv.es", 
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 612 987 654",
+                titulos: "UEFA Pro Licencia, Licenciatura en Ciencias de la Actividad Física y del Deporte, Máster Profesional en Dirección de Entidades Deportivas",
+                experiencia: "12 años como director metodológico en academias LFP, ex-seleccionador territorial FFCV y asesor técnico de la RFEF."
+            },
+            { 
+                id: 2, 
+                name: "Vicente Ampudia", 
+                role: "Seleccionador", 
+                category: "Sub-16", 
+                license: "UEFA Pro", 
+                email: "vampudia@ffcv.es", 
+                status: "En Concentración",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 623 876 543",
+                titulos: "UEFA Pro Licencia, Especialista en Táctica y Análisis de Juego (RFEF)",
+                experiencia: "Ex-entrenador de cantera en Valencia C.F. y Levante U.D., 4 temporadas al frente de las Selecciones Cadetes de la FFCV."
+            },
+            { 
+                id: 3, 
+                name: "Jose Vicente", 
+                role: "Analista Técnico", 
+                category: "Sub-16", 
+                license: "UEFA A - Videoanálisis", 
+                email: "jvicente@ffcv.es", 
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 634 765 432",
+                titulos: "UEFA A Licencia, Certificación Profesional en Nacsport y Longomatch, Curso Avanzado de Scouting RFEF",
+                experiencia: "Analista de rendimiento en C.D. Castellón, redactor de informes de scouting territorial para campeonatos nacionales de selecciones."
+            },
+            { 
+                id: 4, 
+                name: "Sara Gómez", 
+                role: "Preparador Físico", 
+                category: "Sub-19", 
+                license: "Lic. CAFYD - Prep. Física", 
+                email: "sgomez@ffcv.es", 
+                status: "De Vacaciones",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 645 654 321",
+                titulos: "Graduada en CAFYD (UV), Máster en Alto Rendimiento Deportivo (COE), Especialidad en Prevención de Lesiones",
+                experiencia: "Preparadora física en Levante U.D. Femenino, encargada del control de cargas GPS de las selecciones femeninas de la FFCV."
+            }
         ];
 
         let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || DEFAULT_STAFF;
+        let activeStaffRoleFilter = 'ALL';
 
         function renderStaff() {
+            initStaffFiltersListeners();
+            switchStaffSubTab('areas');
+        }
+
+        function switchStaffSubTab(tabId) {
+            // Eliminar clases activas de los botones de sub-pestaña
+            document.getElementById('btn-staff-tab-areas').classList.remove('active');
+            document.getElementById('btn-staff-tab-organigrama').classList.remove('active');
+            document.getElementById('btn-staff-tab-listado').classList.remove('active');
+
+            // Ocultar paneles de contenido
+            document.getElementById('staff-subview-areas').style.display = 'none';
+            document.getElementById('staff-subview-organigrama').style.display = 'none';
+            document.getElementById('staff-subview-listado').style.display = 'none';
+
+            // Activar botón y mostrar sub-vista
+            document.getElementById(`btn-staff-tab-${tabId}`).classList.add('active');
+            document.getElementById(`staff-subview-${tabId}`).style.display = 'block';
+
+            if (tabId === 'areas') {
+                renderStaffAreasDashboard();
+            } else if (tabId === 'organigrama') {
+                renderStaffOrganigram();
+            } else if (tabId === 'listado') {
+                renderStaffList();
+            }
+        }
+
+        function selectStaffRoleFilter(role) {
+            activeStaffRoleFilter = role;
+            switchStaffSubTab('listado');
+        }
+
+        function initStaffFiltersListeners() {
+            const sport = document.getElementById('filter-staff-sport');
+            const cat = document.getElementById('filter-staff-category');
+            const gender = document.getElementById('filter-staff-gender');
+            
+            [sport, cat, gender].forEach(el => {
+                if (el && !el.dataset.listenerAdded) {
+                    el.addEventListener('change', renderStaffList);
+                    el.dataset.listenerAdded = 'true';
+                }
+            });
+        }
+
+        function resetStaffFilters() {
+            activeStaffRoleFilter = 'ALL';
+            if (document.getElementById('filter-staff-sport')) document.getElementById('filter-staff-sport').value = 'ALL';
+            if (document.getElementById('filter-staff-category')) document.getElementById('filter-staff-category').value = 'ALL';
+            if (document.getElementById('filter-staff-gender')) document.getElementById('filter-staff-gender').value = 'ALL';
+            renderStaffList();
+            showToast('Filtros del staff restablecidos', 'info');
+        }
+
+        function renderStaffAreasDashboard() {
+            const container = document.getElementById('staff-subview-areas');
+            if (!container) return;
+            
+            activeStaffRoleFilter = 'ALL';
+
+            const coordCount = staff.filter(m => m.role.includes('Director') || m.role.includes('Coordinador')).length;
+            const selCount = staff.filter(m => m.role === 'Seleccionador').length;
+            const coachCount = staff.filter(m => m.role.includes('Entrenador') || m.role === 'Seleccionador').length;
+            const pfCount = staff.filter(m => m.role === 'Preparador Físico').length;
+            const analystCount = staff.filter(m => m.role === 'Analista Técnico').length;
+            const physioCount = staff.filter(m => m.role.includes('Fisio')).length || 1;
+            const delegCount = staff.filter(m => m.role === 'Delegado').length || 1;
+            const medCount = staff.filter(m => m.role.includes('Médic') || m.role.includes('Doctor')).length || 1;
+            const scoutCount = staff.filter(m => m.role.includes('Scout') || m.role === 'Analista Técnico').length;
+
+            container.innerHTML = `
+                <div class="staff-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                            </div>
+                            <h4 class="staff-area-title">Organigrama General</h4>
+                            <p class="staff-area-desc">Estructura jerárquica unificada de la dirección deportiva y el organigrama de la FFCV.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${staff.length} Integrantes</span>
+                            <button class="btn btn-primary btn-sm" onclick="switchStaffSubTab('organigrama')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /><path d="M2 12h20" /></svg>
+                            </div>
+                            <h4 class="staff-area-title">Coordinación Deportiva</h4>
+                            <p class="staff-area-desc">Gestión de operaciones, logística y coordinación de selecciones.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${coordCount} Integrantes</span>
+                            <button class="btn btn-outline btn-sm" onclick="selectStaffRoleFilter('Coordinador')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /><line x1="6" y1="9" x2="6" y2="21" /></svg>
+                            </div>
+                            <h4 class="staff-area-title">Seleccionadores</h4>
+                            <p class="staff-area-desc">Directores técnicos a cargo de liderar los combinados oficiales territoriales.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${selCount} Integrantes</span>
+                            <button class="btn btn-outline btn-sm" onclick="selectStaffRoleFilter('Seleccionador')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" /></svg>
+                            </div>
+                            <h4 class="staff-area-title">Entrenadores</h4>
+                            <p class="staff-area-desc">Cuerpo de técnicos auxiliares, segundos entrenadores y asistentes de campo.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${coachCount} Integrantes</span>
+                            <button class="btn btn-outline btn-sm" onclick="selectStaffRoleFilter('Seleccionador')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><path d="M18 11.5a6 6 0 0 1-6 6 6 6 0 0 1-6-6M12 2v6" /><path d="M5 2h14" /></svg>
+                            </div>
+                            <h4 class="staff-area-title">Preparadores Físicos</h4>
+                            <p class="staff-area-desc">Planificación de acondicionamiento físico, fuerza y control de cargas GPS.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${pfCount} Integrantes</span>
+                            <button class="btn btn-outline btn-sm" onclick="selectStaffRoleFilter('Preparador Físico')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>
+                            </div>
+                            <h4 class="staff-area-title">Analistas</h4>
+                            <p class="staff-area-desc">Videoanálisis táctico de rivales, informes individuales y estadísticas.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${analystCount} Integrantes</span>
+                            <button class="btn btn-outline btn-sm" onclick="selectStaffRoleFilter('Analista Técnico')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" /></svg>
+                            </div>
+                            <h4 class="staff-area-title">Fisioterapeutas</h4>
+                            <p class="staff-area-desc">Prevención de lesiones, masajes de descarga y readaptación en campo.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${physioCount} Integrantes</span>
+                            <button class="btn btn-outline btn-sm" onclick="selectStaffRoleFilter('Fisioterapeuta')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" /></svg>
+                            </div>
+                            <h4 class="staff-area-title">Delegados</h4>
+                            <p class="staff-area-desc">Gestión administrativa de los partidos, actas y relación con colegiados.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${delegCount} Integrantes</span>
+                            <button class="btn btn-outline btn-sm" onclick="selectStaffRoleFilter('Delegado')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" /></svg>
+                            </div>
+                            <h4 class="staff-area-title">Área Médica</h4>
+                            <p class="staff-area-desc">Médicos federativos y doctores a cargo de la salud de la plantilla.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${medCount} Integrantes</span>
+                            <button class="btn btn-outline btn-sm" onclick="selectStaffRoleFilter('Médico')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+                            </div>
+                            <h4 class="staff-area-title">Scouting</h4>
+                            <p class="staff-area-desc">Seguimiento de futbolistas territoriales y captación de talento local.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${scoutCount} Integrantes</span>
+                            <button class="btn btn-outline btn-sm" onclick="selectStaffRoleFilter('Analista Técnico')">Ver Estructura</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderStaffOrganigram() {
+            const treeContent = document.getElementById('organigram-tree-content');
+            if (!treeContent) return;
+
+            const director = staff.find(m => m.role === 'Director Deportivo') || staff[0];
+            const analista = staff.find(m => m.role === 'Analista Técnico') || staff[2];
+            const seleccionador = staff.find(m => m.role === 'Seleccionador') || staff[1];
+            const prepFisico = staff.find(m => m.role === 'Preparador Físico') || staff[3];
+
+            treeContent.innerHTML = `
+                <div class="organigram-tree">
+                    <!-- Nivel 1: Director Deportivo -->
+                    <div class="organigram-node director" onclick="openStaffDetailModal(${director.id})">
+                        <div class="organigram-title">Dirección Deportiva</div>
+                        <div class="organigram-name">${director.name}</div>
+                        <div class="organigram-sub">${director.category}</div>
+                    </div>
+                    
+                    <div class="org-line-y"></div>
+                    
+                    <!-- Nivel 2: Coordinación / Staff Técnico -->
+                    <div class="organigram-level">
+                        <div style="position: absolute; top: 0; left: 25%; right: 25%; height: 2px; background-color: var(--border-color);"></div>
+                        
+                        <div style="display: flex; flex-direction: column; align-items: center; padding-top: 16px;">
+                            <div class="organigram-node coordinador" onclick="openStaffDetailModal(${director.id})">
+                                <div class="organigram-title">Coordinación</div>
+                                <div class="organigram-name">Área Deportiva FFCV</div>
+                                <div class="organigram-sub">Gestión Centralizada</div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; align-items: center; padding-top: 16px;">
+                            <div class="organigram-node staff-especifico" onclick="openStaffDetailModal(${analista.id})">
+                                <div class="organigram-title">Análisis y Scouting</div>
+                                <div class="organigram-name">${analista.name}</div>
+                                <div class="organigram-sub">${analista.role}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="org-line-y"></div>
+
+                    <!-- Nivel 3: Seleccionadores -->
+                    <div class="organigram-node seleccionador" onclick="openStaffDetailModal(${seleccionador.id})">
+                        <div class="organigram-title">Cuerpo Técnico Principal</div>
+                        <div class="organigram-name">${seleccionador.name}</div>
+                        <div class="organigram-sub">${seleccionador.role} - ${seleccionador.category}</div>
+                    </div>
+
+                    <div class="org-line-y"></div>
+
+                    <!-- Nivel 4: Preparación Física -->
+                    <div class="organigram-node staff-especifico" onclick="openStaffDetailModal(${prepFisico.id})">
+                        <div class="organigram-title">Preparación Física</div>
+                        <div class="organigram-name">${prepFisico.name}</div>
+                        <div class="organigram-sub">${prepFisico.role} - ${prepFisico.category}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderStaffList() {
             const container = document.getElementById('staff-grid-container');
             if (!container) return;
             container.innerHTML = '';
 
-            staff.forEach(member => {
-                const initials = member.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+            const sportVal = document.getElementById('filter-staff-sport') ? document.getElementById('filter-staff-sport').value : 'ALL';
+            const catVal = document.getElementById('filter-staff-category') ? document.getElementById('filter-staff-category').value : 'ALL';
+            const genderVal = document.getElementById('filter-staff-gender') ? document.getElementById('filter-staff-gender').value : 'ALL';
+
+            const filtered = staff.filter(m => {
+                const mSport = m.sport || 'Fútbol';
+                const mGender = m.gender || 'Masculino';
                 
+                const matchesSport = (sportVal === 'ALL') || (mSport === sportVal);
+                const matchesCat = (catVal === 'ALL') || (m.category.includes(catVal)) || (m.category === 'General FFCV');
+                const matchesGender = (genderVal === 'ALL') || (mGender === genderVal);
+                const matchesRole = (activeStaffRoleFilter === 'ALL') || (m.role === activeStaffRoleFilter) || 
+                    (activeStaffRoleFilter === 'Entrenador' && (m.role.includes('Entrenador') || m.role === 'Seleccionador')) ||
+                    (activeStaffRoleFilter === 'Coordinador' && (m.role.includes('Coordinador') || m.role.includes('Director')));
+                
+                return matchesSport && matchesCat && matchesGender && matchesRole;
+            });
+
+            const label = document.getElementById('staff-filter-count-label');
+            if (label) label.textContent = `Mostrando ${filtered.length} profesionales`;
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding:30px; color:var(--text-muted);">No se encontraron miembros del staff con los filtros seleccionados.</div>`;
+                return;
+            }
+
+            filtered.forEach(member => {
+                const initials = member.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
                 let badgeStyle = 'background-color: var(--accent-light); color: var(--accent-hover);';
                 if (member.role === 'Segundo Entrenador') badgeStyle = 'background-color: var(--info-light); color: var(--info);';
                 if (member.role === 'Preparador Físico') badgeStyle = 'background-color: #e6f4ea; color: #137333;';
                 if (member.role === 'Analista Técnico') badgeStyle = 'background-color: #fef7e0; color: #b06000;';
                 if (member.role === 'Delegado') badgeStyle = 'background-color: #fce8e6; color: #c5221f;';
+                if (member.role === 'Coordinador') badgeStyle = 'background-color: var(--info-light); color: var(--info);';
+                if (member.role === 'Director Deportivo') badgeStyle = 'background-color: var(--primary); color: #FFFFFF;';
                 
                 let statusClass = 'tag-success';
                 if (member.status === 'En Concentración') statusClass = 'tag-warning';
                 if (member.status === 'De Vacaciones') statusClass = 'tag-info';
 
                 container.innerHTML += `
-                    <div class="staff-card">
+                    <div class="staff-card" onclick="openStaffDetailModal(${member.id})" style="cursor:pointer;">
                         <div class="staff-photo-container">${initials}</div>
                         <div class="staff-info-block">
                             <span class="staff-role-badge" style="${badgeStyle}">${member.role}</span>
                             <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">${member.name}</h4>
-                            <span style="font-size:12px; color:var(--text-muted);">${member.category}</span>
+                            <span style="font-size:12px; color:var(--text-muted);">${member.category} (${member.sport || 'Fútbol'})</span>
                         </div>
                         <div class="staff-meta-list">
                             <div class="staff-meta-item">
@@ -5997,7 +6553,7 @@
                             </div>
                             <div class="staff-meta-item">
                                 <span>Contacto:</span>
-                                <a href="mailto:${member.email}" style="color:var(--accent); font-weight:600; text-decoration:none;">${member.email}</a>
+                                <span style="color:var(--accent); font-weight:600;">${member.email}</span>
                             </div>
                             <div class="staff-meta-item" style="margin-top:4px;">
                                 <span>Disponibilidad:</span>
@@ -6009,18 +6565,85 @@
             });
         }
 
+        function openStaffDetailModal(id) {
+            const member = staff.find(m => m.id === id);
+            if (!member) return;
+
+            const initials = member.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+            const phone = member.phone || "+34 600 000 000";
+            const sport = member.sport || "Fútbol";
+            const titulos = member.titulos || "UEFA Licencia Deportiva Federativa";
+            const experiencia = member.experiencia || "Trayectoria técnica en el ámbito del fútbol formativo de la Comunitat Valenciana.";
+
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'modal-staff-detail';
+            overlay.innerHTML = `
+                <div class="modal-card" style="max-width: 550px;">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Ficha Profesional - Cuerpo Técnico</h3>
+                        <button class="close-btn" onclick="document.getElementById('modal-staff-detail').remove()">×</button>
+                    </div>
+                    <div class="modal-body" style="padding: 24px; gap: 20px;">
+                        <div style="display: flex; align-items: center; gap: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px;">
+                            <div style="background-color: var(--primary); color: #FFFFFF; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; border: 4px solid var(--accent-light); flex-shrink:0;">
+                                ${initials}
+                            </div>
+                            <div>
+                                <h2 style="font-size: 20px; color: var(--primary); margin: 0; font-weight: 700;">${member.name}</h2>
+                                <span style="font-size: 12px; font-weight: 600; color: var(--accent-hover); background-color: var(--accent-light); padding: 4px 10px; border-radius: 20px; display: inline-block; margin-top: 6px;">${member.role}</span>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 13px;">
+                            <div>
+                                <span style="color: var(--text-muted); font-size: 11px; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 2px;">Categoría</span>
+                                <strong style="color: var(--primary);">${member.category}</strong>
+                            </div>
+                            <div>
+                                <span style="color: var(--text-muted); font-size: 11px; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 2px;">Deporte</span>
+                                <strong style="color: var(--primary);">${sport}</strong>
+                            </div>
+                            <div>
+                                <span style="color: var(--text-muted); font-size: 11px; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 2px;">Email</span>
+                                <a href="mailto:${member.email}" style="color: var(--accent); text-decoration: none; font-weight: 600;">${member.email}</a>
+                            </div>
+                            <div>
+                                <span style="color: var(--text-muted); font-size: 11px; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 2px;">Teléfono</span>
+                                <strong style="color: var(--primary);">${phone}</strong>
+                            </div>
+                        </div>
+
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 16px; font-size: 13px;">
+                            <span style="color: var(--text-muted); font-size: 11px; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 4px;">Titulaciones y Licencias</span>
+                            <p style="color: var(--text-main); line-height: 1.5; background-color: #F8FAFC; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">${titulos}</p>
+                        </div>
+
+                        <div style="border-top: 1px solid var(--border-color); padding-top: 16px; font-size: 13px;">
+                            <span style="color: var(--text-muted); font-size: 11px; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 4px;">Experiencia Profesional</span>
+                            <p style="color: var(--text-main); line-height: 1.5; background-color: #F8FAFC; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color);">${experiencia}</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-staff-detail').remove()" style="width:100%;">Cerrar Ficha</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
         function openAddStaffModal() {
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.id = 'modal-add-staff-temp';
             overlay.innerHTML = `
-                <div class="modal-card">
+                <div class="modal-card" style="max-width: 550px;">
                     <div class="modal-header">
                         <h3 class="modal-title">Añadir Profesional al Staff</h3>
                         <button class="close-btn" onclick="document.getElementById('modal-add-staff-temp').remove()">×</button>
                     </div>
                     <form onsubmit="confirmAddStaffMember(event)">
-                        <div class="modal-body" style="gap:12px;">
+                        <div class="modal-body" style="gap:12px; max-height: 450px; overflow-y: auto;">
                             <div class="form-group">
                                 <label class="form-label" for="staff-name">Nombre Completo</label>
                                 <input type="text" class="form-input" id="staff-name" required placeholder="Ej: Rubén Mora" />
@@ -6032,16 +6655,55 @@
                                     <option value="Segundo Entrenador">Segundo Entrenador</option>
                                     <option value="Preparador Físico">Preparador Físico</option>
                                     <option value="Analista Técnico">Analista Técnico</option>
+                                    <option value="Fisioterapeuta">Fisioterapeuta</option>
                                     <option value="Delegado">Delegado</option>
+                                    <option value="Médico">Médico</option>
+                                    <option value="Coordinador">Coordinador Deportivo</option>
+                                    <option value="Scout">Scouting / Captador</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="staff-sport">Deporte</label>
+                                <select class="form-select" id="staff-sport">
+                                    <option value="Fútbol">Fútbol</option>
+                                    <option value="Fútbol Sala">Fútbol Sala</option>
+                                    <option value="Fútbol Playa">Fútbol Playa</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="staff-category">Categoría Selección</label>
-                                <input type="text" class="form-input" id="staff-category" required placeholder="Ej: Femenino Sub-14" />
+                                <select class="form-select" id="staff-category">
+                                    <option value="General FFCV">General FFCV</option>
+                                    <option value="Absoluta">Absoluta</option>
+                                    <option value="Sub-19">Sub-19</option>
+                                    <option value="Sub-16">Sub-16</option>
+                                    <option value="Sub-14">Sub-14</option>
+                                    <option value="Sub-12">Sub-12</option>
+                                </select>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="staff-license">Licencia / Especialidad</label>
+                                <label class="form-label" for="staff-gender">Género Selección</label>
+                                <select class="form-select" id="staff-gender">
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                    <option value="General">General / Ambos</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="staff-license">Licencia Principal</label>
                                 <input type="text" class="form-input" id="staff-license" required placeholder="Ej: UEFA Pro / Video-análisis" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="staff-phone">Teléfono de Contacto</label>
+                                <input type="text" class="form-input" id="staff-phone" required placeholder="Ej: +34 600 123 456" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="staff-titulos">Titulaciones Académicas / Licencias</label>
+                                <textarea class="form-input" id="staff-titulos" style="height: 60px; resize: vertical;" placeholder="Detalla las titulaciones..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="staff-experiencia">Experiencia Profesional</label>
+                                <textarea class="form-input" id="staff-experiencia" style="height: 60px; resize: vertical;" placeholder="Detalla la trayectoria previa..."></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -6058,16 +6720,26 @@
             e.preventDefault();
             const name = document.getElementById('staff-name').value;
             const role = document.getElementById('staff-role').value;
+            const sport = document.getElementById('staff-sport').value;
             const category = document.getElementById('staff-category').value;
+            const gender = document.getElementById('staff-gender').value;
             const license = document.getElementById('staff-license').value;
+            const phone = document.getElementById('staff-phone').value;
+            const titulos = document.getElementById('staff-titulos').value || "Licencia deportiva federativa";
+            const experiencia = document.getElementById('staff-experiencia').value || "Experiencia en el fútbol territorial.";
             const email = name.toLowerCase().split(' ').join('') + "@ffcv.es";
             
             const newMember = {
                 id: staff.length + 1,
                 name,
                 role,
+                sport,
                 category,
+                gender,
                 license,
+                phone,
+                titulos,
+                experiencia,
                 email,
                 status: "Activo"
             };
@@ -6075,7 +6747,10 @@
             staff.push(newMember);
             localStorage.setItem('ffcv_staff', JSON.stringify(staff));
             saveState();
-            renderStaff();
+            
+            const activeTab = document.querySelector('#view-staff button.active');
+            const activeTabId = activeTab ? activeTab.id.replace('btn-staff-tab-', '') : 'areas';
+            switchStaffSubTab(activeTabId);
             
             document.getElementById('modal-add-staff-temp').remove();
             showToast(`${name} añadido al staff de selecciones`, 'success');
