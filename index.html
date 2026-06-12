@@ -2365,27 +2365,116 @@
                         </button>
                     </div>
 
-                    <!-- Fila de Filtros -->
-                    <div class="filters-row">
-                        <div class="filters-group">
-                            <input type="text" class="form-input" id="filter-player-search" placeholder="Buscar por nombre o club..." style="width: 250px;" />
-                            
-                            <select class="form-select" id="filter-player-category">
-                                <option value="ALL">Todas las categorías</option>
-                                <option value="Sub-14">Sub-14</option>
-                                <option value="Sub-16">Sub-16</option>
-                                <option value="Sub-19">Sub-19</option>
-                            </select>
+                    <!-- Tarjeta de Filtros de Jugadores -->
+                    <div class="filters-card">
+                        <!-- Franja Superior Corporativa -->
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
 
-                            <select class="form-select" id="filter-player-status">
-                                <option value="ALL">Todos los estados</option>
-                                <option value="Seleccionado">Seleccionado</option>
-                                <option value="En Observación">En Observación</option>
-                                <option value="Lesionado">Lesionado</option>
-                            </select>
+                        <!-- Cabecera del Bloque de Filtros -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 16px; margin-bottom: 16px; margin-top: 4px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="background-color: rgba(15, 35, 80, 0.08); color: #0F2350; width: 44px; height: 44px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 15px; font-weight: 700; color: #0F2350; margin: 0;">Filtros de búsqueda</h3>
+                                    <span style="font-size: 12px; color: #6B7280; display: block; margin-top: 2px;">Filtra futbolistas por categoría, estado, club, posición o texto libre.</span>
+                                </div>
+                            </div>
+                            <span style="font-size: 12px; font-weight: 600; color: #0F2350; background-color: rgba(15, 35, 80, 0.08); padding: 8px 14px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;" id="filter-count-label">Mostrando jugadores</span>
                         </div>
 
-                        <span style="font-size: 13px; font-weight: 500; color: var(--text-muted);" id="filter-count-label">Mostrando jugadores</span>
+                        <!-- Fila 1: Buscador, Categoría, Estado -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-player-search">Buscador por nombre</label>
+                                <input type="text" class="form-input" id="filter-player-search" placeholder="Buscar por nombre..." style="font-size: 12px; height: 38px; background-color: #FFFFFF;" />
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-player-category">Categoría</label>
+                                <select class="form-select" id="filter-player-category" style="font-size: 12px; height: 38px; background-color: #FFFFFF;">
+                                    <option value="ALL">Todas las categorías</option>
+                                    <option value="Sub-14">Sub-14</option>
+                                    <option value="Sub-16">Sub-16</option>
+                                    <option value="Sub-19">Sub-19</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-player-status">Estado</label>
+                                <select class="form-select" id="filter-player-status" style="font-size: 12px; height: 38px; background-color: #FFFFFF;">
+                                    <option value="ALL">Todos los estados</option>
+                                    <option value="Seleccionado">Seleccionado</option>
+                                    <option value="En Observación">En Observación</option>
+                                    <option value="Lesionado">Lesionado</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Fila 2: Club, Posición, Lateralidad -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-player-club">Club de origen</label>
+                                <select class="form-select" id="filter-player-club" style="font-size: 12px; height: 38px; background-color: #FFFFFF;">
+                                    <option value="ALL">Todos los clubes</option>
+                                    <option value="Valencia C.F.">Valencia C.F. / Valencia C.F. Cadete</option>
+                                    <option value="Villarreal C.F.">Villarreal C.F. / Villarreal C.F. Cadete</option>
+                                    <option value="Levante U.D.">Levante U.D. / Levante U.D. Infantil / Levante U.D. Femenino</option>
+                                    <option value="C.D. Castellón">C.D. Castellón / C.D. Castellón Cadete</option>
+                                    <option value="Elche C.F.">Elche C.F. / Elche C.F. Infantil Femenino</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-player-position">Posición principal</label>
+                                <select class="form-select" id="filter-player-position" style="font-size: 12px; height: 38px; background-color: #FFFFFF;">
+                                    <option value="ALL">Todas las posiciones</option>
+                                    <option value="Portero">Portero</option>
+                                    <option value="Defensa Central">Defensa Central</option>
+                                    <option value="Lateral">Lateral</option>
+                                    <option value="Mediocentro">Mediocentro</option>
+                                    <option value="Extremo">Extremo</option>
+                                    <option value="Delantero Centro">Delantero Centro</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-player-foot">Lateralidad</label>
+                                <select class="form-select" id="filter-player-foot" style="font-size: 12px; height: 38px; background-color: #FFFFFF;">
+                                    <option value="ALL">Todas</option>
+                                    <option value="Diestro">Diestro</option>
+                                    <option value="Zurdo">Zurdo</option>
+                                    <option value="Ambidiestro">Ambidiestro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Fila 3: Año nacimiento, Provincia, Limpiar -->
+                        <div style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;">
+                            <div class="form-group" style="flex: 1; min-width: 140px; margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-player-year">Año de nacimiento</label>
+                                <select class="form-select" id="filter-player-year" style="font-size: 12px; height: 38px; background-color: #FFFFFF;">
+                                    <option value="ALL">Todos los años</option>
+                                    <option value="2008">2008</option>
+                                    <option value="2009">2009</option>
+                                    <option value="2010">2010</option>
+                                    <option value="2011">2011</option>
+                                    <option value="2012">2012</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="flex: 1; min-width: 140px; margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-player-province">Provincia</label>
+                                <select class="form-select" id="filter-player-province" style="font-size: 12px; height: 38px; background-color: #FFFFFF;">
+                                    <option value="ALL">Todas las provincias</option>
+                                    <option value="Valencia">Valencia</option>
+                                    <option value="Alicante">Alicante</option>
+                                    <option value="Castellón">Castellón</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1; min-width: 140px; display: flex; justify-content: flex-end;">
+                                <button class="btn btn-light-gray" onclick="resetPlayerFilters()" style="height: 38px; padding: 0 16px; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 4px; width: 100%;">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" style="opacity: 0.8;"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                                    Limpiar
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Tabla de Jugadores -->
@@ -2428,7 +2517,7 @@
 
                     <!-- Barra de Filtros de Convocatorias -->
                     <style>
-                        .call-filters-card {
+                        .filters-card {
                             position: relative;
                             margin-top: 20px;
                             margin-bottom: 24px;
@@ -2441,8 +2530,8 @@
                             box-shadow: 0 8px 24px rgba(15, 35, 80, 0.08);
                             overflow: hidden;
                         }
-                        .call-filters-card .form-select,
-                        .call-filters-card .form-input {
+                        .filters-card .form-select,
+                        .filters-card .form-input {
                             background: #FFFFFF !important;
                             border: 1px solid #D7DFEA !important;
                             border-radius: 10px !important;
@@ -2451,13 +2540,13 @@
                             padding: 4px 12px !important;
                             transition: var(--transition-base, all 0.2s ease) !important;
                         }
-                        .call-filters-card .form-select:hover,
-                        .call-filters-card .form-input:hover {
+                        .filters-card .form-select:hover,
+                        .filters-card .form-input:hover {
                             border-color: #FF6B00 !important;
                             background-color: #FFFFFF !important;
                         }
-                        .call-filters-card .form-select:focus,
-                        .call-filters-card .form-input:focus {
+                        .filters-card .form-select:focus,
+                        .filters-card .form-input:focus {
                             border-color: #0F2350 !important;
                             box-shadow: 0 0 0 3px rgba(15, 35, 80, 0.10) !important;
                             outline: none !important;
@@ -2476,7 +2565,7 @@
                             color: #1F2937 !important;
                         }
                     </style>
-                    <div class="call-filters-card">
+                    <div class="filters-card">
                         <!-- Franja Superior Corporativa -->
                         <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
 
@@ -3522,6 +3611,21 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="play-province">Provincia de Origen</label>
+                            <select class="form-select" id="play-province">
+                                <option value="Valencia">Valencia</option>
+                                <option value="Alicante">Alicante</option>
+                                <option value="Castellón">Castellón</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="visibility: hidden;">
+                            <label class="form-label">&nbsp;</label>
+                            <input type="text" class="form-input" disabled />
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline" onclick="closeModal('modal-jugador')">Cancelar</button>
@@ -3862,12 +3966,12 @@
            D.1 BASE DE DATOS INICIAL DE LA APP (PERSISTENCIA CON LOCALSTORAGE)
            ========================================================================== */
         const DEFAULT_PLAYERS = [
-            { id: 1, name: "Iker Albarrán", club: "Valencia C.F. Cadete", category: "Sub-16", position: "Portero", matches: 8, status: "Seleccionado", birthYear: 2010, foot: "Diestro", pace: 85, pass: 78, defense: 88, physical: 84, rating: 86, phone: "+34 612 345 678" },
-            { id: 2, name: "Hugo de Mateo", club: "Villarreal C.F. Cadete", category: "Sub-16", position: "Defensa Central", matches: 12, status: "Seleccionado", birthYear: 2010, foot: "Diestro", pace: 82, pass: 78, defense: 92, physical: 90, rating: 88, phone: "+34 623 456 789" },
-            { id: 3, name: "Lucas López", club: "Levante U.D. Infantil", category: "Sub-14", position: "Mediocentro", matches: 4, status: "En Observación", birthYear: 2012, foot: "Zurdo", pace: 76, pass: 84, defense: 70, physical: 72, rating: 78, phone: "+34 634 567 890" },
-            { id: 4, name: "Ainhoa Alguacil", club: "Levante U.D. Femenino", category: "Sub-19", position: "Mediocentro", matches: 15, status: "Seleccionado", birthYear: 2008, foot: "Diestro", pace: 79, pass: 95, defense: 74, physical: 80, rating: 91, phone: "+34 645 678 901" },
-            { id: 5, name: "Marc Rodríguez", club: "C.D. Castellón Cadete", category: "Sub-16", position: "Delantero Centro", matches: 6, status: "Lesionado", birthYear: 2010, foot: "Diestro", pace: 88, pass: 70, defense: 45, physical: 82, rating: 80, phone: "+34 656 789 012" },
-            { id: 6, name: "Sofia Salvador", club: "Elche C.F. Infantil Femenino", category: "Sub-14", position: "Extremo", matches: 2, status: "En Observación", birthYear: 2012, foot: "Ambidiestro", pace: 84, pass: 75, defense: 60, physical: 68, rating: 75, phone: "+34 667 890 123" }
+            { id: 1, name: "Iker Albarrán", club: "Valencia C.F. Cadete", category: "Sub-16", position: "Portero", matches: 8, status: "Seleccionado", birthYear: 2010, foot: "Diestro", province: "Valencia", pace: 85, pass: 78, defense: 88, physical: 84, rating: 86, phone: "+34 612 345 678" },
+            { id: 2, name: "Hugo de Mateo", club: "Villarreal C.F. Cadete", category: "Sub-16", position: "Defensa Central", matches: 12, status: "Seleccionado", birthYear: 2010, foot: "Diestro", province: "Castellón", pace: 82, pass: 78, defense: 92, physical: 90, rating: 88, phone: "+34 623 456 789" },
+            { id: 3, name: "Lucas López", club: "Levante U.D. Infantil", category: "Sub-14", position: "Mediocentro", matches: 4, status: "En Observación", birthYear: 2012, foot: "Zurdo", province: "Valencia", pace: 76, pass: 84, defense: 70, physical: 72, rating: 78, phone: "+34 634 567 890" },
+            { id: 4, name: "Ainhoa Alguacil", club: "Levante U.D. Femenino", category: "Sub-19", position: "Mediocentro", matches: 15, status: "Seleccionado", birthYear: 2008, foot: "Diestro", province: "Valencia", pace: 79, pass: 95, defense: 74, physical: 80, rating: 91, phone: "+34 645 678 901" },
+            { id: 5, name: "Marc Rodríguez", club: "C.D. Castellón Cadete", category: "Sub-16", position: "Delantero Centro", matches: 6, status: "Lesionado", birthYear: 2010, foot: "Diestro", province: "Castellón", pace: 88, pass: 70, defense: 45, physical: 82, rating: 80, phone: "+34 656 789 012" },
+            { id: 6, name: "Sofia Salvador", club: "Elche C.F. Infantil Femenino", category: "Sub-14", position: "Extremo", matches: 2, status: "En Observación", birthYear: 2012, foot: "Ambidiestro", province: "Alicante", pace: 84, pass: 75, defense: 60, physical: 68, rating: 75, phone: "+34 667 890 123" }
         ];
 
         const DEFAULT_CALLS = [
@@ -4127,11 +4231,48 @@
         const playSearch = document.getElementById('filter-player-search');
         const playCategory = document.getElementById('filter-player-category');
         const playStatus = document.getElementById('filter-player-status');
+        const playClub = document.getElementById('filter-player-club');
+        const playPosition = document.getElementById('filter-player-position');
+        const playFoot = document.getElementById('filter-player-foot');
+        const playYear = document.getElementById('filter-player-year');
+        const playProvince = document.getElementById('filter-player-province');
 
         if (playSearch) {
-            [playSearch, playCategory, playStatus].forEach(el => {
-                el.addEventListener('input', renderPlayersTable);
+            [playSearch, playCategory, playStatus, playClub, playPosition, playFoot, playYear, playProvince].forEach(el => {
+                if (el) {
+                    el.addEventListener('change', renderPlayersTable);
+                    el.addEventListener('input', renderPlayersTable);
+                }
             });
+        }
+
+        // Mapeo defensivo para asegurar que todos los jugadores tengan provincia
+        players.forEach(p => {
+            if (!p.province) {
+                const clubLower = p.club ? p.club.toLowerCase() : '';
+                if (clubLower.includes('valencia') || clubLower.includes('levante')) {
+                    p.province = 'Valencia';
+                } else if (clubLower.includes('villarreal') || clubLower.includes('castellón') || clubLower.includes('castellon')) {
+                    p.province = 'Castellón';
+                } else if (clubLower.includes('elche') || clubLower.includes('alicante')) {
+                    p.province = 'Alicante';
+                } else {
+                    p.province = 'Valencia';
+                }
+            }
+        });
+
+        function resetPlayerFilters() {
+            if (playSearch) playSearch.value = '';
+            if (playCategory) playCategory.value = 'ALL';
+            if (playStatus) playStatus.value = 'ALL';
+            if (playClub) playClub.value = 'ALL';
+            if (playPosition) playPosition.value = 'ALL';
+            if (playFoot) playFoot.value = 'ALL';
+            if (playYear) playYear.value = 'ALL';
+            if (playProvince) playProvince.value = 'ALL';
+            renderPlayersTable();
+            showToast('Filtros de jugadores restablecidos', 'info');
         }
 
         function renderPlayersTable() {
@@ -4142,12 +4283,23 @@
             const query = playSearch ? playSearch.value.toLowerCase() : '';
             const cat = playCategory ? playCategory.value : 'ALL';
             const stat = playStatus ? playStatus.value : 'ALL';
+            const clubVal = playClub ? playClub.value : 'ALL';
+            const posVal = playPosition ? playPosition.value : 'ALL';
+            const footVal = playFoot ? playFoot.value : 'ALL';
+            const yearVal = playYear ? playYear.value : 'ALL';
+            const provVal = playProvince ? playProvince.value : 'ALL';
 
             let filtered = players.filter(p => {
-                const matchesQuery = p.name.toLowerCase().includes(query) || p.club.toLowerCase().includes(query);
+                const matchesQuery = !query || p.name.toLowerCase().includes(query) || (p.club && p.club.toLowerCase().includes(query));
                 const matchesCat = (cat === 'ALL') || (p.category === cat);
                 const matchesStat = (stat === 'ALL') || (p.status === stat);
-                return matchesQuery && matchesCat && matchesStat;
+                const matchesClub = (clubVal === 'ALL') || (p.club && p.club.toLowerCase().includes(clubVal.toLowerCase()));
+                const matchesPos = (posVal === 'ALL') || (p.position === posVal);
+                const matchesFoot = (footVal === 'ALL') || (p.foot === footVal);
+                const matchesYear = (yearVal === 'ALL') || (String(p.birthYear) === yearVal);
+                const matchesProvince = (provVal === 'ALL') || (p.province === provVal);
+
+                return matchesQuery && matchesCat && matchesStat && matchesClub && matchesPos && matchesFoot && matchesYear && matchesProvince;
             });
 
             const countLabel = document.getElementById('filter-count-label');
@@ -4777,6 +4929,7 @@
             const status = document.getElementById('play-status').value;
             const birthYear = parseInt(document.getElementById('play-birth-year').value) || 2010;
             const foot = document.getElementById('play-foot').value;
+            const province = document.getElementById('play-province').value;
 
             const newPlayer = {
                 id: players.length + 1,
@@ -4788,6 +4941,7 @@
                 status,
                 birthYear,
                 foot,
+                province,
                 pace: 70 + Math.floor(Math.random() * 25),
                 pass: 70 + Math.floor(Math.random() * 25),
                 defense: 70 + Math.floor(Math.random() * 25),
