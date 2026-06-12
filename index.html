@@ -3105,23 +3105,38 @@
                                 </div>
                             </div>
 
-                            <div class="panel">
-                                <h3 class="panel-title">Programar Evento</h3>
-                                
+                            <!-- Tarjeta de Programar Evento -->
+                            <div class="filters-card" style="margin-top: 0; margin-bottom: 0;">
+                                <!-- Franja Superior Corporativa -->
+                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
+                                <!-- Cabecera del Bloque -->
+                                <div style="display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 12px; margin-bottom: 16px; margin-top: 4px;">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="background-color: rgba(15, 35, 80, 0.08); color: #0F2350; width: 36px; height: 36px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 14px; font-weight: 700; color: #0F2350; margin: 0;">Programar evento</h3>
+                                        </div>
+                                    </div>
+                                    <span style="font-size: 11px; color: #6B7280;">Añade entrenamientos, partidos, convocatorias o reuniones al calendario.</span>
+                                </div>
+
                                 <form id="form-calendar-event" onsubmit="addCalendarEvent(event)">
                                     <div class="form-group" style="margin-bottom:12px;">
-                                        <label class="form-label" for="event-title">Nombre del Evento</label>
-                                        <input type="text" class="form-input" id="event-title" required placeholder="Ej: Amistoso vs Catalunya" />
+                                        <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="event-title">Nombre del Evento</label>
+                                        <input type="text" class="form-input" id="event-title" required placeholder="Ej: Amistoso vs Catalunya" style="width: 100%; height: 38px; background-color: #FFFFFF;" />
                                     </div>
 
                                     <div class="form-group" style="margin-bottom:12px;">
-                                        <label class="form-label" for="event-date">Fecha</label>
-                                        <input type="date" class="form-input" id="event-date" required value="2026-06-12" />
+                                        <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="event-date">Fecha</label>
+                                        <input type="date" class="form-input" id="event-date" required value="2026-06-12" style="width: 100%; height: 38px; background-color: #FFFFFF;" />
                                     </div>
 
                                     <div class="form-group" style="margin-bottom:12px;">
-                                        <label class="form-label" for="event-type">Tipo de Evento</label>
-                                        <select class="form-select" id="event-type">
+                                        <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="event-type">Tipo de Evento</label>
+                                        <select class="form-select" id="event-type" style="width: 100%; height: 38px; background-color: #FFFFFF;">
                                             <option value="match">Partido Oficial / Amistoso</option>
                                             <option value="training">Entrenamiento Selección</option>
                                             <option value="scouting">Visionado / Captación</option>
@@ -3130,11 +3145,13 @@
                                     </div>
 
                                     <div class="form-group" style="margin-bottom:18px;">
-                                        <label class="form-label" for="event-location">Lugar</label>
-                                        <input type="text" class="form-input" id="event-location" required placeholder="Ej: Camp de Picassent" />
+                                        <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="event-location">Lugar</label>
+                                        <input type="text" class="form-input" id="event-location" required placeholder="Ej: Camp de Picassent" style="width: 100%; height: 38px; background-color: #FFFFFF;" />
                                     </div>
 
-                                    <button type="submit" class="btn btn-primary" style="width:100%;">Agregar al Calendario</button>
+                                    <button type="submit" class="btn btn-primary" style="width:100%; height: 38px; display: inline-flex; align-items: center; justify-content: center; font-weight: 600; border-radius: 10px; background-color: var(--accent); border-color: var(--accent); color: #FFFFFF; transition: var(--transition-base, all 0.2s ease);">
+                                        Agregar al Calendario
+                                    </button>
                                 </form>
                             </div>
                         </div>
