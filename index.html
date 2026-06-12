@@ -2429,65 +2429,76 @@
                     <!-- Barra de Filtros de Convocatorias -->
                     <style>
                         .call-filters-card {
+                            position: relative;
                             margin-top: 20px;
                             margin-bottom: 24px;
                             display: flex;
                             flex-direction: column;
                             padding: 24px;
-                            background-color: #F4F7FC;
-                            border: 1px solid rgba(10, 37, 64, 0.15);
+                            background: linear-gradient(135deg, rgba(15, 35, 80, 0.08), rgba(15, 35, 80, 0.03));
+                            border: 1px solid rgba(15, 35, 80, 0.12);
                             border-radius: 16px;
-                            box-shadow: 0 4px 20px rgba(10, 37, 64, 0.05);
+                            box-shadow: 0 8px 24px rgba(15, 35, 80, 0.08);
+                            overflow: hidden;
                         }
                         .call-filters-card .form-select,
                         .call-filters-card .form-input {
-                            transition: var(--transition-base, all 0.2s ease);
-                            border: 1px solid var(--border-color);
+                            background: #FFFFFF !important;
+                            border: 1px solid #D7DFEA !important;
+                            border-radius: 10px !important;
+                            height: 38px !important;
+                            font-size: 12px !important;
+                            padding: 4px 12px !important;
+                            transition: var(--transition-base, all 0.2s ease) !important;
                         }
                         .call-filters-card .form-select:hover,
                         .call-filters-card .form-input:hover {
-                            border-color: var(--primary) !important;
-                            background-color: #FFFFFF;
+                            border-color: #FF6B00 !important;
+                            background-color: #FFFFFF !important;
                         }
                         .call-filters-card .form-select:focus,
                         .call-filters-card .form-input:focus {
-                            border-color: var(--accent) !important;
-                            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15) !important;
-                            outline: none;
+                            border-color: #0F2350 !important;
+                            box-shadow: 0 0 0 3px rgba(15, 35, 80, 0.10) !important;
+                            outline: none !important;
                         }
                         .btn-light-gray {
-                            background-color: #E2E8F0 !important;
-                            border-color: #CBD5E0 !important;
-                            color: #4A5568 !important;
+                            background-color: #F3F4F6 !important;
+                            border: 1px solid #D1D5DB !important;
+                            color: #374151 !important;
                             font-weight: 600;
+                            border-radius: 10px !important;
                             transition: all 0.2s ease;
                         }
                         .btn-light-gray:hover {
-                            background-color: #CBD5E0 !important;
-                            border-color: #A0AEC0 !important;
-                            color: #2D3748 !important;
+                            background-color: #E5E7EB !important;
+                            border-color: #CBD5E0 !important;
+                            color: #1F2937 !important;
                         }
                     </style>
                     <div class="call-filters-card">
+                        <!-- Franja Superior Corporativa -->
+                        <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
+
                         <!-- Cabecera del Bloque de Filtros -->
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid rgba(10, 37, 64, 0.1); padding-bottom: 12px; margin-bottom: 16px;">
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="background-color: rgba(10, 37, 64, 0.08); color: var(--primary); padding: 8px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 16px; margin-bottom: 16px; margin-top: 4px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="background-color: rgba(15, 35, 80, 0.08); color: #0F2350; width: 44px; height: 44px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
                                     <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
                                 </div>
                                 <div>
-                                    <h3 style="font-size: 15px; font-weight: 700; color: var(--primary); margin: 0;">Filtros de búsqueda</h3>
-                                    <span style="font-size: 12px; color: var(--text-muted); display: block; margin-top: 2px;">Filtra convocatorias por temporada, selección, deporte o estado.</span>
+                                    <h3 style="font-size: 15px; font-weight: 700; color: #0F2350; margin: 0;">Filtros de búsqueda</h3>
+                                    <span style="font-size: 12px; color: #6B7280; display: block; margin-top: 2px;">Filtra convocatorias por temporada, selección, deporte o estado.</span>
                                 </div>
                             </div>
-                            <span style="font-size: 12px; font-weight: 700; color: var(--accent-hover); background-color: var(--accent-light); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255, 107, 0, 0.15);" id="call-filter-count-label">Mostrando convocatorias</span>
+                            <span style="font-size: 12px; font-weight: 600; color: #0F2350; background-color: rgba(15, 35, 80, 0.08); padding: 8px 14px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center;" id="call-filter-count-label">Mostrando convocatorias</span>
                         </div>
 
                         <!-- Fila 1: Selectores -->
                         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(10, 37, 64, 0.8);" for="filter-call-season">Temporada</label>
-                                <select class="form-select" id="filter-call-season" style="font-size: 12px; height: 34px; padding: 4px 8px; background-color: #FFFFFF;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-season">Temporada</label>
+                                <select class="form-select" id="filter-call-season" style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;">
                                     <option value="ALL">Todas</option>
                                     <option value="2025/2026">2025/2026</option>
                                     <option value="2026/2027">2026/2027</option>
@@ -2495,8 +2506,8 @@
                                 </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(10, 37, 64, 0.8);" for="filter-call-province">Provincia</label>
-                                <select class="form-select" id="filter-call-province" style="font-size: 12px; height: 34px; padding: 4px 8px; background-color: #FFFFFF;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-province">Provincia</label>
+                                <select class="form-select" id="filter-call-province" style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;">
                                     <option value="ALL">Todas</option>
                                     <option value="Valencia">Valencia</option>
                                     <option value="Alicante">Alicante</option>
@@ -2504,8 +2515,8 @@
                                 </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(10, 37, 64, 0.8);" for="filter-call-sport">Deporte</label>
-                                <select class="form-select" id="filter-call-sport" style="font-size: 12px; height: 34px; padding: 4px 8px; background-color: #FFFFFF;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-sport">Deporte</label>
+                                <select class="form-select" id="filter-call-sport" style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;">
                                     <option value="ALL">Todos</option>
                                     <option value="Fútbol">Fútbol</option>
                                     <option value="Fútbol Sala">Fútbol Sala</option>
@@ -2513,8 +2524,8 @@
                                 </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(10, 37, 64, 0.8);" for="filter-call-category">Categoría</label>
-                                <select class="form-select" id="filter-call-category" style="font-size: 12px; height: 34px; padding: 4px 8px; background-color: #FFFFFF;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-category">Categoría</label>
+                                <select class="form-select" id="filter-call-category" style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;">
                                     <option value="ALL">Todas</option>
                                     <option value="Absoluta">Absoluta</option>
                                     <option value="Sub-16">Sub-16</option>
@@ -2523,16 +2534,16 @@
                                 </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(10, 37, 64, 0.8);" for="filter-call-gender">Género</label>
-                                <select class="form-select" id="filter-call-gender" style="font-size: 12px; height: 34px; padding: 4px 8px; background-color: #FFFFFF;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-gender">Género</label>
+                                <select class="form-select" id="filter-call-gender" style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;">
                                     <option value="ALL">Todos</option>
                                     <option value="Masculina">Masculina</option>
                                     <option value="Femenina">Femenina</option>
                                 </select>
                             </div>
                             <div class="form-group" style="margin-bottom: 0;">
-                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(10, 37, 64, 0.8);" for="filter-call-status">Estado</label>
-                                <select class="form-select" id="filter-call-status" style="font-size: 12px; height: 34px; padding: 4px 8px; background-color: #FFFFFF;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-status">Estado</label>
+                                <select class="form-select" id="filter-call-status" style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;">
                                     <option value="ALL">Todos</option>
                                     <option value="Confirmada">Confirmada</option>
                                     <option value="Pendiente de cerrar lista">Pendiente de cerrar lista</option>
@@ -2544,18 +2555,18 @@
                         <!-- Fila 2: Fechas y Buscador -->
                         <div style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-top: 14px;">
                             <div class="form-group" style="flex: 1; min-width: 140px; margin-bottom: 0;">
-                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(10, 37, 64, 0.8);" for="filter-call-date-from">Fecha desde</label>
-                                <input type="date" class="form-input" id="filter-call-date-from" style="font-size: 12px; height: 34px; padding: 4px 8px; background-color: #FFFFFF;" />
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-date-from">Fecha desde</label>
+                                <input type="date" class="form-input" id="filter-call-date-from" style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;" />
                             </div>
                             <div class="form-group" style="flex: 1; min-width: 140px; margin-bottom: 0;">
-                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(10, 37, 64, 0.8);" for="filter-call-date-to">Fecha hasta</label>
-                                <input type="date" class="form-input" id="filter-call-date-to" style="font-size: 12px; height: 34px; padding: 4px 8px; background-color: #FFFFFF;" />
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-date-to">Fecha hasta</label>
+                                <input type="date" class="form-input" id="filter-call-date-to" style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;" />
                             </div>
                             <div class="form-group" style="flex: 2; min-width: 200px; margin-bottom: 0;">
-                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(10, 37, 64, 0.8);" for="filter-call-search">Buscador de texto</label>
-                                <input type="text" class="form-input" id="filter-call-search" placeholder="Buscar por nombre o lugar..." style="font-size: 12px; height: 34px; padding: 4px 8px; background-color: #FFFFFF;" />
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-search">Buscador de texto</label>
+                                <input type="text" class="form-input" id="filter-call-search" placeholder="Buscar por nombre o lugar..." style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;" />
                             </div>
-                            <button class="btn btn-light-gray" onclick="resetCallFilters()" style="height: 34px; padding: 0 16px; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                            <button class="btn btn-light-gray" onclick="resetCallFilters()" style="height: 38px; padding: 0 16px; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
                                 <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" style="opacity: 0.8;"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                                 Limpiar
                             </button>
