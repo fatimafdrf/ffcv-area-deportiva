@@ -3423,10 +3423,271 @@
                      B.7.3 VISTA: DOCUMENTACIÓN OFICIAL
                      ========================================================================== -->
                 <section class="view" id="view-documentacion">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                    <style>
+                        /* Dashboard Documental Summary Cards */
+                        .docs-summary-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                            gap: 16px;
+                            margin-bottom: 24px;
+                        }
+                        .docs-summary-card {
+                            background: var(--bg-card);
+                            border: 1px solid var(--border-color);
+                            border-radius: 12px;
+                            padding: 16px 20px;
+                            display: flex;
+                            align-items: center;
+                            gap: 16px;
+                            box-shadow: var(--shadow-sm);
+                            transition: var(--transition-base);
+                        }
+                        .docs-summary-card:hover {
+                            transform: translateY(-2px);
+                            box-shadow: var(--shadow-md);
+                        }
+                        .docs-summary-icon {
+                            font-size: 24px;
+                            background: rgba(15, 35, 80, 0.08);
+                            width: 44px;
+                            height: 44px;
+                            border-radius: 10px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        .docs-summary-val {
+                            font-size: 20px;
+                            font-weight: 700;
+                            color: var(--primary);
+                            margin: 0;
+                        }
+                        .docs-summary-label {
+                            font-size: 11px;
+                            color: var(--text-muted);
+                            text-transform: uppercase;
+                            font-weight: 600;
+                        }
+                        
+                        /* Categorías de Documentos (Tarjetas Premium) */
+                        .premium-doc-folder {
+                            background: #0F1E46;
+                            border-radius: 16px;
+                            box-shadow: 0 8px 24px rgba(15, 30, 70, 0.15);
+                            padding: 24px;
+                            position: relative;
+                            overflow: hidden;
+                            margin-bottom: 20px;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                        }
+                        .premium-doc-folder::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            height: 4px;
+                            background: linear-gradient(90deg, #FF6B00, #FF8A1F);
+                        }
+                        .premium-doc-folder-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                            padding-bottom: 16px;
+                            margin-bottom: 16px;
+                            cursor: pointer;
+                        }
+                        .premium-doc-folder-title-block {
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                        }
+                        .premium-doc-folder-icon {
+                            background-color: rgba(255, 255, 255, 0.1);
+                            color: #FFFFFF;
+                            width: 36px;
+                            height: 36px;
+                            border-radius: 8px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        .premium-doc-folder-title {
+                            font-size: 16px;
+                            font-weight: 700;
+                            color: #FFFFFF;
+                            margin: 0;
+                        }
+                        .premium-doc-folder-count {
+                            font-size: 11px;
+                            font-weight: 700;
+                            background-color: #FF6B00;
+                            color: #FFFFFF;
+                            padding: 4px 10px;
+                            border-radius: 20px;
+                            box-shadow: 0 2px 6px rgba(255, 107, 0, 0.3);
+                        }
+                        
+                        /* Archivos individuales (Cards modernas) */
+                        .modern-doc-card {
+                            background: rgba(255, 255, 255, 0.95);
+                            border-radius: 12px;
+                            padding: 16px;
+                            margin-bottom: 12px;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            gap: 16px;
+                            transition: all 0.2s ease;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                        }
+                        .modern-doc-card:hover {
+                            background: #FFFFFF;
+                            transform: translateY(-2px);
+                            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+                            border-color: #FF6B00;
+                        }
+                        .modern-doc-meta {
+                            display: flex;
+                            align-items: center;
+                            gap: 16px;
+                            flex-grow: 1;
+                        }
+                        .modern-doc-format-badge {
+                            width: 44px;
+                            height: 44px;
+                            border-radius: 10px;
+                            font-weight: 800;
+                            font-size: 12px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            flex-shrink: 0;
+                        }
+                        .modern-doc-format-pdf { background-color: #FCE8E6; color: #C5221F; }
+                        .modern-doc-format-xlsx { background-color: #E6F4EA; color: #137333; }
+                        .modern-doc-format-docx { background-color: #E8F0FE; color: #1A73E8; }
+                        
+                        .modern-doc-title {
+                            font-size: 14px;
+                            font-weight: 700;
+                            color: #0F2350;
+                            display: block;
+                            margin-bottom: 4px;
+                        }
+                        .modern-doc-desc {
+                            font-size: 11px;
+                            color: #6B7280;
+                            margin: 0;
+                        }
+                        
+                        /* Centro de carga documental */
+                        .doc-upload-card {
+                            background: #0F1E46;
+                            border-radius: 16px;
+                            box-shadow: 0 8px 24px rgba(15, 30, 70, 0.2);
+                            padding: 24px;
+                            position: relative;
+                            overflow: hidden;
+                            border: 1px solid rgba(255, 255, 255, 0.1);
+                        }
+                        .doc-upload-card::before {
+                            content: '';
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            right: 0;
+                            height: 4px;
+                            background: linear-gradient(90deg, #FF6B00, #FF8A1F);
+                        }
+                        .doc-upload-header {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 8px;
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                            padding-bottom: 16px;
+                            margin-bottom: 16px;
+                        }
+                        .doc-upload-title {
+                            font-size: 16px;
+                            font-weight: 700;
+                            color: #FFFFFF;
+                            margin: 0;
+                        }
+                        .doc-upload-desc {
+                            font-size: 12px;
+                            color: rgba(255, 255, 255, 0.7);
+                            line-height: 1.5;
+                        }
+                        
+                        /* Drag & Drop Zone */
+                        .premium-dropzone {
+                            border: 2px dashed #FF6B00;
+                            background-color: rgba(255, 255, 255, 0.04);
+                            border-radius: 12px;
+                            padding: 30px 20px;
+                            text-align: center;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 12px;
+                        }
+                        .premium-dropzone:hover, .premium-dropzone.dragover {
+                            background-color: rgba(255, 255, 255, 0.08);
+                            border-color: #FF8A1F;
+                            transform: scale(1.02);
+                        }
+                        .premium-dropzone-icon {
+                            color: #FF6B00;
+                            animation: bounce 2s infinite;
+                        }
+                        
+                        @keyframes bounce {
+                            0%, 100% { transform: translateY(0); }
+                            50% { transform: translateY(-4px); }
+                        }
+                    </style>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom: 20px;">
                         <div>
                             <h2 style="font-size:24px; color:var(--primary);">Portal de Documentación Oficial</h2>
                             <p style="color:var(--text-muted); font-size:14px;">Descarga de autorizaciones, reglamentos de competición y plantillas de trabajo técnico de la FFCV.</p>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Documental (Resumen de Ficheros) -->
+                    <div class="docs-summary-grid">
+                        <div class="docs-summary-card">
+                            <div class="docs-summary-icon">📄</div>
+                            <div>
+                                <h4 class="docs-summary-val" id="doc-count-total">6</h4>
+                                <span class="docs-summary-label">Total Documentos</span>
+                            </div>
+                        </div>
+                        <div class="docs-summary-card">
+                            <div class="docs-summary-icon">📕</div>
+                            <div>
+                                <h4 class="docs-summary-val" id="doc-count-reglamentos">2</h4>
+                                <span class="docs-summary-label">Reglamentos</span>
+                            </div>
+                        </div>
+                        <div class="docs-summary-card">
+                            <div class="docs-summary-icon">📋</div>
+                            <div>
+                                <h4 class="docs-summary-val" id="doc-count-protocolos">1</h4>
+                                <span class="docs-summary-label">Protocolos</span>
+                            </div>
+                        </div>
+                        <div class="docs-summary-card">
+                            <div class="docs-summary-icon">📊</div>
+                            <div>
+                                <h4 class="docs-summary-val" id="doc-count-informes">3</h4>
+                                <span class="docs-summary-label">Informes Técnicos</span>
+                            </div>
                         </div>
                     </div>
 
@@ -3435,143 +3696,191 @@
                         <div style="display:flex; flex-direction:column; gap:20px;">
                             
                             <!-- Folder 1: Modelo de Juego -->
-                            <div class="doc-category-card">
-                                <h3 class="panel-title" style="cursor:pointer;" onclick="toggleFolder('folder-modelo')">
-                                    📁 Modelo de Juego FFCV
-                                </h3>
+                            <div class="premium-doc-folder">
+                                <div class="premium-doc-folder-header" onclick="toggleFolder('folder-modelo')">
+                                    <div class="premium-doc-folder-title-block">
+                                        <div class="premium-doc-folder-icon">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                        </div>
+                                        <h3 class="premium-doc-folder-title">Modelo de Juego FFCV</h3>
+                                    </div>
+                                    <span class="premium-doc-folder-count" id="count-folder-modelo">1 doc</span>
+                                </div>
                                 <div class="doc-list" id="folder-modelo" style="display:block;">
-                                    <div class="doc-row">
-                                        <div class="doc-meta">
-                                            <div class="doc-icon-wrapper">PDF</div>
+                                    <div class="modern-doc-card">
+                                        <div class="modern-doc-meta">
+                                            <div class="modern-doc-format-badge modern-doc-format-pdf">PDF</div>
                                             <div>
-                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Filosofía y Metodología Táctica FFCV</span>
-                                                <p style="font-size:11px; color:var(--text-muted);">Pautas ofensivas, defensivas y modelo asociativo general · 2.4 MB</p>
+                                                <span class="modern-doc-title">Filosofía y Metodología Táctica FFCV</span>
+                                                <p class="modern-doc-desc">Pautas ofensivas, defensivas y modelo asociativo general · 2.4 MB</p>
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando metodología táctica...', 'success')">Descargar</button>
+                                        <button class="btn btn-primary btn-sm" onclick="showToast('Descargando metodología táctica...', 'success')" style="border-radius: 8px; padding: 6px 14px;">Descargar</button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Folder 2: Modelo de Entrenamiento -->
-                            <div class="doc-category-card">
-                                <h3 class="panel-title" style="cursor:pointer;" onclick="toggleFolder('folder-entrenamiento')">
-                                    📁 Modelo de Entrenamiento
-                                </h3>
+                            <div class="premium-doc-folder">
+                                <div class="premium-doc-folder-header" onclick="toggleFolder('folder-entrenamiento')">
+                                    <div class="premium-doc-folder-title-block">
+                                        <div class="premium-doc-folder-icon">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                        </div>
+                                        <h3 class="premium-doc-folder-title">Modelo de Entrenamiento</h3>
+                                    </div>
+                                    <span class="premium-doc-folder-count" id="count-folder-entrenamiento">1 doc</span>
+                                </div>
                                 <div class="doc-list" id="folder-entrenamiento" style="display:block;">
-                                    <div class="doc-row">
-                                        <div class="doc-meta">
-                                            <div class="doc-icon-wrapper">PDF</div>
+                                    <div class="modern-doc-card">
+                                        <div class="modern-doc-meta">
+                                            <div class="modern-doc-format-badge modern-doc-format-pdf">PDF</div>
                                             <div>
-                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Pautas de Diseño de Tareas y Microciclos</span>
-                                                <p style="font-size:11px; color:var(--text-muted);">Estructuración de rondos, partidos condicionados e intensidad · 1.5 MB</p>
+                                                <span class="modern-doc-title">Pautas de Diseño de Tareas y Microciclos</span>
+                                                <p class="modern-doc-desc">Estructuración de rondos, partidos condicionados e intensidad · 1.5 MB</p>
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando pautas de diseño...', 'success')">Descargar</button>
+                                        <button class="btn btn-primary btn-sm" onclick="showToast('Descargando pautas de diseño...', 'success')" style="border-radius: 8px; padding: 6px 14px;">Descargar</button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Folder 3: Protocolos de Convocatoria -->
-                            <div class="doc-category-card">
-                                <h3 class="panel-title" style="cursor:pointer;" onclick="toggleFolder('folder-protocolos')">
-                                    📁 Protocolos de Convocatoria
-                                </h3>
+                            <div class="premium-doc-folder">
+                                <div class="premium-doc-folder-header" onclick="toggleFolder('folder-protocolos')">
+                                    <div class="premium-doc-folder-title-block">
+                                        <div class="premium-doc-folder-icon">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                        </div>
+                                        <h3 class="premium-doc-folder-title">Protocolos de Convocatoria</h3>
+                                    </div>
+                                    <span class="premium-doc-folder-count" id="count-folder-protocolos">1 doc</span>
+                                </div>
                                 <div class="doc-list" id="folder-protocolos" style="display:block;">
-                                    <div class="doc-row">
-                                        <div class="doc-meta">
-                                            <div class="doc-icon-wrapper">PDF</div>
+                                    <div class="modern-doc-card">
+                                        <div class="modern-doc-meta">
+                                            <div class="modern-doc-format-badge modern-doc-format-pdf">PDF</div>
                                             <div>
-                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Código de Conducta y Logística de Desplazamientos</span>
-                                                <p style="font-size:11px; color:var(--text-muted);">Normativas de hotel, autobús, uniformes oficiales FFCV · 512 KB</p>
+                                                <span class="modern-doc-title">Código de Conducta y Logística de Desplazamientos</span>
+                                                <p class="modern-doc-desc">Normativas de hotel, autobús, uniformes oficiales FFCV · 512 KB</p>
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando código de conducta...', 'success')">Descargar</button>
+                                        <button class="btn btn-primary btn-sm" onclick="showToast('Descargando código de conducta...', 'success')" style="border-radius: 8px; padding: 6px 14px;">Descargar</button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Folder 4: Plantillas de Informe -->
-                            <div class="doc-category-card">
-                                <h3 class="panel-title" style="cursor:pointer;" onclick="toggleFolder('folder-plantillas')">
-                                    📁 Plantillas de Informe (Scouting)
-                                </h3>
+                            <div class="premium-doc-folder">
+                                <div class="premium-doc-folder-header" onclick="toggleFolder('folder-plantillas')">
+                                    <div class="premium-doc-folder-title-block">
+                                        <div class="premium-doc-folder-icon">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                                        </div>
+                                        <h3 class="premium-doc-folder-title">Plantillas de Informe (Scouting)</h3>
+                                    </div>
+                                    <span class="premium-doc-folder-count" id="count-folder-plantillas">1 doc</span>
+                                </div>
                                 <div class="doc-list" id="folder-plantillas" style="display:block;">
-                                    <div class="doc-row">
-                                        <div class="doc-meta">
-                                            <div class="doc-icon-wrapper">XLSX</div>
+                                    <div class="modern-doc-card">
+                                        <div class="modern-doc-meta">
+                                            <div class="modern-doc-format-badge modern-doc-format-xlsx">XLSX</div>
                                             <div>
-                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Plantilla Ficha de Scouting de Futbolista RFEF</span>
-                                                <p style="font-size:11px; color:var(--text-muted);">Formato Excel de evaluación técnica e individual por radar · 850 KB</p>
+                                                <span class="modern-doc-title">Plantilla Ficha de Scouting de Futbolista RFEF</span>
+                                                <p class="modern-doc-desc">Formato Excel de evaluación técnica e individual por radar · 850 KB</p>
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando plantilla de scouting...', 'success')">Descargar</button>
+                                        <button class="btn btn-primary btn-sm" onclick="showToast('Descargando plantilla de scouting...', 'success')" style="border-radius: 8px; padding: 6px 14px;">Descargar</button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Folder 5: Documentación Médica -->
-                            <div class="doc-category-card">
-                                <h3 class="panel-title" style="cursor:pointer;" onclick="toggleFolder('folder-medica')">
-                                    📁 Documentación Médica y Autorizaciones
-                                </h3>
-                                <div class="doc-list" id="folder-medica" style="display:block;">
-                                    <div class="doc-row">
-                                        <div class="doc-meta">
-                                            <div class="doc-icon-wrapper">DOCX</div>
-                                            <div>
-                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Autorización de Cesión de Datos y Consentimiento de Menores</span>
-                                                <p style="font-size:11px; color:var(--text-muted);">Autorización oficial de padres/tutores requerida por la FFCV · 245 KB</p>
-                                            </div>
+                            <div class="premium-doc-folder">
+                                <div class="premium-doc-folder-header" onclick="toggleFolder('folder-medica')">
+                                    <div class="premium-doc-folder-title-block">
+                                        <div class="premium-doc-folder-icon">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
                                         </div>
-                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando consentimiento de menores...', 'success')">Descargar</button>
+                                        <h3 class="premium-doc-folder-title">Documentación Médica y Autorizaciones</h3>
                                     </div>
-                                    <div class="doc-row">
-                                        <div class="doc-meta">
-                                            <div class="doc-icon-wrapper">PDF</div>
+                                    <span class="premium-doc-folder-count" id="count-folder-medica">2 docs</span>
+                                </div>
+                                <div class="doc-list" id="folder-medica" style="display:block;">
+                                    <div class="modern-doc-card">
+                                        <div class="modern-doc-meta">
+                                            <div class="modern-doc-format-badge modern-doc-format-docx">DOCX</div>
                                             <div>
-                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Ficha Médica y Seguro Federativo Oficial</span>
-                                                <p style="font-size:11px; color:var(--text-muted);">Formulario clínico básico para convocatorias · 312 KB</p>
+                                                <span class="modern-doc-title">Autorización de Cesión de Datos y Consentimiento de Menores</span>
+                                                <p class="modern-doc-desc">Autorización oficial de padres/tutores requerida por la FFCV · 245 KB</p>
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando ficha médica...', 'success')">Descargar</button>
+                                        <button class="btn btn-primary btn-sm" onclick="showToast('Descargando consentimiento de menores...', 'success')" style="border-radius: 8px; padding: 6px 14px;">Descargar</button>
+                                    </div>
+                                    <div class="modern-doc-card" style="margin-bottom:0;">
+                                        <div class="modern-doc-meta">
+                                            <div class="modern-doc-format-badge modern-doc-format-pdf">PDF</div>
+                                            <div>
+                                                <span class="modern-doc-title">Ficha Médica y Seguro Federativo Oficial</span>
+                                                <p class="modern-doc-desc">Formulario clínico básico para convocatorias · 312 KB</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary btn-sm" onclick="showToast('Descargando ficha médica...', 'success')" style="border-radius: 8px; padding: 6px 14px;">Descargar</button>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Uploaded Files Section -->
-                            <div class="doc-category-card" id="uploaded-folder-card" style="display:none;">
-                                <h3 class="panel-title">📂 Documentos Subidos Recientemente</h3>
-                                <div class="doc-list" id="uploaded-files-container">
+                            <div class="premium-doc-folder" id="uploaded-folder-card" style="display:none;">
+                                <div class="premium-doc-folder-header" onclick="toggleFolder('uploaded-files-container')">
+                                    <div class="premium-doc-folder-title-block">
+                                        <div class="premium-doc-folder-icon" style="background-color: var(--accent);">
+                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                                        </div>
+                                        <h3 class="premium-doc-folder-title">Documentos Subidos Recientemente</h3>
+                                    </div>
+                                    <span class="premium-doc-folder-count" id="count-folder-uploaded" style="background-color: var(--accent);">0 docs</span>
+                                </div>
+                                <div class="doc-list" id="uploaded-files-container" style="display:block;">
                                     <!-- Dinámico mediante JS -->
                                 </div>
                             </div>
                         </div>
 
                         <div style="display:flex; flex-direction:column; gap:28px;">
-                            <div class="panel">
-                                <h3 class="panel-title">Subir Archivo Oficial</h3>
-                                <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">Sube nuevos reglamentos o fichas técnicas al portal de las selecciones.</p>
+                            <div class="doc-upload-card">
+                                <!-- Franja Superior Corporativa -->
+                                <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #FF6B00, #FF8A1F);"></div>
                                 
-                                <div class="dropzone" id="file-dropzone" onclick="triggerVirtualFileInput()">
-                                    <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <div class="doc-upload-header">
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div style="background-color: rgba(255, 255, 255, 0.10); color: #FFFFFF; width: 36px; height: 36px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                                        </div>
+                                        <h3 class="doc-upload-title">Centro de carga documental</h3>
+                                    </div>
+                                    <span class="doc-upload-desc">Sube reglamentos, protocolos, plantillas e informes oficiales al portal.</span>
+                                </div>
+                                
+                                <div class="premium-dropzone" id="file-dropzone" onclick="triggerVirtualFileInput()">
+                                    <svg class="premium-dropzone-icon" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5">
                                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
                                     </svg>
                                     <div>
-                                        <span style="font-size:13px; font-weight:600; color:var(--primary); display:block;">Seleccionar o arrastrar archivo</span>
-                                        <span style="font-size:11px; color:var(--text-muted);">Formatos PDF, Word o Excel (máx 10MB)</span>
+                                        <span style="font-size:13px; font-weight:700; color:#FFFFFF; display:block;">Seleccionar o arrastrar archivo</span>
+                                        <span style="font-size:11px; color:rgba(255, 255, 255, 0.6); display:block; margin-top:4px;">Formatos PDF, Word o Excel (máx 10MB)</span>
                                     </div>
                                 </div>
 
                                 <input type="file" id="virtual-file-input" style="display:none;" onchange="handleVirtualFileSelection(event)" />
 
-                                <div class="progress-container" id="upload-progress-container">
-                                    <div class="progress-info">
-                                        <span id="uploading-file-name" style="color:var(--primary);">Subiendo reglamento.pdf</span>
-                                        <span id="upload-percent-text" style="color:var(--accent-hover);">0%</span>
+                                <div class="progress-container" id="upload-progress-container" style="display:none; margin-top:20px; background: rgba(255, 255, 255, 0.05); padding: 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <div class="progress-info" style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 6px;">
+                                        <span id="uploading-file-name" style="color:#FFFFFF; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 70%;">Subiendo...</span>
+                                        <span id="upload-percent-text" style="color:#FF6B00; font-weight: 700;">0%</span>
                                     </div>
-                                    <div class="progress-bar">
-                                        <div class="progress-fill" id="upload-progress-fill"></div>
+                                    <div class="progress-bar" style="background: rgba(255, 255, 255, 0.1); height: 6px; border-radius: 3px; overflow: hidden;">
+                                        <div class="progress-fill" id="upload-progress-fill" style="background: linear-gradient(90deg, #FF6B00, #FF8A1F); height: 100%; width: 0%; transition: width 0.1s ease;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -6773,7 +7082,7 @@
             const fillEl = document.getElementById('upload-progress-fill');
             
             nameEl.textContent = `Subiendo: ${name}`;
-            container.style.display = 'flex';
+            container.style.display = 'block';
             percentEl.textContent = '0%';
             fillEl.style.width = '0%';
             
@@ -6790,29 +7099,100 @@
                         showToast(`Archivo "${name}" subido con éxito`, 'success');
                     }, 400);
                 }
-            }, 150);
+            }, 100);
         }
 
         function addNewDocument(name, size, extension) {
             const container = document.getElementById('uploaded-files-container');
             if (!container) return;
             const newRow = document.createElement('div');
-            newRow.className = 'doc-row';
+            newRow.className = 'modern-doc-card';
             newRow.style.animation = 'fadeIn 0.4s ease-out';
+            
+            let formatClass = 'modern-doc-format-pdf';
+            if (extension === 'XLSX') formatClass = 'modern-doc-format-xlsx';
+            if (extension === 'DOCX') formatClass = 'modern-doc-format-docx';
+
             newRow.innerHTML = `
-                <div class="doc-meta">
-                    <div class="doc-icon-wrapper" style="background-color: var(--accent-light); color: var(--accent); border-color: var(--accent-light); font-weight:700;">${extension}</div>
+                <div class="modern-doc-meta">
+                    <div class="modern-doc-format-badge ${formatClass}">${extension}</div>
                     <div>
-                        <span style="font-weight:600; font-size:14px; color:var(--primary);">${name}</span>
-                        <p style="font-size:11px; color:var(--text-muted);">Subido recientemente · ${size}</p>
+                        <span class="modern-doc-title">${name}</span>
+                        <p class="modern-doc-desc">Subido recientemente · ${size}</p>
                     </div>
                 </div>
-                <button class="btn btn-outline btn-sm" onclick="showToast('Descargando archivo subido...', 'success')">Descargar</button>
+                <button class="btn btn-primary btn-sm" onclick="showToast('Descargando archivo subido...', 'success')" style="border-radius: 8px; padding: 6px 14px;">Descargar</button>
             `;
             container.insertBefore(newRow, container.firstChild);
             
             const uploadedFolderCard = document.getElementById('uploaded-folder-card');
             if (uploadedFolderCard) uploadedFolderCard.style.display = 'block';
+            
+            updateDocumentCounts();
+        }
+
+        function updateDocumentCounts() {
+            const countModelo = 1;
+            const countEntreno = 1;
+            const countProtocolos = 1;
+            const countPlantillas = 1;
+            const countMedica = 2;
+            
+            const uploadedFolder = document.getElementById('uploaded-files-container');
+            const countUploaded = uploadedFolder ? uploadedFolder.querySelectorAll('.modern-doc-card').length : 0;
+            
+            const bModelo = document.getElementById('count-folder-modelo');
+            if (bModelo) bModelo.textContent = `${countModelo} doc${countModelo > 1 ? 's' : ''}`;
+            const bEntreno = document.getElementById('count-folder-entrenamiento');
+            if (bEntreno) bEntreno.textContent = `${countEntreno} doc${countEntreno > 1 ? 's' : ''}`;
+            const bProtocolos = document.getElementById('count-folder-protocolos');
+            if (bProtocolos) bProtocolos.textContent = `${countProtocolos} doc${countProtocolos > 1 ? 's' : ''}`;
+            const bPlantillas = document.getElementById('count-folder-plantillas');
+            if (bPlantillas) bPlantillas.textContent = `${countPlantillas} doc${countPlantillas > 1 ? 's' : ''}`;
+            const bMedica = document.getElementById('count-folder-medica');
+            if (bMedica) bMedica.textContent = `${countMedica} doc${countMedica > 1 ? 's' : ''}`;
+            const bUploaded = document.getElementById('count-folder-uploaded');
+            if (bUploaded) bUploaded.textContent = `${countUploaded} doc${countUploaded > 1 ? 's' : ''}`;
+
+            const totalDocs = countModelo + countEntreno + countProtocolos + countPlantillas + countMedica + countUploaded;
+            
+            const elTotal = document.getElementById('doc-count-total');
+            if (elTotal) elTotal.textContent = totalDocs;
+            
+            const elReglamentos = document.getElementById('doc-count-reglamentos');
+            if (elReglamentos) elReglamentos.textContent = 2 + (countUploaded > 0 ? 1 : 0);
+            
+            const elProtocolos = document.getElementById('doc-count-protocolos');
+            if (elProtocolos) elProtocolos.textContent = 1;
+            
+            const elInformes = document.getElementById('doc-count-informes');
+            if (elInformes) elInformes.textContent = 3 + (countUploaded > 1 ? 1 : 0);
+        }
+
+        function initDragAndDrop() {
+            const dropzone = document.getElementById('file-dropzone');
+            if (dropzone) {
+                ['dragenter', 'dragover'].forEach(eventName => {
+                    dropzone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        dropzone.classList.add('dragover');
+                    }, false);
+                });
+                ['dragleave', 'drop'].forEach(eventName => {
+                    dropzone.addEventListener(eventName, (e) => {
+                        e.preventDefault();
+                        dropzone.classList.remove('dragover');
+                    }, false);
+                });
+                dropzone.addEventListener('drop', (e) => {
+                    const dt = e.dataTransfer;
+                    const files = dt.files;
+                    if (files.length > 0) {
+                        const event = { target: { files: files } };
+                        handleVirtualFileSelection(event);
+                    }
+                }, false);
+            }
         }
 
         /* ==========================================================================
@@ -6824,6 +7204,8 @@
             initChart();
             renderStaff();
             initCallFiltersListeners();
+            updateDocumentCounts();
+            initDragAndDrop();
             
             // Navegar automáticamente a la pestaña indicada en el Hash de URL (si existe)
             const hash = window.location.hash.substring(1);
