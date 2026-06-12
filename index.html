@@ -437,6 +437,15 @@
             position: relative;
             overflow: hidden;
             box-shadow: var(--shadow-md);
+            margin-bottom: 28px;
+        }
+        .hero-banner .btn-outline {
+            color: #FFFFFF !important;
+            border-color: rgba(255, 255, 255, 0.4) !important;
+        }
+        .hero-banner .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            border-color: #FFFFFF !important;
         }
 
         .hero-banner::after {
@@ -2689,10 +2698,10 @@
                      ========================================================================== -->
                 <section class="view" id="view-jugadores">
                     
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-                        <div>
-                            <h2 style="font-size:24px; color:var(--primary);">Directorio de Jugadores</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Gestión centralizada de futbolistas de la FFCV para seguimiento técnico, convocatorias, observación y planificación deportiva.</p>
+                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                        <div style="flex:1; min-width:280px;">
+                            <h1 class="hero-title">DIRECTORIO DE JUGADORES</h1>
+                            <p class="hero-desc" style="margin: 0; margin-top: 6px;">Seguimiento técnico individualizado, historial deportivo y gestión centralizada de futbolistas de las selecciones territoriales.</p>
                         </div>
                         <button class="btn btn-primary" onclick="openModal('modal-jugador')">
                             <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
@@ -2838,10 +2847,10 @@
                      B.3 VISTA: CONVOCATORIAS (GESTIÓN ACTIVA)
                      ========================================================================== -->
                 <section class="view" id="view-convocatorias">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-                        <div>
-                            <h2 style="font-size:24px; color:var(--primary);">Gestión de Convocatorias</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Gestión de entrenamientos oficiales, citaciones de partidos y visorias territoriales.</p>
+                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                        <div style="flex:1; min-width:280px;">
+                            <h1 class="hero-title">GESTIÓN DE CONVOCATORIAS</h1>
+                            <p class="hero-desc" style="margin: 0; margin-top: 6px;">Creación, planificación y seguimiento de convocatorias oficiales para partidos, entrenamientos y sesiones de observación.</p>
                         </div>
                         <div style="display:flex; gap:10px;">
                             <button class="btn btn-outline" onclick="generateRandomCallList()">Generar Lista</button>
@@ -3038,9 +3047,11 @@
                      B.4 VISTA: PLANIFICACIÓN (BOARD MICROCICLOS)
                      ========================================================================== -->
                 <section class="view" id="view-planificacion">
-                    <div>
-                        <h2 style="font-size:24px; color:var(--primary);">Planificación Deportiva</h2>
-                        <p style="color:var(--text-muted); font-size:14px;">Seguimiento de objetivos tácticos, físicos y coordinativos divididos en fases y microciclos.</p>
+                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                        <div style="flex:1; min-width:280px;">
+                            <h1 class="hero-title">PLANIFICACIÓN DEPORTIVA</h1>
+                            <p class="hero-desc" style="margin: 0; margin-top: 6px;">Organización de microciclos, concentraciones, eventos y planificación estratégica de las selecciones.</p>
+                        </div>
                     </div>
 
                     <div class="tactical-menu-tabs" style="margin-top: 10px;">
@@ -3242,10 +3253,10 @@
                      B.5 VISTA: SESIONES (CATÁLOGO TÉCNICO)
                      ========================================================================== -->
                 <section class="view" id="view-sesiones">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-                        <div>
-                            <h2 style="font-size:24px; color:var(--primary);">Biblioteca de Sesiones</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Catálogo y plantillas de hojas de sesión diarias listas para aplicar en el terreno de juego.</p>
+                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                        <div style="flex:1; min-width:280px;">
+                            <h1 class="hero-title">BIBLIOTECA DE SESIONES</h1>
+                            <p class="hero-desc" style="margin: 0; margin-top: 6px;">Repositorio centralizado de tareas, ejercicios y sesiones de entrenamiento para el cuerpo técnico.</p>
                         </div>
                         <div style="display:flex; gap:10px;">
                             <!-- Input invisible para archivo PDF -->
@@ -3269,10 +3280,10 @@
                      B.5.2 VISTA: MODELO DE JUEGO
                      ========================================================================== -->
                 <section class="view" id="view-modelo">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-                        <div>
-                            <h2 style="font-size:24px; color:var(--primary);">Modelo de Juego</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Definición de identidad, principios tácticos y disposición espacial de las Selecciones Valencianas.</p>
+                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                        <div style="flex:1; min-width:280px;">
+                            <h1 class="hero-title">MODELO DE JUEGO</h1>
+                            <p class="hero-desc" style="margin: 0; margin-top: 6px;">Definición de principios tácticos, sistemas de juego, comportamientos colectivos y metodología deportiva.</p>
                         </div>
                         <div style="display:flex; gap:10px;">
                             <button class="btn btn-outline" onclick="showToast('Esquema táctico exportado a PDF', 'success')">Exportar PDF</button>
@@ -3407,10 +3418,10 @@
                      B.6 VISTA: INFORMES (SCOUTING E INDIVIDUALES)
                      ========================================================================== -->
                 <section class="view" id="view-informes">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-                        <div>
-                            <h2 style="font-size:24px; color:var(--primary);">Informes de Rendimiento</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Evaluaciones individuales de jugadores de la Comunitat Valenciana y análisis de equipos rivales.</p>
+                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                        <div style="flex:1; min-width:280px;">
+                            <h1 class="hero-title">INFORMES DE RENDIMIENTO</h1>
+                            <p class="hero-desc" style="margin: 0; margin-top: 6px;">Análisis técnico, scouting y seguimiento individual y colectivo de futbolistas y selecciones.</p>
                         </div>
                         <button class="btn btn-primary" onclick="openModal('modal-informe')">
                             Crear Informe
@@ -3426,9 +3437,11 @@
                      B.7 VISTA: CALENDARIO (PLANIFICACIÓN DE EVENTOS)
                      ========================================================================== -->
                 <section class="view" id="view-calendario">
-                    <div>
-                        <h2 style="font-size:24px; color:var(--primary);">Calendario Deportivo</h2>
-                        <p style="color:var(--text-muted); font-size:14px;">Calendario interactivo mensual de partidos oficiales, entrenamientos y visorias territoriales.</p>
+                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                        <div style="flex:1; min-width:280px;">
+                            <h1 class="hero-title">CALENDARIO DEPORTIVO</h1>
+                            <p class="hero-desc" style="margin: 0; margin-top: 6px;">Agenda centralizada de entrenamientos, partidos, convocatorias y eventos oficiales.</p>
+                        </div>
                     </div>
 
                     <div class="calendar-layout">
@@ -3654,14 +3667,14 @@
                         }
                     </style>
 
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-                        <div>
-                            <h2 style="font-size:24px; color:var(--primary);">Staff Técnico</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Organigrama oficial y censo de profesionales a cargo de las Selecciones Valencianas.</p>
+                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                        <div style="flex:1; min-width:280px;">
+                            <h1 class="hero-title">STAFF TÉCNICO</h1>
+                            <p class="hero-desc" style="margin: 0; margin-top: 6px;">Gestión de entrenadores, preparadores físicos, analistas y personal técnico de las selecciones.</p>
                         </div>
                         <button class="btn btn-primary" onclick="openAddStaffModal()">
                             <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                            Añadir Miembro
+                            Añadir Staff
                         </button>
                     </div>
 
@@ -3965,10 +3978,10 @@
                         }
                     </style>
 
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom: 20px;">
-                        <div>
-                            <h2 style="font-size:24px; color:var(--primary);">Portal de Documentación</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Descarga de autorizaciones, reglamentos de competición y plantillas de trabajo técnico de la FFCV.</p>
+                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                        <div style="flex:1; min-width:280px;">
+                            <h1 class="hero-title">PORTAL DE DOCUMENTACIÓN</h1>
+                            <p class="hero-desc" style="margin: 0; margin-top: 6px;">Acceso a reglamentos, protocolos, plantillas y documentación oficial de la FFCV.</p>
                         </div>
                     </div>
 
@@ -4203,10 +4216,10 @@
                      B.8 VISTA: CONFIGURACIÓN (PERFILES Y PREFERENCIAS)
                      ========================================================================== -->
                 <section class="view" id="view-configuracion">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
-                        <div>
-                            <h2 style="font-size:24px; color:var(--primary);">Configuración del Sistema</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Administración de categorías, roles, permisos y datos de usuario del portal técnico.</p>
+                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                        <div style="flex:1; min-width:280px;">
+                            <h1 class="hero-title">CONFIGURACIÓN DEL SISTEMA</h1>
+                            <p class="hero-desc" style="margin: 0; margin-top: 6px;">Administración de categorías, temporadas, roles, permisos y parámetros generales de la plataforma.</p>
                         </div>
                     </div>
 
