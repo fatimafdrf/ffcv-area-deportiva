@@ -2429,6 +2429,92 @@
                         </div>
                     </div>
 
+                    <!-- Barra de Filtros de Convocatorias -->
+                    <div class="panel" style="margin-top: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 12px; padding: 16px; background-color: var(--card-bg); border-radius: var(--radius-md); box-shadow: var(--shadow-sm);">
+                        <!-- Fila 1: Selectores -->
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px;" for="filter-call-season">Temporada</label>
+                                <select class="form-select" id="filter-call-season" style="font-size: 12px; height: 34px; padding: 4px 8px;">
+                                    <option value="ALL">Todas</option>
+                                    <option value="2025/2026">2025/2026</option>
+                                    <option value="2026/2027">2026/2027</option>
+                                    <option value="2027/2028">2027/2028</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px;" for="filter-call-province">Provincia</label>
+                                <select class="form-select" id="filter-call-province" style="font-size: 12px; height: 34px; padding: 4px 8px;">
+                                    <option value="ALL">Todas</option>
+                                    <option value="Valencia">Valencia</option>
+                                    <option value="Alicante">Alicante</option>
+                                    <option value="Castellón">Castellón</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px;" for="filter-call-sport">Deporte</label>
+                                <select class="form-select" id="filter-call-sport" style="font-size: 12px; height: 34px; padding: 4px 8px;">
+                                    <option value="ALL">Todos</option>
+                                    <option value="Fútbol">Fútbol</option>
+                                    <option value="Fútbol Sala">Fútbol Sala</option>
+                                    <option value="Fútbol Playa">Fútbol Playa</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px;" for="filter-call-category">Categoría</label>
+                                <select class="form-select" id="filter-call-category" style="font-size: 12px; height: 34px; padding: 4px 8px;">
+                                    <option value="ALL">Todas</option>
+                                    <option value="Absoluta">Absoluta</option>
+                                    <option value="Sub-16">Sub-16</option>
+                                    <option value="Sub-14">Sub-14</option>
+                                    <option value="Sub-12">Sub-12</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px;" for="filter-call-gender">Género</label>
+                                <select class="form-select" id="filter-call-gender" style="font-size: 12px; height: 34px; padding: 4px 8px;">
+                                    <option value="ALL">Todos</option>
+                                    <option value="Masculina">Masculina</option>
+                                    <option value="Femenina">Femenina</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px;" for="filter-call-status">Estado</label>
+                                <select class="form-select" id="filter-call-status" style="font-size: 12px; height: 34px; padding: 4px 8px;">
+                                    <option value="ALL">Todos</option>
+                                    <option value="Confirmada">Confirmada</option>
+                                    <option value="Pendiente de cerrar lista">Pendiente de cerrar lista</option>
+                                    <option value="Visionado">Visionado</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Fila 2: Fechas y Buscador -->
+                        <div style="display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;">
+                            <div class="form-group" style="flex: 1; min-width: 140px; margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px;" for="filter-call-date-from">Fecha desde</label>
+                                <input type="date" class="form-input" id="filter-call-date-from" style="font-size: 12px; height: 34px; padding: 4px 8px;" />
+                            </div>
+                            <div class="form-group" style="flex: 1; min-width: 140px; margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px;" for="filter-call-date-to">Fecha hasta</label>
+                                <input type="date" class="form-input" id="filter-call-date-to" style="font-size: 12px; height: 34px; padding: 4px 8px;" />
+                            </div>
+                            <div class="form-group" style="flex: 2; min-width: 200px; margin-bottom: 0;">
+                                <label class="form-label" style="font-size: 11px; margin-bottom: 4px;" for="filter-call-search">Buscador de texto</label>
+                                <input type="text" class="form-input" id="filter-call-search" placeholder="Buscar por nombre o lugar..." style="font-size: 12px; height: 34px; padding: 4px 8px;" />
+                            </div>
+                            <button class="btn btn-outline" onclick="resetCallFilters()" style="height: 34px; padding: 0 16px; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2" style="opacity: 0.8;"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                                Limpiar
+                            </button>
+                        </div>
+
+                        <!-- Fila 3: Contador -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 4px;">
+                            <span style="font-size: 12px; font-weight: 600; color: var(--accent-hover);" id="call-filter-count-label">Mostrando convocatorias</span>
+                        </div>
+                    </div>
+
                     <div class="convocatorias-grid">
                         
                         <!-- Panel de Lista de Convocatorias -->
@@ -3403,6 +3489,53 @@
                         <input type="text" class="form-input" id="call-name" required placeholder="Ej: Selección Sub-16 Masculina" />
                     </div>
 
+                    <!-- Campos Clasificatorios Nuevos -->
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="call-season">Temporada</label>
+                            <select class="form-select" id="call-season">
+                                <option value="2026/2027">2026/2027</option>
+                                <option value="2025/2026">2025/2026</option>
+                                <option value="2027/2028">2027/2028</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="call-province">Provincia</label>
+                            <select class="form-select" id="call-province">
+                                <option value="Valencia">Valencia</option>
+                                <option value="Alicante">Alicante</option>
+                                <option value="Castellón">Castellón</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="call-sport">Deporte</label>
+                            <select class="form-select" id="call-sport">
+                                <option value="Fútbol">Fútbol</option>
+                                <option value="Fútbol Sala">Fútbol Sala</option>
+                                <option value="Fútbol Playa">Fútbol Playa</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="call-category">Categoría</label>
+                            <select class="form-select" id="call-category">
+                                <option value="Sub-16">Sub-16</option>
+                                <option value="Sub-14">Sub-14</option>
+                                <option value="Sub-12">Sub-12</option>
+                                <option value="Absoluta">Absoluta</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="call-gender">Género</label>
+                            <select class="form-select" id="call-gender">
+                                <option value="Masculina">Masculina</option>
+                                <option value="Femenina">Femenina</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="form-row-grid">
                         <div class="form-group">
                             <label class="form-label" for="call-location">Instalaciones / Lugar</label>
@@ -3687,7 +3820,12 @@
                 time: "18:00 h",
                 status: "Confirmada",
                 date: "2026-06-18",
-                players: [1, 2, 5]
+                players: [1, 2, 5],
+                season: "2026/2027",
+                province: "Valencia",
+                sport: "Fútbol",
+                category: "Sub-16",
+                gender: "Masculina"
             },
             {
                 id: 2,
@@ -3696,7 +3834,12 @@
                 time: "17:30 h",
                 status: "Pendiente de cerrar lista",
                 date: "2026-06-20",
-                players: [3, 6]
+                players: [3, 6],
+                season: "2026/2027",
+                province: "Valencia",
+                sport: "Fútbol",
+                category: "Sub-14",
+                gender: "Femenina"
             },
             {
                 id: 3,
@@ -3705,7 +3848,12 @@
                 time: "11:30 h",
                 status: "Visionado",
                 date: "2026-06-25",
-                players: []
+                players: [],
+                season: "2026/2027",
+                province: "Castellón",
+                sport: "Fútbol",
+                category: "Sub-16",
+                gender: "Masculina"
             }
         ];
 
@@ -4035,7 +4183,53 @@
             if (!tbody) return;
             tbody.innerHTML = '';
 
-            convocatorias.forEach(c => {
+            const season = document.getElementById('filter-call-season').value;
+            const province = document.getElementById('filter-call-province').value;
+            const sport = document.getElementById('filter-call-sport').value;
+            const category = document.getElementById('filter-call-category').value;
+            const gender = document.getElementById('filter-call-gender').value;
+            const status = document.getElementById('filter-call-status').value;
+            const dateFrom = document.getElementById('filter-call-date-from').value;
+            const dateTo = document.getElementById('filter-call-date-to').value;
+            const search = document.getElementById('filter-call-search').value.toLowerCase().trim();
+
+            const filteredCalls = convocatorias.filter(c => {
+                const matchesSeason = (season === 'ALL') || ((c.season || '2026/2027') === season);
+                const matchesProvince = (province === 'ALL') || ((c.province || 'Valencia') === province);
+                const matchesSport = (sport === 'ALL') || ((c.sport || 'Fútbol') === sport);
+                const matchesCategory = (category === 'ALL') || ((c.category || 'Sub-16') === category) || (c.name.toLowerCase().includes(category.toLowerCase()));
+                const matchesGender = (gender === 'ALL') || ((c.gender || 'Masculina') === gender) || (c.name.toLowerCase().includes(gender.toLowerCase()));
+                const matchesStatus = (status === 'ALL') || (c.status === status);
+                
+                let matchesDateFrom = true;
+                if (dateFrom) {
+                    matchesDateFrom = (c.date >= dateFrom);
+                }
+                
+                let matchesDateTo = true;
+                if (dateTo) {
+                    matchesDateTo = (c.date <= dateTo);
+                }
+                
+                const matchesSearch = !search || 
+                    c.name.toLowerCase().includes(search) || 
+                    c.location.toLowerCase().includes(search);
+
+                return matchesSeason && matchesProvince && matchesSport && matchesCategory && matchesGender && matchesStatus && matchesDateFrom && matchesDateTo && matchesSearch;
+            });
+
+            // Actualizar contador
+            const countLabel = document.getElementById('call-filter-count-label');
+            if (countLabel) {
+                countLabel.textContent = `Mostrando ${filteredCalls.length} convocatorias`;
+            }
+
+            if (filteredCalls.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:30px; color:var(--text-muted);">No se encontraron convocatorias con los filtros seleccionados.</td></tr>`;
+                return;
+            }
+
+            filteredCalls.forEach(c => {
                 let statusClass = 'tag-success';
                 if (c.status === 'Visionado') statusClass = 'tag-info';
                 if (c.status === 'Pendiente de cerrar lista') statusClass = 'tag-warning';
@@ -4050,6 +4244,48 @@
                         <td><span class="tag ${statusClass}">${c.status}</span></td>
                     </tr>
                 `;
+            });
+        }
+
+        function resetCallFilters() {
+            document.getElementById('filter-call-season').value = 'ALL';
+            document.getElementById('filter-call-province').value = 'ALL';
+            document.getElementById('filter-call-sport').value = 'ALL';
+            document.getElementById('filter-call-category').value = 'ALL';
+            document.getElementById('filter-call-gender').value = 'ALL';
+            document.getElementById('filter-call-status').value = 'ALL';
+            document.getElementById('filter-call-date-from').value = '';
+            document.getElementById('filter-call-date-to').value = '';
+            document.getElementById('filter-call-search').value = '';
+            
+            renderConvocatorias();
+            showToast('Filtros de convocatorias restablecidos', 'info');
+        }
+
+        function initCallFiltersListeners() {
+            const filters = [
+                'filter-call-season',
+                'filter-call-province',
+                'filter-call-sport',
+                'filter-call-category',
+                'filter-call-gender',
+                'filter-call-status'
+            ];
+            
+            filters.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('change', renderConvocatorias);
+            });
+            
+            const inputs = [
+                'filter-call-date-from',
+                'filter-call-date-to',
+                'filter-call-search'
+            ];
+            
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', renderConvocatorias);
             });
         }
 
@@ -4555,6 +4791,12 @@
             const time = document.getElementById('call-time').value;
             const status = document.getElementById('call-status').value;
             const date = document.getElementById('call-date').value;
+            
+            const season = document.getElementById('call-season').value;
+            const province = document.getElementById('call-province').value;
+            const sport = document.getElementById('call-sport').value;
+            const category = document.getElementById('call-category').value;
+            const gender = document.getElementById('call-gender').value;
 
             // Extraer checkboxes marcados
             const checkedBoxes = document.querySelectorAll('.conv-player-checkbox:checked');
@@ -4567,7 +4809,12 @@
                 time,
                 status,
                 date,
-                players: playerIds
+                players: playerIds,
+                season,
+                province,
+                sport,
+                category,
+                gender
             };
 
             convocatorias.push(newCall);
@@ -5188,11 +5435,16 @@
 
         // Generar lista aleatoria automatizada (18 jugadores)
         function generateRandomCallList() {
-            const categories = ["Sub-14", "Sub-16", "Sub-19"];
+            const categories = ["Sub-12", "Sub-14", "Sub-16", "Absoluta"];
             const selectedCategory = categories[Math.floor(Math.random() * categories.length)];
-            const dateStr = `2026-06-${Math.floor(Math.random() * 10) + 18}`;
+            const dateStr = `2026-06-${String(Math.floor(Math.random() * 10) + 18).padStart(2, '0')}`;
+            const season = ["2025/2026", "2026/2027", "2027/2028"][Math.floor(Math.random() * 3)];
+            const province = ["Valencia", "Alicante", "Castellón"][Math.floor(Math.random() * 3)];
+            const sport = ["Fútbol", "Fútbol Sala", "Fútbol Playa"][Math.floor(Math.random() * 3)];
+            const gender = ["Masculina", "Femenina"][Math.floor(Math.random() * 2)];
             
             let categoryPlayers = players.filter(p => p.category === selectedCategory);
+            if (categoryPlayers.length === 0) categoryPlayers = players;
             let playerIds = categoryPlayers.map(p => p.id);
             
             const mockFirstNames = ["Pau", "Marc", "Joan", "David", "Carlos", "Hugo", "Lucas", "Iker", "Sofia", "Ainhoa", "Lucia", "Elena", "Ruben", "Javier", "Alex", "Dani", "Alejandro", "Adrian"];
@@ -5224,14 +5476,20 @@
                 playerIds.push(newId);
             }
             
+            const callName = `Selección ${selectedCategory} ${gender} (${sport}) - ${province}`;
             const newCall = {
                 id: convocatorias.length + 1,
-                name: `Selección ${selectedCategory} Autonómica - Preselección`,
+                name: callName,
                 location: "Campo federativo Picassent",
                 time: "18:00 h",
                 status: "Pendiente de cerrar lista",
                 date: dateStr,
-                players: playerIds.slice(0, 18)
+                players: playerIds.slice(0, 18),
+                season,
+                province,
+                sport,
+                category: selectedCategory,
+                gender
             };
             
             convocatorias.push(newCall);
@@ -5495,6 +5753,7 @@
             renderDashboardView();
             initChart();
             renderStaff();
+            initCallFiltersListeners();
             
             // Navegar automáticamente a la pestaña indicada en el Hash de URL (si existe)
             const hash = window.location.hash.substring(1);
