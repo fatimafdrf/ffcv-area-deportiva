@@ -2097,7 +2097,7 @@
             <nav class="sidebar-menu">
                 <a href="#dashboard" class="menu-item active" data-view="dashboard">
                     <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /></svg>
-                    <span>Dashboard</span>
+                    <span>Panel de Gestión</span>
                 </a>
                 <a href="#jugadores" class="menu-item" data-view="jugadores">
                     <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
@@ -2206,12 +2206,12 @@
             <div class="view-container">
 
                 <!-- ==========================================================================
-                     B.1 VISTA: DASHBOARD
+                     B.1 VISTA: PANEL DE GESTIÓN (DASHBOARD)
                      ========================================================================== -->
                 <section class="view active" id="view-dashboard">
                     <!-- Banner de Bienvenida -->
                     <div class="hero-banner">
-                        <h1 class="hero-title">Panel de gestión deportiva FFCV</h1>
+                        <h1 class="hero-title">Panel de Gestión Deportiva FFCV</h1>
                         <p class="hero-desc">Área técnica y logística de las Selecciones Territoriales de la Comunitat Valenciana. Gestión centralizada de plantillas, planificación de microciclos, convocatorias de juego e informes de rendimiento.</p>
                     </div>
 
@@ -4715,6 +4715,7 @@
 
             // Cambiar título de cabecera superior
             let capitalizedTitle = viewId.charAt(0).toUpperCase() + viewId.slice(1);
+            if (viewId === 'dashboard') capitalizedTitle = '';
             if (viewId === 'jugadores') capitalizedTitle = '';
             if (viewId === 'planificacion') capitalizedTitle = 'Planificación Deportiva';
             if (viewId === 'modelo') capitalizedTitle = 'Modelo de Juego';
