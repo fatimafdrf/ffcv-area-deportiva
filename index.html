@@ -3471,14 +3471,14 @@
                         
                         /* Categorías de Documentos (Tarjetas Premium) */
                         .premium-doc-folder {
-                            background: #0F1E46;
+                            background: #FFFFFF;
                             border-radius: 16px;
-                            box-shadow: 0 8px 24px rgba(15, 30, 70, 0.15);
+                            box-shadow: var(--shadow-sm);
                             padding: 24px;
                             position: relative;
                             overflow: hidden;
                             margin-bottom: 20px;
-                            border: 1px solid rgba(255, 255, 255, 0.1);
+                            border: 1px solid var(--border-color);
                         }
                         .premium-doc-folder::before {
                             content: '';
@@ -3486,14 +3486,15 @@
                             top: 0;
                             left: 0;
                             right: 0;
-                            height: 4px;
-                            background: linear-gradient(90deg, #FF6B00, #FF8A1F);
+                            height: 5px;
+                            background: #FF6B00;
+                            box-shadow: 0 2px 4px rgba(255, 107, 0, 0.2);
                         }
                         .premium-doc-folder-header {
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
-                            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                            border-bottom: 1px solid var(--border-color);
                             padding-bottom: 16px;
                             margin-bottom: 16px;
                             cursor: pointer;
@@ -3504,8 +3505,8 @@
                             gap: 12px;
                         }
                         .premium-doc-folder-icon {
-                            background-color: rgba(255, 255, 255, 0.1);
-                            color: #FFFFFF;
+                            background-color: rgba(15, 35, 80, 0.08);
+                            color: var(--primary);
                             width: 36px;
                             height: 36px;
                             border-radius: 8px;
@@ -3516,7 +3517,7 @@
                         .premium-doc-folder-title {
                             font-size: 16px;
                             font-weight: 700;
-                            color: #FFFFFF;
+                            color: var(--primary);
                             margin: 0;
                         }
                         .premium-doc-folder-count {
@@ -3531,7 +3532,7 @@
                         
                         /* Archivos individuales (Cards modernas) */
                         .modern-doc-card {
-                            background: rgba(255, 255, 255, 0.95);
+                            background: #F8FAFC;
                             border-radius: 12px;
                             padding: 16px;
                             margin-bottom: 12px;
@@ -3540,13 +3541,12 @@
                             align-items: center;
                             gap: 16px;
                             transition: all 0.2s ease;
-                            border: 1px solid rgba(255, 255, 255, 0.1);
-                            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+                            border: 1px solid var(--border-color);
                         }
                         .modern-doc-card:hover {
                             background: #FFFFFF;
                             transform: translateY(-2px);
-                            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+                            box-shadow: 0 6px 16px rgba(15, 35, 80, 0.08);
                             border-color: #FF6B00;
                         }
                         .modern-doc-meta {
