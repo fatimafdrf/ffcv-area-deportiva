@@ -2176,8 +2176,8 @@
                 <section class="view active" id="view-dashboard">
                     <!-- Banner de Bienvenida -->
                     <div class="hero-banner">
-                        <h1 class="hero-title">Panel de gestión deportiva</h1>
-                        <p class="hero-desc">Gestión centralizada de plantillas, convocatorias de partidos oficiales, planificación de microciclos e informes técnicos de rendimiento de la Comunitat Valenciana.</p>
+                        <h1 class="hero-title">Panel de gestión deportiva FFCV</h1>
+                        <p class="hero-desc">Área técnica y logística de las Selecciones Territoriales de la Comunitat Valenciana. Gestión centralizada de plantillas, planificación de microciclos, convocatorias de juego e informes de rendimiento.</p>
                     </div>
 
                     <!-- Fichas de Estadísticas Resumen -->
@@ -2188,7 +2188,7 @@
                                 <strong class="stat-value" id="count-players">128</strong>
                                 <span class="stat-trend positive">
                                     <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18" /><polyline points="17 6 23 6 23 12" /></svg>
-                                    +8% esta semana
+                                    +8% este mes
                                 </span>
                             </div>
                             <div class="stat-icon-wrapper">
@@ -2199,8 +2199,8 @@
                         <div class="card-stat">
                             <div class="stat-details">
                                 <span class="stat-title">Convocatorias activas</span>
-                                <strong class="stat-value" id="count-calls">6</strong>
-                                <span class="stat-trend neutral">Activas en el mes</span>
+                                <strong class="stat-value" id="count-calls">3</strong>
+                                <span class="stat-trend neutral">Planificadas</span>
                             </div>
                             <div class="stat-icon-wrapper">
                                 <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
@@ -2220,9 +2220,9 @@
 
                         <div class="card-stat">
                             <div class="stat-details">
-                                <span class="stat-title">Informes pendientes</span>
+                                <span class="stat-title">Informes de Scouting</span>
                                 <strong class="stat-value" id="count-reports">9</strong>
-                                <span class="stat-trend neutral">Evaluaciones</span>
+                                <span class="stat-trend neutral">Registrados</span>
                             </div>
                             <div class="stat-icon-wrapper">
                                 <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>
@@ -2232,8 +2232,7 @@
 
                     <!-- Contenido Secundario -->
                     <div class="split-grid">
-                        
-                        <!-- Columna Izquierda: Gráfico y Próximas Convocatorias -->
+                        <!-- Columna Izquierda: Gráfica y Convocatorias -->
                         <div style="display:flex; flex-direction:column; gap:28px;">
                             <!-- Panel de Gráfico de Rendimiento -->
                             <div class="panel">
@@ -2252,8 +2251,8 @@
                             <div class="panel">
                                 <div class="panel-header">
                                     <h3 class="panel-title">
-                                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
-                                        Próximas convocatorias
+                                        <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>
+                                        Últimas Convocatorias
                                     </h3>
                                     <a href="#convocatorias" class="btn btn-outline btn-sm" onclick="navigateToTab('convocatorias')">Ver Todas</a>
                                 </div>
@@ -2264,7 +2263,7 @@
                             </div>
                         </div>
 
-                        <!-- Columna Derecha: Accesos Rápidos y Últimos Informes -->
+                        <!-- Columna Derecha: Accesos Rápidos, Eventos y Actividad -->
                         <div style="display:flex; flex-direction:column; gap:28px;">
                             
                             <!-- Accesos Rápidos -->
@@ -2272,7 +2271,7 @@
                                 <div class="panel-header">
                                     <h3 class="panel-title">
                                         <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>
-                                        Accesos rápidos
+                                        Accesos Rápidos
                                     </h3>
                                 </div>
                                 <div class="quick-actions-grid">
@@ -2284,22 +2283,35 @@
                                     </div>
                                     <div class="quick-action-card" onclick="openModal('modal-jugador')">
                                         <div class="quick-action-icon">
-                                            <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                                            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                                         </div>
-                                        <span>+ Registrar Jugador</span>
+                                        <span>+ Jugador</span>
                                     </div>
-                                    <div class="quick-action-card" onclick="navigateToTab('sesiones')">
+                                    <div class="quick-action-card" onclick="openModal('modal-sesion')">
                                         <div class="quick-action-icon">
                                             <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /></svg>
                                         </div>
-                                        <span>Nueva Sesión</span>
+                                        <span>+ Sesión</span>
                                     </div>
-                                    <div class="quick-action-card" onclick="navigateToTab('informes')">
+                                    <div class="quick-action-card" onclick="openModal('modal-informe')">
                                         <div class="quick-action-icon">
                                             <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /></svg>
                                         </div>
-                                        <span>Nuevo Informe</span>
+                                        <span>+ Informe</span>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- Próximos Eventos -->
+                            <div class="panel">
+                                <div class="panel-header">
+                                    <h3 class="panel-title">
+                                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+                                        Próximos Eventos
+                                    </h3>
+                                </div>
+                                <div class="list-group" id="dashboard-events-list">
+                                    <!-- Dinámico mediante JS -->
                                 </div>
                             </div>
 
@@ -2308,7 +2320,7 @@
                                 <div class="panel-header">
                                     <h3 class="panel-title">
                                         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-                                        Últimas alertas
+                                        Actividad Reciente
                                     </h3>
                                 </div>
                                 <div class="list-group">
@@ -2318,7 +2330,7 @@
                                         </div>
                                         <div style="flex:1;">
                                             <span style="font-size: 13px; font-weight: 600;">Lesión de Jugador</span>
-                                            <p style="font-size: 11px; color: var(--text-muted);">Carlos Soler (Sub-16) baja médica.</p>
+                                            <p style="font-size: 11px; color: var(--text-muted);">Marc Rodríguez (Sub-16) baja por esguince de tobillo.</p>
                                         </div>
                                         <span style="font-size:11px; color: var(--text-muted);">Hoy</span>
                                     </div>
@@ -2328,8 +2340,8 @@
                                             <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12" /></svg>
                                         </div>
                                         <div style="flex:1;">
-                                            <span style="font-size: 13px; font-weight: 600;">Viaje Coordinado</span>
-                                            <p style="font-size: 11px; color: var(--text-muted);">Autobús reservado para la Sub-14.</p>
+                                            <span style="font-size: 13px; font-weight: 600;">Informe Aprobado</span>
+                                            <p style="font-size: 11px; color: var(--text-muted);">Informe de scouting de Ainhoa Alguacil firmado y archivado.</p>
                                         </div>
                                         <span style="font-size:11px; color: var(--text-muted);">Ayer</span>
                                     </div>
@@ -2348,7 +2360,7 @@
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
                         <div>
                             <h2 style="font-size:24px; color:var(--primary);">Directorio de Jugadores</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Listado general de futbolistas bajo seguimiento técnico para convocatorias de la FFCV.</p>
+                            <p style="color:var(--text-muted); font-size:14px;">Seguimiento técnico individualizado y censo de futbolistas de la Comunitat Valenciana.</p>
                         </div>
                         <button class="btn btn-primary" onclick="openModal('modal-jugador')">
                             <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
@@ -2376,7 +2388,7 @@
                             </select>
                         </div>
 
-                        <span style="font-size: 13px; font-weight: 500; color: var(--text-muted);" id="filter-count-label">Mostrando 6 jugadores</span>
+                        <span style="font-size: 13px; font-weight: 500; color: var(--text-muted);" id="filter-count-label">Mostrando jugadores</span>
                     </div>
 
                     <!-- Tabla de Jugadores -->
@@ -2388,6 +2400,8 @@
                                     <th>Club de Origen</th>
                                     <th>Categoría</th>
                                     <th>Posición Principal</th>
+                                    <th>Año Nac.</th>
+                                    <th>Lateralidad</th>
                                     <th>Partidos FFCV</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
@@ -2404,25 +2418,42 @@
                      B.3 VISTA: CONVOCATORIAS (GESTIÓN ACTIVA)
                      ========================================================================== -->
                 <section class="view" id="view-convocatorias">
-                    <div>
-                        <h2 style="font-size:24px; color:var(--primary);">Convocatorias Activas e Historial</h2>
-                        <p style="color:var(--text-muted); font-size:14px;">Gestión de entrenamientos oficiales y convocatorias para partidos de selecciones territoriales.</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <div>
+                            <h2 style="font-size:24px; color:var(--primary);">Gestión de Convocatorias FFCV</h2>
+                            <p style="color:var(--text-muted); font-size:14px;">Gestión de entrenamientos oficiales, citaciones de partidos y visorias territoriales.</p>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-outline" onclick="generateRandomCallList()">Generar Lista</button>
+                            <button class="btn btn-primary" onclick="openModal('modal-convocatoria')">Crear Convocatoria</button>
+                        </div>
                     </div>
 
                     <div class="convocatorias-grid">
                         
                         <!-- Panel de Lista de Convocatorias -->
                         <div class="panel" style="gap:16px;">
-                            <div class="panel-header">
-                                <h3 class="panel-title">
-                                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /></svg>
-                                    Listado de Convocatorias
-                                </h3>
-                                <button class="btn btn-primary btn-sm" onclick="openModal('modal-convocatoria')">+ Crear Convocatoria</button>
+                            <div class="panel-header" style="border:none; padding:0;">
+                                <h3 class="panel-title">Citaciones Planificadas</h3>
+                                <button class="btn btn-outline btn-sm" onclick="exportCallPDF()">Exportar PDF</button>
                             </div>
                             
-                            <div class="list-group" id="calls-list-container">
-                                <!-- Dinámico en JS -->
+                            <div class="table-responsive" style="border:none; box-shadow:none;">
+                                <table class="data-table" style="font-size:13px;">
+                                    <thead>
+                                        <tr>
+                                            <th>Categoría / Nombre</th>
+                                            <th>Lugar</th>
+                                            <th>Fecha</th>
+                                            <th>Horario</th>
+                                            <th>Citados</th>
+                                            <th>Estado</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="convocatorias-table-body">
+                                        <!-- Dinámico mediante JS -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -2431,7 +2462,7 @@
                             <!-- Dinámico en JS (Muestra el plantel convocado actual) -->
                             <div style="text-align: center; padding: 40px 0; color: var(--text-muted);">
                                 <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" fill="none" stroke-width="1.5" style="margin-bottom:12px; opacity:0.6;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
-                                <p>Haz clic en una convocatoria para visualizar y gestionar el plantel citado.</p>
+                                <p>Selecciona una convocatoria de la tabla para gestionar el plantel citado.</p>
                             </div>
                         </div>
                     </div>
@@ -2446,92 +2477,195 @@
                         <p style="color:var(--text-muted); font-size:14px;">Seguimiento de objetivos tácticos, físicos y coordinativos divididos en fases y microciclos.</p>
                     </div>
 
-                    <div class="planning-grid">
-                        <!-- Microciclo 11 -->
-                        <div class="kanban-column">
-                            <div class="kanban-header">
-                                <span>Microciclo 11 (Completado)</span>
-                                <span class="tag tag-success btn-sm" style="font-size:10px;">Cerrado</span>
-                            </div>
-                            
-                            <div class="kanban-card">
-                                <span class="tag tag-info btn-sm" style="width:fit-content; font-size:10px;">Física</span>
-                                <strong style="font-size:14px; color:var(--primary);">Acondicionamiento Aeróbico</strong>
-                                <p style="font-size:12px; color:var(--text-muted);">Foco en resistencia general y transiciones medias.</p>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
-                                    <span>Progreso</span>
-                                    <strong>100%</strong>
-                                </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill" style="width: 100%; background-color: var(--success);"></div>
-                                </div>
-                            </div>
+                    <div class="tactical-menu-tabs" style="margin-top: 10px;">
+                        <button class="tactical-tab active" onclick="switchPlanningSubTab('anual', this)">Planificación Anual</button>
+                        <button class="tactical-tab" onclick="switchPlanningSubTab('mensual', this)">Planificación Mensual</button>
+                        <button class="tactical-tab" onclick="switchPlanningSubTab('campeonatos', this)">Próximos Campeonatos</button>
+                        <button class="tactical-tab" onclick="switchPlanningSubTab('entrenamientos', this)">Microciclos Activos</button>
+                    </div>
 
-                            <div class="kanban-card">
-                                <span class="tag tag-warning btn-sm" style="width:fit-content; font-size:10px;">Táctica</span>
-                                <strong style="font-size:14px; color:var(--primary);">Repliegue Defensivo</strong>
-                                <p style="font-size:12px; color:var(--text-muted);">Bloque bajo y coordinación de basculación en línea de 4.</p>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
-                                    <span>Progreso</span>
-                                    <strong>100%</strong>
+                    <!-- Panel Anual -->
+                    <div class="planning-sub-view" id="planning-anual">
+                        <div class="panel">
+                            <h3 class="panel-title">Fases Competitivas Anuales - Temporada 2026/2027</h3>
+                            <div style="display:flex; flex-direction:column; gap:16px; margin-top:10px;">
+                                <div class="list-item">
+                                    <div class="item-details">
+                                        <span class="item-title" style="font-size:15px; font-weight:700;">Fase 1: Convocatorias, Captación y Visados (Septiembre - Octubre)</span>
+                                        <span class="item-sub">Entrenamientos en Picassent y partidos amistosos contra escuelas conveniadas para consolidar la preselección.</span>
+                                    </div>
+                                    <span class="tag tag-success">Completada</span>
                                 </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill" style="width: 100%; background-color: var(--success);"></div>
+                                <div class="list-item">
+                                    <div class="item-details">
+                                        <span class="item-title" style="font-size:15px; font-weight:700;">Fase 2: Primera Fase del Campeonato de España (Noviembre - Diciembre)</span>
+                                        <span class="item-sub">Encuentros oficiales territoriales del CNSA. El objetivo es clasificar al grupo Oro de la RFEF.</span>
+                                    </div>
+                                    <span class="tag tag-info">En Curso</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="item-details">
+                                        <span class="item-title" style="font-size:15px; font-weight:700;">Fase 3: Fase Oro / Fase Plata CNSA (Febrero - Marzo)</span>
+                                        <span class="item-sub">Enfrentamientos competitivos contra los mejores clasificados de otras autonomías de España.</span>
+                                    </div>
+                                    <span class="tag tag-warning">Planificado</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="item-details">
+                                        <span class="item-title" style="font-size:15px; font-weight:700;">Fase 4: Fase Final - Play Offs del CNSA (Mayo - Junio)</span>
+                                        <span class="item-sub">Concentración táctica autonómica, disputa de semifinales y finales nacionales por el título español RFEF.</span>
+                                    </div>
+                                    <span class="tag tag-danger" style="background-color: var(--border-color); color: var(--text-muted);">Pendiente</span>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Microciclo 12 -->
-                        <div class="kanban-column">
-                            <div class="kanban-header">
-                                <span>Microciclo 12 (Actual)</span>
-                                <span class="tag tag-warning btn-sm" style="font-size:10px;">En Curso</span>
-                            </div>
-
-                            <div class="kanban-card" onclick="showToast('Editando Microciclo 12: Presión Tras Pérdida', 'info')">
-                                <span class="tag tag-warning btn-sm" style="width:fit-content; font-size:10px;">Táctica</span>
-                                <strong style="font-size:14px; color:var(--primary);">Presión Tras Pérdida</strong>
-                                <p style="font-size:12px; color:var(--text-muted);">Reducción de espacios tras pérdida en zona 3. Acoso rápido al poseedor.</p>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
-                                    <span>Progreso</span>
-                                    <strong>75%</strong>
+                    <!-- Panel Mensual -->
+                    <div class="planning-sub-view" id="planning-mensual" style="display:none;">
+                        <div class="panel">
+                            <h3 class="panel-title">Foco de Planificación del Mes de Junio 2026</h3>
+                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-top:10px;">
+                                <div class="panel" style="padding:20px; background-color:var(--bg-app); border:1px solid var(--border-color); box-shadow:none;">
+                                    <span class="tag tag-info" style="font-size:10px; width:fit-content; margin-bottom:8px;">Semana 1</span>
+                                    <strong style="font-size:15px; color:var(--primary); display:block;">Puesta a Punto</strong>
+                                    <p style="font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.5;">Pruebas de esfuerzo y test físicos de velocidad con GPS en Picassent.</p>
                                 </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill" style="width: 75%;"></div>
+                                <div class="panel" style="padding:20px; background-color:var(--bg-app); border:1px solid var(--border-color); box-shadow:none;">
+                                    <span class="tag tag-warning" style="font-size:10px; width:fit-content; margin-bottom:8px;">Semana 2</span>
+                                    <strong style="font-size:15px; color:var(--primary); display:block;">Salida en Corto</strong>
+                                    <p style="font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.5;">Táctica defensiva y progresión con balón buscando al tercer hombre.</p>
                                 </div>
-                            </div>
-
-                            <div class="kanban-card" onclick="showToast('Editando Microciclo 12: Fuerza Explosiva', 'info')">
-                                <span class="tag tag-info btn-sm" style="width:fit-content; font-size:10px;">Física</span>
-                                <strong style="font-size:14px; color:var(--primary);">Fuerza Explosiva</strong>
-                                <p style="font-size:12px; color:var(--text-muted);">Transferencia en saltos pliométricos y sprints de 5 metros.</p>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
-                                    <span>Progreso</span>
-                                    <strong>40%</strong>
+                                <div class="panel" style="padding:20px; background-color:var(--bg-app); border:1px solid var(--border-color); box-shadow:none;">
+                                    <span class="tag tag-success" style="font-size:10px; width:fit-content; margin-bottom:8px;">Semana 3</span>
+                                    <strong style="font-size:15px; color:var(--primary); display:block;">ABP Estrategia</strong>
+                                    <p style="font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.5;">Saques de esquina zonales, bloqueos en faltas y jugadas ensayadas.</p>
                                 </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill" style="width: 40%;"></div>
+                                <div class="panel" style="padding:20px; background-color:var(--bg-app); border:1px solid var(--border-color); box-shadow:none;">
+                                    <span class="tag tag-danger" style="font-size:10px; background-color: var(--border-color); color: var(--text-muted); margin-bottom:8px;">Semana 4</span>
+                                    <strong style="font-size:15px; color:var(--primary); display:block;">Amistoso Técnico</strong>
+                                    <p style="font-size:12px; color:var(--text-muted); margin-top:6px; line-height:1.5;">Concentración de 3 días y partido preparatorio de entrenamiento.</p>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Microciclo 13 -->
-                        <div class="kanban-column">
-                            <div class="kanban-header">
-                                <span>Microciclo 13 (Siguiente)</span>
-                                <span class="tag tag-danger btn-sm" style="font-size:10px; background-color: var(--border-color); color: var(--text-muted);">Pendiente</span>
+                    <!-- Panel Campeonatos -->
+                    <div class="planning-sub-view" id="planning-campeonatos" style="display:none;">
+                        <div class="panel">
+                            <h3 class="panel-title">Torneos y Campeonatos Nacionales RFEF Habilitados</h3>
+                            <div style="display:flex; flex-direction:column; gap:12px; margin-top:10px;">
+                                <div class="list-item">
+                                    <div class="item-details">
+                                        <span class="item-title" style="font-size:15px; font-weight:700;">Campeonato de España de Selecciones Autonómicas Sub-16 (CNSA)</span>
+                                        <span class="item-sub">Lugar: Zaragoza (Aragón) · Fechas: 24 al 28 de Noviembre de 2026 · Meta: Clasificar en el Grupo Oro RFEF.</span>
+                                    </div>
+                                    <span class="tag tag-warning">Sub-16 Masc</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="item-details">
+                                        <span class="item-title" style="font-size:15px; font-weight:700;">Fase Oro Nacional Femenina Sub-14 y Sub-16</span>
+                                        <span class="item-sub">Lugar: Las Rozas (Madrid) · Fechas: 12 al 15 de Febrero de 2027 · Meta: Avanzar a la Final Four Nacional.</span>
+                                    </div>
+                                    <span class="tag tag-success">Sub-14/16 Fem</span>
+                                </div>
+                                <div class="list-item">
+                                    <div class="item-details">
+                                        <span class="item-title" style="font-size:15px; font-weight:700;">Fase Final Oro Masculina CNSA Cadete e Infantil</span>
+                                        <span class="item-sub">Lugar: Sede por determinar · Fechas: 18 al 21 de Junio de 2027 · Meta: Disputar el Título Nacional de España.</span>
+                                    </div>
+                                    <span class="tag tag-info">Sub-14/16 Masc</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Panel Microciclos Activos (antiguo kanban) -->
+                    <div class="planning-sub-view" id="planning-entrenamientos" style="display:none;">
+                        <div class="planning-grid">
+                            <div class="kanban-column">
+                                <div class="kanban-header">
+                                    <span>Microciclo 11 (Completado)</span>
+                                    <span class="tag tag-success btn-sm" style="font-size:10px;">Cerrado</span>
+                                </div>
+                                
+                                <div class="kanban-card">
+                                    <span class="tag tag-info btn-sm" style="width:fit-content; font-size:10px;">Física</span>
+                                    <strong style="font-size:14px; color:var(--primary);">Acondicionamiento Aeróbico</strong>
+                                    <p style="font-size:12px; color:var(--text-muted);">Foco en resistencia general y transiciones medias.</p>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
+                                        <span>Progreso</span>
+                                        <strong>100%</strong>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar-fill" style="width: 100%; background-color: var(--success);"></div>
+                                    </div>
+                                </div>
+
+                                <div class="kanban-card">
+                                    <span class="tag tag-warning btn-sm" style="width:fit-content; font-size:10px;">Táctica</span>
+                                    <strong style="font-size:14px; color:var(--primary);">Repliegue Defensivo</strong>
+                                    <p style="font-size:12px; color:var(--text-muted);">Bloque bajo y coordinación de basculación en línea de 4.</p>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
+                                        <span>Progreso</span>
+                                        <strong>100%</strong>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar-fill" style="width: 100%; background-color: var(--success);"></div>
+                                    </div>
+                                </div>
                             </div>
 
-                            <div class="kanban-card">
-                                <span class="tag tag-success btn-sm" style="width:fit-content; font-size:10px;">ABP</span>
-                                <strong style="font-size:14px; color:var(--primary);">Saques de Esquina</strong>
-                                <p style="font-size:12px; color:var(--text-muted);">Defensa zonal vs mixta y jugadas ensayadas al segundo palo.</p>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
-                                    <span>Progreso</span>
-                                    <strong>0%</strong>
+                            <div class="kanban-column">
+                                <div class="kanban-header">
+                                    <span>Microciclo 12 (Actual)</span>
+                                    <span class="tag tag-warning btn-sm" style="font-size:10px;">En Curso</span>
                                 </div>
-                                <div class="progress-bar-container">
-                                    <div class="progress-bar-fill" style="width: 0%;"></div>
+
+                                <div class="kanban-card" onclick="showToast('Editando Microciclo 12: Presión Tras Pérdida', 'info')">
+                                    <span class="tag tag-warning btn-sm" style="width:fit-content; font-size:10px;">Táctica</span>
+                                    <strong style="font-size:14px; color:var(--primary);">Presión Tras Pérdida</strong>
+                                    <p style="font-size:12px; color:var(--text-muted);">Reducción de espacios tras pérdida en zona 3. Acoso rápido al poseedor.</p>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
+                                        <span>Progreso</span>
+                                        <strong>75%</strong>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar-fill" style="width: 75%;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="kanban-card" onclick="showToast('Editando Microciclo 12: Fuerza Explosiva', 'info')">
+                                    <span class="tag tag-info btn-sm" style="width:fit-content; font-size:10px;">Física</span>
+                                    <strong style="font-size:14px; color:var(--primary);">Fuerza Explosiva</strong>
+                                    <p style="font-size:12px; color:var(--text-muted);">Transferencia en saltos pliométricos y sprints de 5 metros.</p>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
+                                        <span>Progreso</span>
+                                        <strong>40%</strong>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar-fill" style="width: 40%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="kanban-column">
+                                <div class="kanban-header">
+                                    <span>Microciclo 13 (Siguiente)</span>
+                                    <span class="tag tag-danger btn-sm" style="font-size:10px; background-color: var(--border-color); color: var(--text-muted);">Pendiente</span>
+                                </div>
+
+                                <div class="kanban-card">
+                                    <span class="tag tag-success btn-sm" style="width:fit-content; font-size:10px;">ABP</span>
+                                    <strong style="font-size:14px; color:var(--primary);">Saques de Esquina</strong>
+                                    <p style="font-size:12px; color:var(--text-muted);">Defensa zonal vs mixta y jugadas ensayadas al segundo palo.</p>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; margin-top:8px;">
+                                        <span>Progreso</span>
+                                        <strong>0%</strong>
+                                    </div>
+                                    <div class="progress-bar-container">
+                                        <div class="progress-bar-fill" style="width: 0%;"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -2545,10 +2679,10 @@
                     <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
                         <div>
                             <h2 style="font-size:24px; color:var(--primary);">Sesiones de Entrenamiento</h2>
-                            <p style="color:var(--text-muted); font-size:14px;">Catálogo y plantillas de planificación diaria listas para aplicar en el terreno de juego.</p>
+                            <p style="color:var(--text-muted); font-size:14px;">Catálogo y plantillas de hojas de sesión diarias listas para aplicar en el terreno de juego.</p>
                         </div>
-                        <button class="btn btn-primary" onclick="showToast('Nueva plantilla de sesión iniciada', 'info')">
-                            Nueva Sesión
+                        <button class="btn btn-primary" onclick="openModal('modal-sesion')">
+                            Crear Hoja de Sesión
                         </button>
                     </div>
 
@@ -2603,6 +2737,18 @@
                                         <span class="tactic-card-title">ABP Estrategia</span>
                                         <span class="tactic-card-desc">Saques de esquina zonales, bloqueos en faltas y jugadas ensayadas.</span>
                                     </div>
+                                    <div class="tactic-card" onclick="selectTacticPhase('plan', this)" style="grid-column: span 2;">
+                                        <span class="tactic-card-title">Plan de Partido</span>
+                                        <span class="tactic-card-desc">Modificaciones estratégicas de posicionamiento prioritarias según el rival citado.</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel">
+                                <h3 class="panel-title">Directrices Metodológicas</h3>
+                                <div id="tactic-phase-details" style="font-size:13px; color:var(--text-main); line-height:1.6; margin-top:4px;">
+                                    <strong>Principios Ofensivos FFCV:</strong>
+                                    <p style="margin-top:6px; color:var(--text-muted);">1. Amplitud máxima de extremos para estirar la defensa rival.<br>2. Salida de 3 con mediocentro retrasándose para recibir.<br>3. Progresión progresiva buscando al tercer hombre en zona 2.</p>
                                 </div>
                             </div>
                         </div>
@@ -2644,9 +2790,14 @@
                      B.6 VISTA: INFORMES (SCOUTING E INDIVIDUALES)
                      ========================================================================== -->
                 <section class="view" id="view-informes">
-                    <div>
-                        <h2 style="font-size:24px; color:var(--primary);">Informes Técnicos</h2>
-                        <p style="color:var(--text-muted); font-size:14px;">Evaluaciones individuales de jugadores de la Comunitat Valenciana y análisis de equipos rivales.</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <div>
+                            <h2 style="font-size:24px; color:var(--primary);">Informes Técnicos de Scouting</h2>
+                            <p style="color:var(--text-muted); font-size:14px;">Evaluaciones individuales de jugadores de la Comunitat Valenciana y análisis de equipos rivales.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal('modal-informe')">
+                            Crear Informe
+                        </button>
                     </div>
 
                     <div class="reports-grid" id="reports-container">
@@ -2678,37 +2829,53 @@
                             </div>
                         </div>
 
-                        <!-- Sidebar del Calendario (Añadir evento) -->
-                        <div class="panel">
-                            <h3 class="panel-title">Programar Evento</h3>
-                            
-                            <form id="form-calendar-event" onsubmit="addCalendarEvent(event)">
-                                <div class="form-group" style="margin-bottom:12px;">
-                                    <label class="form-label" for="event-title">Nombre del Evento</label>
-                                    <input type="text" class="form-input" id="event-title" required placeholder="Ej: Amistoso vs Catalunya" />
-                                </div>
-
-                                <div class="form-group" style="margin-bottom:12px;">
-                                    <label class="form-label" for="event-date">Fecha</label>
-                                    <input type="date" class="form-input" id="event-date" required value="2026-06-12" />
-                                </div>
-
-                                <div class="form-group" style="margin-bottom:12px;">
-                                    <label class="form-label" for="event-type">Tipo de Evento</label>
-                                    <select class="form-select" id="event-type">
-                                        <option value="match">Partido Oficial / Amistoso</option>
-                                        <option value="training">Entrenamiento Selección</option>
-                                        <option value="scouting">Visionado / Captación</option>
+                        <!-- Sidebar del Calendario (Filtro y Programación) -->
+                        <div style="display:flex; flex-direction:column; gap:20px;">
+                            <div class="panel">
+                                <h3 class="panel-title">Filtros de Eventos</h3>
+                                <div class="form-group" style="margin-top:4px;">
+                                    <select class="form-select" id="calendar-event-filter" onchange="renderCalendar()">
+                                        <option value="ALL">Mostrar todos los eventos</option>
+                                        <option value="match">Partidos Oficiales</option>
+                                        <option value="training">Entrenamientos Selección</option>
+                                        <option value="scouting">Visionados / Captación</option>
+                                        <option value="staff">Reuniones de Staff</option>
                                     </select>
                                 </div>
+                            </div>
 
-                                <div class="form-group" style="margin-bottom:18px;">
-                                    <label class="form-label" for="event-location">Lugar</label>
-                                    <input type="text" class="form-input" id="event-location" required placeholder="Ej: Camp de Picassent" />
-                                </div>
+                            <div class="panel">
+                                <h3 class="panel-title">Programar Evento</h3>
+                                
+                                <form id="form-calendar-event" onsubmit="addCalendarEvent(event)">
+                                    <div class="form-group" style="margin-bottom:12px;">
+                                        <label class="form-label" for="event-title">Nombre del Evento</label>
+                                        <input type="text" class="form-input" id="event-title" required placeholder="Ej: Amistoso vs Catalunya" />
+                                    </div>
 
-                                <button type="submit" class="btn btn-primary" style="width:100%;">Agregar al Calendario</button>
-                            </form>
+                                    <div class="form-group" style="margin-bottom:12px;">
+                                        <label class="form-label" for="event-date">Fecha</label>
+                                        <input type="date" class="form-input" id="event-date" required value="2026-06-12" />
+                                    </div>
+
+                                    <div class="form-group" style="margin-bottom:12px;">
+                                        <label class="form-label" for="event-type">Tipo de Evento</label>
+                                        <select class="form-select" id="event-type">
+                                            <option value="match">Partido Oficial / Amistoso</option>
+                                            <option value="training">Entrenamiento Selección</option>
+                                            <option value="scouting">Visionado / Captación</option>
+                                            <option value="staff">Reunión de Staff</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group" style="margin-bottom:18px;">
+                                        <label class="form-label" for="event-location">Lugar</label>
+                                        <input type="text" class="form-input" id="event-location" required placeholder="Ej: Camp de Picassent" />
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary" style="width:100%;">Agregar al Calendario</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -2729,120 +2896,7 @@
                     </div>
 
                     <div class="staff-grid" id="staff-grid-container">
-                        <div class="staff-card">
-                            <div class="staff-photo-container">RM</div>
-                            <div class="staff-info-block">
-                                <span class="staff-role-badge">Seleccionador</span>
-                                <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">Rubén Mora</h4>
-                                <span style="font-size:12px; color:var(--text-muted);">Selección Masculina Sub-16</span>
-                            </div>
-                            <div class="staff-meta-list">
-                                <div class="staff-meta-item">
-                                    <span>Licencia:</span>
-                                    <strong>UEFA Pro</strong>
-                                </div>
-                                <div class="staff-meta-item">
-                                    <span>Partidos dirigidos:</span>
-                                    <strong>42</strong>
-                                </div>
-                                <div class="staff-meta-item">
-                                    <span>Antigüedad:</span>
-                                    <strong>3 años</strong>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="staff-card">
-                            <div class="staff-photo-container">VA</div>
-                            <div class="staff-info-block">
-                                <span class="staff-role-badge" style="background-color: var(--info-light); color: var(--info);">Segundo Entrenador</span>
-                                <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">Vicente Ampudia</h4>
-                                <span style="font-size:12px; color:var(--text-muted);">Selección Masculina Sub-16</span>
-                            </div>
-                            <div class="staff-meta-list">
-                                <div class="staff-meta-item">
-                                    <span>Licencia:</span>
-                                    <strong>UEFA A</strong>
-                                </div>
-                                <div class="staff-meta-item">
-                                    <span>Especialidad:</span>
-                                    <strong>Táctica y ABP</strong>
-                                </div>
-                                <div class="staff-meta-item">
-                                    <span>Antigüedad:</span>
-                                    <strong>1 año</strong>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="staff-card">
-                            <div class="staff-photo-container">JM</div>
-                            <div class="staff-info-block">
-                                <span class="staff-role-badge" style="background-color: #e6f4ea; color: #137333;">Preparador Físico</span>
-                                <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">Jose Mascarós</h4>
-                                <span style="font-size:12px; color:var(--text-muted);">Coordinación General Física</span>
-                            </div>
-                            <div class="staff-meta-list">
-                                <div class="staff-meta-item">
-                                    <span>Titulación:</span>
-                                    <strong>Grado CCAFD</strong>
-                                </div>
-                                <div class="staff-meta-item">
-                                    <span>Especialidad:</span>
-                                    <strong>Pliometría / GPS</strong>
-                                </div>
-                                <div class="staff-meta-item">
-                                    <span>Antigüedad:</span>
-                                    <strong>4 años</strong>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="staff-card">
-                            <div class="staff-photo-container">SG</div>
-                            <div class="staff-info-block">
-                                <span class="staff-role-badge" style="background-color: #fef7e0; color: #b06000;">Analista Técnico</span>
-                                <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">Sara Gómez</h4>
-                                <span style="font-size:12px; color:var(--text-muted);">Video-análisis y Big Data</span>
-                            </div>
-                            <div class="staff-meta-list">
-                                <div class="staff-meta-item">
-                                    <span>Software:</span>
-                                    <strong>Longomatch / Nacsport</strong>
-                                </div>
-                                <div class="staff-meta-item">
-                                    <span>Evaluaciones:</span>
-                                    <strong>120+ Jugadores</strong>
-                                </div>
-                                <div class="staff-meta-item">
-                                    <span>Antigüedad:</span>
-                                    <strong>2 años</strong>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="staff-card">
-                            <div class="staff-photo-container">VA</div>
-                            <div class="staff-info-block">
-                                <span class="staff-role-badge" style="background-color: #fce8e6; color: #c5221f;">Delegado</span>
-                                <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">Vicente Alapont</h4>
-                                <span style="font-size:12px; color:var(--text-muted);">Logística y Desplazamientos</span>
-                            </div>
-                            <div class="staff-meta-list">
-                                <div class="staff-meta-item">
-                                    <span>Gestión:</span>
-                                    <strong>Viajes e Inscripciones</strong>
-                                </div>
-                                <div class="staff-meta-item">
-                                    <span>Licencia RFEF:</span>
-                                    <strong>Delegado de Campo</strong>
-                                </div>
-                                <div class="staff-meta-item">
-                                    <span>Antigüedad:</span>
-                                    <strong>8 años</strong>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Dinámico mediante JS -->
                     </div>
                 </section>
 
@@ -2858,56 +2912,119 @@
                     </div>
 
                     <div class="docs-layout">
-                        <div style="display:flex; flex-direction:column; gap:28px;">
+                        <!-- Categorías y Archivos (Collapsible Folders) -->
+                        <div style="display:flex; flex-direction:column; gap:20px;">
+                            
+                            <!-- Folder 1: Modelo de Juego -->
                             <div class="doc-category-card">
-                                <h3 class="panel-title" style="border-bottom:1px solid var(--border-color); padding-bottom:12px;">📄 Documentación de Convocatorias</h3>
-                                <div class="doc-list">
+                                <h3 class="panel-title" style="cursor:pointer;" onclick="toggleFolder('folder-modelo')">
+                                    📁 Modelo de Juego FFCV
+                                </h3>
+                                <div class="doc-list" id="folder-modelo" style="display:block;">
                                     <div class="doc-row">
                                         <div class="doc-meta">
                                             <div class="doc-icon-wrapper">PDF</div>
                                             <div>
-                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Autorización de Convocatoria de Menores</span>
-                                                <p style="font-size:11px; color:var(--text-muted);">Obligatorio para jugadores infantiles y cadetes · 245 KB</p>
+                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Filosofía y Metodología Táctica FFCV</span>
+                                                <p style="font-size:11px; color:var(--text-muted);">Pautas ofensivas, defensivas y modelo asociativo general · 2.4 MB</p>
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando plantilla de autorización...', 'success')">Descargar</button>
-                                    </div>
-                                    <div class="doc-row">
-                                        <div class="doc-meta">
-                                            <div class="doc-icon-wrapper">DOCX</div>
-                                            <div>
-                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Protocolo Logístico y Concentraciones</span>
-                                                <p style="font-size:11px; color:var(--text-muted);">Normativas de hotel, autobús y vestimenta · 128 KB</p>
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando protocolo logístico...', 'success')">Descargar</button>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando metodología táctica...', 'success')">Descargar</button>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Folder 2: Modelo de Entrenamiento -->
                             <div class="doc-category-card">
-                                <h3 class="panel-title" style="border-bottom:1px solid var(--border-color); padding-bottom:12px;">📊 Plantillas de Sesiones y Scouting</h3>
-                                <div class="doc-list" id="uploaded-files-container">
+                                <h3 class="panel-title" style="cursor:pointer;" onclick="toggleFolder('folder-entrenamiento')">
+                                    📁 Modelo de Entrenamiento
+                                </h3>
+                                <div class="doc-list" id="folder-entrenamiento" style="display:block;">
                                     <div class="doc-row">
                                         <div class="doc-meta">
                                             <div class="doc-icon-wrapper">PDF</div>
                                             <div>
-                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Ficha de Pizarra de Sesión RFEF</span>
-                                                <p style="font-size:11px; color:var(--text-muted);">Plantilla estándar para diseño gráfico de bloques · 512 KB</p>
+                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Pautas de Diseño de Tareas y Microciclos</span>
+                                                <p style="font-size:11px; color:var(--text-muted);">Estructuración de rondos, partidos condicionados e intensidad · 1.5 MB</p>
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando ficha de pizarra...', 'success')">Descargar</button>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando pautas de diseño...', 'success')">Descargar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Folder 3: Protocolos de Convocatoria -->
+                            <div class="doc-category-card">
+                                <h3 class="panel-title" style="cursor:pointer;" onclick="toggleFolder('folder-protocolos')">
+                                    📁 Protocolos de Convocatoria
+                                </h3>
+                                <div class="doc-list" id="folder-protocolos" style="display:block;">
+                                    <div class="doc-row">
+                                        <div class="doc-meta">
+                                            <div class="doc-icon-wrapper">PDF</div>
+                                            <div>
+                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Código de Conducta y Logística de Desplazamientos</span>
+                                                <p style="font-size:11px; color:var(--text-muted);">Normativas de hotel, autobús, uniformes oficiales FFCV · 512 KB</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando código de conducta...', 'success')">Descargar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Folder 4: Plantillas de Informe -->
+                            <div class="doc-category-card">
+                                <h3 class="panel-title" style="cursor:pointer;" onclick="toggleFolder('folder-plantillas')">
+                                    📁 Plantillas de Informe (Scouting)
+                                </h3>
+                                <div class="doc-list" id="folder-plantillas" style="display:block;">
+                                    <div class="doc-row">
+                                        <div class="doc-meta">
+                                            <div class="doc-icon-wrapper">XLSX</div>
+                                            <div>
+                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Plantilla Ficha de Scouting de Futbolista RFEF</span>
+                                                <p style="font-size:11px; color:var(--text-muted);">Formato Excel de evaluación técnica e individual por radar · 850 KB</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando plantilla de scouting...', 'success')">Descargar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Folder 5: Documentación Médica -->
+                            <div class="doc-category-card">
+                                <h3 class="panel-title" style="cursor:pointer;" onclick="toggleFolder('folder-medica')">
+                                    📁 Documentación Médica y Autorizaciones
+                                </h3>
+                                <div class="doc-list" id="folder-medica" style="display:block;">
+                                    <div class="doc-row">
+                                        <div class="doc-meta">
+                                            <div class="doc-icon-wrapper">DOCX</div>
+                                            <div>
+                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Autorización de Cesión de Datos y Consentimiento de Menores</span>
+                                                <p style="font-size:11px; color:var(--text-muted);">Autorización oficial de padres/tutores requerida por la FFCV · 245 KB</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando consentimiento de menores...', 'success')">Descargar</button>
                                     </div>
                                     <div class="doc-row">
                                         <div class="doc-meta">
-                                            <div class="doc-icon-wrapper">EXCEL</div>
+                                            <div class="doc-icon-wrapper">PDF</div>
                                             <div>
-                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Hoja de Scouting Individual de Porteros</span>
-                                                <p style="font-size:11px; color:var(--text-muted);">Métricas específicas de blocaje y juego aéreo · 1.2 MB</p>
+                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Ficha Médica y Seguro Federativo Oficial</span>
+                                                <p style="font-size:11px; color:var(--text-muted);">Formulario clínico básico para convocatorias · 312 KB</p>
                                             </div>
                                         </div>
-                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando plantilla de porteros...', 'success')">Descargar</button>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando ficha médica...', 'success')">Descargar</button>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- Uploaded Files Section -->
+                            <div class="doc-category-card" id="uploaded-folder-card" style="display:none;">
+                                <h3 class="panel-title">📂 Documentos Subidos Recientemente</h3>
+                                <div class="doc-list" id="uploaded-files-container">
+                                    <!-- Dinámico mediante JS -->
                                 </div>
                             </div>
                         </div>
@@ -2939,24 +3056,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="panel">
-                                <h3 class="panel-title">Últimas circulares</h3>
-                                <div class="list-group">
-                                    <div class="list-item" style="padding:10px 14px; background:none; border:none; border-bottom:1px solid var(--border-color); border-radius:0;">
-                                        <div style="flex:1;">
-                                            <span style="font-size:13px; font-weight:600; color:var(--primary);">Circular 12: Temporada 26/27</span>
-                                            <p style="font-size:11px; color:var(--text-muted);">Normas de captación de escuelas.</p>
-                                        </div>
-                                    </div>
-                                    <div class="list-item" style="padding:10px 14px; background:none; border:none; border-bottom:1px solid var(--border-color); border-radius:0;">
-                                        <div style="flex:1;">
-                                            <span style="font-size:13px; font-weight:600; color:var(--primary);">Circular 15: Convocatorias RFEF</span>
-                                            <p style="font-size:11px; color:var(--text-muted);">Modificaciones de dietas e inscripciones.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </section>
@@ -2965,89 +3064,240 @@
                      B.8 VISTA: CONFIGURACIÓN (PERFILES Y PREFERENCIAS)
                      ========================================================================== -->
                 <section class="view" id="view-configuracion">
-                    <div>
-                        <h2 style="font-size:24px; color:var(--primary);">Configuración del Sistema</h2>
-                        <p style="color:var(--text-muted); font-size:14px;">Ajustes del perfil del cuerpo técnico, selección de categorías activas y preferencias del sistema.</p>
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <div>
+                            <h2 style="font-size:24px; color:var(--primary);">Configuración del Sistema</h2>
+                            <p style="color:var(--text-muted); font-size:14px;">Administración de categorías, roles, permisos y datos de usuario del portal técnico.</p>
+                        </div>
                     </div>
 
-                    <div class="settings-layout">
-                        <!-- Ajustes de Perfil -->
+                    <div class="tactical-menu-tabs" style="margin-top: 10px;">
+                        <button class="tactical-tab active" onclick="switchConfigSubTab('config-categorias', this)">Categorías</button>
+                        <button class="tactical-tab" onclick="switchConfigSubTab('config-temporada', this)">Temporada</button>
+                        <button class="tactical-tab" onclick="switchConfigSubTab('config-roles', this)">Roles</button>
+                        <button class="tactical-tab" onclick="switchConfigSubTab('config-permisos', this)">Permisos</button>
+                        <button class="tactical-tab" onclick="switchConfigSubTab('config-generales', this)">Datos Generales y Perfil</button>
+                    </div>
+
+                    <!-- Pestaña Categorías -->
+                    <div class="config-sub-view" id="config-categorias">
                         <div class="panel">
-                            <h3 class="panel-title">Perfil Técnico Personal</h3>
-                            <div class="form-row-grid">
-                                <div class="form-group">
-                                    <label class="form-label" for="config-name">Nombre Completo</label>
-                                    <input type="text" class="form-input" id="config-name" value="Israel Jordá" />
+                            <h3 class="panel-title">Gestión de Categorías Oficiales FFCV</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Estas categorías se utilizarán para clasificar a los jugadores y programar convocatorias.</p>
+                            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:24px; min-height: 250px;">
+                                <div>
+                                    <div class="table-responsive" style="border:1px solid var(--border-color); border-radius:var(--radius-md);">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Categoría</th>
+                                                    <th>Descripción</th>
+                                                    <th>Estado</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="config-categories-tbody">
+                                                <tr>
+                                                    <td><strong>Sub-12</strong></td>
+                                                    <td>Alevines de segundo año de la Comunitat Valenciana</td>
+                                                    <td><span class="tag tag-success">Activo</span></td>
+                                                    <td><button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:transparent;" onclick="showToast('No se puede eliminar una categoría base oficial', 'danger')">Desactivar</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Sub-14</strong></td>
+                                                    <td>Infantiles autonómicos masculinos y femeninos</td>
+                                                    <td><span class="tag tag-success">Activo</span></td>
+                                                    <td><button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:transparent;" onclick="showToast('No se puede eliminar una categoría base oficial', 'danger')">Desactivar</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Sub-16</strong></td>
+                                                    <td>Cadetes autonómicos. Categoría principal de captación RFEF</td>
+                                                    <td><span class="tag tag-success">Activo</span></td>
+                                                    <td><button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:transparent;" onclick="showToast('No se puede eliminar una categoría base oficial', 'danger')">Desactivar</button></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><strong>Sub-19</strong></td>
+                                                    <td>Juveniles nacionales y autonómicos. Última etapa formativa</td>
+                                                    <td><span class="tag tag-success">Activo</span></td>
+                                                    <td><button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:transparent;" onclick="showToast('No se puede eliminar una categoría base oficial', 'danger')">Desactivar</button></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="config-role">Cargo Técnico</label>
-                                    <input type="text" class="form-input" id="config-role" value="Director Deportivo" />
+                                <div class="panel" style="background-color:var(--bg-app); border:1px solid var(--border-color); box-shadow:none; align-self: flex-start;">
+                                    <h4 style="font-size:14px; font-weight:600; color:var(--primary); margin-bottom:10px;">Nueva Categoría</h4>
+                                    <form onsubmit="event.preventDefault(); showToast('Categoría creada temporalmente en la sesión', 'success');">
+                                        <div class="form-group" style="margin-bottom:12px;">
+                                            <label class="form-label" style="font-size:11px;">Nombre de Categoría</label>
+                                            <input type="text" class="form-input" placeholder="Ej: Sub-17" required />
+                                        </div>
+                                        <div class="form-group" style="margin-bottom:16px;">
+                                            <label class="form-label" style="font-size:11px;">Descripción</label>
+                                            <textarea class="form-input" style="height:60px; font-family:inherit; font-size:12px;" placeholder="Detalles de la categoría..."></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-sm" style="width:100%;">Agregar Categoría</button>
+                                    </form>
                                 </div>
-                            </div>
-                            <div class="form-row-grid">
-                                <div class="form-group">
-                                    <label class="form-label" for="config-email">Correo Electrónico</label>
-                                    <input type="email" class="form-input" id="config-email" value="israeljorda@ffcv.es" />
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label" for="config-license">Licencia RFEF</label>
-                                    <input type="text" class="form-input" id="config-license" value="UEFA PRO - 98218" />
-                                </div>
-                            </div>
-                            <div>
-                                <button class="btn btn-primary" onclick="saveProfileSettings()">Guardar Cambios de Perfil</button>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Preferencias Generales -->
+                    <!-- Pestaña Temporada -->
+                    <div class="config-sub-view" id="config-temporada" style="display:none;">
                         <div class="panel">
-                            <h3 class="panel-title">Notificaciones y Sistema</h3>
-                            
-                            <div class="switch-container">
-                                <div class="switch-label">
-                                    <span class="switch-title">Notificaciones de Lesión por Correo</span>
-                                    <span class="switch-desc">Recibe alertas inmediatas si un jugador bajo seguimiento es reportado lesionado.</span>
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox" checked id="conf-notif-injury" />
-                                    <span class="slider"></span>
+                            <h3 class="panel-title">Control de Temporadas Activas</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Elige la temporada actual de competiciones y visorias. Las temporadas pasadas quedarán bloqueadas.</p>
+                            <div style="display:flex; flex-direction:column; gap:12px; max-width:500px;">
+                                <label style="display:flex; justify-content:space-between; align-items:center; padding:12px; border:1px solid var(--border-color); border-radius:var(--radius-md); cursor:pointer;">
+                                    <div>
+                                        <strong style="color:var(--primary);">Temporada 2026 / 2027</strong>
+                                        <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Planificaciones, plantillas e informes actuales</p>
+                                    </div>
+                                    <input type="radio" name="season-active" value="2627" checked onchange="showToast('Temporada 2026/27 establecida como activa', 'success')" />
+                                </label>
+                                <label style="display:flex; justify-content:space-between; align-items:center; padding:12px; border:1px solid var(--border-color); border-radius:var(--radius-md); cursor:pointer; opacity:0.75;">
+                                    <div>
+                                        <strong style="color:var(--primary);">Temporada 2025 / 2026</strong>
+                                        <p style="font-size:11px; color:var(--text-muted); margin-top:2px;">Archivada - Histórico de convocatorias y partidos</p>
+                                    </div>
+                                    <input type="radio" name="season-active" value="2526" onchange="showToast('Temporada 2025/26 establecida como activa', 'success')" />
                                 </label>
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="switch-container">
-                                <div class="switch-label">
-                                    <span class="switch-title">Sincronización de Informes en la Nube</span>
-                                    <span class="switch-desc">Publicación automática de informes técnicos para que los clubes de origen puedan ver evaluaciones generales.</span>
+                    <!-- Pestaña Roles -->
+                    <div class="config-sub-view" id="config-roles" style="display:none;">
+                        <div class="panel">
+                            <h3 class="panel-title">Roles del Área Deportiva</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Definición de perfiles del personal deportivo de las selecciones territoriales.</p>
+                            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:20px;">
+                                <div class="panel" style="background-color:var(--bg-app); border:1px solid var(--border-color); box-shadow:none;">
+                                    <span class="tag tag-success" style="font-size:10px; width:fit-content; margin-bottom:8px;">Director Deportivo</span>
+                                    <p style="font-size:12px; color:var(--text-main); line-height:1.5; font-weight:500;">Administración general. Aprobación final de convocatorias e informes.</p>
                                 </div>
-                                <label class="switch">
-                                    <input type="checkbox" id="conf-cloud-sync" />
-                                    <span class="slider"></span>
-                                </label>
+                                <div class="panel" style="background-color:var(--bg-app); border:1px solid var(--border-color); box-shadow:none;">
+                                    <span class="tag tag-warning" style="font-size:10px; width:fit-content; margin-bottom:8px;">Seleccionador</span>
+                                    <p style="font-size:12px; color:var(--text-main); line-height:1.5; font-weight:500;">Generación de listas de convocados, diseño táctico y dirección técnica.</p>
+                                </div>
+                                <div class="panel" style="background-color:var(--bg-app); border:1px solid var(--border-color); box-shadow:none;">
+                                    <span class="tag tag-info" style="font-size:10px; width:fit-content; margin-bottom:8px;">Analista Técnico</span>
+                                    <p style="font-size:12px; color:var(--text-main); line-height:1.5; font-weight:500;">Creación de informes de scouting, análisis táctico de rivales y vídeo.</p>
+                                </div>
+                                <div class="panel" style="background-color:var(--bg-app); border:1px solid var(--border-color); box-shadow:none;">
+                                    <span class="tag" style="background-color: #e6f4ea; color: #137333; font-size:10px; width:fit-content; margin-bottom:8px;">Preparador Físico</span>
+                                    <p style="font-size:12px; color:var(--text-main); line-height:1.5; font-weight:500;">Control de cargas físicas, sesiones de readaptación e informes físicos.</p>
+                                </div>
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="switch-container">
-                                <div class="switch-label">
-                                    <span class="switch-title">Buscador Inteligente Habilitado</span>
-                                    <span class="switch-desc">Autocompletado predictivo para nombres de jugadores e informes.</span>
-                                </div>
-                                <label class="switch">
-                                    <input type="checkbox" checked id="conf-smart-search" />
-                                    <span class="slider"></span>
-                                </label>
+                    <!-- Pestaña Permisos -->
+                    <div class="config-sub-view" id="config-permisos" style="display:none;">
+                        <div class="panel">
+                            <h3 class="panel-title">Matriz de Permisos por Rol</h3>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Permisos de lectura/escritura definidos para cada módulo del sistema deportivo.</p>
+                            <div class="table-responsive" style="border:1px solid var(--border-color); border-radius:var(--radius-md);">
+                                <table class="data-table" style="font-size:12px;">
+                                    <thead>
+                                        <tr>
+                                            <th>Módulo / Pantalla</th>
+                                            <th>Dir. Deportivo</th>
+                                            <th>Seleccionador</th>
+                                            <th>Analista</th>
+                                            <th>Prep. Físico</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Gestión Jugadores</strong></td>
+                                            <td>Lectura / Escritura</td>
+                                            <td>Lectura / Escritura</td>
+                                            <td>Lectura</td>
+                                            <td>Lectura</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Convocatorias</strong></td>
+                                            <td>Aprobación</td>
+                                            <td>Lectura / Escritura</td>
+                                            <td>Lectura</td>
+                                            <td>Lectura</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Modelo de Juego</strong></td>
+                                            <td>Lectura / Escritura</td>
+                                            <td>Lectura / Escritura</td>
+                                            <td>Lectura</td>
+                                            <td>Lectura</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Sesiones Trabajo</strong></td>
+                                            <td>Lectura</td>
+                                            <td>Lectura / Escritura</td>
+                                            <td>Lectura / Escritura</td>
+                                            <td>Lectura / Escritura</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Informes Scouting</strong></td>
+                                            <td>Aprobación</td>
+                                            <td>Lectura / Escritura</td>
+                                            <td>Lectura / Escritura</td>
+                                            <td>Lectura</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña Datos Generales y Perfil -->
+                    <div class="config-sub-view" id="config-generales" style="display:none;">
+                        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+                            <div class="panel">
+                                <h3 class="panel-title">Perfil Técnico del Usuario</h3>
+                                <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Tus datos se utilizarán para firmar convocatorias oficiales e informes de scouting.</p>
+                                <form id="form-config-profile" onsubmit="event.preventDefault(); saveProfileSettings();">
+                                    <div class="form-group" style="margin-bottom:12px;">
+                                        <label class="form-label" for="config-name">Nombre Completo</label>
+                                        <input type="text" class="form-input" id="config-name" required value="Rubén Mora" />
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:12px;">
+                                        <label class="form-label" for="config-role">Cargo Técnico</label>
+                                        <input type="text" class="form-input" id="config-role" required value="Director de Selecciones Autonómicas FFCV" />
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:16px;">
+                                        <label class="form-label" for="config-email">Email Técnico</label>
+                                        <input type="email" class="form-input" id="config-email" required value="rmora@ffcv.es" />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Guardar Cambios de Perfil</button>
+                                </form>
                             </div>
                             
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; flex-wrap:wrap; gap:12px;">
-                                <button class="btn btn-outline" onclick="exportData()">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2" style="margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-                                    Exportar Base de Datos
-                                </button>
-                                <button class="btn btn-primary" onclick="showToast('Preferencias guardadas con éxito', 'success')">Guardar Preferencias</button>
+                            <div class="panel">
+                                <h3 class="panel-title">Datos Generales FFCV</h3>
+                                <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Configuración global de la Federación de Fútbol de la Comunidad Valenciana.</p>
+                                <div style="display:flex; flex-direction:column; gap:12px; font-size:13px;">
+                                    <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-color); padding-bottom:8px;">
+                                        <span style="color:var(--text-muted);">Sede Principal:</span>
+                                        <strong>Camp federativo de Picassent, Valencia</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-color); padding-bottom:8px;">
+                                        <span style="color:var(--text-muted);">Delegaciones:</span>
+                                        <strong>Valencia, Alicante, Castellón</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-color); padding-bottom:8px;">
+                                        <span style="color:var(--text-muted);">Formatos Habilitados:</span>
+                                        <strong>PDF, XLSX, DOCX (RFEF Estándar)</strong>
+                                    </div>
+                                    <div style="margin-top:10px;">
+                                        <button class="btn btn-outline" style="width:100%;" onclick="exportData()">Exportar Copia de Seguridad Base de Datos (JSON)</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
-
-            </div>
         </main>
     </div>
 
@@ -3095,6 +3345,21 @@
                                 <option value="Mediocentro">Mediocentro</option>
                                 <option value="Extremo">Extremo</option>
                                 <option value="Delantero Centro">Delantero Centro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="play-birth-year">Año Nacimiento</label>
+                            <input type="number" class="form-input" id="play-birth-year" min="2000" max="2026" value="2010" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="play-foot">Lateralidad</label>
+                            <select class="form-select" id="play-foot">
+                                <option value="Diestro">Diestro</option>
+                                <option value="Zurdo">Zurdo</option>
+                                <option value="Ambidiestro">Ambidiestro</option>
                             </select>
                         </div>
                     </div>
@@ -3179,6 +3444,221 @@
         </div>
     </div>
 
+    <!-- Modal: Ver Ficha Detallada de Jugador -->
+    <div class="modal-overlay" id="modal-ver-ficha">
+        <div class="modal-card" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Ficha Técnica Autonómica</h3>
+                <button class="close-btn" onclick="closeModal('modal-ver-ficha')" aria-label="Cerrar modal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="player-ficha-content">
+                <!-- Rellenado dinámicamente -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="closeModal('modal-ver-ficha')">Cerrar Ficha</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Crear Hoja de Sesión -->
+    <div class="modal-overlay" id="modal-sesion">
+        <div class="modal-card" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Diseñar Hoja de Sesión Oficial</h3>
+                <button class="close-btn" onclick="closeModal('modal-sesion')" aria-label="Cerrar modal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                </button>
+            </div>
+            <form id="form-add-session" onsubmit="addSession(event)">
+                <div class="modal-body">
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="sess-title">Tema / Título</label>
+                            <input type="text" class="form-input" id="sess-title" required placeholder="Ej: Transición Ofensiva Rápida" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="sess-type">Tipo de Sesión</label>
+                            <select class="form-select" id="sess-type">
+                                <option value="Táctica">Táctica</option>
+                                <option value="Física">Física</option>
+                                <option value="ABP">ABP (Estrategia)</option>
+                                <option value="Técnica">Técnica / Coordinativa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="sess-duration">Duración (minutos)</label>
+                            <input type="number" class="form-input" id="sess-duration" min="30" max="180" value="90" required />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="sess-intensity">Intensidad</label>
+                            <select class="form-select" id="sess-intensity">
+                                <option value="Media">Media</option>
+                                <option value="Alta">Alta</option>
+                                <option value="Media-Alta">Media-Alta</option>
+                                <option value="Baja">Baja</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="sess-focus">Objetivo / Foco Principal</label>
+                        <input type="text" class="form-input" id="sess-focus" required placeholder="Ej: Basculaciones defensivas y cierre de pasillos interiores." />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="sess-material">Materiales Necesarios</label>
+                        <input type="text" class="form-input" id="sess-material" placeholder="Ej: Conos, petos azules/rojos, mini-porterías, balones T.5" />
+                    </div>
+
+                    <div style="border-top: 1px solid var(--border-color); margin-top:12px; padding-top:12px;">
+                        <h4 style="font-size:14px; font-weight:600; color:var(--primary); margin-bottom:8px;">Bloques de Trabajo</h4>
+                        <div class="form-row-grid">
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:11px;">1. Activación (Ej: Calentamiento, Rondos)</label>
+                                <input type="text" class="form-input" id="sess-block1" placeholder="Ej: Rondo posicional 4v4+2 comodines (15 min)" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="font-size:11px;">2. Principal (Ej: Partido, Conservación)</label>
+                                <input type="text" class="form-input" id="sess-block2" placeholder="Ej: Juego real condicionado 8v8 con zonas laterales (50 min)" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-sesion')">Cancelar</button>
+                    <button type="submit" class="btn btn-accent">Guardar Plantilla</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Ver Detalle de Sesión -->
+    <div class="modal-overlay" id="modal-ver-sesion">
+        <div class="modal-card" style="max-width: 600px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Ficha de Sesión de Entrenamiento</h3>
+                <button class="close-btn" onclick="closeModal('modal-ver-sesion')" aria-label="Cerrar modal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="session-detail-content">
+                <!-- Rellenado dinámicamente -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="showToast('Descargando sesión en formato PDF RFEF...', 'success')">Exportar PDF</button>
+                <button type="button" class="btn btn-primary" onclick="closeModal('modal-ver-sesion')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Crear Informe Técnico -->
+    <div class="modal-overlay" id="modal-informe">
+        <div class="modal-card" style="max-width: 650px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Generar Informe Técnico</h3>
+                <button class="close-btn" onclick="closeModal('modal-informe')" aria-label="Cerrar modal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                </button>
+            </div>
+            <form id="form-add-report" onsubmit="addReport(event)">
+                <div class="modal-body">
+                    <div class="form-row-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="rep-type">Tipo de Informe</label>
+                            <select class="form-select" id="rep-type" onchange="toggleReportFormFields()">
+                                <option value="Individual">Seguimiento de Futbolista (Individual)</option>
+                                <option value="Rival">Análisis de Rival (Colectivo)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="rep-scout">Analista / Scout</label>
+                            <input type="text" class="form-input" id="rep-scout" required value="Rubén Mora" />
+                        </div>
+                    </div>
+
+                    <!-- Campos para Informe Individual -->
+                    <div id="fields-report-individual">
+                        <div class="form-row-grid" style="margin-top:12px;">
+                            <div class="form-group">
+                                <label class="form-label" for="rep-play-name">Nombre del Jugador</label>
+                                <input type="text" class="form-input" id="rep-play-name" placeholder="Ej: Pau Cubarsí" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="rep-play-pos">Posición</label>
+                                <select class="form-select" id="rep-play-pos">
+                                    <option value="Portero">Portero</option>
+                                    <option value="Defensa Central">Defensa Central</option>
+                                    <option value="Lateral">Lateral</option>
+                                    <option value="Mediocentro">Mediocentro</option>
+                                    <option value="Extremo">Extremo</option>
+                                    <option value="Delantero Centro">Delantero Centro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 14px; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background-color: var(--bg-app);">
+                            <h4 style="font-size:13px; font-weight:600; color:var(--primary); margin-bottom:10px;">Valoración de Habilidades (0 - 100)</h4>
+                            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span style="font-size:12px; width:70px; color:var(--text-muted);">Ritmo:</span>
+                                    <input type="range" id="val-pace" class="form-input" min="0" max="100" value="80" style="padding:0; height:auto;" />
+                                </div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span style="font-size:12px; width:70px; color:var(--text-muted);">Pase:</span>
+                                    <input type="range" id="val-pass" class="form-input" min="0" max="100" value="80" style="padding:0; height:auto;" />
+                                </div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span style="font-size:12px; width:70px; color:var(--text-muted);">Táctica:</span>
+                                    <input type="range" id="val-def" class="form-input" min="0" max="100" value="80" style="padding:0; height:auto;" />
+                                </div>
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span style="font-size:12px; width:70px; color:var(--text-muted);">Físico:</span>
+                                    <input type="range" id="val-phys" class="form-input" min="0" max="100" value="80" style="padding:0; height:auto;" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campos para Informe Rival -->
+                    <div id="fields-report-rival" style="display:none; margin-top:12px;">
+                        <div class="form-group">
+                            <label class="form-label" for="rep-rival-title">Equipo Rival</label>
+                            <input type="text" class="form-input" id="rep-rival-title" placeholder="Ej: Selección Catalana Sub-16" />
+                        </div>
+                        <div class="form-group" style="margin-top:12px;">
+                            <label class="form-label" for="rep-rival-notes">Notas del Análisis Táctico</label>
+                            <textarea class="form-input" id="rep-rival-notes" style="height:80px; font-family:inherit;" placeholder="Ej: Juego interior rápido, repliegue bajo..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row-grid" style="margin-top:12px;">
+                        <div class="form-group">
+                            <label class="form-label" for="rep-status">Estado del Informe</label>
+                            <select class="form-select" id="rep-status">
+                                <option value="Borrador">Borrador</option>
+                                <option value="En Revisión">En Revisión</option>
+                                <option value="Aprobado">Aprobado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="rep-rating">Valoración Global (1-100)</label>
+                            <input type="number" class="form-input" id="rep-rating" min="0" max="100" value="85" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('modal-informe')">Cancelar</button>
+                    <button type="submit" class="btn btn-accent">Guardar Informe</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Contenedor Flotante de Avisos Toasts -->
     <div class="toast-container" id="toast-container"></div>
 
@@ -3191,19 +3671,19 @@
            D.1 BASE DE DATOS INICIAL DE LA APP (PERSISTENCIA CON LOCALSTORAGE)
            ========================================================================== */
         const DEFAULT_PLAYERS = [
-            { id: 1, name: "Iker Albarrán", club: "Valencia C.F. Cadete", category: "Sub-16", position: "Portero", matches: 8, status: "Seleccionado" },
-            { id: 2, name: "Hugo de Mateo", club: "Villarreal C.F. Cadete", category: "Sub-16", position: "Defensa Central", matches: 12, status: "Seleccionado" },
-            { id: 3, name: "Lucas López", club: "Levante U.D. Infantil", category: "Sub-14", position: "Mediocentro", matches: 4, status: "En Observación" },
-            { id: 4, name: "Ainhoa Alguacil", club: "Levante U.D. Femenino", category: "Sub-19", position: "Mediocentro", matches: 15, status: "Seleccionado" },
-            { id: 5, name: "Marc Rodríguez", club: "C.D. Castellón Cadete", category: "Sub-16", position: "Delantero Centro", matches: 6, status: "Lesionado" },
-            { id: 6, name: "Sofia Salvador", club: "Elche C.F. Infantil Femenino", category: "Sub-14", position: "Extremo", matches: 2, status: "En Observación" }
+            { id: 1, name: "Iker Albarrán", club: "Valencia C.F. Cadete", category: "Sub-16", position: "Portero", matches: 8, status: "Seleccionado", birthYear: 2010, foot: "Diestro", pace: 85, pass: 78, defense: 88, physical: 84, rating: 86, phone: "+34 612 345 678" },
+            { id: 2, name: "Hugo de Mateo", club: "Villarreal C.F. Cadete", category: "Sub-16", position: "Defensa Central", matches: 12, status: "Seleccionado", birthYear: 2010, foot: "Diestro", pace: 82, pass: 78, defense: 92, physical: 90, rating: 88, phone: "+34 623 456 789" },
+            { id: 3, name: "Lucas López", club: "Levante U.D. Infantil", category: "Sub-14", position: "Mediocentro", matches: 4, status: "En Observación", birthYear: 2012, foot: "Zurdo", pace: 76, pass: 84, defense: 70, physical: 72, rating: 78, phone: "+34 634 567 890" },
+            { id: 4, name: "Ainhoa Alguacil", club: "Levante U.D. Femenino", category: "Sub-19", position: "Mediocentro", matches: 15, status: "Seleccionado", birthYear: 2008, foot: "Diestro", pace: 79, pass: 95, defense: 74, physical: 80, rating: 91, phone: "+34 645 678 901" },
+            { id: 5, name: "Marc Rodríguez", club: "C.D. Castellón Cadete", category: "Sub-16", position: "Delantero Centro", matches: 6, status: "Lesionado", birthYear: 2010, foot: "Diestro", pace: 88, pass: 70, defense: 45, physical: 82, rating: 80, phone: "+34 656 789 012" },
+            { id: 6, name: "Sofia Salvador", club: "Elche C.F. Infantil Femenino", category: "Sub-14", position: "Extremo", matches: 2, status: "En Observación", birthYear: 2012, foot: "Ambidiestro", pace: 84, pass: 75, defense: 60, physical: 68, rating: 75, phone: "+34 667 890 123" }
         ];
 
         const DEFAULT_CALLS = [
             {
                 id: 1,
                 name: "Selección Sub-16 Masculina",
-                location: "Ciudad Deportiva",
+                location: "Ciudad Deportiva Picassent",
                 time: "18:00 h",
                 status: "Confirmada",
                 date: "2026-06-18",
@@ -3230,21 +3710,22 @@
         ];
 
         const DEFAULT_SESSIONS = [
-            { id: 1, title: "Sesión 24: Transición Ofensiva", type: "Táctica", duration: 90, intensity: "Media-Alta", focus: "Velocidad de repliegue y pase al espacio", date: "12 Jun 2026" },
-            { id: 2, title: "Sesión 25: ABP Defensivo", type: "ABP", duration: 75, intensity: "Media", focus: "Basculación defensiva ante córner cerrado", date: "15 Jun 2026" },
-            { id: 3, title: "Sesión 26: Resistencia Aeróbica", type: "Física", duration: 80, intensity: "Alta", focus: "Circuitos pliométricos y resistencia", date: "18 Jun 2026" }
+            { id: 1, title: "Sesión 24: Transición Ofensiva", type: "Táctica", duration: 90, intensity: "Media-Alta", focus: "Velocidad de repliegue y pase al espacio", date: "12 Jun 2026", materials: "Conos, petos amarillos/azules, balones", block1: "Rondo dinámico 4v4+2 comodines", block2: "Juego real condicionado 8v8 con porterías" },
+            { id: 2, title: "Sesión 25: ABP Defensivo", type: "ABP", duration: 75, intensity: "Media", focus: "Basculación defensiva ante córner cerrado", date: "15 Jun 2026", materials: "Petos rojos, vallas, mini-porterías", block1: "Activación física sin balón", block2: "Defensa grupal zonales y basculación" },
+            { id: 3, title: "Sesión 26: Resistencia Aeróbica", type: "Física", duration: 80, intensity: "Alta", focus: "Circuitos pliométricos y resistencia", date: "18 Jun 2026", materials: "Escaleras coordinativas, vallas, cronómetro", block1: "Estiramientos y activación articular", block2: "Circuitos técnicos de fuerza explosiva" }
         ];
 
         const DEFAULT_REPORTS = [
-            { id: 1, player: "Hugo de Mateo", position: "Defensa Central", rating: 88, pace: 82, shoot: 55, pass: 78, dribble: 68, defense: 92, physical: 90, scout: "Rubén Mora", type: "Individual" },
-            { id: 2, player: "Ainhoa Alguacil", position: "Mediocentro", rating: 91, pace: 79, shoot: 78, pass: 95, dribble: 88, defense: 74, physical: 80, scout: "Vicente Ampudia", type: "Individual" },
-            { id: 3, title: "Informe Rival: Hércules C.F. Sub-16", date: "10 Jun 2026", rating: 75, text: "Equipo con bloque bajo muy sólido. Sufren en la espalda de los laterales si hay transiciones rápidas.", scout: "Jose Vicente", type: "Rival" }
+            { id: 1, player: "Hugo de Mateo", position: "Defensa Central", rating: 88, pace: 82, shoot: 55, pass: 78, dribble: 68, defense: 92, physical: 90, scout: "Rubén Mora", type: "Individual", status: "Aprobado", date: "12 Jun 2026" },
+            { id: 2, player: "Ainhoa Alguacil", position: "Mediocentro", rating: 91, pace: 79, shoot: 78, pass: 95, dribble: 88, defense: 74, physical: 80, scout: "Vicente Ampudia", type: "Individual", status: "Aprobado", date: "14 Jun 2026" },
+            { id: 3, title: "Informe Rival: Hércules C.F. Sub-16", date: "10 Jun 2026", rating: 75, text: "Equipo con bloque bajo muy sólido. Sufren en la espalda de los laterales si hay transiciones rápidas.", scout: "Jose Vicente", type: "Rival", status: "En Revisión" }
         ];
 
         const DEFAULT_EVENTS = [
             { id: 1, title: "Entrenamiento Sub-16", date: "2026-06-18", type: "training", location: "Picassent" },
             { id: 2, title: "Amistoso Sub-14 vs Catalunya", date: "2026-06-20", type: "match", location: "Campo federativo" },
-            { id: 3, title: "Visionado Villarreal vs Castellón", date: "2026-06-25", type: "scouting", location: "Castellón" }
+            { id: 3, title: "Visionado Villarreal vs Castellón", date: "2026-06-25", type: "scouting", location: "Castellón" },
+            { id: 4, title: "Reunión Dirección Deportiva FFCV", date: "2026-06-12", type: "staff", location: "Sede central FFCV" }
         ];
 
         // Cargar o Inicializar Datos
@@ -3268,7 +3749,6 @@
            ========================================================================== */
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', function (e) {
-                // Prevenir comportamiento por defecto si se requiere
                 const targetViewId = this.getAttribute('data-view');
                 navigateToTab(targetViewId);
             });
@@ -3286,12 +3766,17 @@
             // Ocultar vistas y mostrar la activa
             document.querySelectorAll('.view').forEach(view => {
                 view.classList.remove('active');
-            });            // Cambiar título de cabecera superior
+            });
+            const selectedView = document.getElementById('view-' + viewId);
+            if (selectedView) selectedView.classList.add('active');
+
+            // Cambiar título de cabecera superior
             let capitalizedTitle = viewId.charAt(0).toUpperCase() + viewId.slice(1);
             if (viewId === 'planificacion') capitalizedTitle = 'Planificación Deportiva';
             if (viewId === 'modelo') capitalizedTitle = 'Modelo de Juego';
             if (viewId === 'staff') capitalizedTitle = 'Staff Técnico';
             if (viewId === 'documentacion') capitalizedTitle = 'Portal de Documentación';
+            if (viewId === 'configuracion') capitalizedTitle = 'Configuración del Sistema';
             document.getElementById('page-header-title').textContent = capitalizedTitle;
 
             // Cambiar texto de botón añadir en la cabecera
@@ -3312,7 +3797,7 @@
                 addBtn.style.display = 'inline-flex';
                 addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Subir Documento`;
                 addBtn.setAttribute('onclick', "triggerVirtualFileInput()");
-            } else if (viewId === 'modelo' || viewId === 'calendario') {
+            } else if (viewId === 'modelo' || viewId === 'calendario' || viewId === 'configuracion') {
                 addBtn.style.display = 'none';
             } else {
                 addBtn.style.display = 'inline-flex';
@@ -3329,6 +3814,7 @@
             if (viewId === 'sesiones') renderSessions();
             if (viewId === 'informes') renderReports();
             if (viewId === 'calendario') renderCalendar();
+            if (viewId === 'staff') renderStaff();
         }
 
         // Hamburguesa en móviles
@@ -3340,7 +3826,7 @@
         document.addEventListener('click', (e) => {
             const sidebar = document.getElementById('app-sidebar');
             const menuBtn = document.getElementById('menu-toggle-btn');
-            if (window.innerWidth <= 900) {
+            if (sidebar && menuBtn && window.innerWidth <= 900) {
                 if (!sidebar.contains(e.target) && !menuBtn.contains(e.target)) {
                     sidebar.classList.remove('mobile-active');
                 }
@@ -3400,15 +3886,18 @@
         // Control del botón de notificaciones
         const notifBtn = document.getElementById('notif-btn');
         const notifDropdown = document.getElementById('notif-dropdown');
-        notifBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            notifDropdown.style.display = notifDropdown.style.display === 'block' ? 'none' : 'block';
-            // Quitar el punto rojo de notificación activa al abrir
-            document.querySelector('.badge-dot').style.display = 'none';
-        });
+        if (notifBtn) {
+            notifBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                notifDropdown.style.display = notifDropdown.style.display === 'block' ? 'none' : 'block';
+                // Quitar el punto rojo de notificación activa al abrir
+                const badge = document.querySelector('.badge-dot');
+                if (badge) badge.style.display = 'none';
+            });
+        }
 
         document.addEventListener('click', () => {
-            notifDropdown.style.display = 'none';
+            if (notifDropdown) notifDropdown.style.display = 'none';
         });
 
         /* ==========================================================================
@@ -3426,6 +3915,7 @@
         // 1. Dashboard View
         function renderDashboardView() {
             const listContainer = document.getElementById('dashboard-convocatorias-list');
+            if (!listContainer) return;
             listContainer.innerHTML = '';
 
             // Mostrar las últimas 3 convocatorias ordenadas por fecha
@@ -3435,7 +3925,7 @@
                 if (c.status === 'Pendiente de cerrar lista') statusClass = 'tag-warning';
 
                 listContainer.innerHTML += `
-                    <div class="list-item" onclick="navigateToTab('convocatorias')">
+                    <div class="list-item" onclick="navigateToTab('convocatorias')" style="cursor:pointer;">
                         <div class="item-details">
                             <span class="item-title">${c.name}</span>
                             <span class="item-sub">
@@ -3457,17 +3947,20 @@
         const playCategory = document.getElementById('filter-player-category');
         const playStatus = document.getElementById('filter-player-status');
 
-        [playSearch, playCategory, playStatus].forEach(el => {
-            el.addEventListener('input', renderPlayersTable);
-        });
+        if (playSearch) {
+            [playSearch, playCategory, playStatus].forEach(el => {
+                el.addEventListener('input', renderPlayersTable);
+            });
+        }
 
         function renderPlayersTable() {
             const tbody = document.getElementById('players-table-body');
+            if (!tbody) return;
             tbody.innerHTML = '';
 
-            const query = playSearch.value.toLowerCase();
-            const cat = playCategory.value;
-            const stat = playStatus.value;
+            const query = playSearch ? playSearch.value.toLowerCase() : '';
+            const cat = playCategory ? playCategory.value : 'ALL';
+            const stat = playStatus ? playStatus.value : 'ALL';
 
             let filtered = players.filter(p => {
                 const matchesQuery = p.name.toLowerCase().includes(query) || p.club.toLowerCase().includes(query);
@@ -3476,10 +3969,11 @@
                 return matchesQuery && matchesCat && matchesStat;
             });
 
-            document.getElementById('filter-count-label').textContent = `Mostrando ${filtered.length} jugadores`;
+            const countLabel = document.getElementById('filter-count-label');
+            if (countLabel) countLabel.textContent = `Mostrando ${filtered.length} jugadores`;
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">No se encontraron jugadores con los filtros seleccionados.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--text-muted);">No se encontraron jugadores con los filtros seleccionados.</td></tr>`;
                 return;
             }
 
@@ -3504,11 +3998,13 @@
                         <td><strong>${p.club}</strong></td>
                         <td>${p.category}</td>
                         <td>${p.position}</td>
+                        <td style="text-align:center;">${p.birthYear || '2010'}</td>
+                        <td>${p.foot || 'Diestro'}</td>
                         <td style="text-align:center;">${p.matches}</td>
                         <td><span class="tag ${statusClass}">${p.status}</span></td>
                         <td>
                             <div class="actions-group">
-                                <button class="btn btn-outline btn-sm" onclick="viewPlayerReports('${p.name}')">Ver Informe</button>
+                                <button class="btn btn-outline btn-sm" onclick="openPlayerFicha(${p.id})">Ver Ficha</button>
                                 <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:transparent;" onclick="deletePlayer(${p.id})">Borrar</button>
                             </div>
                         </td>
@@ -3518,45 +4014,41 @@
         }
 
         // Búsqueda Global en Cabecera
-        document.getElementById('global-search').addEventListener('input', function() {
-            const text = this.value;
-            // Si está en jugadores, mapear la búsqueda
-            if (document.getElementById('view-jugadores').classList.contains('active')) {
-                document.getElementById('filter-player-search').value = text;
-                renderPlayersTable();
-            } else {
-                showToast(`Búsqueda: "${text}"`, 'info');
-            }
-        });
+        const globalSearch = document.getElementById('global-search');
+        if (globalSearch) {
+            globalSearch.addEventListener('input', function() {
+                const text = this.value;
+                if (document.getElementById('view-jugadores').classList.contains('active')) {
+                    if (playSearch) {
+                        playSearch.value = text;
+                        renderPlayersTable();
+                    }
+                } else {
+                    showToast(`Búsqueda: "${text}"`, 'info');
+                }
+            });
+        }
 
         // 3. Convocatorias View
         function renderConvocatorias() {
-            const listContainer = document.getElementById('calls-list-container');
-            listContainer.innerHTML = '';
+            const tbody = document.getElementById('convocatorias-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
 
             convocatorias.forEach(c => {
                 let statusClass = 'tag-success';
                 if (c.status === 'Visionado') statusClass = 'tag-info';
                 if (c.status === 'Pendiente de cerrar lista') statusClass = 'tag-warning';
 
-                listContainer.innerHTML += `
-                    <div class="list-item" style="cursor:pointer;" onclick="selectConvocatoria(${c.id})">
-                        <div class="item-details">
-                            <span class="item-title" style="font-size:15px;">${c.name}</span>
-                            <span class="item-sub">
-                                <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2" style="margin-right:2px;"><polyline points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21" /></svg>
-                                ${c.location}
-                            </span>
-                            <span class="item-sub">
-                                <svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" fill="none" stroke-width="2" style="margin-right:2px;"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
-                                Hora: ${c.time}
-                            </span>
-                        </div>
-                        <div class="item-meta" style="flex-direction:column; align-items:flex-end; gap:8px;">
-                            <span class="tag ${statusClass}">${c.status}</span>
-                            <span style="font-size:11px; color:var(--text-muted); font-weight:600;">Fecha: ${c.date}</span>
-                        </div>
-                    </div>
+                tbody.innerHTML += `
+                    <tr style="cursor:pointer;" onclick="selectConvocatoria(${c.id})">
+                        <td><strong>${c.name}</strong></td>
+                        <td>${c.location}</td>
+                        <td>${c.date}</td>
+                        <td>${c.time}</td>
+                        <td style="text-align:center;"><span class="badge-num" style="background-color:var(--accent-light); color:var(--accent-hover); padding:2px 6px; border-radius:4px; font-weight:600;">${c.players.length}</span></td>
+                        <td><span class="tag ${statusClass}">${c.status}</span></td>
+                    </tr>
                 `;
             });
         }
@@ -3566,13 +4058,13 @@
             if (!call) return;
 
             const detailPanel = document.getElementById('convocatoria-detail-panel');
+            if (!detailPanel) return;
             detailPanel.innerHTML = '';
 
             let statusClass = 'tag-success';
             if (call.status === 'Visionado') statusClass = 'tag-info';
             if (call.status === 'Pendiente de cerrar lista') statusClass = 'tag-warning';
 
-            // Mapear los jugadores citados
             const citedPlayers = players.filter(p => call.players.includes(p.id));
 
             let playersHtml = '';
@@ -3581,11 +4073,11 @@
             } else {
                 citedPlayers.forEach((p, index) => {
                     playersHtml += `
-                        <div class="squad-player-badge">
-                            <span class="number">#${index + 1}</span>
+                        <div class="squad-player-badge" style="position:relative; padding:6px 28px 6px 10px; border:1px solid var(--border-color); border-radius:var(--radius-sm); font-size:12px; display:inline-flex; align-items:center; gap:6px; background-color:#FFFFFF;">
+                            <span class="number" style="font-weight:700; color:var(--accent-hover);">#${index + 1}</span>
                             <span style="font-weight:600; color:var(--primary);">${p.name}</span>
                             <span style="font-size:10px; color:var(--text-muted);">${p.position}</span>
-                            <button style="position:absolute; top:4px; right:4px; border:none; background:none; color:var(--danger); cursor:pointer; font-weight:bold;" onclick="removePlayerFromCall(${call.id}, ${p.id})">×</button>
+                            <button style="position:absolute; top:50%; transform:translateY(-50%); right:6px; border:none; background:none; color:var(--danger); cursor:pointer; font-weight:bold; font-size:14px;" onclick="removePlayerFromCall(${call.id}, ${p.id})">×</button>
                         </div>
                     `;
                 });
@@ -3608,13 +4100,13 @@
                         <span style="font-weight:600; font-size:14px; color:var(--primary);">Futbolistas Convocados (${citedPlayers.length})</span>
                         <button class="btn btn-outline btn-sm" onclick="openAddPlayersToCallModal(${call.id})">+ Añadir</button>
                     </div>
-                    <div class="squad-list">
+                    <div class="squad-list" style="display:flex; flex-wrap:wrap; gap:8px; max-height:220px; overflow-y:auto; padding:4px;">
                         ${playersHtml}
                     </div>
                 </div>
 
                 <div style="margin-top:20px; display:flex; gap:10px; border-top:1px solid var(--border-color); padding-top:16px;">
-                    <button class="btn btn-primary btn-sm" onclick="showToast('Lista oficial impresa y enviada a los clubes', 'success')" style="flex:1;">Imprimir Convocatoria</button>
+                    <button class="btn btn-primary btn-sm" onclick="exportCallPDF(${call.id})" style="flex:1;">Imprimir Convocatoria</button>
                     <button class="btn btn-outline btn-sm" style="color:var(--danger); border-color:transparent;" onclick="deleteConvocatoria(${call.id})">Eliminar</button>
                 </div>
             `;
@@ -3623,6 +4115,7 @@
         // 4. Sesiones View
         function renderSessions() {
             const container = document.getElementById('sessions-container');
+            if (!container) return;
             container.innerHTML = '';
 
             sessions.forEach(s => {
@@ -3632,6 +4125,7 @@
 
                 if (s.type === 'Táctica') badgeClass = 'tag-warning';
                 if (s.type === 'Física') badgeClass = 'tag-info';
+                if (s.type === 'Técnica') badgeClass = 'tag-success';
 
                 container.innerHTML += `
                     <div class="session-card">
@@ -3650,7 +4144,7 @@
                             </div>
                             
                             <div style="margin-top:14px; display:flex; gap:8px;">
-                                <button class="btn btn-primary btn-sm" style="width:100%;" onclick="showToast('Visualizando detalles en pizarra táctica', 'info')">Ver Pizarra</button>
+                                <button class="btn btn-primary btn-sm" style="width:100%;" onclick="openSessionDetail(${s.id})">Ver Pizarra</button>
                                 <button class="btn btn-outline btn-sm" onclick="showToast('Descargando sesión en formato RFEF PDF...', 'success')">💾</button>
                             </div>
                         </div>
@@ -3662,20 +4156,27 @@
         // 5. Informes View (Incluye gráficos circulares SVG dinámicos para estadísticas individuales)
         function renderReports() {
             const container = document.getElementById('reports-container');
+            if (!container) return;
             container.innerHTML = '';
 
             reports.forEach(r => {
                 if (r.type === 'Individual') {
-                    // Calcular circunferencia de progreso circular
                     const radius = 26;
                     const circumference = 2 * Math.PI * radius;
                     const strokeDashoffset = circumference - (r.rating / 100) * circumference;
+                    
+                    let statusClass = 'tag-success';
+                    if (r.status === 'Borrador') statusClass = 'tag-info';
+                    if (r.status === 'En Revisión') statusClass = 'tag-warning';
 
                     container.innerHTML += `
                         <div class="report-card">
                             <div class="report-top">
                                 <div>
-                                    <span class="tag tag-info" style="font-size:9px; margin-bottom:8px;">INFORME INDIVIDUAL</span>
+                                    <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                                        <span class="tag tag-info" style="font-size:9px;">INFORME INDIVIDUAL</span>
+                                        <span class="tag ${statusClass}" style="font-size:9px;">${r.status || 'Aprobado'}</span>
+                                    </div>
                                     <h4 style="font-size:16px; color:var(--primary); font-weight:700;">${r.player}</h4>
                                     <span style="font-size:12px; color:var(--text-muted);">${r.position}</span>
                                 </div>
@@ -3718,11 +4219,18 @@
                         </div>
                     `;
                 } else {
+                    let statusClass = 'tag-success';
+                    if (r.status === 'Borrador') statusClass = 'tag-info';
+                    if (r.status === 'En Revisión') statusClass = 'tag-warning';
+
                     container.innerHTML += `
                         <div class="report-card">
                             <div class="report-top">
                                 <div>
-                                    <span class="tag tag-warning" style="font-size:9px; margin-bottom:8px;">INFORME DE RIVAL</span>
+                                    <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                                        <span class="tag tag-warning" style="font-size:9px;">INFORME DE RIVAL</span>
+                                        <span class="tag ${statusClass}" style="font-size:9px;">${r.status || 'Aprobado'}</span>
+                                    </div>
                                     <h4 style="font-size:16px; color:var(--primary); font-weight:700;">${r.title}</h4>
                                     <span style="font-size:12px; color:var(--text-muted);">${r.date}</span>
                                 </div>
@@ -3732,7 +4240,7 @@
                             </div>
 
                             <p style="font-size:13px; color:var(--text-main); line-height:1.5;">${r.text}</p>
-                            <p style="font-size:11px; color:var(--text-muted);">Analista: <strong>${r.scout}</strong></p>
+                            <p style="font-size:11px; color:var(--text-muted); margin-top:8px;">Analista: <strong>${r.scout}</strong></p>
 
                             <div style="display:flex; gap:10px; margin-top:auto; border-top:1px solid var(--border-color); padding-top:14px;">
                                 <button class="btn btn-outline btn-sm" style="width:100%;" onclick="showToast('Abriendo informe en PDF...', 'info')">Descargar PDF Técnico</button>
@@ -3744,7 +4252,123 @@
         }
 
         function viewPlayerReports(playerName) {
-            showToast(`Detalles del Scouting para ${playerName}: Excelente rendimiento en el último partido.`, 'info');
+            const p = players.find(x => x.name === playerName);
+            if (p) {
+                openPlayerFicha(p.id);
+            } else {
+                showToast(`Detalles del Scouting para ${playerName}: Excelente rendimiento en el último partido.`, 'info');
+            }
+        }
+
+        function openPlayerFicha(playerId) {
+            const p = players.find(player => player.id === playerId);
+            if (!p) return;
+            
+            const initials = p.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+            const playerReports = reports.filter(r => r.player === p.name);
+            let reportsSummaryHtml = '';
+            
+            if (playerReports.length === 0) {
+                reportsSummaryHtml = `<p style="font-size:12px; color:var(--text-muted);">Sin informes técnicos registrados todavía.</p>`;
+            } else {
+                playerReports.forEach(r => {
+                    reportsSummaryHtml += `
+                        <div style="padding:8px; border:1px solid var(--border-color); border-radius:var(--radius-sm); margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <strong style="font-size:12px; color:var(--primary);">${r.type || 'Individual'} - Nota: ${r.rating || r.defense || 80}</strong>
+                                <span style="font-size:10px; color:var(--text-muted); display:block;">Evaluador: ${r.scout || 'Metodología FFCV'}</span>
+                            </div>
+                            <span class="tag tag-success" style="font-size:10px;">${r.status || 'Aprobado'}</span>
+                        </div>
+                    `;
+                });
+            }
+            
+            const detailsContainer = document.getElementById('player-ficha-content');
+            if (detailsContainer) {
+                detailsContainer.innerHTML = `
+                    <div style="display:flex; flex-direction:column; gap:16px;">
+                        <!-- Cabecera de Ficha -->
+                        <div style="display:flex; align-items:center; gap:16px; border-bottom:1px solid var(--border-color); padding-bottom:16px;">
+                            <div class="player-photo" style="width:64px; height:64px; font-size:24px; display:flex; align-items:center; justify-content:center;">${initials}</div>
+                            <div>
+                                <span style="font-size:12px; color:var(--accent-hover); font-weight:700;">REGISTRO FEDERATIVO FFCV</span>
+                                <h4 style="font-size:20px; color:var(--primary); font-weight:700; margin: 2px 0;">${p.name}</h4>
+                                <span style="font-size:12px; color:var(--text-muted);">Club: <strong>${p.club}</strong> · FFCV ID: FFCV-00${p.id}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Ficha Deportiva -->
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted); display:block;">Posición Técnica</span>
+                                <strong style="font-size:13px; color:var(--primary);">${p.position}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted); display:block;">Categoría Actual</span>
+                                <strong style="font-size:13px; color:var(--primary);">${p.category}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted); display:block;">Año de Nacimiento</span>
+                                <strong style="font-size:13px; color:var(--primary);">${p.birthYear || '2010'}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted); display:block;">Lateralidad / Pie Hábil</span>
+                                <strong style="font-size:13px; color:var(--primary);">${p.foot || 'Diestro'}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted); display:block;">Partidos Oficiales FFCV</span>
+                                <strong style="font-size:13px; color:var(--primary);">${p.matches} partidos</strong>
+                            </div>
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted); display:block;">Estado Físico / Técnico</span>
+                                <span class="tag ${p.status === 'Lesionado' ? 'tag-danger' : (p.status === 'En Observación' ? 'tag-warning' : 'tag-success')}" style="font-size:11px; margin-top:2px; display:inline-block;">${p.status}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Valoración Física/Scouting (si existe) -->
+                        <div style="border-top:1px solid var(--border-color); padding-top:16px;">
+                            <h5 style="font-size:13px; font-weight:700; color:var(--primary); margin-bottom:8px;">Atributos Técnicos Estimados (Radar)</h5>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:12px;">
+                                <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-app); padding-bottom:4px;">
+                                    <span style="color:var(--text-muted);">Ritmo (Pace):</span>
+                                    <strong>${p.pace || 82}</strong>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-app); padding-bottom:4px;">
+                                    <span style="color:var(--text-muted);">Pase (Pass):</span>
+                                    <strong>${p.pass || 78}</strong>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-app); padding-bottom:4px;">
+                                    <span style="color:var(--text-muted);">Defensa/Táctica (Def):</span>
+                                    <strong>${p.defense || 75}</strong>
+                                </div>
+                                <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--bg-app); padding-bottom:4px;">
+                                    <span style="color:var(--text-muted);">Físico (Phys):</span>
+                                    <strong>${p.physical || 80}</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Datos Logísticos y de Contacto -->
+                        <div style="border-top:1px solid var(--border-color); padding-top:16px; background-color:var(--bg-app); padding:10px; border-radius:var(--radius-sm);">
+                            <h5 style="font-size:13px; font-weight:700; color:var(--primary); margin-bottom:6px;">Contacto y Gestión Deportiva</h5>
+                            <div style="font-size:11px; color:var(--text-main); line-height:1.5;">
+                                <p><strong>Teléfono Tutor:</strong> ${p.phone || '+34 654 321 098'}</p>
+                                <p><strong>Seguro Médico:</strong> FFCV Mutualidad Activa</p>
+                                <p><strong>Observaciones:</strong> Monitoreado por cuerpo técnico territorial para próximos torneos de España.</p>
+                            </div>
+                        </div>
+
+                        <!-- Historial de Informes -->
+                        <div style="border-top:1px solid var(--border-color); padding-top:16px;">
+                            <h5 style="font-size:13px; font-weight:700; color:var(--primary); margin-bottom:8px;">Informes de Scouting Vinculados</h5>
+                            ${reportsSummaryHtml}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            openModal('modal-ver-ficha');
         }
 
         /* ==========================================================================
@@ -3873,6 +4497,7 @@
            ========================================================================== */
         
         // Registrar nuevo Jugador
+        // Registrar nuevo Jugador
         function addPlayer(e) {
             e.preventDefault();
             const name = document.getElementById('play-name').value;
@@ -3881,6 +4506,8 @@
             const position = document.getElementById('play-position').value;
             const matches = parseInt(document.getElementById('play-matches').value) || 0;
             const status = document.getElementById('play-status').value;
+            const birthYear = parseInt(document.getElementById('play-birth-year').value) || 2010;
+            const foot = document.getElementById('play-foot').value;
 
             const newPlayer = {
                 id: players.length + 1,
@@ -3889,7 +4516,15 @@
                 category,
                 position,
                 matches,
-                status
+                status,
+                birthYear,
+                foot,
+                pace: 70 + Math.floor(Math.random() * 25),
+                pass: 70 + Math.floor(Math.random() * 25),
+                defense: 70 + Math.floor(Math.random() * 25),
+                physical: 70 + Math.floor(Math.random() * 25),
+                rating: 75 + Math.floor(Math.random() * 20),
+                phone: "+34 600 " + Math.floor(100000 + Math.random() * 900000)
             };
 
             players.push(newPlayer);
@@ -3964,7 +4599,8 @@
                 renderDashboardView();
                 document.getElementById('convocatoria-detail-panel').innerHTML = `
                     <div style="text-align: center; padding: 40px 0; color: var(--text-muted);">
-                        <p>Convocatoria eliminada con éxito.</p>
+                        <svg viewBox="0 0 24 24" width="48" height="48" stroke="currentColor" fill="none" stroke-width="1.5" style="margin-bottom:12px; opacity:0.6;"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+                        <p>Convocatoria eliminada con éxito. Selecciona otra convocatoria de la tabla.</p>
                     </div>
                 `;
                 showToast('Convocatoria cancelada', 'danger');
@@ -3978,6 +4614,7 @@
                 call.players = call.players.filter(pid => pid !== playerId);
                 saveState();
                 selectConvocatoria(callId);
+                renderConvocatorias();
                 showToast('Jugador desconvocado', 'info');
             }
         }
@@ -4039,6 +4676,7 @@
                 call.players.push(...playerIds);
                 saveState();
                 selectConvocatoria(activeCallIdForAdding);
+                renderConvocatorias();
                 showToast(`${playerIds.length} jugadores incorporados`, 'success');
             }
             document.getElementById('modal-add-players-temp').remove();
@@ -4068,7 +4706,8 @@
                 convocatorias,
                 sessions,
                 reports,
-                events
+                events,
+                staff
             }, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
@@ -4085,9 +4724,10 @@
         let dashboardChart;
 
         function initChart() {
-            const ctx = document.getElementById('dashboardChart').getContext('2d');
+            const chartCanvas = document.getElementById('dashboardChart');
+            if (!chartCanvas) return;
+            const ctx = chartCanvas.getContext('2d');
             
-            // Contar jugadores por categoría para el gráfico
             const categories = ['Sub-14', 'Sub-16', 'Sub-19'];
             const counts = categories.map(cat => players.filter(p => p.category === cat).length);
 
@@ -4099,9 +4739,9 @@
                         label: 'Número de Jugadores',
                         data: counts,
                         backgroundColor: [
-                            'rgba(10, 37, 64, 0.85)',  /* Azul FFCV */
-                            'rgba(255, 107, 0, 0.85)', /* Naranja FFCV */
-                            'rgba(30, 58, 95, 0.85)'   /* Azul Claro */
+                            'rgba(10, 37, 64, 0.85)',
+                            'rgba(255, 107, 0, 0.85)',
+                            'rgba(30, 58, 95, 0.85)'
                         ],
                         borderColor: [
                             '#0A2540',
@@ -4152,7 +4792,6 @@
             });
         }
 
-        // Refrescar el gráfico cuando los jugadores cambian
         function refreshChart() {
             if (dashboardChart) {
                 const categories = ['Sub-14', 'Sub-16', 'Sub-19'];
@@ -4162,7 +4801,6 @@
             }
         }
 
-        // Agregar hook de refrescar gráfico a saveState
         const originalSaveState = saveState;
         saveState = function() {
             originalSaveState();
@@ -4170,155 +4808,552 @@
         };
 
         /* ==========================================================================
-           D.9 INTERACCIONES Y LÓGICA DE NUEVAS VISTAS (PIZARRA, STAFF, CARGA VIRTUAL)
+           D.9 FUNCIONES INTERACTIVAS ADICIONALES (PIZARRA, SESIONES, INFORMES, SUB-TABS)
            ========================================================================== */
-        const TACTIC_COORDINATES = {
+        
+        // Cambio de sub-pestañas en planificación
+        function switchPlanningSubTab(tabId, btn) {
+            btn.parentNode.querySelectorAll('.tactical-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            
+            document.querySelectorAll('.planning-sub-view').forEach(v => v.style.display = 'none');
+            const target = document.getElementById('planning-' + tabId);
+            if (target) target.style.display = 'block';
+            
+            showToast(`Vista: ${btn.textContent}`, 'info');
+        }
+
+        // --- SISTEMA Y PIZARRA TÁCTICA ---
+        let activeSystem = '1433';
+        let activePhase = 'ofensivo';
+
+        const TACTIC_PHASES_INFO = {
+            'ofensivo': `
+                <strong>Principios Ofensivos FFCV:</strong>
+                <p style="margin-top:6px; color:var(--text-muted);">1. Amplitud máxima de extremos para estirar la defensa rival.<br>2. Salida de 3 con mediocentro retrasándose para recibir.<br>3. Progresión progresiva buscando al tercer hombre en zona 2.</p>
+            `,
+            'defensivo': `
+                <strong>Principios Defensivos FFCV:</strong>
+                <p style="margin-top:6px; color:var(--text-muted);">1. Presión alta orientada a banda para forzar pérdida o balón en largo.<br>2. Basculación defensiva rápida de la línea de 4 y el mediocampo.<br>3. Bloque medio estrecho cerrando intervalos y líneas de pase interior.</p>
+            `,
+            'transiciones': `
+                <strong>Transición Of-Def / Def-Of FFCV:</strong>
+                <p style="margin-top:6px; color:var(--text-muted);">1. Presión tras pérdida inmediata (5 segundos) para recuperar o temporizar.<br>2. Despliegue veloz y vertical buscando espacios a la espalda del rival al recuperar.<br>3. Repliegue organizado si el rival supera la primera línea de presión.</p>
+            `,
+            'abp': `
+                <strong>ABP Estrategia FFCV:</strong>
+                <p style="margin-top:6px; color:var(--text-muted);">1. Córners defensivos en marcaje mixto (3 al hombre, 4 en zona de primer palo).<br>2. Faltas laterales con línea defensiva alta y coordinada para el fuera de juego.<br>3. Córners ofensivos buscando bloqueos al portero y envíos al segundo palo.</p>
+            `,
+            'plan': `
+                <strong>Plan de Partido y Estrategia FFCV:</strong>
+                <p style="margin-top:6px; color:var(--text-muted);">1. Adaptación táctica en función del sistema y virtudes del rival (ej: Catalunya, Madrid).<br>2. Modificación del bloque de presión (alto/medio/bajo) según minutos y marcador.<br>3. Utilización del portero como jugador de campo adicional en salida ante presión extrema.</p>
+            `
+        };
+
+        const SYSTEM_COORDINATES = {
             '1433': {
-                'GK':  { top: '92%', left: '50%' },
-                'P-2': { top: '74%', left: '15%' },
-                'P-4': { top: '78%', left: '38%' },
-                'P-5': { top: '78%', left: '62%' },
-                'P-3': { top: '74%', left: '85%' },
-                'P-6': { top: '56%', left: '50%' },
-                'P-8': { top: '48%', left: '28%' },
-                'P-10':{ top: '48%', left: '72%' },
-                'P-7': { top: '25%', left: '18%' },
-                'P-9': { top: '18%', left: '50%' },
-                'P-11':{ top: '25%', left: '82%' }
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' }, // GK
+                    { name: '2', top: '64%', left: '12%' }, // DF Left
+                    { name: '4', top: '75%', left: '38%' }, // CB Left
+                    { name: '5', top: '75%', left: '62%' }, // CB Right
+                    { name: '3', top: '64%', left: '88%' }, // DF Right
+                    { name: '6', top: '56%', left: '50%' }, // DM
+                    { name: '8', top: '44%', left: '26%' }, // CM Left
+                    { name: '10', top: '44%', left: '74%' }, // CM Right
+                    { name: '7', top: '22%', left: '10%' }, // LW
+                    { name: '9', top: '15%', left: '50%' }, // CF
+                    { name: '11', top: '22%', left: '90%' } // RW
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '78%', left: '25%' },
+                    { name: '4', top: '80%', left: '42%' },
+                    { name: '5', top: '80%', left: '58%' },
+                    { name: '3', top: '78%', left: '75%' },
+                    { name: '6', top: '68%', left: '50%' },
+                    { name: '8', top: '64%', left: '35%' },
+                    { name: '10', top: '64%', left: '65%' },
+                    { name: '7', top: '48%', left: '25%' },
+                    { name: '9', top: '40%', left: '50%' },
+                    { name: '11', top: '48%', left: '75%' }
+                ]
             },
             '1442': {
-                'GK':  { top: '92%', left: '50%' },
-                'P-2': { top: '78%', left: '15%' },
-                'P-4': { top: '78%', left: '38%' },
-                'P-5': { top: '78%', left: '62%' },
-                'P-3': { top: '78%', left: '85%' },
-                'P-6': { top: '58%', left: '30%' },
-                'P-8': { top: '58%', left: '70%' },
-                'P-10':{ top: '44%', left: '20%' },
-                'P-7': { top: '44%', left: '80%' },
-                'P-9': { top: '22%', left: '38%' },
-                'P-11':{ top: '22%', left: '62%' }
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '66%', left: '12%' },
+                    { name: '4', top: '76%', left: '38%' },
+                    { name: '5', top: '76%', left: '62%' },
+                    { name: '3', top: '66%', left: '88%' },
+                    { name: '6', top: '48%', left: '32%' },
+                    { name: '8', top: '48%', left: '68%' },
+                    { name: '10', top: '44%', left: '16%' }, // LM
+                    { name: '11', top: '44%', left: '84%' }, // RM
+                    { name: '7', top: '20%', left: '35%' }, // LF
+                    { name: '9', top: '20%', left: '65%' }  // RF
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '78%', left: '22%' },
+                    { name: '4', top: '80%', left: '41%' },
+                    { name: '5', top: '80%', left: '59%' },
+                    { name: '3', top: '78%', left: '78%' },
+                    { name: '6', top: '66%', left: '38%' },
+                    { name: '8', top: '66%', left: '62%' },
+                    { name: '10', top: '62%', left: '20%' },
+                    { name: '11', top: '62%', left: '80%' },
+                    { name: '7', top: '45%', left: '40%' },
+                    { name: '9', top: '45%', left: '60%' }
+                ]
             },
             '1352': {
-                'GK':  { top: '92%', left: '50%' },
-                'P-2': { top: '78%', left: '12%' },
-                'P-4': { top: '78%', left: '33%' },
-                'P-5': { top: '78%', left: '50%' },
-                'P-3': { top: '78%', left: '67%' },
-                'P-6': { top: '60%', left: '88%' },
-                'P-8': { top: '48%', left: '28%' },
-                'P-10':{ top: '48%', left: '72%' },
-                'P-7': { top: '32%', left: '50%' },
-                'P-9': { top: '18%', left: '30%' },
-                'P-11':{ top: '18%', left: '70%' }
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '4', top: '78%', left: '32%' },
+                    { name: '5', top: '79%', left: '50%' },
+                    { name: '3', top: '78%', left: '68%' },
+                    { name: '2', top: '50%', left: '10%' }, // LWB
+                    { name: '6', top: '58%', left: '50%' }, // DM
+                    { name: '8', top: '44%', left: '30%' }, // CM
+                    { name: '10', top: '44%', left: '70%' }, // CM
+                    { name: '11', top: '50%', left: '90%' }, // RWB
+                    { name: '7', top: '18%', left: '38%' },
+                    { name: '9', top: '18%', left: '62%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '76%', left: '18%' }, // LWB shifts to wingback/def
+                    { name: '4', top: '79%', left: '36%' },
+                    { name: '5', top: '80%', left: '50%' },
+                    { name: '3', top: '79%', left: '64%' },
+                    { name: '11', top: '76%', left: '82%' }, // RWB shifts to wingback/def
+                    { name: '6', top: '66%', left: '50%' },
+                    { name: '8', top: '64%', left: '35%' },
+                    { name: '10', top: '64%', left: '65%' },
+                    { name: '7', top: '46%', left: '40%' },
+                    { name: '9', top: '46%', left: '60%' }
+                ]
             }
         };
 
-        let activeTacticSystem = '1433';
-        let activeTacticPhase = 'ofensivo';
-
-        function setTacticSystem(systemId, buttonEl) {
-            activeTacticSystem = systemId;
-            buttonEl.parentNode.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
-            buttonEl.classList.add('active');
+        function setTacticSystem(system, btn) {
+            btn.parentNode.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
             
-            const pitchPlayers = document.querySelectorAll('#football-pitch .pitch-player');
-            const coords = TACTIC_COORDINATES[systemId];
-            
-            pitchPlayers.forEach((player) => {
-                let coordKey = 'P-' + player.textContent;
-                if (player.classList.contains('GK')) coordKey = 'GK';
-                const pos = coords[coordKey];
-                if (pos) {
-                    player.style.top = pos.top;
-                    player.style.left = pos.left;
-                }
+            btn.parentNode.querySelectorAll('button').forEach(b => {
+                b.style.borderColor = '';
+                b.style.color = '';
             });
-            updateTacticTitle();
-            showToast(`Cambio de sistema táctico a: ${systemId.split('').join('-')}`, 'info');
+            btn.style.borderColor = 'var(--accent)';
+            btn.style.color = 'var(--accent-hover)';
+
+            activeSystem = system;
+            updatePitchRepresentation();
+            showToast(`Sistema táctico cambiado a ${system}`, 'success');
         }
 
-        function selectTacticPhase(phaseId, cardEl) {
-            activeTacticPhase = phaseId;
-            cardEl.parentNode.querySelectorAll('.tactic-card').forEach(card => card.classList.remove('active'));
-            cardEl.classList.add('active');
-            updateTacticTitle();
+        function selectTacticPhase(phase, card) {
+            card.parentNode.querySelectorAll('.tactic-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+
+            activePhase = phase;
             
-            const pitchPlayers = document.querySelectorAll('#football-pitch .pitch-player');
-            pitchPlayers.forEach(player => {
-                if (player.classList.contains('GK')) return;
-                const currentTop = parseFloat(player.style.top);
-                const currentLeft = parseFloat(player.style.left);
-                const deltaTop = (Math.random() - 0.5) * 6;
-                const deltaLeft = (Math.random() - 0.5) * 6;
-                player.style.top = `${Math.max(10, Math.min(90, currentTop + deltaTop))}%`;
-                player.style.left = `${Math.max(5, Math.min(95, currentLeft + deltaLeft))}%`;
+            const detailsDiv = document.getElementById('tactic-phase-details');
+            if (detailsDiv && TACTIC_PHASES_INFO[phase]) {
+                detailsDiv.innerHTML = TACTIC_PHASES_INFO[phase];
+            }
+
+            updatePitchRepresentation();
+        }
+
+        function updatePitchRepresentation() {
+            let coordsPhase = (activePhase === 'defensivo') ? 'defensivo' : 'ofensivo';
+            const systemData = SYSTEM_COORDINATES[activeSystem] || SYSTEM_COORDINATES['1433'];
+            const coords = systemData[coordsPhase];
+
+            const pitch = document.getElementById('football-pitch');
+            if (!pitch) return;
+
+            pitch.querySelectorAll('.pitch-player').forEach(p => p.remove());
+
+            coords.forEach((coord, i) => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'pitch-player';
+                if (coord.name === '1') playerDiv.classList.add('GK');
+                playerDiv.style.top = coord.top;
+                playerDiv.style.left = coord.left;
+                playerDiv.textContent = coord.name;
+                pitch.appendChild(playerDiv);
             });
-            showToast(`Visualizando fase: ${cardEl.querySelector('.tactic-card-title').textContent}`, 'success');
+
+            const titleEl = document.getElementById('tactic-pitch-title');
+            if (titleEl) {
+                let phaseTitle = 'Fase Ofensiva';
+                if (activePhase === 'defensivo') phaseTitle = 'Fase Defensiva';
+                if (activePhase === 'transiciones') phaseTitle = 'Fase de Transición';
+                if (activePhase === 'abp') phaseTitle = 'ABP (Estrategia)';
+                if (activePhase === 'plan') phaseTitle = 'Plan de Partido';
+
+                titleEl.textContent = `Pizarra Táctica: Sistema ${activeSystem.split('').join('-')} (${phaseTitle})`;
+            }
         }
 
-        function updateTacticTitle() {
-            const systemStr = activeTacticSystem.split('').join('-');
-            let phaseStr = 'Fase Ofensiva';
-            if (activeTacticPhase === 'defensivo') phaseStr = 'Fase Defensiva';
-            if (activeTacticPhase === 'transiciones') phaseStr = 'Fase de Transiciones';
-            if (activeTacticPhase === 'abp') phaseStr = 'Fase ABP Estrategia';
-            document.getElementById('tactic-pitch-title').textContent = `Pizarra Táctica: Sistema ${systemStr} (${phaseStr})`;
-        }
-
-        function triggerVirtualFileInput() {
-            document.getElementById('virtual-file-input').click();
-        }
-
-        function handleVirtualFileSelection(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const name = file.name;
-            const size = (file.size / 1024).toFixed(1) + ' KB';
-            const extension = name.split('.').pop().toUpperCase();
+        // Cambio de sub-pestañas en configuración
+        function switchConfigSubTab(tabId, btn) {
+            btn.parentNode.querySelectorAll('.tactical-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
             
-            const container = document.getElementById('upload-progress-container');
-            const nameEl = document.getElementById('uploading-file-name');
-            const percentEl = document.getElementById('upload-percent-text');
-            const fillEl = document.getElementById('upload-progress-fill');
+            document.querySelectorAll('.config-sub-view').forEach(v => v.style.display = 'none');
+            const target = document.getElementById(tabId);
+            if (target) target.style.display = 'block';
             
-            nameEl.textContent = `Subiendo: ${name}`;
-            container.style.display = 'flex';
-            percentEl.textContent = '0%';
-            fillEl.style.width = '0%';
-            
-            let percent = 0;
-            const interval = setInterval(() => {
-                percent += 10;
-                percentEl.textContent = `${percent}%`;
-                fillEl.style.width = `${percent}%`;
-                if (percent >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        container.style.display = 'none';
-                        addNewDocument(name, size, extension);
-                        showToast(`Archivo "${name}" subido con éxito`, 'success');
-                    }, 400);
-                }
-            }, 150);
+            showToast(`Configuración: ${btn.textContent}`, 'info');
         }
 
-        function addNewDocument(name, size, extension) {
-            const container = document.getElementById('uploaded-files-container');
-            const newRow = document.createElement('div');
-            newRow.className = 'doc-row';
-            newRow.style.animation = 'fadeIn 0.4s ease-out';
-            newRow.innerHTML = `
-                <div class="doc-meta">
-                    <div class="doc-icon-wrapper" style="background-color: var(--accent-light); color: var(--accent); border-color: var(--accent-light); font-weight:700;">${extension}</div>
-                    <div>
-                        <span style="font-weight:600; font-size:14px; color:var(--primary);">${name}</span>
-                        <p style="font-size:11px; color:var(--text-muted);">Subido recientemente · ${size}</p>
+        // Expandir/colapsar carpetas de documentos
+        function toggleFolder(folderId) {
+            const folder = document.getElementById(folderId);
+            if (folder) {
+                folder.style.display = folder.style.display === 'none' ? 'block' : 'none';
+            }
+        }
+
+        // Crear nueva sesión de entrenamiento
+        function addSession(e) {
+            e.preventDefault();
+            const titleInput = document.getElementById('sess-title').value;
+            const type = document.getElementById('sess-type').value;
+            const duration = parseInt(document.getElementById('sess-duration').value) || 90;
+            const intensity = document.getElementById('sess-intensity').value;
+            const focus = document.getElementById('sess-focus').value;
+            const materials = document.getElementById('sess-material').value;
+            const block1 = document.getElementById('sess-block1').value;
+            const block2 = document.getElementById('sess-block2').value;
+            
+            const nextId = sessions.length + 1;
+            const newSession = {
+                id: nextId,
+                title: `Sesión ${nextId}: ${titleInput}`,
+                type,
+                duration,
+                intensity,
+                focus,
+                materials,
+                block1,
+                block2,
+                date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
+            };
+            
+            sessions.push(newSession);
+            saveState();
+            closeModal('modal-sesion');
+            renderSessions();
+            showToast('Hoja de sesión creada con éxito', 'success');
+            document.getElementById('form-add-session').reset();
+        }
+
+        // Detalle de Sesión en Modal
+        function openSessionDetail(id) {
+            const s = sessions.find(sess => sess.id === id);
+            if (!s) return;
+            
+            const container = document.getElementById('session-detail-content');
+            if (container) {
+                container.innerHTML = `
+                    <div style="display:flex; flex-direction:column; gap:16px;">
+                        <div>
+                            <span class="tag tag-info" style="font-size:9px; margin-bottom:4px;">SESIÓN OFICIAL DE ENTRENAMIENTO</span>
+                            <h4 style="font-size:20px; color:var(--primary); font-weight:700;">${s.title}</h4>
+                            <p style="font-size:12px; color:var(--text-muted);">Fecha de Planificación: <strong>${s.date}</strong></p>
+                        </div>
+                        
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; border-bottom:1px solid var(--border-color); padding-bottom:16px;">
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted); display:block;">Tipo de Trabajo</span>
+                                <strong style="color:var(--primary);">${s.type}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted); display:block;">Intensidad Recomendada</span>
+                                <strong style="color:var(--accent-hover);">${s.intensity}</strong>
+                            </div>
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted); display:block;">Duración Estimada</span>
+                                <strong>⏱ ${s.duration} minutos</strong>
+                            </div>
+                            <div>
+                                <span style="font-size:11px; color:var(--text-muted); display:block;">Materiales Requeridos</span>
+                                <strong>${s.materials || 'Balones FFCV, Conos, Petos de colores'}</strong>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h5 style="font-size:14px; font-weight:600; color:var(--primary); margin-bottom:6px;">Objetivo Principal</h5>
+                            <p style="font-size:13px; color:var(--text-main); line-height:1.5; background-color:var(--bg-app); padding:10px; border-radius:var(--radius-sm);">${s.focus}</p>
+                        </div>
+                        
+                        <div>
+                            <h5 style="font-size:14px; font-weight:600; color:var(--primary); margin-bottom:8px;">Bloques y Tiempos</h5>
+                            <div style="display:flex; flex-direction:column; gap:8px;">
+                                <div style="padding:10px; border:1px solid var(--border-color); border-radius:var(--radius-sm);">
+                                    <strong style="font-size:12px; color:var(--accent-hover);">PARTE 1: Activación / Rondo (15 min)</strong>
+                                    <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">${s.block1 || 'Calentamiento dinámico con balón y rondo posicional con comodines exteriores.'}</p>
+                                </div>
+                                <div style="padding:10px; border:1px solid var(--border-color); border-radius:var(--radius-sm);">
+                                    <strong style="font-size:12px; color:var(--accent-hover);">PARTE 2: Parte Principal / Táctica (55 min)</strong>
+                                    <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">${s.block2 || 'Juego de posesión real condicionado a pases interiores y finalizaciones rápidas.'}</p>
+                                </div>
+                                <div style="padding:10px; border:1px solid var(--border-color); border-radius:var(--radius-sm);">
+                                    <strong style="font-size:12px; color:var(--accent-hover);">PARTE 3: Vuelta a la Calma (10 min)</strong>
+                                    <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Estiramientos estáticos asistidos y feedback colectivo de la sesión.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <button class="btn btn-outline btn-sm" onclick="showToast('Descargando archivo subido...', 'success')">Descargar</button>
-            `;
-            container.insertBefore(newRow, container.firstChild);
+                `;
+            }
+            openModal('modal-ver-sesion');
+        }
+
+        // Crear nuevo informe de scouting
+        function addReport(e) {
+            e.preventDefault();
+            const type = document.getElementById('rep-type').value;
+            const scout = document.getElementById('rep-scout').value;
+            const rating = parseInt(document.getElementById('rep-rating').value) || 85;
+            const status = document.getElementById('rep-status').value;
+            
+            const nextId = reports.length + 1;
+            let newReport = {
+                id: nextId,
+                type,
+                scout,
+                rating,
+                status,
+                date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
+            };
+            
+            if (type === 'Individual') {
+                const player = document.getElementById('rep-play-name').value;
+                const position = document.getElementById('rep-play-pos').value;
+                const pace = parseInt(document.getElementById('val-pace').value) || 80;
+                const pass = parseInt(document.getElementById('val-pass').value) || 80;
+                const defense = parseInt(document.getElementById('val-def').value) || 80;
+                const physical = parseInt(document.getElementById('val-phys').value) || 80;
+                
+                newReport.player = player;
+                newReport.position = position;
+                newReport.pace = pace;
+                newReport.pass = pass;
+                newReport.defense = defense;
+                newReport.physical = physical;
+                newReport.dribble = 75;
+                newReport.shoot = 70;
+            } else {
+                const title = document.getElementById('rep-rival-title').value;
+                const text = document.getElementById('rep-rival-notes').value;
+                
+                newReport.title = title;
+                newReport.text = text;
+            }
+            
+            reports.push(newReport);
+            saveState();
+            closeModal('modal-informe');
+            renderReports();
+            showToast('Informe técnico guardado', 'success');
+            document.getElementById('form-add-report').reset();
+        }
+
+        // Toggle campos del formulario de informe
+        function toggleReportFormFields() {
+            const type = document.getElementById('rep-type').value;
+            const indFields = document.getElementById('fields-report-individual');
+            const rivFields = document.getElementById('fields-report-rival');
+            
+            if (type === 'Individual') {
+                if (indFields) indFields.style.display = 'block';
+                if (rivFields) rivFields.style.display = 'none';
+                document.getElementById('rep-play-name').required = true;
+                document.getElementById('rep-rival-title').required = false;
+                document.getElementById('rep-rival-notes').required = false;
+            } else {
+                if (indFields) indFields.style.display = 'none';
+                if (rivFields) rivFields.style.display = 'block';
+                document.getElementById('rep-play-name').required = false;
+                document.getElementById('rep-rival-title').required = true;
+                document.getElementById('rep-rival-notes').required = true;
+            }
+        }
+
+        // Generar lista aleatoria automatizada (18 jugadores)
+        function generateRandomCallList() {
+            const categories = ["Sub-14", "Sub-16", "Sub-19"];
+            const selectedCategory = categories[Math.floor(Math.random() * categories.length)];
+            const dateStr = `2026-06-${Math.floor(Math.random() * 10) + 18}`;
+            
+            let categoryPlayers = players.filter(p => p.category === selectedCategory);
+            let playerIds = categoryPlayers.map(p => p.id);
+            
+            const mockFirstNames = ["Pau", "Marc", "Joan", "David", "Carlos", "Hugo", "Lucas", "Iker", "Sofia", "Ainhoa", "Lucia", "Elena", "Ruben", "Javier", "Alex", "Dani", "Alejandro", "Adrian"];
+            const mockLastNames = ["Gomez", "Lopez", "Garcia", "Rodriguez", "Martinez", "Sanchez", "Perez", "Martin", "Gimenez", "Ruiz", "Vidal", "Ferrer", "Ortiz", "Navarro", "Mora", "Sanz"];
+            
+            while (playerIds.length < 18) {
+                const randomName = `${mockFirstNames[Math.floor(Math.random() * mockFirstNames.length)]} ${mockLastNames[Math.floor(Math.random() * mockLastNames.length)]}`;
+                const newId = players.length + 1;
+                const newP = {
+                    id: newId,
+                    name: randomName,
+                    club: "C.F. FFCV Base",
+                    category: selectedCategory,
+                    position: ["Portero", "Defensa Central", "Lateral", "Mediocentro", "Extremo", "Delantero Centro"][Math.floor(Math.random() * 6)],
+                    matches: Math.floor(Math.random() * 10),
+                    status: "En Observación",
+                    birthYear: 2008 + Math.floor(Math.random() * 6),
+                    foot: ["Diestro", "Zurdo", "Ambidiestro"][Math.floor(Math.random() * 3)],
+                    pace: 70 + Math.floor(Math.random() * 25),
+                    pass: 70 + Math.floor(Math.random() * 25),
+                    defense: 70 + Math.floor(Math.random() * 25),
+                    physical: 70 + Math.floor(Math.random() * 25),
+                    shoot: 60 + Math.floor(Math.random() * 30),
+                    dribble: 65 + Math.floor(Math.random() * 30),
+                    rating: 75 + Math.floor(Math.random() * 20),
+                    phone: "+34 600 " + Math.floor(100000 + Math.random() * 900000)
+                };
+                players.push(newP);
+                playerIds.push(newId);
+            }
+            
+            const newCall = {
+                id: convocatorias.length + 1,
+                name: `Selección ${selectedCategory} Autonómica - Preselección`,
+                location: "Campo federativo Picassent",
+                time: "18:00 h",
+                status: "Pendiente de cerrar lista",
+                date: dateStr,
+                players: playerIds.slice(0, 18)
+            };
+            
+            convocatorias.push(newCall);
+            
+            events.push({
+                id: events.length + 1,
+                title: newCall.name,
+                date: dateStr,
+                type: 'match',
+                location: newCall.location
+            });
+
+            saveState();
+            renderConvocatorias();
+            renderPlayersTable();
+            renderDashboardView();
+            selectConvocatoria(newCall.id);
+            
+            showToast(`Convocatoria ${newCall.name} generada con 18 futbolistas.`, 'success');
+        }
+
+        // Exportar Convocatoria en formato Txt (Legible)
+        function exportCallPDF() {
+            const detailPanel = document.getElementById('convocatoria-detail-panel');
+            if (!detailPanel) return;
+            const titleEl = detailPanel.querySelector('.panel-title');
+            if (!titleEl) {
+                showToast('Selecciona una convocatoria para exportarla a PDF', 'warning');
+                return;
+            }
+            const title = titleEl.textContent;
+            
+            let content = `====================================================\n`;
+            content += `   FEDERACIÓ DE FUTBOL DE LA COMUNITAT VALENCIANA\n`;
+            content += `       CONVOCATORIA OFICIAL DE SELECCIÓN\n`;
+            content += `====================================================\n\n`;
+            content += `EVENTO: ${title}\n`;
+            
+            const lines = detailPanel.querySelectorAll('.squad-player-badge');
+            if (lines.length === 0) {
+                content += `No hay jugadores asignados a esta convocatoria.\n`;
+            } else {
+                content += `JUGADORES CITADOS:\n`;
+                lines.forEach(line => {
+                    const number = line.querySelector('.number').textContent;
+                    const name = line.querySelector('span[style*="font-weight:600"]').textContent;
+                    const pos = line.querySelector('span[style*="font-size:10px"]').textContent;
+                    content += `${number} - ${name} (${pos})\n`;
+                });
+            }
+            
+            content += `\n====================================================\n`;
+            content += `Firmado: Rubén Mora, Director Técnico FFCV\n`;
+            content += `Fecha de generación: ${new Date().toLocaleDateString()}\n`;
+            
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Convocatoria_${title.replace(/\s+/g, '_')}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            
+            showToast('Documento oficial PDF descargado con éxito', 'success');
+        }
+
+        /* ==========================================================================
+           D.10 IMPLEMENTACIÓN DEL STAFF TÉCNICO EN JS
+           ========================================================================== */
+        const DEFAULT_STAFF = [
+            { id: 1, name: "Rubén Mora", role: "Director Deportivo", category: "General FFCV", license: "UEFA Pro", email: "rmora@ffcv.es", status: "Activo" },
+            { id: 2, name: "Vicente Ampudia", role: "Seleccionador", category: "Sub-16 Masculina", license: "UEFA Pro", email: "vampudia@ffcv.es", status: "En Concentración" },
+            { id: 3, name: "Jose Vicente", role: "Analista Técnico", category: "Sub-16 / Sub-14", license: "UEFA A - Videoanálisis", email: "jvicente@ffcv.es", status: "Activo" },
+            { id: 4, name: "Sara Gómez", role: "Preparador Físico", category: "Sub-19 Femenina", license: "Lic. CAFYD - Prep. Física", email: "sgomez@ffcv.es", status: "De Vacaciones" }
+        ];
+
+        let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || DEFAULT_STAFF;
+
+        function renderStaff() {
+            const container = document.getElementById('staff-grid-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            staff.forEach(member => {
+                const initials = member.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                
+                let badgeStyle = 'background-color: var(--accent-light); color: var(--accent-hover);';
+                if (member.role === 'Segundo Entrenador') badgeStyle = 'background-color: var(--info-light); color: var(--info);';
+                if (member.role === 'Preparador Físico') badgeStyle = 'background-color: #e6f4ea; color: #137333;';
+                if (member.role === 'Analista Técnico') badgeStyle = 'background-color: #fef7e0; color: #b06000;';
+                if (member.role === 'Delegado') badgeStyle = 'background-color: #fce8e6; color: #c5221f;';
+                
+                let statusClass = 'tag-success';
+                if (member.status === 'En Concentración') statusClass = 'tag-warning';
+                if (member.status === 'De Vacaciones') statusClass = 'tag-info';
+
+                container.innerHTML += `
+                    <div class="staff-card">
+                        <div class="staff-photo-container">${initials}</div>
+                        <div class="staff-info-block">
+                            <span class="staff-role-badge" style="${badgeStyle}">${member.role}</span>
+                            <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">${member.name}</h4>
+                            <span style="font-size:12px; color:var(--text-muted);">${member.category}</span>
+                        </div>
+                        <div class="staff-meta-list">
+                            <div class="staff-meta-item">
+                                <span>Licencia:</span>
+                                <strong>${member.license}</strong>
+                            </div>
+                            <div class="staff-meta-item">
+                                <span>Contacto:</span>
+                                <a href="mailto:${member.email}" style="color:var(--accent); font-weight:600; text-decoration:none;">${member.email}</a>
+                            </div>
+                            <div class="staff-meta-item" style="margin-top:4px;">
+                                <span>Disponibilidad:</span>
+                                <span class="tag ${statusClass}" style="font-size:10px;">${member.status}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
         }
 
         function openAddStaffModal() {
@@ -4372,39 +5407,84 @@
             const role = document.getElementById('staff-role').value;
             const category = document.getElementById('staff-category').value;
             const license = document.getElementById('staff-license').value;
-            const initials = name.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+            const email = name.toLowerCase().split(' ').join('') + "@ffcv.es";
             
-            let badgeStyle = 'background-color: var(--accent-light); color: var(--accent-hover);';
-            if (role === 'Segundo Entrenador') badgeStyle = 'background-color: var(--info-light); color: var(--info);';
-            if (role === 'Preparador Físico') badgeStyle = 'background-color: #e6f4ea; color: #137333;';
-            if (role === 'Analista Técnico') badgeStyle = 'background-color: #fef7e0; color: #b06000;';
-            if (role === 'Delegado') badgeStyle = 'background-color: #fce8e6; color: #c5221f;';
+            const newMember = {
+                id: staff.length + 1,
+                name,
+                role,
+                category,
+                license,
+                email,
+                status: "Activo"
+            };
             
-            const container = document.getElementById('staff-grid-container');
-            const card = document.createElement('div');
-            card.className = 'staff-card';
-            card.style.animation = 'fadeIn 0.4s ease-out';
-            card.innerHTML = `
-                <div class="staff-photo-container">${initials}</div>
-                <div class="staff-info-block">
-                    <span class="staff-role-badge" style="${badgeStyle}">${role}</span>
-                    <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">${name}</h4>
-                    <span style="font-size:12px; color:var(--text-muted);">${category}</span>
-                </div>
-                <div class="staff-meta-list">
-                    <div class="staff-meta-item">
-                        <span>Especialidad/Lic:</span>
-                        <strong>${license}</strong>
-                    </div>
-                    <div class="staff-meta-item">
-                        <span>Antigüedad:</span>
-                        <strong>Nuevo</strong>
-                    </div>
-                </div>
-            `;
-            container.appendChild(card);
+            staff.push(newMember);
+            localStorage.setItem('ffcv_staff', JSON.stringify(staff));
+            saveState();
+            renderStaff();
+            
             document.getElementById('modal-add-staff-temp').remove();
             showToast(`${name} añadido al staff de selecciones`, 'success');
+        }
+
+        function triggerVirtualFileInput() {
+            document.getElementById('virtual-file-input').click();
+        }
+
+        function handleVirtualFileSelection(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const name = file.name;
+            const size = (file.size / 1024).toFixed(1) + ' KB';
+            const extension = name.split('.').pop().toUpperCase();
+            
+            const container = document.getElementById('upload-progress-container');
+            const nameEl = document.getElementById('uploading-file-name');
+            const percentEl = document.getElementById('upload-percent-text');
+            const fillEl = document.getElementById('upload-progress-fill');
+            
+            nameEl.textContent = `Subiendo: ${name}`;
+            container.style.display = 'flex';
+            percentEl.textContent = '0%';
+            fillEl.style.width = '0%';
+            
+            let percent = 0;
+            const interval = setInterval(() => {
+                percent += 10;
+                percentEl.textContent = `${percent}%`;
+                fillEl.style.width = `${percent}%`;
+                if (percent >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        container.style.display = 'none';
+                        addNewDocument(name, size, extension);
+                        showToast(`Archivo "${name}" subido con éxito`, 'success');
+                    }, 400);
+                }
+            }, 150);
+        }
+
+        function addNewDocument(name, size, extension) {
+            const container = document.getElementById('uploaded-files-container');
+            if (!container) return;
+            const newRow = document.createElement('div');
+            newRow.className = 'doc-row';
+            newRow.style.animation = 'fadeIn 0.4s ease-out';
+            newRow.innerHTML = `
+                <div class="doc-meta">
+                    <div class="doc-icon-wrapper" style="background-color: var(--accent-light); color: var(--accent); border-color: var(--accent-light); font-weight:700;">${extension}</div>
+                    <div>
+                        <span style="font-weight:600; font-size:14px; color:var(--primary);">${name}</span>
+                        <p style="font-size:11px; color:var(--text-muted);">Subido recientemente · ${size}</p>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="showToast('Descargando archivo subido...', 'success')">Descargar</button>
+            `;
+            container.insertBefore(newRow, container.firstChild);
+            
+            const uploadedFolderCard = document.getElementById('uploaded-folder-card');
+            if (uploadedFolderCard) uploadedFolderCard.style.display = 'block';
         }
 
         /* ==========================================================================
@@ -4414,6 +5494,7 @@
             updateCounts();
             renderDashboardView();
             initChart();
+            renderStaff();
             
             // Navegar automáticamente a la pestaña indicada en el Hash de URL (si existe)
             const hash = window.location.hash.substring(1);
