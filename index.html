@@ -23,9 +23,9 @@
             --primary: #0A2540;        /* Azul Oscuro Premium */
             --primary-light: #1E3A5F;  /* Azul Medio */
             --primary-dark: #051424;   /* Azul Muy Oscuro */
-            --accent: #FFB000;         /* Amarillo/Dorado FFCV */
-            --accent-hover: #E09B00;   /* Amarillo Hover */
-            --accent-light: #FFF8E6;   /* Amarillo muy suave */
+            --accent: #FF6B00;         /* Naranja FFCV */
+            --accent-hover: #E05A00;   /* Naranja Hover */
+            --accent-light: #FFF0E6;   /* Naranja muy suave */
             
             /* Colores de Interfaz */
             --bg-app: #F8FAFC;         /* Gris azulado muy suave */
@@ -194,7 +194,7 @@
             color: var(--primary);
             background-color: var(--accent);
             font-weight: 600;
-            box-shadow: 0 4px 12px rgba(255, 176, 0, 0.3);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35);
         }
 
         .menu-item.active svg {
@@ -570,23 +570,23 @@
         }
 
         .btn-primary {
-            background-color: var(--primary);
+            background-color: var(--accent);
             color: #FFFFFF;
         }
 
         .btn-primary:hover {
-            background-color: var(--primary-light);
-            box-shadow: 0 4px 12px rgba(10, 37, 64, 0.15);
+            background-color: var(--accent-hover);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
         }
 
         .btn-accent {
             background-color: var(--accent);
-            color: var(--primary);
+            color: #FFFFFF;
         }
 
         .btn-accent:hover {
             background-color: var(--accent-hover);
-            box-shadow: 0 4px 12px rgba(255, 176, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(255, 107, 0, 0.25);
         }
 
         .btn-outline {
@@ -1612,7 +1612,426 @@
                 font-size: 22px;
             }
         }
-    </style>
+
+        /* ==========================================================================
+           14. ESTILOS ADICIONALES PARA NUEVAS VISTAS (MODELO, STAFF, DOCS)
+           ========================================================================== */
+        /* Vista Modelo de Juego */
+        .tactic-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1.8fr;
+            gap: 28px;
+        }
+        @media (max-width: 1100px) {
+            .tactic-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        .pitch-container {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        .pitch {
+            width: 100%;
+            max-width: 420px;
+            aspect-ratio: 2.2 / 3;
+            background: linear-gradient(to bottom, #2e7d32 0%, #1b5e20 100%);
+            border: 3.5px solid rgba(255, 255, 255, 0.85);
+            border-radius: var(--radius-md);
+            position: relative;
+            box-shadow: inset 0 0 35px rgba(0,0,0,0.45);
+        }
+        /* Grass stripes */
+        .pitch::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.04) 0px,
+                rgba(255, 255, 255, 0.04) 40px,
+                transparent 40px,
+                transparent 80px
+            );
+            pointer-events: none;
+        }
+        /* Center line and circle */
+        .pitch-center-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2.5px;
+            background-color: rgba(255,255,255,0.85);
+            transform: translateY(-50%);
+        }
+        .pitch-center-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 25%;
+            aspect-ratio: 1;
+            border: 2.5px solid rgba(255,255,255,0.85);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .pitch-center-spot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background-color: rgba(255,255,255,0.95);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        /* Penalty boxes */
+        .pitch-penalty-top {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 16%;
+            border: 2.5px solid rgba(255,255,255,0.85);
+            border-top: none;
+            transform: translateX(-50%);
+        }
+        .pitch-penalty-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 50%;
+            height: 16%;
+            border: 2.5px solid rgba(255,255,255,0.85);
+            border-bottom: none;
+            transform: translateX(-50%);
+        }
+        .pitch-goal-top {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 20%;
+            height: 5%;
+            border: 2px solid rgba(255,255,255,0.9);
+            border-top: none;
+            transform: translateX(-50%);
+        }
+        .pitch-goal-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 20%;
+            height: 5%;
+            border: 2px solid rgba(255,255,255,0.9);
+            border-bottom: none;
+            transform: translateX(-50%);
+        }
+        /* Player Dots */
+        .pitch-player {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background-color: var(--accent);
+            border: 2px solid #FFFFFF;
+            color: #FFFFFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            transition: all 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+            cursor: pointer;
+            z-index: 10;
+        }
+        .pitch-player:hover {
+            transform: translate(-50%, -50%) scale(1.25);
+            background-color: var(--primary);
+            border-color: var(--accent);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.45);
+        }
+        .pitch-player.GK {
+            background-color: #f59e0b;
+        }
+        /* Tactical Sub-tabs */
+        .tactical-menu-tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+        .tactical-tab {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: var(--transition-base);
+        }
+        .tactical-tab:hover {
+            background-color: var(--bg-app);
+            color: var(--primary);
+        }
+        .tactical-tab.active {
+            background-color: var(--accent-light);
+            color: var(--accent-hover);
+        }
+
+        /* Vista Staff Técnico */
+        .staff-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 24px;
+        }
+        .staff-card {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-base);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 16px;
+            position: relative;
+        }
+        .staff-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+        .staff-photo-container {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            border: 3px solid var(--accent-light);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-base);
+        }
+        .staff-card:hover .staff-photo-container {
+            border-color: var(--accent);
+            transform: scale(1.05);
+        }
+        .staff-info-block {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .staff-role-badge {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-hover);
+            background-color: var(--accent-light);
+            padding: 4px 10px;
+            border-radius: 999px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        .staff-meta-list {
+            font-size: 12px;
+            color: var(--text-muted);
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 14px;
+            margin-top: auto;
+        }
+        .staff-meta-item {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Vista Documentación */
+        .docs-layout {
+            display: grid;
+            grid-template-columns: 1.8fr 1.2fr;
+            gap: 28px;
+        }
+        @media (max-width: 1100px) {
+            .docs-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        .doc-category-card {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+        }
+        .doc-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .doc-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background-color: var(--bg-app);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            transition: var(--transition-base);
+        }
+        .doc-row:hover {
+            border-color: var(--accent);
+            background-color: #FFFFFF;
+            transform: translateX(4px);
+        }
+        .doc-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .doc-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+        }
+        .doc-row:hover .doc-icon-wrapper {
+            color: var(--accent);
+            border-color: var(--accent-light);
+            background-color: var(--accent-light);
+        }
+        .dropzone {
+            border: 2px dashed var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 40px 24px;
+            text-align: center;
+            background-color: var(--bg-app);
+            cursor: pointer;
+            transition: var(--transition-base);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .dropzone:hover {
+            border-color: var(--accent);
+            background-color: var(--accent-light);
+        }
+        .dropzone-icon {
+            width: 44px;
+            height: 44px;
+            color: var(--text-muted);
+            stroke-width: 1.5;
+            transition: var(--transition-base);
+        }
+        .dropzone:hover .dropzone-icon {
+            color: var(--accent-hover);
+            transform: translateY(-4px);
+        }
+        .progress-container {
+            width: 100%;
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent);
+            border-radius: 99px;
+            transition: width 0.1s linear;
+        }
+        
+        /* Grid del modelo de juego cards */
+        .tactic-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        @media (max-width: 600px) {
+            .tactic-cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .tactic-card {
+            background-color: var(--bg-app);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+        .tactic-card:hover {
+            border-color: var(--accent);
+            background-color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+        .tactic-card.active {
+            border-color: var(--accent);
+            background-color: #FFFFFF;
+            box-shadow: var(--shadow-sm);
+        }
+        .tactic-card-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .tactic-card-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        </style>
 </head>
 
 <body>
@@ -1643,11 +2062,11 @@
                     <span>Dashboard</span>
                 </a>
                 <a href="#jugadores" class="menu-item" data-view="jugadores">
-                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                    <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
                     <span>Jugadores</span>
                 </a>
                 <a href="#convocatorias" class="menu-item" data-view="convocatorias">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" /></svg>
+                    <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4" /><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" /></svg>
                     <span>Convocatorias</span>
                 </a>
                 <a href="#planificacion" class="menu-item" data-view="planificacion">
@@ -1658,6 +2077,10 @@
                     <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /><path d="M11 18H8a2 2 0 0 1-2-2V9" /></svg>
                     <span>Sesiones</span>
                 </a>
+                <a href="#modelo" class="menu-item" data-view="modelo">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="12" cy="12" r="3" /><path d="M12 3v18M3 12h18" /></svg>
+                    <span>Modelo de juego</span>
+                </a>
                 <a href="#informes" class="menu-item" data-view="informes">
                     <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>
                     <span>Informes</span>
@@ -1665,6 +2088,14 @@
                 <a href="#calendario" class="menu-item" data-view="calendario">
                     <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
                     <span>Calendario</span>
+                </a>
+                <a href="#staff" class="menu-item" data-view="staff">
+                    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+                    <span>Staff técnico</span>
+                </a>
+                <a href="#documentacion" class="menu-item" data-view="documentacion">
+                    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /></svg>
+                    <span>Documentación</span>
                 </a>
                 <a href="#configuracion" class="menu-item" data-view="configuracion">
                     <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
@@ -2127,6 +2558,89 @@
                 </section>
 
                 <!-- ==========================================================================
+                     B.5.2 VISTA: MODELO DE JUEGO
+                     ========================================================================== -->
+                <section class="view" id="view-modelo">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <div>
+                            <h2 style="font-size:24px; color:var(--primary);">Modelo de Juego FFCV</h2>
+                            <p style="color:var(--text-muted); font-size:14px;">Definición de identidad, principios tácticos y disposición espacial de las Selecciones Valencianas.</p>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-outline" onclick="showToast('Esquema táctico exportado a PDF', 'success')">Exportar PDF</button>
+                            <button class="btn btn-primary" onclick="showToast('Editor de Pizarra habilitado', 'info')">Editar Pizarra</button>
+                        </div>
+                    </div>
+
+                    <div class="tactic-layout">
+                        <!-- Pizarra y Parámetros -->
+                        <div style="display:flex; flex-direction:column; gap:20px;">
+                            <div class="panel">
+                                <h3 class="panel-title">Selección de Sistema</h3>
+                                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;">
+                                    <button class="btn btn-outline btn-sm active" style="border-color:var(--accent); color:var(--accent-hover);" onclick="setTacticSystem('1433', this)">1-4-3-3</button>
+                                    <button class="btn btn-outline btn-sm" onclick="setTacticSystem('1442', this)">1-4-4-2</button>
+                                    <button class="btn btn-outline btn-sm" onclick="setTacticSystem('1352', this)">1-3-5-2</button>
+                                </div>
+                            </div>
+                            
+                            <div class="panel">
+                                <h3 class="panel-title">Fase de Juego</h3>
+                                <div class="tactic-cards-grid">
+                                    <div class="tactic-card active" onclick="selectTacticPhase('ofensivo', this)">
+                                        <span class="tactic-card-title">Aspectos Ofensivos</span>
+                                        <span class="tactic-card-desc">Salida de balón limpia, progresión por bandas y finalización con extremos abiertos.</span>
+                                    </div>
+                                    <div class="tactic-card" onclick="selectTacticPhase('defensivo', this)">
+                                        <span class="tactic-card-title">Aspectos Defensivos</span>
+                                        <span class="tactic-card-desc">Presión alta orientada a banda, bloque medio estrecho y basculaciones.</span>
+                                    </div>
+                                    <div class="tactic-card" onclick="selectTacticPhase('transiciones', this)">
+                                        <span class="tactic-card-title">Transición Of-Def / Def-Of</span>
+                                        <span class="tactic-card-desc">Repliegue inmediato o contraataque directo al recuperar balón en zona 2/3.</span>
+                                    </div>
+                                    <div class="tactic-card" onclick="selectTacticPhase('abp', this)">
+                                        <span class="tactic-card-title">ABP Estrategia</span>
+                                        <span class="tactic-card-desc">Saques de esquina zonales, bloqueos en faltas y jugadas ensayadas.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- El Terreno de Juego Visual -->
+                        <div class="pitch-container">
+                            <h3 class="panel-title" id="tactic-pitch-title" style="align-self:flex-start;">Pizarra Táctica: Sistema 1-4-3-3 (Fase Ofensiva)</h3>
+                            <div class="pitch" id="football-pitch">
+                                <!-- GK -->
+                                <div class="pitch-player GK" style="top:92%; left:50%;">1</div>
+                                <!-- DEF -->
+                                <div class="pitch-player" style="top:74%; left:15%;">2</div>
+                                <div class="pitch-player" style="top:78%; left:38%;">4</div>
+                                <div class="pitch-player" style="top:78%; left:62%;">5</div>
+                                <div class="pitch-player" style="top:74%; left:85%;">3</div>
+                                <!-- MID -->
+                                <div class="pitch-player" style="top:56%; left:50%;">6</div>
+                                <div class="pitch-player" style="top:48%; left:28%;">8</div>
+                                <div class="pitch-player" style="top:48%; left:72%;">10</div>
+                                <!-- FW -->
+                                <div class="pitch-player" style="top:25%; left:18%;">7</div>
+                                <div class="pitch-player" style="top:18%; left:50%;">9</div>
+                                <div class="pitch-player" style="top:25%; left:82%;">11</div>
+                                
+                                <div class="pitch-center-line"></div>
+                                <div class="pitch-center-circle"></div>
+                                <div class="pitch-center-spot"></div>
+                                <div class="pitch-penalty-top"></div>
+                                <div class="pitch-penalty-bottom"></div>
+                                <div class="pitch-goal-top"></div>
+                                <div class="pitch-goal-bottom"></div>
+                            </div>
+                            <p style="font-size:11px; color:var(--text-muted); text-align:center;">*Selecciona un sistema táctico o una fase para reposicionar automáticamente la plantilla.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================================================
                      B.6 VISTA: INFORMES (SCOUTING E INDIVIDUALES)
                      ========================================================================== -->
                 <section class="view" id="view-informes">
@@ -2195,6 +2709,254 @@
 
                                 <button type="submit" class="btn btn-primary" style="width:100%;">Agregar al Calendario</button>
                             </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================================================
+                     B.7.2 VISTA: STAFF TÉCNICO
+                     ========================================================================== -->
+                <section class="view" id="view-staff">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <div>
+                            <h2 style="font-size:24px; color:var(--primary);">Cuerpo Técnico FFCV</h2>
+                            <p style="color:var(--text-muted); font-size:14px;">Organigrama oficial de profesionales deportivos a cargo de las Selecciones Valencianas.</p>
+                        </div>
+                        <button class="btn btn-primary" onclick="openAddStaffModal()">
+                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                            Añadir Miembro
+                        </button>
+                    </div>
+
+                    <div class="staff-grid" id="staff-grid-container">
+                        <div class="staff-card">
+                            <div class="staff-photo-container">RM</div>
+                            <div class="staff-info-block">
+                                <span class="staff-role-badge">Seleccionador</span>
+                                <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">Rubén Mora</h4>
+                                <span style="font-size:12px; color:var(--text-muted);">Selección Masculina Sub-16</span>
+                            </div>
+                            <div class="staff-meta-list">
+                                <div class="staff-meta-item">
+                                    <span>Licencia:</span>
+                                    <strong>UEFA Pro</strong>
+                                </div>
+                                <div class="staff-meta-item">
+                                    <span>Partidos dirigidos:</span>
+                                    <strong>42</strong>
+                                </div>
+                                <div class="staff-meta-item">
+                                    <span>Antigüedad:</span>
+                                    <strong>3 años</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="staff-card">
+                            <div class="staff-photo-container">VA</div>
+                            <div class="staff-info-block">
+                                <span class="staff-role-badge" style="background-color: var(--info-light); color: var(--info);">Segundo Entrenador</span>
+                                <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">Vicente Ampudia</h4>
+                                <span style="font-size:12px; color:var(--text-muted);">Selección Masculina Sub-16</span>
+                            </div>
+                            <div class="staff-meta-list">
+                                <div class="staff-meta-item">
+                                    <span>Licencia:</span>
+                                    <strong>UEFA A</strong>
+                                </div>
+                                <div class="staff-meta-item">
+                                    <span>Especialidad:</span>
+                                    <strong>Táctica y ABP</strong>
+                                </div>
+                                <div class="staff-meta-item">
+                                    <span>Antigüedad:</span>
+                                    <strong>1 año</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="staff-card">
+                            <div class="staff-photo-container">JM</div>
+                            <div class="staff-info-block">
+                                <span class="staff-role-badge" style="background-color: #e6f4ea; color: #137333;">Preparador Físico</span>
+                                <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">Jose Mascarós</h4>
+                                <span style="font-size:12px; color:var(--text-muted);">Coordinación General Física</span>
+                            </div>
+                            <div class="staff-meta-list">
+                                <div class="staff-meta-item">
+                                    <span>Titulación:</span>
+                                    <strong>Grado CCAFD</strong>
+                                </div>
+                                <div class="staff-meta-item">
+                                    <span>Especialidad:</span>
+                                    <strong>Pliometría / GPS</strong>
+                                </div>
+                                <div class="staff-meta-item">
+                                    <span>Antigüedad:</span>
+                                    <strong>4 años</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="staff-card">
+                            <div class="staff-photo-container">SG</div>
+                            <div class="staff-info-block">
+                                <span class="staff-role-badge" style="background-color: #fef7e0; color: #b06000;">Analista Técnico</span>
+                                <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">Sara Gómez</h4>
+                                <span style="font-size:12px; color:var(--text-muted);">Video-análisis y Big Data</span>
+                            </div>
+                            <div class="staff-meta-list">
+                                <div class="staff-meta-item">
+                                    <span>Software:</span>
+                                    <strong>Longomatch / Nacsport</strong>
+                                </div>
+                                <div class="staff-meta-item">
+                                    <span>Evaluaciones:</span>
+                                    <strong>120+ Jugadores</strong>
+                                </div>
+                                <div class="staff-meta-item">
+                                    <span>Antigüedad:</span>
+                                    <strong>2 años</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="staff-card">
+                            <div class="staff-photo-container">VA</div>
+                            <div class="staff-info-block">
+                                <span class="staff-role-badge" style="background-color: #fce8e6; color: #c5221f;">Delegado</span>
+                                <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">Vicente Alapont</h4>
+                                <span style="font-size:12px; color:var(--text-muted);">Logística y Desplazamientos</span>
+                            </div>
+                            <div class="staff-meta-list">
+                                <div class="staff-meta-item">
+                                    <span>Gestión:</span>
+                                    <strong>Viajes e Inscripciones</strong>
+                                </div>
+                                <div class="staff-meta-item">
+                                    <span>Licencia RFEF:</span>
+                                    <strong>Delegado de Campo</strong>
+                                </div>
+                                <div class="staff-meta-item">
+                                    <span>Antigüedad:</span>
+                                    <strong>8 años</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ==========================================================================
+                     B.7.3 VISTA: DOCUMENTACIÓN OFICIAL
+                     ========================================================================== -->
+                <section class="view" id="view-documentacion">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                        <div>
+                            <h2 style="font-size:24px; color:var(--primary);">Portal de Documentación Oficial</h2>
+                            <p style="color:var(--text-muted); font-size:14px;">Descarga de autorizaciones, reglamentos de competición y plantillas de trabajo técnico de la FFCV.</p>
+                        </div>
+                    </div>
+
+                    <div class="docs-layout">
+                        <div style="display:flex; flex-direction:column; gap:28px;">
+                            <div class="doc-category-card">
+                                <h3 class="panel-title" style="border-bottom:1px solid var(--border-color); padding-bottom:12px;">📄 Documentación de Convocatorias</h3>
+                                <div class="doc-list">
+                                    <div class="doc-row">
+                                        <div class="doc-meta">
+                                            <div class="doc-icon-wrapper">PDF</div>
+                                            <div>
+                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Autorización de Convocatoria de Menores</span>
+                                                <p style="font-size:11px; color:var(--text-muted);">Obligatorio para jugadores infantiles y cadetes · 245 KB</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando plantilla de autorización...', 'success')">Descargar</button>
+                                    </div>
+                                    <div class="doc-row">
+                                        <div class="doc-meta">
+                                            <div class="doc-icon-wrapper">DOCX</div>
+                                            <div>
+                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Protocolo Logístico y Concentraciones</span>
+                                                <p style="font-size:11px; color:var(--text-muted);">Normativas de hotel, autobús y vestimenta · 128 KB</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando protocolo logístico...', 'success')">Descargar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="doc-category-card">
+                                <h3 class="panel-title" style="border-bottom:1px solid var(--border-color); padding-bottom:12px;">📊 Plantillas de Sesiones y Scouting</h3>
+                                <div class="doc-list" id="uploaded-files-container">
+                                    <div class="doc-row">
+                                        <div class="doc-meta">
+                                            <div class="doc-icon-wrapper">PDF</div>
+                                            <div>
+                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Ficha de Pizarra de Sesión RFEF</span>
+                                                <p style="font-size:11px; color:var(--text-muted);">Plantilla estándar para diseño gráfico de bloques · 512 KB</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando ficha de pizarra...', 'success')">Descargar</button>
+                                    </div>
+                                    <div class="doc-row">
+                                        <div class="doc-meta">
+                                            <div class="doc-icon-wrapper">EXCEL</div>
+                                            <div>
+                                                <span style="font-weight:600; font-size:14px; color:var(--primary);">Hoja de Scouting Individual de Porteros</span>
+                                                <p style="font-size:11px; color:var(--text-muted);">Métricas específicas de blocaje y juego aéreo · 1.2 MB</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline btn-sm" onclick="showToast('Descargando plantilla de porteros...', 'success')">Descargar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display:flex; flex-direction:column; gap:28px;">
+                            <div class="panel">
+                                <h3 class="panel-title">Subir Archivo Oficial</h3>
+                                <p style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">Sube nuevos reglamentos o fichas técnicas al portal de las selecciones.</p>
+                                
+                                <div class="dropzone" id="file-dropzone" onclick="triggerVirtualFileInput()">
+                                    <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                                    </svg>
+                                    <div>
+                                        <span style="font-size:13px; font-weight:600; color:var(--primary); display:block;">Seleccionar o arrastrar archivo</span>
+                                        <span style="font-size:11px; color:var(--text-muted);">Formatos PDF, Word o Excel (máx 10MB)</span>
+                                    </div>
+                                </div>
+
+                                <input type="file" id="virtual-file-input" style="display:none;" onchange="handleVirtualFileSelection(event)" />
+
+                                <div class="progress-container" id="upload-progress-container">
+                                    <div class="progress-info">
+                                        <span id="uploading-file-name" style="color:var(--primary);">Subiendo reglamento.pdf</span>
+                                        <span id="upload-percent-text" style="color:var(--accent-hover);">0%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="upload-progress-fill"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="panel">
+                                <h3 class="panel-title">Últimas circulares</h3>
+                                <div class="list-group">
+                                    <div class="list-item" style="padding:10px 14px; background:none; border:none; border-bottom:1px solid var(--border-color); border-radius:0;">
+                                        <div style="flex:1;">
+                                            <span style="font-size:13px; font-weight:600; color:var(--primary);">Circular 12: Temporada 26/27</span>
+                                            <p style="font-size:11px; color:var(--text-muted);">Normas de captación de escuelas.</p>
+                                        </div>
+                                    </div>
+                                    <div class="list-item" style="padding:10px 14px; background:none; border:none; border-bottom:1px solid var(--border-color); border-radius:0;">
+                                        <div style="flex:1;">
+                                            <span style="font-size:13px; font-weight:600; color:var(--primary);">Circular 15: Convocatorias RFEF</span>
+                                            <p style="font-size:11px; color:var(--text-muted);">Modificaciones de dietas e inscripciones.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
@@ -2524,14 +3286,12 @@
             // Ocultar vistas y mostrar la activa
             document.querySelectorAll('.view').forEach(view => {
                 view.classList.remove('active');
-            });
-            const targetView = document.getElementById(`view-${viewId}`);
-            if (targetView) {
-                targetView.classList.add('active');
-            }
-
-            // Cambiar título de cabecera superior
-            const capitalizedTitle = viewId.charAt(0).toUpperCase() + viewId.slice(1);
+            });            // Cambiar título de cabecera superior
+            let capitalizedTitle = viewId.charAt(0).toUpperCase() + viewId.slice(1);
+            if (viewId === 'planificacion') capitalizedTitle = 'Planificación Deportiva';
+            if (viewId === 'modelo') capitalizedTitle = 'Modelo de Juego';
+            if (viewId === 'staff') capitalizedTitle = 'Staff Técnico';
+            if (viewId === 'documentacion') capitalizedTitle = 'Portal de Documentación';
             document.getElementById('page-header-title').textContent = capitalizedTitle;
 
             // Cambiar texto de botón añadir en la cabecera
@@ -2544,7 +3304,15 @@
                 addBtn.style.display = 'inline-flex';
                 addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Nueva Convocatoria`;
                 addBtn.setAttribute('onclick', "openModal('modal-convocatoria')");
-            } else if (viewId === 'calendario') {
+            } else if (viewId === 'staff') {
+                addBtn.style.display = 'inline-flex';
+                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Añadir Miembro`;
+                addBtn.setAttribute('onclick', "openAddStaffModal()");
+            } else if (viewId === 'documentacion') {
+                addBtn.style.display = 'inline-flex';
+                addBtn.innerHTML = `<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" style="margin-right:4px;"><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg> Subir Documento`;
+                addBtn.setAttribute('onclick', "triggerVirtualFileInput()");
+            } else if (viewId === 'modelo' || viewId === 'calendario') {
                 addBtn.style.display = 'none';
             } else {
                 addBtn.style.display = 'inline-flex';
@@ -3332,12 +4100,12 @@
                         data: counts,
                         backgroundColor: [
                             'rgba(10, 37, 64, 0.85)',  /* Azul FFCV */
-                            'rgba(255, 176, 0, 0.85)', /* Dorado FFCV */
+                            'rgba(255, 107, 0, 0.85)', /* Naranja FFCV */
                             'rgba(30, 58, 95, 0.85)'   /* Azul Claro */
                         ],
                         borderColor: [
                             '#0A2540',
-                            '#FFB000',
+                            '#FF6B00',
                             '#1E3A5F'
                         ],
                         borderWidth: 1.5,
@@ -3402,6 +4170,244 @@
         };
 
         /* ==========================================================================
+           D.9 INTERACCIONES Y LÓGICA DE NUEVAS VISTAS (PIZARRA, STAFF, CARGA VIRTUAL)
+           ========================================================================== */
+        const TACTIC_COORDINATES = {
+            '1433': {
+                'GK':  { top: '92%', left: '50%' },
+                'P-2': { top: '74%', left: '15%' },
+                'P-4': { top: '78%', left: '38%' },
+                'P-5': { top: '78%', left: '62%' },
+                'P-3': { top: '74%', left: '85%' },
+                'P-6': { top: '56%', left: '50%' },
+                'P-8': { top: '48%', left: '28%' },
+                'P-10':{ top: '48%', left: '72%' },
+                'P-7': { top: '25%', left: '18%' },
+                'P-9': { top: '18%', left: '50%' },
+                'P-11':{ top: '25%', left: '82%' }
+            },
+            '1442': {
+                'GK':  { top: '92%', left: '50%' },
+                'P-2': { top: '78%', left: '15%' },
+                'P-4': { top: '78%', left: '38%' },
+                'P-5': { top: '78%', left: '62%' },
+                'P-3': { top: '78%', left: '85%' },
+                'P-6': { top: '58%', left: '30%' },
+                'P-8': { top: '58%', left: '70%' },
+                'P-10':{ top: '44%', left: '20%' },
+                'P-7': { top: '44%', left: '80%' },
+                'P-9': { top: '22%', left: '38%' },
+                'P-11':{ top: '22%', left: '62%' }
+            },
+            '1352': {
+                'GK':  { top: '92%', left: '50%' },
+                'P-2': { top: '78%', left: '12%' },
+                'P-4': { top: '78%', left: '33%' },
+                'P-5': { top: '78%', left: '50%' },
+                'P-3': { top: '78%', left: '67%' },
+                'P-6': { top: '60%', left: '88%' },
+                'P-8': { top: '48%', left: '28%' },
+                'P-10':{ top: '48%', left: '72%' },
+                'P-7': { top: '32%', left: '50%' },
+                'P-9': { top: '18%', left: '30%' },
+                'P-11':{ top: '18%', left: '70%' }
+            }
+        };
+
+        let activeTacticSystem = '1433';
+        let activeTacticPhase = 'ofensivo';
+
+        function setTacticSystem(systemId, buttonEl) {
+            activeTacticSystem = systemId;
+            buttonEl.parentNode.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+            buttonEl.classList.add('active');
+            
+            const pitchPlayers = document.querySelectorAll('#football-pitch .pitch-player');
+            const coords = TACTIC_COORDINATES[systemId];
+            
+            pitchPlayers.forEach((player) => {
+                let coordKey = 'P-' + player.textContent;
+                if (player.classList.contains('GK')) coordKey = 'GK';
+                const pos = coords[coordKey];
+                if (pos) {
+                    player.style.top = pos.top;
+                    player.style.left = pos.left;
+                }
+            });
+            updateTacticTitle();
+            showToast(`Cambio de sistema táctico a: ${systemId.split('').join('-')}`, 'info');
+        }
+
+        function selectTacticPhase(phaseId, cardEl) {
+            activeTacticPhase = phaseId;
+            cardEl.parentNode.querySelectorAll('.tactic-card').forEach(card => card.classList.remove('active'));
+            cardEl.classList.add('active');
+            updateTacticTitle();
+            
+            const pitchPlayers = document.querySelectorAll('#football-pitch .pitch-player');
+            pitchPlayers.forEach(player => {
+                if (player.classList.contains('GK')) return;
+                const currentTop = parseFloat(player.style.top);
+                const currentLeft = parseFloat(player.style.left);
+                const deltaTop = (Math.random() - 0.5) * 6;
+                const deltaLeft = (Math.random() - 0.5) * 6;
+                player.style.top = `${Math.max(10, Math.min(90, currentTop + deltaTop))}%`;
+                player.style.left = `${Math.max(5, Math.min(95, currentLeft + deltaLeft))}%`;
+            });
+            showToast(`Visualizando fase: ${cardEl.querySelector('.tactic-card-title').textContent}`, 'success');
+        }
+
+        function updateTacticTitle() {
+            const systemStr = activeTacticSystem.split('').join('-');
+            let phaseStr = 'Fase Ofensiva';
+            if (activeTacticPhase === 'defensivo') phaseStr = 'Fase Defensiva';
+            if (activeTacticPhase === 'transiciones') phaseStr = 'Fase de Transiciones';
+            if (activeTacticPhase === 'abp') phaseStr = 'Fase ABP Estrategia';
+            document.getElementById('tactic-pitch-title').textContent = `Pizarra Táctica: Sistema ${systemStr} (${phaseStr})`;
+        }
+
+        function triggerVirtualFileInput() {
+            document.getElementById('virtual-file-input').click();
+        }
+
+        function handleVirtualFileSelection(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const name = file.name;
+            const size = (file.size / 1024).toFixed(1) + ' KB';
+            const extension = name.split('.').pop().toUpperCase();
+            
+            const container = document.getElementById('upload-progress-container');
+            const nameEl = document.getElementById('uploading-file-name');
+            const percentEl = document.getElementById('upload-percent-text');
+            const fillEl = document.getElementById('upload-progress-fill');
+            
+            nameEl.textContent = `Subiendo: ${name}`;
+            container.style.display = 'flex';
+            percentEl.textContent = '0%';
+            fillEl.style.width = '0%';
+            
+            let percent = 0;
+            const interval = setInterval(() => {
+                percent += 10;
+                percentEl.textContent = `${percent}%`;
+                fillEl.style.width = `${percent}%`;
+                if (percent >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        container.style.display = 'none';
+                        addNewDocument(name, size, extension);
+                        showToast(`Archivo "${name}" subido con éxito`, 'success');
+                    }, 400);
+                }
+            }, 150);
+        }
+
+        function addNewDocument(name, size, extension) {
+            const container = document.getElementById('uploaded-files-container');
+            const newRow = document.createElement('div');
+            newRow.className = 'doc-row';
+            newRow.style.animation = 'fadeIn 0.4s ease-out';
+            newRow.innerHTML = `
+                <div class="doc-meta">
+                    <div class="doc-icon-wrapper" style="background-color: var(--accent-light); color: var(--accent); border-color: var(--accent-light); font-weight:700;">${extension}</div>
+                    <div>
+                        <span style="font-weight:600; font-size:14px; color:var(--primary);">${name}</span>
+                        <p style="font-size:11px; color:var(--text-muted);">Subido recientemente · ${size}</p>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="showToast('Descargando archivo subido...', 'success')">Descargar</button>
+            `;
+            container.insertBefore(newRow, container.firstChild);
+        }
+
+        function openAddStaffModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'modal-add-staff-temp';
+            overlay.innerHTML = `
+                <div class="modal-card">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Añadir Profesional al Staff</h3>
+                        <button class="close-btn" onclick="document.getElementById('modal-add-staff-temp').remove()">×</button>
+                    </div>
+                    <form onsubmit="confirmAddStaffMember(event)">
+                        <div class="modal-body" style="gap:12px;">
+                            <div class="form-group">
+                                <label class="form-label" for="staff-name">Nombre Completo</label>
+                                <input type="text" class="form-input" id="staff-name" required placeholder="Ej: Rubén Mora" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="staff-role">Cargo / Rol</label>
+                                <select class="form-select" id="staff-role">
+                                    <option value="Seleccionador">Seleccionador</option>
+                                    <option value="Segundo Entrenador">Segundo Entrenador</option>
+                                    <option value="Preparador Físico">Preparador Físico</option>
+                                    <option value="Analista Técnico">Analista Técnico</option>
+                                    <option value="Delegado">Delegado</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="staff-category">Categoría Selección</label>
+                                <input type="text" class="form-input" id="staff-category" required placeholder="Ej: Femenino Sub-14" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="staff-license">Licencia / Especialidad</label>
+                                <input type="text" class="form-input" id="staff-license" required placeholder="Ej: UEFA Pro / Video-análisis" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline" onclick="document.getElementById('modal-add-staff-temp').remove()">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Registrar Miembro</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function confirmAddStaffMember(e) {
+            e.preventDefault();
+            const name = document.getElementById('staff-name').value;
+            const role = document.getElementById('staff-role').value;
+            const category = document.getElementById('staff-category').value;
+            const license = document.getElementById('staff-license').value;
+            const initials = name.split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
+            
+            let badgeStyle = 'background-color: var(--accent-light); color: var(--accent-hover);';
+            if (role === 'Segundo Entrenador') badgeStyle = 'background-color: var(--info-light); color: var(--info);';
+            if (role === 'Preparador Físico') badgeStyle = 'background-color: #e6f4ea; color: #137333;';
+            if (role === 'Analista Técnico') badgeStyle = 'background-color: #fef7e0; color: #b06000;';
+            if (role === 'Delegado') badgeStyle = 'background-color: #fce8e6; color: #c5221f;';
+            
+            const container = document.getElementById('staff-grid-container');
+            const card = document.createElement('div');
+            card.className = 'staff-card';
+            card.style.animation = 'fadeIn 0.4s ease-out';
+            card.innerHTML = `
+                <div class="staff-photo-container">${initials}</div>
+                <div class="staff-info-block">
+                    <span class="staff-role-badge" style="${badgeStyle}">${role}</span>
+                    <h4 style="font-size:16px; color:var(--primary); font-weight:700; margin-top:8px;">${name}</h4>
+                    <span style="font-size:12px; color:var(--text-muted);">${category}</span>
+                </div>
+                <div class="staff-meta-list">
+                    <div class="staff-meta-item">
+                        <span>Especialidad/Lic:</span>
+                        <strong>${license}</strong>
+                    </div>
+                    <div class="staff-meta-item">
+                        <span>Antigüedad:</span>
+                        <strong>Nuevo</strong>
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+            document.getElementById('modal-add-staff-temp').remove();
+            showToast(`${name} añadido al staff de selecciones`, 'success');
+        }
+
+        /* ==========================================================================
            E. ARRANCAR APLICACIÓN
            ========================================================================== */
         window.addEventListener('DOMContentLoaded', () => {
@@ -3411,7 +4417,7 @@
             
             // Navegar automáticamente a la pestaña indicada en el Hash de URL (si existe)
             const hash = window.location.hash.substring(1);
-            if (hash && ['dashboard', 'jugadores', 'convocatorias', 'planificacion', 'sesiones', 'informes', 'calendario', 'configuracion'].includes(hash)) {
+            if (hash && ['dashboard', 'jugadores', 'convocatorias', 'planificacion', 'sesiones', 'modelo', 'informes', 'calendario', 'staff', 'documentacion', 'configuracion'].includes(hash)) {
                 navigateToTab(hash);
             } else {
                 navigateToTab('dashboard');
