@@ -11,8 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Chart.js para estadísticas profesionales -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
     <style>
         /* ==========================================================================
@@ -648,6 +647,121 @@
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 28px;
+        }
+
+        /* Tarjetas de Eventos Premium (Dashboard) */
+        .premium-event-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease-in-out;
+            border-left: 4px solid var(--primary);
+        }
+        .premium-event-card:hover {
+            transform: translateX(3px);
+            border-color: rgba(255, 107, 0, 0.4);
+            box-shadow: var(--shadow-sm);
+        }
+        .premium-event-card.event-match { border-left-color: #FF6B00; }
+        .premium-event-card.event-training { border-left-color: #002B5C; }
+        .premium-event-card.event-scouting { border-left-color: #10B981; }
+        .premium-event-card.event-staff { border-left-color: #8B5CF6; }
+
+        .event-date-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+        .event-date-badge .month {
+            width: 100%;
+            background-color: var(--primary-light);
+            color: #FFFFFF;
+            font-size: 8px;
+            font-weight: 700;
+            text-align: center;
+            padding: 2px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .event-date-badge .day {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--primary);
+            padding: 3px 0;
+            line-height: 1;
+        }
+
+        .event-card-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .event-card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .event-card-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Timeline de Actividad Reciente */
+        .activity-timeline {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding-left: 20px;
+            margin-left: 10px;
+            border-left: 2px dashed rgba(255, 107, 0, 0.25);
+            gap: 20px;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 8px;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -27px;
+            top: 4px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #FF6B00;
+            border: 2px solid var(--bg-card);
+            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.15);
+        }
+        .timeline-time {
+            font-size: 10px;
+            font-weight: 700;
+            color: #FF6B00;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .timeline-content {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-main);
         }
 
         /* Panel Contenedor Estándar */
@@ -2315,22 +2429,10 @@
 
                     <!-- Contenido Secundario -->
                     <div class="split-grid">
-                        <!-- Columna Izquierda: Gráfica y Convocatorias -->
+                        <!-- Columna Izquierda: Información Principal y Operativa -->
                         <div style="display:flex; flex-direction:column; gap:28px;">
-                            <!-- Panel de Gráfico de Rendimiento -->
-                            <div class="panel">
-                                <div class="panel-header">
-                                    <h3 class="panel-title">
-                                        <svg viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83" /><path d="M22 12A10 10 0 0 0 12 2v10z" /></svg>
-                                        Distribución de Jugadores por Categoría
-                                    </h3>
-                                </div>
-                                <div style="position: relative; height: 260px; width: 100%;">
-                                    <canvas id="dashboardChart"></canvas>
-                                </div>
-                            </div>
-
-                            <!-- Listado de Convocatorias en Dashboard -->
+                            
+                            <!-- Panel: Últimas Convocatorias -->
                             <div class="panel">
                                 <div class="panel-header">
                                     <h3 class="panel-title">
@@ -2339,9 +2441,71 @@
                                     </h3>
                                     <a href="#convocatorias" class="btn btn-outline btn-sm" onclick="navigateToTab('convocatorias')">Ver Todas</a>
                                 </div>
-                                
-                                <div class="list-group" id="dashboard-convocatorias-list">
-                                    <!-- Dinámico mediante JS -->
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Categoría</th>
+                                                <th>Estado</th>
+                                                <th style="text-align: right;">Acceso Rápido</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dashboard-convocatorias-list">
+                                            <!-- Relleno dinámico -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Panel: Próximos Entrenamientos -->
+                            <div class="panel">
+                                <div class="panel-header">
+                                    <h3 class="panel-title">
+                                        <svg viewBox="0 0 24 24"><circle cx="18" cy="18" r="3" /><circle cx="6" cy="6" r="3" /><path d="M13 6h3a2 2 0 0 1 2 2v7" /><path d="M11 18H8a2 2 0 0 1-2-2V9" /></svg>
+                                        Próximos Entrenamientos
+                                    </h3>
+                                    <a href="#planificacion" class="btn btn-outline btn-sm" onclick="navigateToTab('planificacion')">Planificación</a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Hora</th>
+                                                <th>Categoría</th>
+                                                <th>Lugar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dashboard-trainings-list">
+                                            <!-- Relleno dinámico -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Panel: Últimos Informes de Rendimiento -->
+                            <div class="panel">
+                                <div class="panel-header">
+                                    <h3 class="panel-title">
+                                        <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" /></svg>
+                                        Últimos Informes de Rendimiento
+                                    </h3>
+                                    <a href="#informes" class="btn btn-outline btn-sm" onclick="navigateToTab('informes')">Ver Todos</a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Jugador / Rival</th>
+                                                <th>Fecha</th>
+                                                <th>Scouter</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dashboard-reports-list">
+                                            <!-- Relleno dinámico -->
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -2443,7 +2607,7 @@
                                         Próximos Eventos
                                     </h3>
                                 </div>
-                                <div class="list-group" id="dashboard-events-list">
+                                <div class="list-group" id="dashboard-events-list" style="display:flex; flex-direction:column; gap:12px;">
                                     <!-- Dinámico mediante JS -->
                                 </div>
                             </div>
@@ -2456,28 +2620,8 @@
                                         Actividad Reciente
                                     </h3>
                                 </div>
-                                <div class="list-group">
-                                    <div class="list-item" style="padding: 12px; gap: 10px;">
-                                        <div style="background-color: var(--warning-light); color: var(--warning); padding: 8px; border-radius: 50%;">
-                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
-                                        </div>
-                                        <div style="flex:1;">
-                                            <span style="font-size: 13px; font-weight: 600;">Lesión de Jugador</span>
-                                            <p style="font-size: 11px; color: var(--text-muted);">Marc Rodríguez (Sub-16) baja por esguince de tobillo.</p>
-                                        </div>
-                                        <span style="font-size:11px; color: var(--text-muted);">Hoy</span>
-                                    </div>
-
-                                    <div class="list-item" style="padding: 12px; gap: 10px;">
-                                        <div style="background-color: var(--success-light); color: var(--success); padding: 8px; border-radius: 50%;">
-                                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="20 6 9 17 4 12" /></svg>
-                                        </div>
-                                        <div style="flex:1;">
-                                            <span style="font-size: 13px; font-weight: 600;">Informe Aprobado</span>
-                                            <p style="font-size: 11px; color: var(--text-muted);">Informe de scouting de Ainhoa Alguacil firmado y archivado.</p>
-                                        </div>
-                                        <span style="font-size:11px; color: var(--text-muted);">Ayer</span>
-                                    </div>
+                                <div class="activity-timeline" id="dashboard-activity-timeline">
+                                    <!-- Dinámico mediante JS -->
                                 </div>
                             </div>
                         </div>
@@ -4948,33 +5092,191 @@
         }
 
         // 1. Dashboard View
-        function renderDashboardView() {
-            const listContainer = document.getElementById('dashboard-convocatorias-list');
-            if (!listContainer) return;
-            listContainer.innerHTML = '';
+        // 1. Dashboard View
+        function renderRecentActivity() {
+            const container = document.getElementById('dashboard-activity-timeline');
+            if (!container) return;
 
-            // Mostrar las últimas 3 convocatorias ordenadas por fecha
-            convocatorias.slice(0, 3).forEach(c => {
-                let statusClass = 'tag-success';
-                if (c.status === 'Visionado') statusClass = 'tag-info';
-                if (c.status === 'Pendiente de cerrar lista') statusClass = 'tag-warning';
+            let activities = JSON.parse(localStorage.getItem('ffcv_activities')) || [
+                { time: 'Hace 5 min', text: 'Convocatoria Sub-16 creada' },
+                { time: 'Hace 20 min', text: 'Informe de scouting añadido' },
+                { time: 'Hace 1 hora', text: 'Jugador registrado' },
+                { time: 'Hace 3 horas', text: 'Sesión de entrenamiento añadida' },
+                { time: 'Hace 5 horas', text: 'Documento subido a biblioteca' }
+            ];
 
-                listContainer.innerHTML += `
-                    <div class="list-item" onclick="navigateToTab('convocatorias')" style="cursor:pointer;">
-                        <div class="item-details">
-                            <span class="item-title">${c.name}</span>
-                            <span class="item-sub">
-                                <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2" style="margin-right:2px;"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
-                                ${c.location} · ${c.time}
-                            </span>
-                        </div>
-                        <div class="item-meta">
-                            <span class="tag ${statusClass}">${c.status}</span>
-                            <span style="font-size:12px; color:var(--text-muted); font-weight:500;">${c.date}</span>
-                        </div>
+            if (!localStorage.getItem('ffcv_activities')) {
+                localStorage.setItem('ffcv_activities', JSON.stringify(activities));
+            }
+
+            container.innerHTML = '';
+            activities.forEach(act => {
+                container.innerHTML += `
+                    <div class="timeline-item">
+                        <span class="timeline-dot"></span>
+                        <span class="timeline-time">${act.time}</span>
+                        <div class="timeline-content">${act.text}</div>
                     </div>
                 `;
             });
+        }
+
+        function addRecentActivity(text) {
+            let activities = JSON.parse(localStorage.getItem('ffcv_activities')) || [
+                { time: 'Hace 5 min', text: 'Convocatoria Sub-16 creada' },
+                { time: 'Hace 20 min', text: 'Informe de scouting añadido' },
+                { time: 'Hace 1 hora', text: 'Jugador registrado' },
+                { time: 'Hace 3 horas', text: 'Sesión de entrenamiento añadida' },
+                { time: 'Hace 5 horas', text: 'Documento subido a biblioteca' }
+            ];
+
+            activities.unshift({ time: 'Hace un momento', text: text });
+            if (activities.length > 8) {
+                activities = activities.slice(0, 8);
+            }
+            localStorage.setItem('ffcv_activities', JSON.stringify(activities));
+            renderRecentActivity();
+        }
+
+        function renderDashboardView() {
+            // A. Últimas Convocatorias
+            const convContainer = document.getElementById('dashboard-convocatorias-list');
+            if (convContainer) {
+                convContainer.innerHTML = '';
+                const sortedCalls = [...convocatorias].sort((a, b) => new Date(b.date) - new Date(a.date));
+                sortedCalls.slice(0, 3).forEach(c => {
+                    let statusClass = 'tag-success';
+                    if (c.status === 'Visionado') statusClass = 'tag-info';
+                    if (c.status === 'Pendiente de cerrar lista') statusClass = 'tag-warning';
+
+                    convContainer.innerHTML += `
+                        <tr>
+                            <td><strong>${c.date}</strong></td>
+                            <td>
+                                <span style="font-weight: 600; color: var(--primary);">${c.category}</span>
+                                <span style="font-size: 11px; color: var(--text-muted); display: block;">${c.name}</span>
+                            </td>
+                            <td><span class="tag ${statusClass}">${c.status}</span></td>
+                            <td style="text-align: right;">
+                                <button class="btn btn-outline btn-sm" onclick="navigateToTab('convocatorias')" style="font-size: 11px; padding: 4px 10px; border-radius: 8px;">Gestionar</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                if (sortedCalls.length === 0) {
+                    convContainer.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No hay convocatorias.</td></tr>`;
+                }
+            }
+
+            // B. Próximos Entrenamientos
+            const trainContainer = document.getElementById('dashboard-trainings-list');
+            if (trainContainer) {
+                trainContainer.innerHTML = '';
+                const upcomingTrainings = events
+                    .filter(e => e.type === 'training')
+                    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                upcomingTrainings.slice(0, 3).forEach(t => {
+                    let category = 'Sub-16';
+                    if (t.title.includes('Sub-14')) category = 'Sub-14';
+                    if (t.title.includes('Sub-19')) category = 'Sub-19';
+
+                    let time = '18:00 h';
+                    const matchedCall = convocatorias.find(c => c.date === t.date && c.category === category);
+                    if (matchedCall) time = matchedCall.time;
+
+                    trainContainer.innerHTML += `
+                        <tr>
+                            <td><strong>${t.date}</strong></td>
+                            <td>${time}</td>
+                            <td><span style="font-weight: 600; color: var(--primary);">${category}</span></td>
+                            <td>
+                                <span style="font-size: 13px;">${t.location}</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+                if (upcomingTrainings.length === 0) {
+                    trainContainer.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No hay entrenamientos programados.</td></tr>`;
+                }
+            }
+
+            // C. Últimos Informes de Rendimiento
+            const repContainer = document.getElementById('dashboard-reports-list');
+            if (repContainer) {
+                repContainer.innerHTML = '';
+                const sortedReports = [...reports].reverse();
+                sortedReports.slice(0, 3).forEach(r => {
+                    const titleText = r.player || r.title || 'Informe General';
+                    const dateText = r.date || 'Reciente';
+                    const scoutText = r.scout || 'Dirección Técnica';
+
+                    repContainer.innerHTML += `
+                        <tr>
+                            <td>
+                                <span style="font-weight: 600; color: var(--primary);">${titleText}</span>
+                                ${r.position ? `<span style="font-size: 11px; color: var(--text-muted); display: block;">${r.position}</span>` : ''}
+                            </td>
+                            <td><strong>${dateText}</strong></td>
+                            <td>${scoutText}</td>
+                        </tr>
+                    `;
+                });
+                if (sortedReports.length === 0) {
+                    repContainer.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">No hay informes registrados.</td></tr>`;
+                }
+            }
+
+            // D. Próximos Eventos
+            const eventsContainer = document.getElementById('dashboard-events-list');
+            if (eventsContainer) {
+                eventsContainer.innerHTML = '';
+                const sortedEvents = [...events].sort((a, b) => new Date(a.date) - new Date(b.date));
+                sortedEvents.slice(0, 4).forEach(e => {
+                    let dayNum = '12';
+                    let monthStr = 'JUN';
+                    if (e.date && e.date.includes('-')) {
+                        const parts = e.date.split('-');
+                        if (parts.length === 3) {
+                            dayNum = parseInt(parts[2]);
+                            const mIdx = parseInt(parts[1]) - 1;
+                            const months = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+                            monthStr = months[mIdx] || 'JUN';
+                        }
+                    } else if (e.date && e.date.includes(' ')) {
+                        const parts = e.date.split(' ');
+                        dayNum = parts[0];
+                        monthStr = parts[1].slice(0, 3).toUpperCase();
+                    }
+
+                    let typeClass = 'event-training';
+                    if (e.type === 'match') typeClass = 'event-match';
+                    else if (e.type === 'scouting') typeClass = 'event-scouting';
+                    else if (e.type === 'staff') typeClass = 'event-staff';
+
+                    eventsContainer.innerHTML += `
+                        <div class="premium-event-card ${typeClass}">
+                            <div class="event-date-badge">
+                                <span class="month">${monthStr}</span>
+                                <span class="day">${dayNum}</span>
+                            </div>
+                            <div class="event-card-details">
+                                <span class="event-card-title">${e.title}</span>
+                                <span class="event-card-meta">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    ${e.location || 'Sede FFCV'}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                });
+                if (sortedEvents.length === 0) {
+                    eventsContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:12px; padding:10px;">No hay eventos programados.</p>`;
+                }
+            }
+
+            // E. Actividad Reciente
+            renderRecentActivity();
         }
 
         // 2. Jugadores View: Filtros e interacción
@@ -5818,6 +6120,7 @@
             };
 
             players.push(newPlayer);
+            addRecentActivity('Jugador registrado');
             saveState();
             closeModal('modal-jugador');
             renderPlayersTable();
@@ -5882,6 +6185,7 @@
                 location: location
             });
 
+            addRecentActivity(`Convocatoria ${category} creada`);
             saveState();
             closeModal('modal-convocatoria');
             renderConvocatorias();
@@ -6020,93 +6324,8 @@
         }
 
         /* ==========================================================================
-           D.8 INICIALIZACIÓN DE GRÁFICOS INTERACTIVOS (CHART.JS)
+           D.8 INICIALIZACIÓN DE GRÁFICOS - ELIMINADO
            ========================================================================== */
-        let dashboardChart;
-
-        function initChart() {
-            const chartCanvas = document.getElementById('dashboardChart');
-            if (!chartCanvas) return;
-            const ctx = chartCanvas.getContext('2d');
-            
-            const categories = ['Sub-14', 'Sub-16', 'Sub-19'];
-            const counts = categories.map(cat => players.filter(p => p.category === cat).length);
-
-            dashboardChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: categories,
-                    datasets: [{
-                        label: 'Número de Jugadores',
-                        data: counts,
-                        backgroundColor: [
-                            'rgba(10, 37, 64, 0.85)',
-                            'rgba(255, 107, 0, 0.85)',
-                            'rgba(30, 58, 95, 0.85)'
-                        ],
-                        borderColor: [
-                            '#0A2540',
-                            '#FF6B00',
-                            '#1E3A5F'
-                        ],
-                        borderWidth: 1.5,
-                        borderRadius: 6,
-                        barThickness: 45
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            backgroundColor: '#0A2540',
-                            titleFont: { family: 'Outfit', size: 14 },
-                            bodyFont: { family: 'Inter', size: 12 },
-                            padding: 12,
-                            cornerRadius: 8
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                color: '#E2E8F0'
-                            },
-                            ticks: {
-                                font: { family: 'Inter', size: 11 },
-                                precision: 0
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                font: { family: 'Outfit', size: 12, weight: '500' }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        function refreshChart() {
-            if (dashboardChart) {
-                const categories = ['Sub-14', 'Sub-16', 'Sub-19'];
-                const counts = categories.map(cat => players.filter(p => p.category === cat).length);
-                dashboardChart.data.datasets[0].data = counts;
-                dashboardChart.update();
-            }
-        }
-
-        const originalSaveState = saveState;
-        saveState = function() {
-            originalSaveState();
-            refreshChart();
-        };
 
         /* ==========================================================================
            D.9 FUNCIONES INTERACTIVAS ADICIONALES (PIZARRA, SESIONES, INFORMES, SUB-TABS)
@@ -6349,6 +6568,7 @@
             };
             
             sessions.push(newSession);
+            addRecentActivity('Sesión añadida');
             saveState();
             closeModal('modal-sesion');
             renderSessions();
@@ -6461,6 +6681,7 @@
             }
             
             reports.push(newReport);
+            addRecentActivity('Informe de scouting añadido');
             saveState();
             closeModal('modal-informe');
             renderReports();
@@ -7284,6 +7505,7 @@
             if (uploadedFolderCard) uploadedFolderCard.style.display = 'block';
             
             updateDocumentCounts();
+            addRecentActivity('Documento subido');
         }
 
         function updateDocumentCounts() {
@@ -7356,7 +7578,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             updateCounts();
             renderDashboardView();
-            initChart();
             renderStaff();
             initCallFiltersListeners();
             updateDocumentCounts();
