@@ -3507,17 +3507,6 @@
                         }
                         
                         /* Organigrama Jerárquico */
-                        .organigram-img-container {
-                            transition: border-color 0.2s ease;
-                        }
-                        .organigram-img-container:hover {
-                            border-color: var(--accent) !important;
-                        }
-                        .organigram-img-container img:hover {
-                            transform: scale(1.01);
-                        }
-                        
-                        /* Estilos Lightbox Organigrama */
                         .organigram-lightbox {
                             display: none;
                             position: fixed;
@@ -3527,7 +3516,7 @@
                             width: 100%;
                             height: 100%;
                             overflow: auto;
-                            background-color: rgba(10, 37, 64, 0.95);
+                            background-color: rgba(5, 20, 36, 0.95);
                             justify-content: center;
                             align-items: center;
                             opacity: 0;
@@ -3537,18 +3526,15 @@
                             display: flex;
                             opacity: 1;
                         }
-                        .lightbox-content {
-                            margin: auto;
-                            display: block;
-                            max-width: 90%;
-                            max-height: 90%;
-                            border-radius: 8px;
-                            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                        .lightbox-content-html {
                             transform: scale(0.9);
                             transition: transform 0.3s ease;
-                            cursor: zoom-out;
+                            width: 1000px;
+                            max-width: 95%;
+                            max-height: 90%;
+                            overflow: auto;
                         }
-                        .organigram-lightbox.show .lightbox-content {
+                        .organigram-lightbox.show .lightbox-content-html {
                             transform: scale(1);
                         }
                         .lightbox-close {
@@ -3567,6 +3553,16 @@
                         .lightbox-close:focus {
                             color: var(--accent);
                             text-decoration: none;
+                        }
+                        
+                        /* Cajas del organigrama */
+                        .org-box {
+                            transition: transform 0.2s ease, box-shadow 0.2s ease;
+                            cursor: pointer;
+                        }
+                        .org-box:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 6px 16px rgba(0,0,0,0.3) !important;
                         }
                     </style>
 
@@ -3595,13 +3591,90 @@
 
                     <!-- Sub-vista 2: Organigrama Jerárquico -->
                     <div id="staff-subview-organigrama" style="display: none;">
-                        <div class="panel" style="margin-bottom:28px; padding:24px;">
-                            <div style="border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 16px; margin-bottom: 20px;">
-                                <h3 style="font-size: 18px; font-weight: 700; color: #0F2350; margin: 0; font-family: 'Outfit', sans-serif;">Organigrama General</h3>
-                                <span style="font-size: 13px; color: #6B7280; display: block; margin-top: 4px;">Estructura organizativa del Área Deportiva de la FFCV, incluyendo responsables, coordinadores y áreas técnicas.</span>
+                        <div class="panel" style="margin-bottom:28px; padding:24px; background-color: #FFFFFF !important;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 16px; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                                <div>
+                                    <h3 style="font-size: 18px; font-weight: 700; color: #0F2350; margin: 0; font-family: 'Outfit', sans-serif;">Organigrama General</h3>
+                                    <span style="font-size: 13px; color: #6B7280; display: block; margin-top: 4px;">Estructura organizativa del Área Deportiva de la FFCV, incluyendo responsables, coordinadores y áreas técnicas.</span>
+                                </div>
+                                <button class="btn btn-primary btn-sm" onclick="openOrganigramLightbox()" style="font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 6px;">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg> Pantalla Completa
+                                </button>
                             </div>
-                            <div class="organigram-img-container" style="text-align: center; padding: 10px; background-color: #F8FAFC; border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden; position: relative;">
-                                <img id="organigram-img" src="organigrama.png" alt="Organigrama Oficial FFCV" style="max-width: 100%; height: auto; cursor: zoom-in; border-radius: 6px; display: inline-block; transition: transform 0.2s ease;" onclick="openOrganigramLightbox()">
+                            
+                            <!-- Organigrama HTML/CSS con Texto Real -->
+                            <div class="organigram-wrapper-outer" style="overflow-x: auto; background-color: #F8FAFC; border-radius: var(--radius-lg); border: 1px solid var(--border-color); padding: 10px;">
+                                <div class="organigram-wrapper" id="organigram-wrapper-source" style="background-color: var(--primary); padding: 32px; border-radius: 10px; color: #FFFFFF; display: flex; flex-direction: column; align-items: center; gap: 20px; box-shadow: var(--shadow-sm); min-width: 780px;">
+                                    
+                                    <!-- Nivel 1 -->
+                                    <div class="org-level level-1" style="display: flex; justify-content: center; width: 100%; position: relative;">
+                                        <div class="org-box" style="background-color: #1E3A5F; border: 2px solid var(--accent); border-radius: 12px; padding: 16px 24px; min-width: 260px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.25);" onclick="openOrganigramLightbox()">
+                                            <div style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Vicepresidente - Responsable Área Deportiva</div>
+                                            <div style="font-size: 17px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">Jordi Lucena</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Línea vertical del Nivel 1 al Nivel 2 -->
+                                    <div style="width: 2px; height: 24px; background-color: rgba(255,255,255,0.25);"></div>
+
+                                    <!-- Nivel 2 -->
+                                    <div class="org-level level-2" style="display: flex; justify-content: space-between; width: 100%; position: relative; gap: 20px;">
+                                        
+                                        <!-- Fútbol Sala (Columna Izquierda) -->
+                                        <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
+                                            <div class="org-box" style="background-color: var(--accent); border-radius: 12px; padding: 14px 20px; width: 100%; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
+                                                <div style="font-size: 10px; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; opacity: 0.9;">Fútbol Sala</div>
+                                                <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">José Gómez</div>
+                                                <div style="font-size: 12px; color: rgba(255,255,255,0.9); margin-top: 2px;">Director Técnico</div>
+                                            </div>
+                                            
+                                            <!-- Línea vertical al Nivel 3 -->
+                                            <div style="width: 2px; height: 24px; background-color: rgba(255,255,255,0.25);"></div>
+                                            
+                                            <!-- Nivel 3 (Fútbol Sala) -->
+                                            <div class="org-box" style="background-color: #1E3A5F; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 18px; width: 100%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
+                                                <div style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Coordinación</div>
+                                                <div style="font-size: 14px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">J. Luis Mengual</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Integridad (Columna Central) -->
+                                        <div style="display: flex; flex-direction: column; align-items: center; flex: 1; justify-content: flex-start;">
+                                            <div class="org-box" style="background-color: #1E3A5F; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 14px 20px; width: 100%; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
+                                                <div style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Responsable Área Integridad</div>
+                                                <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">José Gómez</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Fútbol (Columna Derecha) -->
+                                        <div style="display: flex; flex-direction: column; align-items: center; flex: 1.2;">
+                                            <div class="org-box" style="background-color: var(--accent); border-radius: 12px; padding: 14px 20px; width: 100%; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
+                                                <div style="font-size: 10px; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; opacity: 0.9;">Fútbol</div>
+                                                <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">Rubén Mora</div>
+                                                <div style="font-size: 12px; color: rgba(255,255,255,0.9); margin-top: 2px;">Director Técnico</div>
+                                            </div>
+                                            
+                                            <!-- Línea vertical al Nivel 3 -->
+                                            <div style="width: 2px; height: 24px; background-color: rgba(255,255,255,0.25);"></div>
+                                            
+                                            <!-- Nivel 3 (Fútbol) - 2 Columnas: Masculina y Femenina -->
+                                            <div style="display: flex; gap: 12px; width: 100%;">
+                                                <div class="org-box" style="background-color: #1E3A5F; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 10px; flex: 1; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
+                                                    <div style="font-size: 9px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 2px;">Sección Masculina</div>
+                                                    <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif; white-space: nowrap;">Rubén Mora</div>
+                                                    <div style="font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 2px;">Coordinación</div>
+                                                </div>
+                                                <div class="org-box" style="background-color: #1E3A5F; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 12px 10px; flex: 1; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
+                                                    <div style="font-size: 9px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 2px;">Sección Femenina</div>
+                                                    <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif; white-space: nowrap;">Esther Romero</div>
+                                                    <div style="font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 2px;">Coordinación</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -4788,7 +4861,9 @@
     <!-- Modal: Lightbox para ampliar organigrama -->
     <div class="organigram-lightbox" id="organigram-lightbox" onclick="closeOrganigramLightbox(event)">
         <span class="lightbox-close" onclick="closeOrganigramLightbox(event)">&times;</span>
-        <img class="lightbox-content" id="lightbox-img" src="organigrama.png" alt="Organigrama Oficial FFCV Ampliado">
+        <div class="lightbox-content-html" id="lightbox-organigram-content" onclick="event.stopPropagation()" style="background-color: var(--primary); padding: 40px; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+            <!-- El contenido del organigrama se clonará aquí mediante JS -->
+        </div>
     </div>
 
 
@@ -7015,12 +7090,32 @@
         }
 
         function renderStaffOrganigram() {
-            // No se requiere renderizado dinámico del organigrama porque se muestra la imagen corporativa en el sub-view
+            // No se requiere renderizado dinámico del organigrama porque se muestra la maquetación HTML/CSS estática en el sub-view
         }
 
         function openOrganigramLightbox() {
             const lightbox = document.getElementById('organigram-lightbox');
-            if (lightbox) {
+            const source = document.getElementById('organigram-wrapper-source');
+            const target = document.getElementById('lightbox-organigram-content');
+            
+            if (lightbox && source && target) {
+                // Clonar el contenido del organigrama sin duplicar el ID para evitar IDs duplicados
+                const clonedContent = source.cloneNode(true);
+                clonedContent.id = 'organigram-wrapper-cloned';
+                clonedContent.style.minWidth = 'unset'; // Hacerlo fluido dentro del modal
+                clonedContent.style.width = '100%';
+                clonedContent.style.boxShadow = 'none';
+                
+                // Limpiar onclick de las cajas para evitar bucles en el clon
+                const boxes = clonedContent.querySelectorAll('.org-box');
+                boxes.forEach(box => {
+                    box.removeAttribute('onclick');
+                    box.style.cursor = 'default';
+                });
+                
+                target.innerHTML = '';
+                target.appendChild(clonedContent);
+                
                 lightbox.style.display = 'flex';
                 // Forzar reflujo para activar la transición de opacidad
                 lightbox.offsetHeight;
