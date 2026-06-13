@@ -3248,21 +3248,27 @@
                                 }
                             </style>
                             
+                            <!-- Cabecera Visual de Sistemas de Juego -->
+                            <div class="section-sub-header" style="background: linear-gradient(135deg, #0f1e46 0%, #15295f 100%); border-left: 4px solid var(--accent); padding: 18px 24px; border-radius: var(--radius-lg); display: flex; align-items: center; gap: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 8px;">
+                                <div style="background-color: rgba(255, 107, 0, 0.15); color: var(--accent); width: 44px; height: 44px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(255, 107, 0, 0.25);">
+                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><circle cx="12" cy="12" r="10" /><line x1="12" y1="2" x2="12" y2="22" /><line x1="2" y1="12" x2="22" y2="12" /><circle cx="12" cy="12" r="4" /></svg>
+                                </div>
+                                <div style="flex: 1;">
+                                    <h2 style="font-size: 15px; font-weight: 800; color: #FFFFFF; margin: 0; text-transform: uppercase; letter-spacing: 0.75px;">Sistemas de Juego</h2>
+                                    <p style="font-size: 11.5px; color: rgba(255, 255, 255, 0.75); margin: 4px 0 0 0; line-height: 1.45;">Definición de estructuras tácticas base utilizadas por las selecciones FFCV para la organización ofensiva y defensiva.</p>
+                                </div>
+                            </div>
+
                             <!-- Tarjeta de Selección de Sistema -->
                             <div class="filters-card" style="margin-top: 0; margin-bottom: 0; background: #0f1e46; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 24px rgba(15, 30, 70, 0.2);">
 
-
-                                <!-- Cabecera del Bloque -->
-                                <div style="display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 12px; margin-bottom: 16px; margin-top: 4px;">
-                                    <div style="display: flex; align-items: center; gap: 10px;">
-                                        <div style="background-color: rgba(255, 255, 255, 0.10); color: #FFFFFF; width: 36px; height: 36px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="2" x2="12" y2="22" /><line x1="2" y1="12" x2="22" y2="12" /><circle cx="12" cy="12" r="4" /></svg>
-                                        </div>
-                                        <div>
-                                            <h3 style="font-size: 14px; font-weight: 700; color: #FFFFFF; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Sistema de Juego Actual</h3>
-                                        </div>
+                                <!-- Cabecera del Bloque: Formación Principal -->
+                                <div style="display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 12px; margin-bottom: 16px; margin-top: 4px;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div style="background-color: var(--accent); width: 6px; height: 16px; border-radius: 2px;"></div>
+                                        <h3 style="font-size: 13px; font-weight: 800; color: #FFFFFF; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Formación Principal</h3>
                                     </div>
-                                    <span style="font-size: 11px; color: rgba(255, 255, 255, 0.75);">Representación táctica del modelo seleccionado.</span>
+                                    <span style="font-size: 11px; color: rgba(255, 255, 255, 0.75); line-height: 1.45;">Selecciona una estructura táctica para visualizar la distribución de jugadores en el terreno de juego.</span>
                                 </div>
 
                                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
@@ -3291,6 +3297,17 @@
                                             <path d="M 96 92 A 4 4 0 0 0 92 96" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="0.8" />
                                         </svg>
                                         <!-- Players rendered dynamically -->
+                                    </div>
+                                </div>
+
+                                <!-- Características del Sistema (Ficha Dinámica) -->
+                                <div style="margin-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 18px; display: flex; flex-direction: column; gap: 12px;">
+                                    <h4 style="font-size: 12px; font-weight: 800; color: #FFFFFF; margin: 0; text-transform: uppercase; letter-spacing: 0.75px; display: flex; align-items: center; gap: 8px;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="var(--accent)" fill="none" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                        Características del Sistema
+                                    </h4>
+                                    <div id="system-features-content" style="display: flex; flex-direction: column; gap: 10px;">
+                                        <!-- Dinámico mediante JS -->
                                     </div>
                                 </div>
                             </div>
@@ -8932,6 +8949,104 @@
             });
         }
 
+        const SYSTEM_FEATURES = {
+            '1433': {
+                fortalezas: [
+                    'Amplitud natural en banda gracias a los extremos abiertos.',
+                    'Gran control del centro del campo con un triángulo interior.',
+                    'Presión alta y transiciones rápidas tras pérdida en campo rival.'
+                ],
+                vigilar: [
+                    'Espacio a la espalda de los laterales en transiciones defensivas.',
+                    'Excesiva distancia entre líneas si los extremos no repliegan.',
+                    'Sobrecarga física sobre el pivote defensivo ante contras.'
+                ],
+                recomendado: 'Ideal para selecciones dominantes que buscan el control del balón y la iniciativa mediante juego de posición estructurado.'
+            },
+            '1442': {
+                fortalezas: [
+                    'Excelente ocupación racional y simétrica de todo el terreno de juego.',
+                    'Bloque defensivo muy sólido y compacto en repliegue medio/bajo.',
+                    'Presencia constante de dos delanteros para fijar a los centrales rivales.'
+                ],
+                vigilar: [
+                    'Posible inferioridad numérica en el mediocampo ante sistemas de 3 volantes.',
+                    'Lentitud en la transición si los centrocampistas no rompen desde atrás.',
+                    'Menor profundidad inmediata por banda si los volantes no doblan.'
+                ],
+                recomendado: 'Recomendado para partidos donde se requiere gran rigor defensivo, solidez estructural y salidas verticales rápidas.'
+            },
+            '1352': {
+                fortalezas: [
+                    'Superioridad numérica en el carril central con 3 centrales y 3 mediocentros.',
+                    'Gran recorrido ofensivo de los carrileros para generar amplitud exterior.',
+                    'Facilidad para realizar presión asfixiante sobre el inicio de juego rival.'
+                ],
+                vigilar: [
+                    'Excesivo desgaste físico de los carrileros en ida y vuelta constante.',
+                    'Espacios desprotegidos a la espalda de carrileros que deben cubrir los centrales exteriores.',
+                    'Dificultad para tapar centros laterales si el bloque se hunde demasiado.'
+                ],
+                recomendado: 'Ideal para buscar superioridad interior y profundidad por bandas manteniendo 3 defensores listos para vigilancias ofensivas.'
+            }
+        };
+
+        function updateSystemFeatures(system) {
+            const contentDiv = document.getElementById('system-features-content');
+            if (!contentDiv) return;
+            
+            const features = SYSTEM_FEATURES[system] || SYSTEM_FEATURES['1433'];
+            
+            let html = `
+                <!-- Fortalezas -->
+                <div style="background: rgba(46, 125, 50, 0.12); border: 1px solid rgba(46, 125, 50, 0.3); border-radius: 8px; padding: 10px 12px; transition: all 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                        <span style="color: #4CAF50; display: inline-flex;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                        <span style="font-size: 11px; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.5px;">Fortalezas</span>
+                    </div>
+                    <ul style="margin: 0; padding-left: 16px; font-size: 11px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
+            `;
+            
+            features.fortalezas.forEach(f => {
+                html += `<li>${f}</li>`;
+            });
+            
+            html += `
+                    </ul>
+                </div>
+                
+                <!-- Aspectos a vigilar -->
+                <div style="background: rgba(255, 152, 0, 0.12); border: 1px solid rgba(255, 152, 0, 0.3); border-radius: 8px; padding: 10px 12px; transition: all 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                        <span style="color: #FF9800; display: inline-flex;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                        <span style="font-size: 11px; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.5px;">Aspectos a vigilar</span>
+                    </div>
+                    <ul style="margin: 0; padding-left: 16px; font-size: 11px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
+            `;
+            
+            features.vigilar.forEach(v => {
+                html += `<li>${v}</li>`;
+            });
+            
+            html += `
+                    </ul>
+                </div>
+                
+                <!-- Uso recomendado -->
+                <div style="background: rgba(33, 150, 243, 0.12); border: 1px solid rgba(33, 150, 243, 0.3); border-radius: 8px; padding: 10px 12px; transition: all 0.3s ease;">
+                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                        <span style="color: #2196F3; display: inline-flex;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+                        <span style="font-size: 11px; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.5px;">Uso recomendado</span>
+                    </div>
+                    <p style="margin: 0; font-size: 11px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; padding-left: 4px;">
+                        ${features.recomendado}
+                    </p>
+                </div>
+            `;
+            
+            contentDiv.innerHTML = html;
+        }
+
         function setTacticSystem(system, btn) {
             btn.parentNode.querySelectorAll('button').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -8948,6 +9063,7 @@
             activeSystem = system;
             updatePitchRepresentation();
             updateMiniTacticPreview(system);
+            updateSystemFeatures(system);
             showToast(`Sistema táctico cambiado a ${system}`, 'success');
         }
 
@@ -11131,6 +11247,7 @@
             updateDocumentCounts();
             initDragAndDrop();
             updateMiniTacticPreview('1433');
+            updateSystemFeatures('1433');
             
             // Navegar automáticamente a la pestaña indicada en el Hash de URL (si existe)
             const hash = window.location.hash.substring(1);
