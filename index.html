@@ -3221,11 +3221,11 @@
                     </div>
 
                     <!-- Pestañas de Modalidad Deportiva -->
-                    <div class="tactical-menu-tabs" style="margin-top: 10px; margin-bottom: 24px;">
-                        <button class="tactical-tab active" onclick="setGameModelCategory('f11', this)">⚽ Fútbol 11</button>
-                        <button class="tactical-tab" onclick="setGameModelCategory('f8', this)">⚽ Fútbol 8</button>
-                        <button class="tactical-tab" onclick="setGameModelCategory('futsal', this)">🏟️ Fútbol Sala</button>
-                        <button class="tactical-tab" onclick="setGameModelCategory('fplaya', this)">🏖️ Fútbol Playa</button>
+                    <div class="config-tabs-container" style="margin-top: 0; margin-bottom: 24px;">
+                        <button class="config-tab-btn active" onclick="setGameModelCategory('f11', this)">⚽ Fútbol 11</button>
+                        <button class="config-tab-btn" onclick="setGameModelCategory('f8', this)">⚽ Fútbol 8</button>
+                        <button class="config-tab-btn" onclick="setGameModelCategory('futsal', this)">🏟️ Fútbol Sala</button>
+                        <button class="config-tab-btn" onclick="setGameModelCategory('fplaya', this)">🏖️ Fútbol Playa</button>
                     </div>
 
                     <div class="tactic-layout">
@@ -9870,10 +9870,10 @@
 
         function setGameModelCategory(category, btn, showNotification = true) {
             if (btn) {
-                btn.parentNode.querySelectorAll('.tactical-tab').forEach(b => b.classList.remove('active'));
+                btn.parentNode.querySelectorAll('.config-tab-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
             } else {
-                const tabs = document.querySelectorAll('#view-modelo .tactical-tab');
+                const tabs = document.querySelectorAll('#view-modelo .config-tab-btn');
                 tabs.forEach(tab => {
                     const onclickAttr = tab.getAttribute('onclick');
                     if (onclickAttr && onclickAttr.includes(`'${category}'`)) {
