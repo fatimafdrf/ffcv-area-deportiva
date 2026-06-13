@@ -3507,60 +3507,66 @@
                         }
                         
                         /* Organigrama Jerárquico */
-                        .organigram-container {
-                            background: var(--bg-card);
-                            padding: 30px;
-                            border-radius: var(--radius-lg);
-                            border: 1px solid var(--border-color);
-                            box-shadow: var(--shadow-sm);
-                            overflow-x: auto;
-                            display: flex;
-                            justify-content: center;
+                        .organigram-img-container {
+                            transition: border-color 0.2s ease;
                         }
-                        .organigram-tree {
-                            display: flex;
-                            flex-direction: column;
+                        .organigram-img-container:hover {
+                            border-color: var(--accent) !important;
+                        }
+                        .organigram-img-container img:hover {
+                            transform: scale(1.01);
+                        }
+                        
+                        /* Estilos Lightbox Organigrama */
+                        .organigram-lightbox {
+                            display: none;
+                            position: fixed;
+                            z-index: 10000;
+                            left: 0;
+                            top: 0;
+                            width: 100%;
+                            height: 100%;
+                            overflow: auto;
+                            background-color: rgba(10, 37, 64, 0.95);
+                            justify-content: center;
                             align-items: center;
-                            gap: 16px;
-                            margin: 0 auto;
-                            width: max-content;
+                            opacity: 0;
+                            transition: opacity 0.3s ease;
                         }
-                        .organigram-level {
+                        .organigram-lightbox.show {
                             display: flex;
-                            justify-content: center;
-                            gap: 40px;
-                            position: relative;
+                            opacity: 1;
                         }
-                        .organigram-node {
-                            background: #FFFFFF;
-                            border: 1px solid var(--border-color);
-                            border-radius: 12px;
-                            padding: 12px 16px;
-                            box-shadow: var(--shadow-sm);
-                            text-align: center;
-                            min-width: 190px;
-                            position: relative;
+                        .lightbox-content {
+                            margin: auto;
+                            display: block;
+                            max-width: 90%;
+                            max-height: 90%;
+                            border-radius: 8px;
+                            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+                            transform: scale(0.9);
+                            transition: transform 0.3s ease;
+                            cursor: zoom-out;
+                        }
+                        .organigram-lightbox.show .lightbox-content {
+                            transform: scale(1);
+                        }
+                        .lightbox-close {
+                            position: absolute;
+                            top: 20px;
+                            right: 30px;
+                            color: #FFFFFF;
+                            font-size: 40px;
+                            font-weight: bold;
+                            transition: 0.3s;
                             cursor: pointer;
-                            transition: var(--transition-base);
+                            user-select: none;
+                            z-index: 10001;
                         }
-                        .organigram-node:hover {
-                            transform: translateY(-2px);
-                            box-shadow: var(--shadow-md);
-                            border-color: var(--accent);
-                        }
-                        .organigram-node.director { border-left: 4px solid var(--accent); }
-                        .organigram-node.coordinador { border-left: 4px solid var(--info); }
-                        .organigram-node.seleccionador { border-left: 4px solid var(--success); }
-                        .organigram-node.staff-especifico { border-left: 4px solid var(--warning); }
-                        
-                        .organigram-title { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 2px; }
-                        .organigram-name { font-size: 13px; font-weight: 700; color: var(--primary); }
-                        .organigram-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
-                        
-                        .org-line-y {
-                            width: 2px;
-                            height: 20px;
-                            background-color: var(--border-color);
+                        .lightbox-close:hover,
+                        .lightbox-close:focus {
+                            color: var(--accent);
+                            text-decoration: none;
                         }
                     </style>
 
@@ -3589,8 +3595,14 @@
 
                     <!-- Sub-vista 2: Organigrama Jerárquico -->
                     <div id="staff-subview-organigrama" style="display: none;">
-                        <div class="organigram-container">
-                            <div id="organigram-tree-content"></div>
+                        <div class="panel" style="margin-bottom:28px; padding:24px;">
+                            <div style="border-bottom: 1px solid rgba(15, 35, 80, 0.08); padding-bottom: 16px; margin-bottom: 20px;">
+                                <h3 style="font-size: 18px; font-weight: 700; color: #0F2350; margin: 0; font-family: 'Outfit', sans-serif;">Organigrama General</h3>
+                                <span style="font-size: 13px; color: #6B7280; display: block; margin-top: 4px;">Estructura organizativa del Área Deportiva de la FFCV, incluyendo responsables, coordinadores y áreas técnicas.</span>
+                            </div>
+                            <div class="organigram-img-container" style="text-align: center; padding: 10px; background-color: #F8FAFC; border-radius: var(--radius-md); border: 1px solid var(--border-color); overflow: hidden; position: relative;">
+                                <img id="organigram-img" src="organigrama.png" alt="Organigrama Oficial FFCV" style="max-width: 100%; height: auto; cursor: zoom-in; border-radius: 6px; display: inline-block; transition: transform 0.2s ease;" onclick="openOrganigramLightbox()">
+                            </div>
                         </div>
                     </div>
 
@@ -4772,6 +4784,12 @@
 
     <!-- Contenedor Flotante de Avisos Toasts -->
     <div class="toast-container" id="toast-container"></div>
+
+    <!-- Modal: Lightbox para ampliar organigrama -->
+    <div class="organigram-lightbox" id="organigram-lightbox" onclick="closeOrganigramLightbox(event)">
+        <span class="lightbox-close" onclick="closeOrganigramLightbox(event)">&times;</span>
+        <img class="lightbox-content" id="lightbox-img" src="organigrama.png" alt="Organigrama Oficial FFCV Ampliado">
+    </div>
 
 
     <!-- ==========================================================================
@@ -6997,66 +7015,40 @@
         }
 
         function renderStaffOrganigram() {
-            const treeContent = document.getElementById('organigram-tree-content');
-            if (!treeContent) return;
-
-            const director = staff.find(m => m.role === 'Director Deportivo') || staff[0];
-            const analista = staff.find(m => m.role === 'Analista Técnico') || staff[2];
-            const seleccionador = staff.find(m => m.role === 'Seleccionador') || staff[1];
-            const prepFisico = staff.find(m => m.role === 'Preparador Físico') || staff[3];
-
-            treeContent.innerHTML = `
-                <div class="organigram-tree">
-                    <!-- Nivel 1: Director Deportivo -->
-                    <div class="organigram-node director" onclick="openStaffDetailModal(${director.id})">
-                        <div class="organigram-title">Dirección Deportiva</div>
-                        <div class="organigram-name">${director.name}</div>
-                        <div class="organigram-sub">${director.category}</div>
-                    </div>
-                    
-                    <div class="org-line-y"></div>
-                    
-                    <!-- Nivel 2: Coordinación / Staff Técnico -->
-                    <div class="organigram-level">
-                        <div style="position: absolute; top: 0; left: 25%; right: 25%; height: 2px; background-color: var(--border-color);"></div>
-                        
-                        <div style="display: flex; flex-direction: column; align-items: center; padding-top: 16px;">
-                            <div class="organigram-node coordinador" onclick="openStaffDetailModal(${director.id})">
-                                <div class="organigram-title">Coordinación</div>
-                                <div class="organigram-name">Área Deportiva FFCV</div>
-                                <div class="organigram-sub">Gestión Centralizada</div>
-                            </div>
-                        </div>
-
-                        <div style="display: flex; flex-direction: column; align-items: center; padding-top: 16px;">
-                            <div class="organigram-node staff-especifico" onclick="openStaffDetailModal(${analista.id})">
-                                <div class="organigram-title">Análisis y Scouting</div>
-                                <div class="organigram-name">${analista.name}</div>
-                                <div class="organigram-sub">${analista.role}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="org-line-y"></div>
-
-                    <!-- Nivel 3: Seleccionadores -->
-                    <div class="organigram-node seleccionador" onclick="openStaffDetailModal(${seleccionador.id})">
-                        <div class="organigram-title">Cuerpo Técnico Principal</div>
-                        <div class="organigram-name">${seleccionador.name}</div>
-                        <div class="organigram-sub">${seleccionador.role} - ${seleccionador.category}</div>
-                    </div>
-
-                    <div class="org-line-y"></div>
-
-                    <!-- Nivel 4: Preparación Física -->
-                    <div class="organigram-node staff-especifico" onclick="openStaffDetailModal(${prepFisico.id})">
-                        <div class="organigram-title">Preparación Física</div>
-                        <div class="organigram-name">${prepFisico.name}</div>
-                        <div class="organigram-sub">${prepFisico.role} - ${prepFisico.category}</div>
-                    </div>
-                </div>
-            `;
+            // No se requiere renderizado dinámico del organigrama porque se muestra la imagen corporativa en el sub-view
         }
+
+        function openOrganigramLightbox() {
+            const lightbox = document.getElementById('organigram-lightbox');
+            if (lightbox) {
+                lightbox.style.display = 'flex';
+                // Forzar reflujo para activar la transición de opacidad
+                lightbox.offsetHeight;
+                lightbox.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Evita el scroll del fondo
+            }
+        }
+
+        function closeOrganigramLightbox(event) {
+            const lightbox = document.getElementById('organigram-lightbox');
+            if (lightbox) {
+                lightbox.classList.remove('show');
+                setTimeout(() => {
+                    lightbox.style.display = 'none';
+                }, 300);
+                document.body.style.overflow = ''; // Restaura el scroll
+            }
+        }
+
+        // Cerrar lightbox con la tecla Escape
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const lightbox = document.getElementById('organigram-lightbox');
+                if (lightbox && lightbox.classList.contains('show')) {
+                    closeOrganigramLightbox();
+                }
+            }
+        });
 
         function renderStaffList() {
             const container = document.getElementById('staff-grid-container');
