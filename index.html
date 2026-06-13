@@ -6426,8 +6426,8 @@
                         /* Datos Rápidos Grid */
                         .fast-stats-grid {
                             display: grid;
-                            grid-template-columns: repeat(3, 1fr);
-                            gap: 10px;
+                            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+                            gap: 12px;
                         }
                         .fast-stat-card {
                             background-color: #FFFFFF;
@@ -6656,8 +6656,20 @@
                         <!-- 1. Cabecera Principal -->
                         <div class="report-header-card">
                             <div class="report-header-left">
-                                <div class="report-player-avatar">
-                                    ${initials}
+                                <div class="report-player-avatar-container" style="position: relative; width: 80px; height: 80px;">
+                                    <svg class="report-player-photo" viewBox="0 0 100 100" style="width: 100%; height: 100%; display: block; border-radius: 50%;">
+                                        <defs>
+                                            <linearGradient id="avatarGrad-${r.id}" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#102b5c" />
+                                                <stop offset="100%" stop-color="#FF6B00" />
+                                            </linearGradient>
+                                        </defs>
+                                        <circle cx="50" cy="50" r="48" fill="url(#avatarGrad-${r.id})" stroke="#FFFFFF" stroke-width="2"/>
+                                        <path d="M50 24 C57 24, 63 30, 63 37 C63 45, 57 51, 50 51 C43 51, 37 45, 37 37 C37 30, 43 24, 50 24 Z M50 55 C32 55, 18 67, 18 80 L82 80 C82 67, 68 55, 50 55 Z" fill="#FFFFFF" opacity="0.85" />
+                                    </svg>
+                                    <div class="report-player-initials-badge" style="position: absolute; bottom: -2px; right: -2px; width: 26px; height: 26px; border-radius: 50%; background-color: #FF6B00; border: 2px solid #FFFFFF; display: flex; align-items: center; justify-content: center; color: #FFFFFF; font-size: 9px; font-weight: 900; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                                        ${initials}
+                                    </div>
                                 </div>
                                 <div class="report-header-info">
                                     <div class="report-badge-container">
@@ -6665,8 +6677,8 @@
                                         <span class="report-badge-status ${detailStatusClass}">${displayStatusLabel}</span>
                                     </div>
                                     <h2 class="report-player-name">${r.name}</h2>
-                                    <div class="report-player-pos">${p ? p.position : 'Defensa Central'} • ${r.sport} ${r.gender} • ${r.category}</div>
-                                    <div class="report-scout-lead">Seguimiento realizado por: <strong>${r.scout}</strong></div>
+                                    <div class="report-player-pos">${p ? p.position : 'Defensa Central'} • ${r.sport} ${r.gender}</div>
+                                    <div class="report-scout-lead">Seguimiento por: <strong>${r.scout}</strong></div>
                                 </div>
                             </div>
                             <div class="report-header-right">
@@ -6700,6 +6712,10 @@
                                 <div class="fast-stat-card">
                                     <span class="fast-stat-label">Equipo</span>
                                     <span class="fast-stat-val" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${clubName}">${clubName}</span>
+                                </div>
+                                <div class="fast-stat-card">
+                                    <span class="fast-stat-label">Categoría</span>
+                                    <span class="fast-stat-val">${r.category}</span>
                                 </div>
                                 <div class="fast-stat-card">
                                     <span class="fast-stat-label">Posición</span>
