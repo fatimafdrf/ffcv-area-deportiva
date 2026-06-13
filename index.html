@@ -7118,16 +7118,46 @@
                 phone: "+34 677 555 666",
                 titulos: "UEFA A Licencia, Especialista en Táctica Femenina",
                 experiencia: "Asistente técnico de la Selección Valenciana Valenta Sub-14."
+            },
+            {
+                id: 21,
+                name: "Roberto Soler",
+                role: "Entrenador de Porteros",
+                category: "Sub-16",
+                license: "UEFA Especialista en Porteros",
+                email: "rsoler@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 655 444 333",
+                titulos: "UEFA Goalkeeper B, Entrenador Nacional Nivel 2",
+                experiencia: "6 años en la escuela del Levante U.D. como responsable de la preparación de porteros."
+            },
+            {
+                id: 22,
+                name: "Ángela Ruíz",
+                role: "Entrenador de Porteros",
+                category: "Sub-19",
+                license: "UEFA Especialista en Porteros",
+                email: "aruiz@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 655 555 666",
+                titulos: "UEFA Goalkeeper A, Licenciada en Ciencias de la Actividad Física",
+                experiencia: "Preparadora de porteras de las selecciones autonómicas Valenta."
             }
         ];
 
         let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || DEFAULT_STAFF;
         let activeStaffRoleFilter = 'ALL';
 
-        // Sincronizar localStorage si no contiene a Paco Marí o si no contiene entrenadores asistentes
+        // Sincronizar localStorage si no contiene a Paco Marí, o si no contiene entrenadores asistentes, o si no contiene entrenadores de porteros
         if (localStorage.getItem('ffcv_staff')) {
             const tempStaff = JSON.parse(localStorage.getItem('ffcv_staff'));
-            if (!tempStaff.some(m => m.name === "Paco Marí") || !tempStaff.some(m => m.role.includes('Entrenador') || m.role.includes('Asistente'))) {
+            if (!tempStaff.some(m => m.name === "Paco Marí") || 
+                !tempStaff.some(m => m.role.includes('Entrenador') || m.role.includes('Asistente')) ||
+                !tempStaff.some(m => m.role.includes('Portero') || m.role.includes('Portera'))) {
                 localStorage.setItem('ffcv_staff', JSON.stringify(DEFAULT_STAFF));
                 staff = DEFAULT_STAFF;
             }
@@ -7170,6 +7200,7 @@
             if (role === 'Organigrama') categoryName = 'Organigrama General';
             if (role === 'Coordinador') categoryName = 'Coordinación Deportiva';
             if (role === 'Entrenador') categoryName = 'Entrenadores';
+            if (role === 'Portero') categoryName = 'Entrenadores/as de Porteros/as';
             if (role === 'Seleccionador') categoryName = 'Seleccionadores';
             if (role === 'Preparador Físico') categoryName = 'Preparadores Físicos';
             if (role === 'Analista Técnico') categoryName = 'Analistas';
@@ -7230,7 +7261,8 @@
             const orgCount = staff.filter(m => m.role.includes('Director') || m.role.includes('Coordinador') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable') || m.role === 'Director técnico').length;
             const coordCount = staff.filter(m => m.role.includes('Coordinador') || m.role.includes('Coordinación')).length;
             const selCount = staff.filter(m => m.role === 'Seleccionador').length;
-            const coachCount = staff.filter(m => m.role.includes('Entrenador') || m.role.includes('Asistente')).length;
+            const coachCount = staff.filter(m => (m.role.includes('Entrenador') || m.role.includes('Asistente')) && !m.role.includes('Portero') && !m.role.includes('Portera')).length;
+            const gkCount = staff.filter(m => m.role.includes('Portero') || m.role.includes('Portera')).length;
             const pfCount = staff.filter(m => m.role === 'Preparador Físico').length;
             const analystCount = staff.filter(m => m.role === 'Analista Técnico').length;
             const physioCount = staff.filter(m => m.role.includes('Fisio')).length;
@@ -7293,6 +7325,20 @@
                         <div class="staff-area-meta">
                             <span class="staff-area-count">${coachCount} Integrantes</span>
                             <button class="btn btn-primary btn-sm" onclick="selectStaffRoleFilter('Entrenador')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <h4 class="staff-area-title">Entrenadores/as de Porteros/as</h4>
+                            <p class="staff-area-desc">Preparación específica, entrenamiento técnico-táctico y rendimiento de los guardametas.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${gkCount} Integrantes</span>
+                            <button class="btn btn-primary btn-sm" onclick="selectStaffRoleFilter('Portero')">Ver Estructura</button>
                         </div>
                     </div>
 
@@ -7463,7 +7509,9 @@
                 } else if (activeStaffRoleFilter === 'Coordinador') {
                     matchesRole = m.role.includes('Coordinador') || m.role.includes('Coordinación');
                 } else if (activeStaffRoleFilter === 'Entrenador') {
-                    matchesRole = m.role.includes('Entrenador') || m.role.includes('Asistente');
+                    matchesRole = (m.role.includes('Entrenador') || m.role.includes('Asistente')) && !m.role.includes('Portero') && !m.role.includes('Portera');
+                } else if (activeStaffRoleFilter === 'Portero') {
+                    matchesRole = m.role.includes('Portero') || m.role.includes('Portera');
                 } else if (activeStaffRoleFilter === 'Médico') {
                     matchesRole = m.role.includes('Médic') || m.role.includes('Doctor') || m.role.includes('Enfermer');
                 } else if (activeStaffRoleFilter === 'Scout') {
@@ -7839,6 +7887,104 @@
             document.body.appendChild(overlay);
         }
 
+        function openPorterosModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'modal-porteros-detail';
+            overlay.innerHTML = `
+                <div class="modal-card" style="max-width: 750px; background-color: var(--primary-dark); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.15);">
+                    <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 16px;">
+                        <h3 class="modal-title" style="color: var(--accent); font-size: 20px; font-weight: 700;">Entrenador/a de Porteros/as</h3>
+                        <button class="close-btn" onclick="document.getElementById('modal-porteros-detail').remove()" style="color: #FFFFFF; opacity: 0.8; font-size: 24px; background: none; border: none; cursor: pointer;">×</button>
+                    </div>
+                    <div class="modal-body" style="padding: 24px 0 12px 0; display: flex; flex-direction: column; gap: 24px;">
+                        
+                        <!-- Misión -->
+                        <div style="background-color: var(--primary-light); padding: 16px 20px; border-radius: var(--radius-md); border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Misión del puesto</h4>
+                            <p style="color: #FFFFFF; font-size: 14px; line-height: 1.5; margin: 0;">Desarrollar técnica y tácticamente a los porteros/as dentro del modelo colectivo FFCV.</p>
+                        </div>
+                        
+                        <!-- Columnas de Contenido -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            
+                            <!-- Funciones Principales -->
+                            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Funciones Principales</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Diseñar tareas específicas
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Integración colectiva
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Análisis técnico-táctico
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Seguimiento de los porteros
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Coordinación con staff
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Competencias Clave -->
+                            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Competencias Clave</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Especialización técnica
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Adaptación metodológica
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Capacidad analítica
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Observación
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Comunicación
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+
+                        <!-- Qué no debe hacer -->
+                        <div style="background-color: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); padding: 18px; border-radius: var(--radius-md);">
+                            <h4 style="color: #EF4444; font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding-bottom: 6px;">Qué no debe hacer</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No trabajar aislado del modelo colectivo
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No generar métodos propios fuera de la metodología FFCV
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No compartir información técnica interna
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No intervenir en áreas ajenas a su responsabilidad
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No generar dependencia técnica
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; margin-top: 12px;">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-porteros-detail').remove()" style="width:100%; border: none;">Cerrar Panel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
         function openRoleSpecificModal(memberId) {
             const member = staff.find(m => m.id === memberId);
             if (!member) return;
@@ -7846,7 +7992,13 @@
             if (member.role === 'Seleccionador') {
                 openSeleccionadoresModal();
             } else if (member.role.includes('Entrenador') || member.role.includes('Asistente')) {
-                openEntrenadoresModal();
+                if (member.role.includes('Portero') || member.role.includes('Portera')) {
+                    openPorterosModal();
+                } else {
+                    openEntrenadoresModal();
+                }
+            } else if (member.role.includes('Portero') || member.role.includes('Portera')) {
+                openPorterosModal();
             } else if (member.role === 'Preparador Físico') {
                 openPreparadoresModal();
             } else if (member.role === 'Analista Técnico') {
