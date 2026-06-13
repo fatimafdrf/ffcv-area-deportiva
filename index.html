@@ -6100,6 +6100,77 @@
             container.innerHTML = html;
         }
 
+        function generateRadarChartSvg(vals) {
+            const shortLabels = ["RIT", "PAS", "TAC", "FIS", "TEC", "ACT", "MEN", "SOC"];
+            const center = 100;
+            const maxVal = 5;
+            const r = 64; // max radius
+            
+            // Draw concentric grids (values 1 to 5)
+            let gridsHtml = '';
+            for (let level = 1; level <= maxVal; level++) {
+                const rad = (level / maxVal) * r;
+                let points = [];
+                for (let i = 0; i < 8; i++) {
+                    const angle = (i * Math.PI / 4) - (Math.PI / 2);
+                    const x = center + Math.cos(angle) * rad;
+                    const y = center + Math.sin(angle) * rad;
+                    points.push(`${x},${y}`);
+                }
+                gridsHtml += `<polygon points="${points.join(' ')}" fill="none" stroke="#e9ecef" stroke-width="1" />`;
+                const topY = center - rad;
+                gridsHtml += `<text x="${center + 4}" y="${topY + 3}" fill="#aaa" font-size="7" font-weight="600">${level}</text>`;
+            }
+            
+            // Draw axes
+            let axesHtml = '';
+            let labelsHtml = '';
+            for (let i = 0; i < 8; i++) {
+                const angle = (i * Math.PI / 4) - (Math.PI / 2);
+                const ax = center + Math.cos(angle) * r;
+                const ay = center + Math.sin(angle) * r;
+                axesHtml += `<line x1="${center}" y1="${center}" x2="${ax}" y2="${ay}" stroke="#e9ecef" stroke-width="1.5" />`;
+                
+                const lx = center + Math.cos(angle) * (r + 14);
+                const ly = center + Math.sin(angle) * (r + 14);
+                
+                let anchor = 'middle';
+                if (Math.cos(angle) > 0.1) anchor = 'start';
+                else if (Math.cos(angle) < -0.1) anchor = 'end';
+                
+                let dy = 3;
+                if (Math.sin(angle) < -0.9) dy = -2;
+                else if (Math.sin(angle) > 0.9) dy = 6;
+                
+                labelsHtml += `<text x="${lx}" y="${ly + dy}" fill="#102b5c" font-size="8" font-weight="800" text-anchor="${anchor}">${shortLabels[i]}</text>`;
+            }
+            
+            // Draw player data polygon
+            let playerPoints = [];
+            let vertexCircles = '';
+            for (let i = 0; i < 8; i++) {
+                const val = Math.min(Math.max(vals[i], 1), 5);
+                const rad = (val / maxVal) * r;
+                const angle = (i * Math.PI / 4) - (Math.PI / 2);
+                const px = center + Math.cos(angle) * rad;
+                const py = center + Math.sin(angle) * rad;
+                playerPoints.push(`${px},${py}`);
+                vertexCircles += `<circle cx="${px}" cy="${py}" r="3" fill="#FF6B00" stroke="#FFFFFF" stroke-width="1" />`;
+            }
+            
+            const polygonHtml = `<polygon points="${playerPoints.join(' ')}" fill="rgba(255, 107, 0, 0.2)" stroke="#FF6B00" stroke-width="2" />`;
+            
+            return `
+                <svg width="200" height="200" viewBox="0 0 200 200" style="overflow:visible;">
+                    ${gridsHtml}
+                    ${axesHtml}
+                    ${polygonHtml}
+                    ${vertexCircles}
+                    ${labelsHtml}
+                </svg>
+            `;
+        }
+
         function openReportDetailModal(reportId) {
             const r = reports.find(x => x.id === reportId);
             if (!r) return;
@@ -6116,157 +6187,658 @@
             let html = '';
             
             if (r.type === 'Individual') {
+                const p = players.find(x => x.name.trim().toLowerCase() === r.name.trim().toLowerCase());
+                const clubName = p ? p.club : (r.sport === 'Fútbol Sala' ? 'Levante U.D. Futsal' : (r.sport === 'Fútbol Playa' ? 'C.D. Playas de Valencia' : 'Valencia C.F. Cadete'));
+                const birthYear = p && p.birthYear ? p.birthYear : 2010;
+                const birthDateStr = `15/05/${birthYear}`;
+                const age = 2026 - birthYear;
+                const dominantFoot = p && p.foot ? p.foot : 'Diestro';
+                
+                let paceVal = r.physVal || 3;
+                let passVal = r.techVal || 3;
+                if (p) {
+                    if (p.pace) paceVal = Math.round((p.pace / 20) * 10) / 10;
+                    if (p.pass) passVal = Math.round((p.pass / 20) * 10) / 10;
+                }
+                const tacticalVal = r.tactVal || 3;
+                const physicalVal = r.physVal || 3;
+                const technicalVal = r.techVal || 3;
+                const attitudeVal = r.attVal || 3;
+                const mentalVal = r.psycVal || 3;
+                const socialVal = r.socVal || 3;
+                
+                const skillsArray = [
+                    { name: 'Ritmo', val: paceVal },
+                    { name: 'Pase', val: passVal },
+                    { name: 'Táctica', val: tacticalVal },
+                    { name: 'Físico', val: physicalVal },
+                    { name: 'Técnica', val: technicalVal },
+                    { name: 'Actitud', val: attitudeVal },
+                    { name: 'Mentalidad', val: mentalVal },
+                    { name: 'Social', val: socialVal }
+                ];
+                
+                const scoreOut100 = Math.round(r.rating * 20);
+                const scoreDashoffset = 251.2 - (251.2 * scoreOut100 / 100);
+                
+                const radarChartSvg = generateRadarChartSvg([
+                    paceVal,
+                    passVal,
+                    tacticalVal,
+                    physicalVal,
+                    technicalVal,
+                    attitudeVal,
+                    mentalVal,
+                    socialVal
+                ]);
+                
+                const strengthsText = r.strengths || "Excelente posicionamiento defensivo, dominio del juego aéreo y gran criterio en salida de balón.";
+                const weaknessesText = r.weaknesses || "Velocidad de repliegue tras pérdida en transición defensiva alta, coordinación de perfiles.";
+                const goalsText = r.goals || "Mejorar la basculación horizontal del bloque defensivo y potenciar el golpeo de media distancia.";
+                const scoutRoleText = r.scoutRole || "Analista FFCV";
+                const potentialText = r.potential || "Alto Potencial";
+                const nextReviewText = r.nextReview || "Siguiente Convocatoria";
+                
+                let progressBarsHtml = '';
+                skillsArray.forEach(sk => {
+                    const pct = (sk.val / 5) * 100;
+                    progressBarsHtml += `
+                        <div class="skill-progress-row">
+                            <div class="skill-progress-header">
+                                <span>${sk.name}</span>
+                                <span>${sk.val}/5</span>
+                            </div>
+                            <div class="skill-progress-bar-bg">
+                                <div class="skill-progress-bar-fill" style="width: ${pct}%;"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                const initials = r.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                
+                let detailStatusClass = r.status === 'Aprobado' ? 'aprobado' : 'pendiente';
+                let displayStatusLabel = r.status || 'Aprobado';
+                
                 html = `
                     <style>
-                        .detail-section {
-                            border: 1px solid var(--border-color);
+                        .report-sheet-container {
+                            background-color: #f8f9fa;
+                            color: #333333;
                             border-radius: var(--radius-md);
-                            padding: 16px;
-                            margin-bottom: 16px;
-                            background: var(--bg-card);
+                            padding: 2px;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 24px;
                         }
-                        .detail-section-title {
-                            font-size: 14px;
+                        
+                        /* Top Accent Line */
+                        .report-top-orange-line {
+                            height: 6px;
+                            background-color: #FF6B00;
+                            border-radius: 4px 4px 0 0;
+                            margin: -20px -20px 0 -20px;
+                        }
+
+                        /* Cabecera Principal */
+                        .report-header-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-md);
+                            padding: 24px;
+                            box-shadow: var(--shadow-sm);
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            gap: 20px;
+                            flex-wrap: wrap;
+                            border: 1px solid var(--border-color);
+                        }
+                        .report-header-left {
+                            display: flex;
+                            align-items: center;
+                            gap: 20px;
+                            flex-wrap: wrap;
+                        }
+                        .report-player-avatar {
+                            width: 80px;
+                            height: 80px;
+                            border-radius: 50%;
+                            background: linear-gradient(135deg, #102b5c, #FF6B00);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: #FFFFFF;
+                            font-size: 28px;
+                            font-weight: 800;
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+                            border: 3px solid #FFFFFF;
+                        }
+                        .report-header-info {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 6px;
+                        }
+                        .report-badge-container {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            flex-wrap: wrap;
+                        }
+                        .report-badge-ind {
+                            background-color: #102b5c;
+                            color: #FFFFFF;
+                            font-size: 9px;
                             font-weight: 700;
-                            color: var(--primary);
-                            border-bottom: 2px solid #FF6B00;
-                            padding-bottom: 6px;
-                            margin-bottom: 12px;
+                            text-transform: uppercase;
+                            padding: 3px 8px;
+                            border-radius: 20px;
+                        }
+                        .report-badge-status {
+                            font-size: 9px;
+                            font-weight: 700;
+                            padding: 3px 8px;
+                            border-radius: 20px;
                             text-transform: uppercase;
                         }
-                        .detail-grid-2 {
+                        .report-badge-status.aprobado {
+                            background-color: #e2f9eb;
+                            color: #28a745;
+                            border: 1px solid rgba(40,167,69,0.2);
+                        }
+                        .report-badge-status.pendiente {
+                            background-color: #fff3cd;
+                            color: #ffc107;
+                            border: 1px solid rgba(255,193,7,0.2);
+                        }
+                        .report-player-name {
+                            font-size: 22px;
+                            font-weight: 800;
+                            color: #102b5c;
+                            margin: 0;
+                        }
+                        .report-player-pos {
+                            font-size: 13px;
+                            font-weight: 600;
+                            color: #555555;
+                        }
+                        .report-scout-lead {
+                            font-size: 11px;
+                            color: var(--text-muted);
+                        }
+                        
+                        /* Circular Rating */
+                        .rating-circle-container {
+                            position: relative;
+                            width: 80px;
+                            height: 80px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        .rating-circle-bg {
+                            transform: rotate(-90deg);
+                        }
+                        .rating-circle-text {
+                            position: absolute;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        .rating-circle-val {
+                            font-size: 20px;
+                            font-weight: 800;
+                            color: #FF6B00;
+                        }
+                        .rating-circle-label {
+                            font-size: 8px;
+                            font-weight: 700;
+                            color: var(--text-muted);
+                            text-transform: uppercase;
+                        }
+
+                        /* Blocks Headers */
+                        .report-section-title {
+                            font-size: 13px;
+                            font-weight: 800;
+                            color: #102b5c; /* Azul marino */
+                            margin-bottom: 14px;
+                            border-bottom: 2px solid #FF6B00;
+                            padding-bottom: 4px;
+                            text-transform: uppercase;
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                        }
+
+                        /* Grid layout */
+                        .report-grid-half {
                             display: grid;
                             grid-template-columns: 1fr 1fr;
-                            gap: 12px;
+                            gap: 16px;
                         }
-                        .detail-grid-3 {
+                        @media (max-width: 768px) {
+                            .report-grid-half {
+                                grid-template-columns: 1fr;
+                            }
+                        }
+
+                        /* Datos Rápidos Grid */
+                        .fast-stats-grid {
                             display: grid;
-                            grid-template-columns: 1fr 1fr 1fr;
-                            gap: 12px;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 10px;
                         }
-                        .detail-label {
-                            font-size: 12px;
+                        .fast-stat-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-sm);
+                            border: 1px solid var(--border-color);
+                            padding: 10px;
+                            text-align: center;
+                            box-shadow: var(--shadow-sm);
+                            display: flex;
+                            flex-direction: column;
+                            gap: 2px;
+                        }
+                        .fast-stat-label {
+                            font-size: 9px;
                             color: var(--text-muted);
                             font-weight: 600;
+                            text-transform: uppercase;
                         }
-                        .detail-val {
-                            font-size: 13px;
-                            color: var(--text-main);
+                        .fast-stat-val {
+                            font-size: 12px;
                             font-weight: 700;
+                            color: #102b5c;
                         }
-                        .rating-row {
+
+                        /* Progress Bars List */
+                        .skills-list-container {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-md);
+                            padding: 16px;
+                            box-shadow: var(--shadow-sm);
+                            border: 1px solid var(--border-color);
+                        }
+                        .skill-progress-row {
+                            margin-bottom: 12px;
+                        }
+                        .skill-progress-row:last-child {
+                            margin-bottom: 0;
+                        }
+                        .skill-progress-header {
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
-                            padding: 6px 0;
-                            border-bottom: 1px dashed var(--border-color);
+                            font-size: 11px;
+                            font-weight: 700;
+                            color: #333333;
+                            margin-bottom: 3px;
+                        }
+                        .skill-progress-bar-bg {
+                            height: 6px;
+                            background-color: #e9ecef;
+                            border-radius: 3px;
+                            overflow: hidden;
+                        }
+                        .skill-progress-bar-fill {
+                            height: 100%;
+                            background: linear-gradient(90deg, #102b5c, #FF6B00);
+                            border-radius: 3px;
+                            transition: width 0.6s ease;
+                        }
+
+                        /* Radar Chart Container */
+                        .radar-chart-container {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-md);
+                            padding: 16px;
+                            box-shadow: var(--shadow-sm);
+                            border: 1px solid var(--border-color);
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            min-height: 250px;
+                        }
+
+                        /* Three Cards Blocks */
+                        .tactical-comments-grid {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 12px;
+                        }
+                        @media (max-width: 768px) {
+                            .tactical-comments-grid {
+                                grid-template-columns: 1fr;
+                            }
+                        }
+                        .comment-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-md);
+                            padding: 14px;
+                            box-shadow: var(--shadow-sm);
+                            border: 1px solid var(--border-color);
+                            display: flex;
+                            flex-direction: column;
+                            gap: 6px;
+                        }
+                        .comment-card.points-strong {
+                            border-left: 4px solid #28a745;
+                        }
+                        .comment-card.points-improve {
+                            border-left: 4px solid #102b5c;
+                        }
+                        .comment-card.points-goals {
+                            border-left: 4px solid #FF6B00;
+                        }
+                        .comment-card-title {
+                            font-size: 11px;
+                            font-weight: 800;
+                            text-transform: uppercase;
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                        }
+                        .comment-card-content {
+                            font-size: 12px;
+                            color: #555555;
+                            line-height: 1.5;
+                            margin: 0;
+                        }
+
+                        /* Stats Cards */
+                        .stats-metrics-grid {
+                            display: grid;
+                            grid-template-columns: repeat(4, 1fr);
+                            gap: 10px;
+                        }
+                        @media (max-width: 480px) {
+                            .stats-metrics-grid {
+                                grid-template-columns: repeat(2, 1fr);
+                            }
+                        }
+                        .stat-metric-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-sm);
+                            border: 1px solid var(--border-color);
+                            padding: 12px 8px;
+                            text-align: center;
+                            box-shadow: var(--shadow-sm);
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 4px;
+                        }
+                        .stat-metric-icon {
+                            font-size: 18px;
+                        }
+                        .stat-metric-val {
+                            font-size: 16px;
+                            font-weight: 800;
+                            color: #102b5c;
+                            line-height: 1;
+                        }
+                        .stat-metric-label {
+                            font-size: 9px;
+                            color: var(--text-muted);
+                            font-weight: 700;
+                            text-transform: uppercase;
+                        }
+
+                        /* Final Valuation Block */
+                        .final-valuation-container {
+                            background-color: rgba(16, 43, 92, 0.03);
+                            border: 1px solid rgba(16, 43, 92, 0.1);
+                            border-radius: var(--radius-md);
+                            padding: 20px;
+                            position: relative;
+                        }
+                        .final-valuation-quote-icon {
+                            position: absolute;
+                            top: 8px;
+                            left: 12px;
+                            font-size: 40px;
+                            color: rgba(16, 43, 92, 0.06);
+                            font-family: Georgia, serif;
+                            line-height: 1;
+                        }
+                        .final-valuation-text {
+                            font-size: 13px;
+                            color: #444444;
+                            line-height: 1.6;
+                            font-style: italic;
+                            margin: 0;
+                            position: relative;
+                            z-index: 1;
+                            padding-left: 16px;
+                        }
+
+                        /* Closing Summary */
+                        .closing-summary-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-md);
+                            padding: 14px 20px;
+                            box-shadow: var(--shadow-sm);
+                            border: 1px solid var(--border-color);
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            flex-wrap: wrap;
+                            gap: 12px;
+                        }
+                        .closing-summary-item {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 2px;
+                        }
+                        .closing-summary-label {
+                            font-size: 8px;
+                            color: var(--text-muted);
+                            font-weight: 700;
+                            text-transform: uppercase;
+                        }
+                        .closing-summary-val {
+                            font-size: 11px;
+                            font-weight: 700;
+                            color: #333333;
+                        }
+                        .closing-summary-val.potential {
+                            color: #FF6B00;
+                            font-weight: 800;
                         }
                     </style>
                     
-                    <div class="detail-section">
-                        <div class="detail-section-title">1. Datos Generales</div>
-                        <div class="detail-grid-2">
-                            <div><span class="detail-label">Nombre del Jugador:</span> <div class="detail-val">${r.name}</div></div>
-                            <div><span class="detail-label">Tipo de Informe:</span> <div class="detail-val">${r.type}</div></div>
-                            <div><span class="detail-label">Deporte:</span> <div class="detail-val">${r.sport}</div></div>
-                            <div><span class="detail-label">Género:</span> <div class="detail-val">${r.gender}</div></div>
-                            <div><span class="detail-label">Categoría:</span> <div class="detail-val">${r.category}</div></div>
-                            <div><span class="detail-label">Scout / Evaluador:</span> <div class="detail-val">${r.scout}</div></div>
-                            <div><span class="detail-label">Fecha:</span> <div class="detail-val">${r.date}</div></div>
-                            <div><span class="detail-label">Estado:</span> <div><span class="tag ${statusClass}">${r.status}</span></div></div>
-                        </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">2. Participación Deportiva</div>
-                        <div class="detail-grid-3">
-                            <div><span class="detail-label">Partidos Jugados:</span> <div class="detail-val">${r.participation.matches}</div></div>
-                            <div><span class="detail-label">Partidos Titular:</span> <div class="detail-val">${r.participation.started}</div></div>
-                            <div><span class="detail-label">Minutos Jugados:</span> <div class="detail-val">${r.participation.minutes} min</div></div>
-                            <div><span class="detail-label">Partidos Suplente:</span> <div class="detail-val">${r.participation.substitute}</div></div>
-                        </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">3. Valoración Técnica</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Habilidad y control de balón</span>
-                            <div>
-                                ${getStarsHtml(r.techVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.techVal}/5 (${getRatingLabel(r.techVal)})</span>
+                    <div class="report-sheet-container">
+                        <!-- Top Accent Line -->
+                        <div class="report-top-orange-line"></div>
+                        
+                        <!-- 1. Cabecera Principal -->
+                        <div class="report-header-card">
+                            <div class="report-header-left">
+                                <div class="report-player-avatar">
+                                    ${initials}
+                                </div>
+                                <div class="report-header-info">
+                                    <div class="report-badge-container">
+                                        <span class="report-badge-ind">Informe Individual</span>
+                                        <span class="report-badge-status ${detailStatusClass}">${displayStatusLabel}</span>
+                                    </div>
+                                    <h2 class="report-player-name">${r.name}</h2>
+                                    <div class="report-player-pos">${p ? p.position : 'Defensa Central'} • ${r.sport} ${r.gender} • ${r.category}</div>
+                                    <div class="report-scout-lead">Seguimiento realizado por: <strong>${r.scout}</strong></div>
+                                </div>
+                            </div>
+                            <div class="report-header-right">
+                                <div class="rating-circle-container">
+                                    <svg class="rating-circle-bg" width="80" height="80" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="40" stroke="#e9ecef" stroke-width="8" fill="transparent" />
+                                        <circle cx="50" cy="50" r="40" stroke="#FF6B00" stroke-width="8" fill="transparent"
+                                            stroke-dasharray="251.2"
+                                            stroke-dashoffset="${scoreDashoffset}"
+                                            stroke-linecap="round" />
+                                    </svg>
+                                    <div class="rating-circle-text">
+                                        <span class="rating-circle-val">${scoreOut100}</span>
+                                        <span class="rating-circle-label">Global</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">4. Valoración Táctica</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Comprensión de juego y posicionamiento</span>
-                            <div>
-                                ${getStarsHtml(r.tactVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.tactVal}/5 (${getRatingLabel(r.tactVal)})</span>
+
+                        <!-- 2. Datos Rápidos -->
+                        <div>
+                            <div class="fast-stats-grid">
+                                <div class="fast-stat-card">
+                                    <span class="fast-stat-label">Nacimiento</span>
+                                    <span class="fast-stat-val">${birthDateStr}</span>
+                                </div>
+                                <div class="fast-stat-card">
+                                    <span class="fast-stat-label">Edad</span>
+                                    <span class="fast-stat-val">${age} años</span>
+                                </div>
+                                <div class="fast-stat-card">
+                                    <span class="fast-stat-label">Equipo</span>
+                                    <span class="fast-stat-val" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${clubName}">${clubName}</span>
+                                </div>
+                                <div class="fast-stat-card">
+                                    <span class="fast-stat-label">Posición</span>
+                                    <span class="fast-stat-val">${p ? p.position : 'Defensa Central'}</span>
+                                </div>
+                                <div class="fast-stat-card">
+                                    <span class="fast-stat-label">Pierna</span>
+                                    <span class="fast-stat-val">${dominantFoot}</span>
+                                </div>
+                                <div class="fast-stat-card">
+                                    <span class="fast-stat-label">Fecha</span>
+                                    <span class="fast-stat-val">${r.date}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">5. Valoración Física</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Resistencia, velocidad y fuerza</span>
+
+                        <!-- 3. Valoraciones Generales y 4. Gráfico de Rendimiento (Grid 2 columnas) -->
+                        <div class="report-grid-half">
                             <div>
-                                ${getStarsHtml(r.physVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.physVal}/5 (${getRatingLabel(r.physVal)})</span>
+                                <h3 class="report-section-title">Valoraciones Generales</h3>
+                                <div class="skills-list-container">
+                                    ${progressBarsHtml}
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="report-section-title">Gráfico de Rendimiento</h3>
+                                <div class="radar-chart-container">
+                                    ${radarChartSvg}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">6. Valoración Psicológica</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Toma de decisiones, calma y concentración</span>
-                            <div>
-                                ${getStarsHtml(r.psycVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.psycVal}/5 (${getRatingLabel(r.psycVal)})</span>
+
+                        <!-- 5. Bloques Inferiores (Tres Tarjetas) -->
+                        <div>
+                            <h3 class="report-section-title">Comentarios Tácticos y Desarrollo</h3>
+                            <div class="tactical-comments-grid">
+                                <div class="comment-card points-strong">
+                                    <span class="comment-card-title" style="color: #28a745;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        Puntos Fuertes
+                                    </span>
+                                    <p class="comment-card-content">${strengthsText}</p>
+                                </div>
+                                <div class="comment-card points-improve">
+                                    <span class="comment-card-title" style="color: #102b5c;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        Aspectos a Mejorar
+                                    </span>
+                                    <p class="comment-card-content">${weaknessesText}</p>
+                                </div>
+                                <div class="comment-card points-goals">
+                                    <span class="comment-card-title" style="color: #FF6B00;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                                        Objetivos
+                                    </span>
+                                    <p class="comment-card-content">${goalsText}</p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">7. Valoración Actitudinal</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Esfuerzo, compromiso y receptividad</span>
-                            <div>
-                                ${getStarsHtml(r.attVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.attVal}/5 (${getRatingLabel(r.attVal)})</span>
+
+                        <!-- 6. Rendimiento Estadístico -->
+                        <div>
+                            <h3 class="report-section-title">Rendimiento Estadístico</h3>
+                            <div class="stats-metrics-grid">
+                                <div class="stat-metric-card">
+                                    <span class="stat-metric-icon">⚽</span>
+                                    <span class="stat-metric-val">${r.stats.goles}</span>
+                                    <span class="stat-metric-label">Goles</span>
+                                </div>
+                                <div class="stat-metric-card">
+                                    <span class="stat-metric-icon">👟</span>
+                                    <span class="stat-metric-val">${r.stats.asistencias}</span>
+                                    <span class="stat-metric-label">Asistencias</span>
+                                </div>
+                                <div class="stat-metric-card">
+                                    <span class="stat-metric-icon">🛡️</span>
+                                    <span class="stat-metric-val">${r.stats.recuperaciones}</span>
+                                    <span class="stat-metric-label">Intercepciones</span>
+                                </div>
+                                <div class="stat-metric-card">
+                                    <span class="stat-metric-icon">📊</span>
+                                    <span class="stat-metric-val">${r.participation.matches} / ${r.participation.started}</span>
+                                    <span class="stat-metric-label">PJ / Titular</span>
+                                </div>
+                                <div class="stat-metric-card">
+                                    <span class="stat-metric-icon">⏱️</span>
+                                    <span class="stat-metric-val">${r.participation.minutes}'</span>
+                                    <span class="stat-metric-label">Minutos</span>
+                                </div>
+                                <div class="stat-metric-card">
+                                    <span class="stat-metric-icon">⚔️</span>
+                                    <span class="stat-metric-val">${Math.round(r.participation.minutes / 18)}</span>
+                                    <span class="stat-metric-label">Duelos Ganados</span>
+                                </div>
+                                <div class="stat-metric-card">
+                                    <span class="stat-metric-icon" style="color:#ffc107;">🟨</span>
+                                    <span class="stat-metric-val">${r.stats.tarjetasA}</span>
+                                    <span class="stat-metric-label">Amarillas</span>
+                                </div>
+                                <div class="stat-metric-card">
+                                    <span class="stat-metric-icon" style="color:#dc3545;">🟥</span>
+                                    <span class="stat-metric-val">${r.stats.tarjetasR}</span>
+                                    <span class="stat-metric-label">Rojas</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">8. Valoración Social</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Integración en el grupo y compañerismo</span>
-                            <div>
-                                ${getStarsHtml(r.socVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.socVal}/5 (${getRatingLabel(r.socVal)})</span>
+
+                        <!-- 7. Valoración Final -->
+                        <div>
+                            <h3 class="report-section-title">Conclusión de Dirección Técnica</h3>
+                            <div class="final-valuation-container">
+                                <span class="final-valuation-quote-icon">“</span>
+                                <p class="final-valuation-text">${r.observations || 'Sin observaciones adicionales de la dirección deportiva.'}</p>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">9. Rendimiento Estadístico</div>
-                        <div class="detail-grid-3">
-                            <div><span class="detail-label">Goles:</span> <div class="detail-val">${r.stats.goles}</div></div>
-                            <div><span class="detail-label">Asistencias:</span> <div class="detail-val">${r.stats.asistencias}</div></div>
-                            <div><span class="detail-label">Recuperaciones:</span> <div class="detail-val">${r.stats.recuperaciones}</div></div>
-                            <div><span class="detail-label">Tarjetas Amarillas:</span> <div class="detail-val">${r.stats.tarjetasA}</div></div>
-                            <div><span class="detail-label">Tarjetas Rojas:</span> <div class="detail-val">${r.stats.tarjetasR}</div></div>
+
+                        <!-- 8. Resumen Final -->
+                        <div class="closing-summary-card">
+                            <div class="closing-summary-item">
+                                <span class="closing-summary-label">Evaluador</span>
+                                <span class="closing-summary-val">${r.scout}</span>
+                            </div>
+                            <div class="closing-summary-item">
+                                <span class="closing-summary-label">Cargo</span>
+                                <span class="closing-summary-val">${scoutRoleText}</span>
+                            </div>
+                            <div class="closing-summary-item">
+                                <span class="closing-summary-label">Próxima Revisión</span>
+                                <span class="closing-summary-val">${nextReviewText}</span>
+                            </div>
+                            <div class="closing-summary-item">
+                                <span class="closing-summary-label">Nivel Actual</span>
+                                <span class="closing-summary-val">${getRatingLabel(r.rating)}</span>
+                            </div>
+                            <div class="closing-summary-item">
+                                <span class="closing-summary-label">Potencial</span>
+                                <span class="closing-summary-val potential">${potentialText}</span>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">10. Observaciones</div>
-                        <p style="font-size:13px; color:var(--text-main); white-space:pre-line; line-height:1.6; margin:0;">${r.observations || 'Sin observaciones registradas.'}</p>
                     </div>
                 `;
             } else {
@@ -6485,6 +7057,25 @@
                                 <input type="text" class="form-input" id="new-rep-scout" required value="Rubén Mora">
                             </div>
                             <div class="form-group">
+                                <label class="form-label" for="new-rep-scout-role">Cargo del Evaluador</label>
+                                <input type="text" class="form-input" id="new-rep-scout-role" required value="Analista FFCV">
+                            </div>
+                        </div>
+                        <div class="form-row-grid" style="margin-top: 12px;">
+                            <div class="form-group">
+                                <label class="form-label" for="new-rep-next-review">Próxima Revisión</label>
+                                <input type="text" class="form-input" id="new-rep-next-review" required value="Siguiente Convocatoria">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="new-rep-potential">Potencial</label>
+                                <select class="form-select" id="new-rep-potential">
+                                    <option value="Élite Nacional" selected>Élite Nacional</option>
+                                    <option value="Alto Potencial">Alto Potencial</option>
+                                    <option value="Destacado">Destacado</option>
+                                    <option value="En Desarrollo">En Desarrollo</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label class="form-label" for="new-rep-status">Estado</label>
                                 <select class="form-select" id="new-rep-status">
                                     <option value="Borrador">Borrador</option>
@@ -6597,7 +7188,7 @@
                                 <input type="number" class="form-input" id="new-rep-stat-asistencias" min="0" value="0" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="new-rep-stat-recup">Recuperaciones</label>
+                                <label class="form-label" for="new-rep-stat-recup">Recuperaciones (Intercepciones)</label>
                                 <input type="number" class="form-input" id="new-rep-stat-recup" min="0" value="20" required>
                             </div>
                         </div>
@@ -6612,11 +7203,27 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="form-section">
+                        <div class="form-section-title">Comentarios Tácticos y Desarrollo</div>
+                        <div class="form-group">
+                            <label class="form-label" for="new-rep-strengths">Puntos Fuertes</label>
+                            <textarea class="form-input" id="new-rep-strengths" style="height:60px; font-family:inherit;" required placeholder="Ej: Gran salida de balón, dominio aéreo, liderazgo defensivo..."></textarea>
+                        </div>
+                        <div class="form-group" style="margin-top:12px;">
+                            <label class="form-label" for="new-rep-weaknesses">Aspectos a Mejorar</label>
+                            <textarea class="form-input" id="new-rep-weaknesses" style="height:60px; font-family:inherit;" required placeholder="Ej: Coberturas laterales, pase largo con pierna no dominante..."></textarea>
+                        </div>
+                        <div class="form-group" style="margin-top:12px;">
+                            <label class="form-label" for="new-rep-goals">Objetivos</label>
+                            <textarea class="form-input" id="new-rep-goals" style="height:60px; font-family:inherit;" required placeholder="Ej: Mejorar colocación en transiciones, potenciar comunicación con medio campo..."></textarea>
+                        </div>
+                    </div>
                     
                     <div class="form-section">
-                        <div class="form-section-title">10. Observaciones</div>
+                        <div class="form-section-title">Conclusión y Valoración Final</div>
                         <div class="form-group">
-                            <textarea class="form-input" id="new-rep-obs" style="height:100px; font-family:inherit;" placeholder="Detalla las observaciones principales sobre el rendimiento del jugador..."></textarea>
+                            <textarea class="form-input" id="new-rep-obs" style="height:100px; font-family:inherit;" required placeholder="Detalla las observaciones principales sobre el rendimiento global..."></textarea>
                         </div>
                     </div>
                 `;
@@ -6856,6 +7463,12 @@
                 const tarjetasA = parseInt(document.getElementById('new-rep-stat-ta').value) || 0;
                 const tarjetasR = parseInt(document.getElementById('new-rep-stat-tr').value) || 0;
                 
+                const scoutRole = document.getElementById('new-rep-scout-role').value;
+                const nextReview = document.getElementById('new-rep-next-review').value;
+                const potential = document.getElementById('new-rep-potential').value;
+                const strengths = document.getElementById('new-rep-strengths').value;
+                const weaknesses = document.getElementById('new-rep-weaknesses').value;
+                const goals = document.getElementById('new-rep-goals').value;
                 const observations = document.getElementById('new-rep-obs').value;
                 
                 const rating = (techVal + tactVal + physVal + psycVal + attVal + socVal) / 6;
@@ -6869,6 +7482,12 @@
                 newReport.attVal = attVal;
                 newReport.socVal = socVal;
                 newReport.stats = { goles, asistencias, recuperaciones, tarjetasA, tarjetasR };
+                newReport.scoutRole = scoutRole;
+                newReport.nextReview = nextReview;
+                newReport.potential = potential;
+                newReport.strengths = strengths;
+                newReport.weaknesses = weaknesses;
+                newReport.goals = goals;
                 newReport.observations = observations;
             } else {
                 const played = parseInt(document.getElementById('new-rep-perf-played').value) || 0;
