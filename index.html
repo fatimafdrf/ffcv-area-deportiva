@@ -8275,7 +8275,27 @@
                                     <span style="color: var(--accent); font-weight: bold;">✕</span> No gestionar convocatorias oficiales sin la debida autorización deportiva.
                                 </li>
                                 <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No priorizar intereses particulares frente a los federativo        function openAnalistasModal() {
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No priorizar intereses particulares frente a los federativos.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No difundir o compartir información interna o de carácter sensible.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No establecer relaciones comerciales con clubes, agentes o familias.
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; margin-top: 12px;">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-coordinacion-detail').remove()" style="width:100%; border: none;">Cerrar Panel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function openAnalistasModal() {
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.id = 'modal-analistas-detail';
