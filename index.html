@@ -6866,11 +6866,118 @@
                 phone: "+34 645 654 321",
                 titulos: "Graduada en CAFYD (UV), Máster en Alto Rendimiento Deportivo (COE), Especialidad en Prevención de Lesiones",
                 experiencia: "Preparadora física en Levante U.D. Femenino, encargada del control de cargas GPS de las selecciones femeninas de la FFCV."
+            },
+            {
+                id: 5,
+                name: "Jordi Lucena",
+                role: "Vicepresidente / Responsable Área Deportiva",
+                category: "Todas las categorías",
+                license: "Oficial FFCV",
+                email: "jlucena@ffcv.es",
+                status: "Activo",
+                sport: "Todos los deportes",
+                gender: "Masculino",
+                phone: "+34 600 111 222",
+                titulos: "Vicepresidente FFCV, Responsable del Área Deportiva",
+                experiencia: "Amplia trayectoria en la gestión directiva de la Federación de Fútbol de la Comunidad Valenciana."
+            },
+            {
+                id: 6,
+                name: "José Gómez",
+                role: "Responsable Área Integridad",
+                category: "Todas las categorías",
+                license: "Oficial FFCV",
+                email: "jgomez_integridad@ffcv.es",
+                status: "Activo",
+                sport: "Todos los deportes",
+                gender: "Masculino",
+                phone: "+34 600 222 333",
+                titulos: "Responsable del Área de Integridad FFCV",
+                experiencia: "Especialista en normativas deportivas, cumplimiento y prevención en el ámbito federativo."
+            },
+            {
+                id: 7,
+                name: "José Gómez",
+                role: "Director técnico",
+                category: "Todas las categorías",
+                license: "Nivel 3 Fútbol Sala",
+                email: "jgomez_tecnico@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                phone: "+34 600 333 444",
+                titulos: "Director Técnico de Fútbol Sala de la FFCV",
+                experiencia: "Gestor deportivo y entrenador de fútbol sala con dilatada experiencia en selecciones autonómicas."
+            },
+            {
+                id: 8,
+                name: "Rubén Mora",
+                role: "Director técnico",
+                category: "Todas las categorías",
+                license: "UEFA Pro",
+                email: "rmora_tecnico@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 600 444 555",
+                titulos: "Director Técnico de Fútbol de la FFCV",
+                experiencia: "Coordinador general y director técnico de las Selecciones FFCV, ex-entrenador nacional."
+            },
+            {
+                id: 9,
+                name: "J. Luis Mengual",
+                role: "Coordinación",
+                category: "Todas las categorías",
+                license: "Coordinador Deportivo",
+                email: "jlmengual@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                phone: "+34 600 555 666",
+                titulos: "Coordinador de Fútbol Sala FFCV",
+                experiencia: "Organizador de competiciones y logística para las selecciones autonómicas de fútbol sala."
+            },
+            {
+                id: 10,
+                name: "Esther Romero",
+                role: "Coordinación sección Femenina",
+                category: "Femenina",
+                license: "Coordinadora Deportiva",
+                email: "eromero@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 600 666 777",
+                titulos: "Coordinadora de la Sección Femenina FFCV",
+                experiencia: "Exjugadora profesional y gestora enfocada en el desarrollo y promoción del fútbol femenino territorial."
+            },
+            {
+                id: 11,
+                name: "Rubén Mora",
+                role: "Coordinación sección masculina",
+                category: "Masculina",
+                license: "Coordinador Deportivo",
+                email: "rmora_masc@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 600 777 888",
+                titulos: "Coordinador de la Sección Masculina FFCV",
+                experiencia: "Gestión de convocatorias, entrenamientos y logística de las selecciones masculinas autonómicas."
             }
         ];
 
         let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || DEFAULT_STAFF;
         let activeStaffRoleFilter = 'ALL';
+
+        // Sincronizar localStorage si no contiene a Jordi Lucena (para cargar el nuevo staff oficial)
+        if (localStorage.getItem('ffcv_staff')) {
+            const tempStaff = JSON.parse(localStorage.getItem('ffcv_staff'));
+            if (!tempStaff.some(m => m.name === "Jordi Lucena")) {
+                localStorage.setItem('ffcv_staff', JSON.stringify(DEFAULT_STAFF));
+                staff = DEFAULT_STAFF;
+            }
+        }
 
         function renderStaff() {
             initStaffFiltersListeners();
@@ -6934,7 +7041,7 @@
             
             activeStaffRoleFilter = 'ALL';
 
-            const coordCount = staff.filter(m => m.role.includes('Director') || m.role.includes('Coordinador')).length;
+            const coordCount = staff.filter(m => m.role.includes('Director') || m.role.includes('Coordinador') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable')).length;
             const selCount = staff.filter(m => m.role === 'Seleccionador').length;
             const coachCount = staff.filter(m => m.role.includes('Entrenador') || m.role === 'Seleccionador').length;
             const pfCount = staff.filter(m => m.role === 'Preparador Físico').length;
@@ -7158,12 +7265,12 @@
                 const mSport = m.sport || 'Fútbol';
                 const mGender = m.gender || 'Masculino';
                 
-                const matchesSport = (sportVal === 'ALL') || (mSport === sportVal);
-                const matchesCat = (catVal === 'ALL') || (m.category.includes(catVal)) || (m.category === 'General FFCV');
+                const matchesSport = (sportVal === 'ALL') || (mSport === sportVal) || (mSport === 'Todos') || (mSport === 'Todos los deportes');
+                const matchesCat = (catVal === 'ALL') || (m.category.includes(catVal)) || (m.category === 'General FFCV') || (m.category === 'Todas las categorías');
                 const matchesGender = (genderVal === 'ALL') || (mGender === genderVal);
                 const matchesRole = (activeStaffRoleFilter === 'ALL') || (m.role === activeStaffRoleFilter) || 
                     (activeStaffRoleFilter === 'Entrenador' && (m.role.includes('Entrenador') || m.role === 'Seleccionador')) ||
-                    (activeStaffRoleFilter === 'Coordinador' && (m.role.includes('Coordinador') || m.role.includes('Director')));
+                    (activeStaffRoleFilter === 'Coordinador' && (m.role.includes('Coordinador') || m.role.includes('Director') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable')));
                 
                 return matchesSport && matchesCat && matchesGender && matchesRole;
             });
@@ -7183,8 +7290,9 @@
                 if (member.role === 'Preparador Físico') badgeStyle = 'background-color: #e6f4ea; color: #137333;';
                 if (member.role === 'Analista Técnico') badgeStyle = 'background-color: #fef7e0; color: #b06000;';
                 if (member.role === 'Delegado') badgeStyle = 'background-color: #fce8e6; color: #c5221f;';
-                if (member.role === 'Coordinador') badgeStyle = 'background-color: var(--info-light); color: var(--info);';
-                if (member.role === 'Director Deportivo') badgeStyle = 'background-color: var(--primary); color: #FFFFFF;';
+                if (member.role.includes('Coordinador') || member.role.includes('Coordinación')) badgeStyle = 'background-color: var(--info-light); color: var(--info);';
+                if (member.role.includes('Director')) badgeStyle = 'background-color: var(--primary); color: #FFFFFF;';
+                if (member.role.includes('Vicepresidente') || member.role.includes('Responsable')) badgeStyle = 'background-color: var(--primary); color: #FFFFFF;';
                 
                 let statusClass = 'tag-success';
                 if (member.status === 'En Concentración') statusClass = 'tag-warning';
