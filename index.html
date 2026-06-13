@@ -7076,16 +7076,58 @@
                 phone: "+34 611 222 333",
                 titulos: "Técnico Deportivo Nivel 2 Fútbol Sala, Especialista en Etapas de Iniciación",
                 experiencia: "Seleccionador de la Selección Valenciana Futsal Sub-12 masculina. Entrenador formador con gran bagaje en futsal base."
+            },
+            {
+                id: 18,
+                name: "Carlos Martínez",
+                role: "Segundo Entrenador",
+                category: "Sub-16",
+                license: "UEFA A",
+                email: "cmartinez@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 677 111 222",
+                titulos: "UEFA A Licencia, Graduado en Ciencias de la Actividad Física y del Deporte",
+                experiencia: "Ex-entrenador formativo en el fútbol base valenciano y asistente de campo."
+            },
+            {
+                id: 19,
+                name: "David Serrano",
+                role: "Entrenador/a Asistente",
+                category: "Sub-19",
+                license: "UEFA B",
+                email: "dserrano@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 677 333 444",
+                titulos: "UEFA B Licencia, Especialista en Análisis Táctico",
+                experiencia: "Asistente técnico en el Villarreal C.F. cantera y preparador de metodología."
+            },
+            {
+                id: 20,
+                name: "María López",
+                role: "Segundo Entrenador",
+                category: "Sub-14",
+                license: "UEFA A",
+                email: "mlopez@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 677 555 666",
+                titulos: "UEFA A Licencia, Especialista en Táctica Femenina",
+                experiencia: "Asistente técnico de la Selección Valenciana Valenta Sub-14."
             }
         ];
 
         let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || DEFAULT_STAFF;
         let activeStaffRoleFilter = 'ALL';
 
-        // Sincronizar localStorage si no contiene a Paco Marí (para cargar el nuevo staff oficial y seleccionadores reales)
+        // Sincronizar localStorage si no contiene a Paco Marí o si no contiene entrenadores asistentes
         if (localStorage.getItem('ffcv_staff')) {
             const tempStaff = JSON.parse(localStorage.getItem('ffcv_staff'));
-            if (!tempStaff.some(m => m.name === "Paco Marí")) {
+            if (!tempStaff.some(m => m.name === "Paco Marí") || !tempStaff.some(m => m.role.includes('Entrenador') || m.role.includes('Asistente'))) {
                 localStorage.setItem('ffcv_staff', JSON.stringify(DEFAULT_STAFF));
                 staff = DEFAULT_STAFF;
             }
