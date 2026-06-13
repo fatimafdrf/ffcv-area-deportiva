@@ -3220,6 +3220,14 @@
                         </div>
                     </div>
 
+                    <!-- Pestañas de Modalidad Deportiva -->
+                    <div class="tactical-menu-tabs" style="margin-bottom: 24px; border-bottom: 2px solid #E7DFEA; padding-bottom: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="tactical-tab active" onclick="setGameModelCategory('f11', this)">⚽ Fútbol 11</button>
+                        <button class="tactical-tab" onclick="setGameModelCategory('f8', this)">⚽ Fútbol 8</button>
+                        <button class="tactical-tab" onclick="setGameModelCategory('futsal', this)">🏟️ Fútbol Sala</button>
+                        <button class="tactical-tab" onclick="setGameModelCategory('fplaya', this)">🏖️ Fútbol Playa</button>
+                    </div>
+
                     <div class="tactic-layout">
                         <!-- Pizarra y Parámetros -->
                         <div style="display:flex; flex-direction:column; gap:20px;">
@@ -3249,6 +3257,57 @@
                                     border-color: var(--accent) !important;
                                     box-shadow: 0 4px 12px rgba(255, 107, 0, 0.3) !important;
                                 }
+                                
+                                /* Pitch Custom Stylings for Modalities */
+                                .pitch.modality-f11, .pitch.modality-f8 {
+                                    background: linear-gradient(to bottom, #2e7d32 0%, #1b5e20 100%) !important;
+                                    border-color: rgba(255, 255, 255, 0.85) !important;
+                                }
+                                .pitch.modality-f11::before, .pitch.modality-f8::before {
+                                    opacity: 1 !important;
+                                }
+                                
+                                .pitch.modality-futsal {
+                                    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+                                    border-color: rgba(255, 255, 255, 0.9) !important;
+                                }
+                                .pitch.modality-futsal::before {
+                                    opacity: 0 !important;
+                                }
+                                
+                                .pitch.modality-fplaya {
+                                    background: linear-gradient(to bottom, #f59e0b 0%, #d97706 100%) !important;
+                                    border-color: #ef4444 !important;
+                                }
+                                .pitch.modality-fplaya::before {
+                                    opacity: 0 !important;
+                                }
+                                
+                                .pitch.modality-fplaya .pitch-center-line,
+                                .pitch.modality-fplaya .pitch-center-circle,
+                                .pitch.modality-fplaya .pitch-penalty-top,
+                                .pitch.modality-fplaya .pitch-penalty-bottom,
+                                .pitch.modality-fplaya .pitch-goal-top,
+                                .pitch.modality-fplaya .pitch-goal-bottom {
+                                    background-color: rgba(239, 68, 68, 0.7) !important;
+                                    border-color: rgba(239, 68, 68, 0.7) !important;
+                                }
+                                .pitch.modality-fplaya .pitch-center-spot {
+                                    background-color: rgba(239, 68, 68, 0.95) !important;
+                                }
+                                
+                                .pitch.modality-futsal .pitch-center-line,
+                                .pitch.modality-futsal .pitch-center-circle,
+                                .pitch.modality-futsal .pitch-penalty-top,
+                                .pitch.modality-futsal .pitch-penalty-bottom,
+                                .pitch.modality-futsal .pitch-goal-top,
+                                .pitch.modality-futsal .pitch-goal-bottom {
+                                    background-color: rgba(255, 255, 255, 0.8) !important;
+                                    border-color: rgba(255, 255, 255, 0.8) !important;
+                                }
+                                .pitch.modality-futsal .pitch-center-spot {
+                                    background-color: rgba(255, 255, 255, 0.95) !important;
+                                }
                             </style>
                             
                             <!-- Cabecera Visual de Sistemas de Juego -->
@@ -3274,10 +3333,8 @@
                                     <span style="font-size: 14px; color: #374151; font-weight: 400; line-height: 1.45; opacity: 1;">Selecciona una estructura táctica para visualizar la distribución de jugadores en el terreno de juego.</span>
                                 </div>
 
-                                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 2px;">
-                                    <button class="tactic-system-btn active" onclick="setTacticSystem('1433', this)">1-4-3-3</button>
-                                    <button class="tactic-system-btn" onclick="setTacticSystem('1442', this)">1-4-4-2</button>
-                                    <button class="tactic-system-btn" onclick="setTacticSystem('1352', this)">1-3-5-2</button>
+                                <div id="tactic-system-selector-container" style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 2px;">
+                                    <!-- Dinámico mediante JS -->
                                 </div>
                                 
                                 <!-- Campo Táctico -->
@@ -8778,29 +8835,123 @@
         }
 
         // --- SISTEMA Y PIZARRA TÁCTICA ---
+        let activeCategory = 'f11';
         let activeSystem = '1433';
         let activePhase = 'ofensivo';
 
+        const CATEGORY_SYSTEMS = {
+            'f11': ['1433', '1442', '1352', '14231', '14141'],
+            'f8': ['f8_1322', 'f8_1331', 'f8_1232', 'f8_1241'],
+            'futsal': ['fs_31', 'fs_40', 'fs_22', 'fs_portero'],
+            'fplaya': ['fp_121', 'fp_13', 'fp_22']
+        };
+
+        const SYSTEM_LABELS = {
+            '1433': '1-4-3-3',
+            '1442': '1-4-4-2',
+            '1352': '1-3-5-2',
+            '14231': '1-4-2-3-1',
+            '14141': '1-4-1-4-1',
+            'f8_1322': '1-3-2-2',
+            'f8_1331': '1-3-3-1',
+            'f8_1232': '1-2-3-2',
+            'f8_1241': '1-2-4-1',
+            'fs_31': '3-1',
+            'fs_40': '4-0',
+            'fs_22': '2-2',
+            'fs_portero': 'Portero Jugador',
+            'fp_121': '1-2-1',
+            'fp_13': '1-3',
+            'fp_22': '2-2'
+        };
+
         const TACTIC_PHASES_INFO = {
-            'ofensivo': `
-                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos FFCV:</strong>
+            // Fútbol 11
+            'f11_ofensivo': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos FFCV (F11):</strong>
                 <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Amplitud máxima de extremos para estirar la defensa rival.<br>2. Salida de 3 con mediocentro retrasándose para recibir.<br>3. Progresión progresiva buscando al tercer hombre en zona 2.</p>
             `,
-            'defensivo': `
-                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos FFCV:</strong>
+            'f11_defensivo': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos FFCV (F11):</strong>
                 <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Presión alta orientada a banda para forzar pérdida o balón en largo.<br>2. Basculación defensiva rápida de la línea de 4 y el mediocampo.<br>3. Bloque medio estrecho cerrando intervalos y líneas de pase interior.</p>
             `,
-            'transiciones': `
-                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transición Of-Def / Def-Of FFCV:</strong>
+            'f11_transiciones': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transición Of-Def / Def-Of FFCV (F11):</strong>
                 <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Presión tras pérdida inmediata (5 segundos) para recuperar o temporizar.<br>2. Despliegue veloz y vertical buscando espacios a la espalda del rival al recuperar.<br>3. Repliegue organizado si el rival supera la primera línea de presión.</p>
             `,
-            'abp': `
-                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia FFCV:</strong>
+            'f11_abp': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia FFCV (F11):</strong>
                 <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Córners defensivos en marcaje mixto (3 al hombre, 4 en zona de primer palo).<br>2. Faltas laterales con línea defensiva alta y coordinada para el fuera de juego.<br>3. Córners ofensivos buscando bloqueos al portero y envíos al segundo palo.</p>
             `,
-            'plan': `
-                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido y Estrategia FFCV:</strong>
-                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Adaptación táctica en función del sistema y virtudes del rival (ej: Catalunya, Madrid).<br>2. Modificación del bloque de presión (alto/medio/bajo) según minutos y marcador.<br>3. Utilización del portero como jugador de campo adicional en salida ante presión extrema.</p>
+            'f11_plan': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido FFCV (F11):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Adaptación táctica en función del sistema y virtudes del rival.<br>2. Modificación del bloque de presión (alto/medio/bajo) según minutos y marcador.<br>3. Utilización del portero como jugador de campo adicional en salida ante presión extrema.</p>
+            `,
+
+            // Fútbol 8
+            'f8_ofensivo': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos FFCV (F8):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Movilidad continua de los interiores buscando apoyos libres de marca.<br>2. Paredes rápidas en banda para romper líneas de presión rivales.<br>3. Ocupación rápida del área de castigo con segundas jugadas de centrocampistas.</p>
+            `,
+            'f8_defensivo': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos FFCV (F8):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Reducir espacios de disparo exterior replegando en bloque compacto.<br>2. Coberturas mutuas y escalonamiento de la línea de tres defensores.<br>3. Acoso intenso al poseedor en cuanto entra en nuestra mitad del campo.</p>
+            `,
+            'f8_transiciones': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transición Of-Def / Def-Of FFCV (F8):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Repliegue intensivo de las alas para evitar superioridades en contraataques.<br>2. Ataque directo buscando fijar al portero rival con pocos toques tras recuperación.<br>3. Temporización por parte del defensor más cercano para permitir retornos.</p>
+            `,
+            'f8_abp': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia FFCV (F8):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Saques de esquina en corto para abrir ángulos de centro.<br>2. Faltas al borde del área buscando remates de cabeza cruzados.<br>3. Distribución zonal simple en saques de esquina en contra.</p>
+            `,
+            'f8_plan': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido FFCV (F8):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Adaptación al tamaño del terreno de juego (campos anchos vs. estrechos).<br>2. Rotaciones constantes de plantilla para mantener la frescura física.<br>3. Cambio a sistema de dos puntas en caso de marcador adverso en la segunda mitad.</p>
+            `,
+
+            // Fútbol Sala
+            'futsal_ofensivo': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos FFCV (Fútbol Sala):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Juego de tres y cuatro en línea para generar amplitud y desmarques en paralelo.<br>2. Pivotaje y pases en diagonal buscando el tercer hombre de cara.<br>3. Aclarados para situaciones de 1vs1 de las alas creativas.</p>
+            `,
+            'futsal_defensivo': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos FFCV (Fútbol Sala):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Defensa individual orientada al balón cortando líneas de pase interior.<br>2. Comunicación fluida para el cambio de marcas en las pantallas rivales.<br>3. Bloque defensivo bajo muy denso ante la presencia de portero-jugador rival.</p>
+            `,
+            'futsal_transiciones': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transición Of-Def / Def-Of FFCV (Fútbol Sala):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Repliegue de emergencia al eje central de la pista inmediatamente tras pérdida.<br>2. Contraataque a dos toques buscando finalización en el segundo palo.<br>3. Falta táctica inteligente para cortar contraataques si el balance está roto.</p>
+            `,
+            'futsal_abp': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia FFCV (Fútbol Sala):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Saque de esquina buscando volea directa del jugador libre en la frontal.<br>2. Saques de banda ensayados de dos y tres movimientos para habilitar tiro exterior.<br>3. Barreras densas y activas en tiros libres con saltador designado.</p>
+            `,
+            'futsal_plan': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido FFCV (Fútbol Sala):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Gestión meticulosa del cupo de faltas acumulativas por periodo.<br>2. Alternancia de presiones (tres cuartos vs. media cancha) para cambiar el ritmo.<br>3. Uso táctico del tiempo muerto para reorganizar el sistema defensivo o la superioridad.</p>
+            `,
+
+            // Fútbol Playa
+            'fplaya_ofensivo': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos FFCV (Fútbol Playa):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Evitar la rodadura del balón; priorizar pases y controles aéreos (cuchara).<br>2. Habilitar la chilena del pivote mediante pases globados de las alas o el portero.<br>3. Disparos directos potentes en cuanto se tenga línea de visión limpia.</p>
+            `,
+            'fplaya_defensivo': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos FFCV (Fútbol Playa):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Marcaje al hombre sin concesiones en todo el campo táctico.<br>2. Bloqueo defensivo del cuerpo para impedir remates de chilena o volea.<br>3. Prohibición absoluta de cometer faltas tácticas, ya que todas son libres directos sin barrera.</p>
+            `,
+            'fplaya_transiciones': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transición Of-Def / Def-Of FFCV (Fútbol Playa):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Aprovechar desorganizaciones del rival para realizar contras de un solo toque.<br>2. Retorno rápido cubriendo el carril central antes de reubicar marcas.<br>3. Lanzamientos directos del portero a portería tras atajar o recuperar.</p>
+            `,
+            'fplaya_abp': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia FFCV (Fútbol Playa):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Levantamiento y volea directa en saques de banda a favor.<br>2. Saque inicial con tiro directo a portería buscando rebotes en la arena.<br>3. Construcción del montículo de arena en tiros libres directos para asegurar parábola.</p>
+            `,
+            'fplaya_plan': `
+                <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido FFCV (Fútbol Playa):</strong>
+                <p style="margin-top:6px; color: #374151; font-size: 14px; font-weight: 400; opacity: 1; line-height: 1.55;">1. Cambios constantes de jugadores (cada 2-3 minutos) para mitigar el agotamiento en arena.<br>2. Adaptar la táctica al estado de la arena (arena suelta/seca vs. compactada/húmeda).<br>3. Alternar tiros de media distancia con pases de cuchara según la dirección del viento.</p>
             `
         };
 
@@ -8888,6 +9039,265 @@
                     { name: '7', top: '46%', left: '40%' },
                     { name: '9', top: '46%', left: '60%' }
                 ]
+            },
+            '14231': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '64%', left: '12%' },
+                    { name: '4', top: '75%', left: '38%' },
+                    { name: '5', top: '75%', left: '62%' },
+                    { name: '3', top: '64%', left: '88%' },
+                    { name: '6', top: '56%', left: '38%' },
+                    { name: '8', top: '56%', left: '62%' },
+                    { name: '10', top: '36%', left: '50%' },
+                    { name: '7', top: '24%', left: '85%' },
+                    { name: '11', top: '24%', left: '15%' },
+                    { name: '9', top: '16%', left: '50%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '78%', left: '24%' },
+                    { name: '4', top: '80%', left: '41%' },
+                    { name: '5', top: '80%', left: '59%' },
+                    { name: '3', top: '78%', left: '76%' },
+                    { name: '6', top: '66%', left: '42%' },
+                    { name: '8', top: '66%', left: '58%' },
+                    { name: '10', top: '52%', left: '50%' },
+                    { name: '7', top: '48%', left: '76%' },
+                    { name: '11', top: '48%', left: '24%' },
+                    { name: '9', top: '40%', left: '50%' }
+                ]
+            },
+            '14141': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '64%', left: '12%' },
+                    { name: '4', top: '75%', left: '38%' },
+                    { name: '5', top: '75%', left: '62%' },
+                    { name: '3', top: '64%', left: '88%' },
+                    { name: '6', top: '58%', left: '50%' },
+                    { name: '8', top: '42%', left: '36%' },
+                    { name: '10', top: '42%', left: '64%' },
+                    { name: '7', top: '22%', left: '86%' },
+                    { name: '11', top: '22%', left: '14%' },
+                    { name: '9', top: '16%', left: '50%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '78%', left: '22%' },
+                    { name: '4', top: '80%', left: '41%' },
+                    { name: '5', top: '80%', left: '59%' },
+                    { name: '3', top: '78%', left: '78%' },
+                    { name: '6', top: '68%', left: '50%' },
+                    { name: '8', top: '60%', left: '38%' },
+                    { name: '10', top: '60%', left: '62%' },
+                    { name: '7', top: '48%', left: '78%' },
+                    { name: '11', top: '48%', left: '22%' },
+                    { name: '9', top: '40%', left: '50%' }
+                ]
+            },
+            // Fútbol 8
+            'f8_1322': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '4', top: '76%', left: '50%' },
+                    { name: '2', top: '65%', left: '20%' },
+                    { name: '3', top: '65%', left: '80%' },
+                    { name: '6', top: '46%', left: '35%' },
+                    { name: '8', top: '46%', left: '65%' },
+                    { name: '7', top: '20%', left: '35%' },
+                    { name: '9', top: '20%', left: '65%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '4', top: '80%', left: '50%' },
+                    { name: '2', top: '76%', left: '25%' },
+                    { name: '3', top: '76%', left: '75%' },
+                    { name: '6', top: '60%', left: '35%' },
+                    { name: '8', top: '60%', left: '65%' },
+                    { name: '7', top: '42%', left: '35%' },
+                    { name: '9', top: '42%', left: '65%' }
+                ]
+            },
+            'f8_1331': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '4', top: '76%', left: '50%' },
+                    { name: '2', top: '64%', left: '15%' },
+                    { name: '3', top: '64%', left: '85%' },
+                    { name: '6', top: '48%', left: '50%' },
+                    { name: '8', top: '38%', left: '80%' },
+                    { name: '10', top: '38%', left: '20%' },
+                    { name: '9', top: '18%', left: '50%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '4', top: '80%', left: '50%' },
+                    { name: '2', top: '76%', left: '22%' },
+                    { name: '3', top: '76%', left: '78%' },
+                    { name: '6', top: '64%', left: '50%' },
+                    { name: '8', top: '56%', left: '74%' },
+                    { name: '10', top: '56%', left: '26%' },
+                    { name: '9', top: '42%', left: '50%' }
+                ]
+            },
+            'f8_1232': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '4', top: '76%', left: '35%' },
+                    { name: '5', top: '76%', left: '65%' },
+                    { name: '6', top: '54%', left: '50%' },
+                    { name: '8', top: '40%', left: '25%' },
+                    { name: '10', top: '40%', left: '75%' },
+                    { name: '7', top: '20%', left: '38%' },
+                    { name: '9', top: '20%', left: '62%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '4', top: '80%', left: '38%' },
+                    { name: '5', top: '80%', left: '62%' },
+                    { name: '6', top: '66%', left: '50%' },
+                    { name: '8', top: '56%', left: '32%' },
+                    { name: '10', top: '56%', left: '68%' },
+                    { name: '7', top: '44%', left: '38%' },
+                    { name: '9', top: '44%', left: '62%' }
+                ]
+            },
+            'f8_1241': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '4', top: '76%', left: '35%' },
+                    { name: '5', top: '76%', left: '65%' },
+                    { name: '6', top: '54%', left: '35%' },
+                    { name: '8', top: '54%', left: '65%' },
+                    { name: '10', top: '36%', left: '80%' },
+                    { name: '7', top: '36%', left: '20%' },
+                    { name: '9', top: '18%', left: '50%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '4', top: '80%', left: '36%' },
+                    { name: '5', top: '80%', left: '64%' },
+                    { name: '6', top: '64%', left: '38%' },
+                    { name: '8', top: '64%', left: '62%' },
+                    { name: '10', top: '52%', left: '72%' },
+                    { name: '7', top: '52%', left: '28%' },
+                    { name: '9', top: '40%', left: '50%' }
+                ]
+            },
+            // Fútbol Sala
+            'fs_31': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '72%', left: '50%' },
+                    { name: '3', top: '48%', left: '22%' },
+                    { name: '4', top: '48%', left: '78%' },
+                    { name: '5', top: '22%', left: '50%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '82%', left: '50%' },
+                    { name: '3', top: '68%', left: '26%' },
+                    { name: '4', top: '68%', left: '74%' },
+                    { name: '5', top: '50%', left: '50%' }
+                ]
+            },
+            'fs_40': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '68%', left: '34%' },
+                    { name: '3', top: '68%', left: '66%' },
+                    { name: '4', top: '46%', left: '16%' },
+                    { name: '5', top: '46%', left: '84%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '80%', left: '36%' },
+                    { name: '3', top: '80%', left: '64%' },
+                    { name: '4', top: '66%', left: '22%' },
+                    { name: '5', top: '66%', left: '78%' }
+                ]
+            },
+            'fs_22': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '72%', left: '30%' },
+                    { name: '3', top: '72%', left: '70%' },
+                    { name: '4', top: '32%', left: '30%' },
+                    { name: '5', top: '32%', left: '70%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '80%', left: '32%' },
+                    { name: '3', top: '80%', left: '68%' },
+                    { name: '4', top: '58%', left: '32%' },
+                    { name: '5', top: '58%', left: '68%' }
+                ]
+            },
+            'fs_portero': {
+                'ofensivo': [
+                    { name: '1', top: '36%', left: '16%' },
+                    { name: '2', top: '52%', left: '50%' },
+                    { name: '3', top: '32%', left: '18%' },
+                    { name: '4', top: '32%', left: '82%' },
+                    { name: '5', top: '18%', left: '50%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '82%', left: '50%' },
+                    { name: '3', top: '72%', left: '22%' },
+                    { name: '4', top: '72%', left: '78%' },
+                    { name: '5', top: '58%', left: '50%' }
+                ]
+            },
+            // Fútbol Playa
+            'fp_121': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '72%', left: '50%' },
+                    { name: '3', top: '46%', left: '22%' },
+                    { name: '4', top: '46%', left: '78%' },
+                    { name: '5', top: '22%', left: '50%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '82%', left: '50%' },
+                    { name: '3', top: '68%', left: '26%' },
+                    { name: '4', top: '68%', left: '74%' },
+                    { name: '5', top: '50%', left: '50%' }
+                ]
+            },
+            'fp_13': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '72%', left: '50%' },
+                    { name: '3', top: '38%', left: '20%' },
+                    { name: '5', top: '25%', left: '50%' },
+                    { name: '4', top: '38%', left: '80%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '80%', left: '50%' },
+                    { name: '3', top: '60%', left: '25%' },
+                    { name: '5', top: '50%', left: '50%' },
+                    { name: '4', top: '60%', left: '75%' }
+                ]
+            },
+            'fp_22': {
+                'ofensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '72%', left: '30%' },
+                    { name: '3', top: '72%', left: '70%' },
+                    { name: '4', top: '32%', left: '30%' },
+                    { name: '5', top: '32%', left: '70%' }
+                ],
+                'defensivo': [
+                    { name: '1', top: '92%', left: '50%' },
+                    { name: '2', top: '80%', left: '32%' },
+                    { name: '3', top: '80%', left: '68%' },
+                    { name: '4', top: '58%', left: '32%' },
+                    { name: '5', top: '58%', left: '68%' }
+                ]
             }
         };
 
@@ -8930,6 +9340,121 @@
                 { name: '7', role: 'CARD', top: '50%', left: '86%' },
                 { name: '9', role: 'DC', top: '18%', left: '36%' },
                 { name: '14', role: 'DC', top: '18%', left: '64%' }
+            ],
+            '14231': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '3', role: 'LI', top: '68%', left: '15%' },
+                { name: '4', role: 'DFC', top: '76%', left: '36%' },
+                { name: '5', role: 'DFC', top: '76%', left: '64%' },
+                { name: '2', role: 'LD', top: '68%', left: '85%' },
+                { name: '6', role: 'MC', top: '58%', left: '38%' },
+                { name: '8', role: 'MC', top: '58%', left: '62%' },
+                { name: '10', role: 'MCO', top: '44%', left: '50%' },
+                { name: '11', role: 'EI', top: '24%', left: '18%' },
+                { name: '7', role: 'ED', top: '24%', left: '82%' },
+                { name: '9', role: 'DC', top: '16%', left: '50%' }
+            ],
+            '14141': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '3', role: 'LI', top: '68%', left: '15%' },
+                { name: '4', role: 'DFC', top: '76%', left: '36%' },
+                { name: '5', role: 'DFC', top: '76%', left: '64%' },
+                { name: '2', role: 'LD', top: '68%', left: '85%' },
+                { name: '6', role: 'MCD', top: '60%', left: '50%' },
+                { name: '8', role: 'MC', top: '46%', left: '34%' },
+                { name: '10', role: 'MC', top: '46%', left: '66%' },
+                { name: '11', role: 'EI', top: '24%', left: '16%' },
+                { name: '7', role: 'ED', top: '24%', left: '84%' },
+                { name: '9', role: 'DC', top: '16%', left: '50%' }
+            ],
+            'f8_1322': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '4', role: 'DFC', top: '76%', left: '50%' },
+                { name: '2', role: 'LD', top: '68%', left: '20%' },
+                { name: '3', role: 'LI', top: '68%', left: '80%' },
+                { name: '6', role: 'MC', top: '48%', left: '35%' },
+                { name: '8', role: 'MC', top: '48%', left: '65%' },
+                { name: '7', role: 'DC', top: '22%', left: '35%' },
+                { name: '9', role: 'DC', top: '22%', left: '65%' }
+            ],
+            'f8_1331': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '4', role: 'DFC', top: '76%', left: '50%' },
+                { name: '2', role: 'LD', top: '66%', left: '18%' },
+                { name: '3', role: 'LI', top: '66%', left: '82%' },
+                { name: '6', role: 'MC', top: '50%', left: '50%' },
+                { name: '8', role: 'MD', top: '38%', left: '78%' },
+                { name: '10', role: 'MI', top: '38%', left: '22%' },
+                { name: '9', role: 'DC', top: '20%', left: '50%' }
+            ],
+            'f8_1232': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '4', role: 'DFC', top: '76%', left: '35%' },
+                { name: '5', role: 'DFC', top: '76%', left: '65%' },
+                { name: '6', role: 'MC', top: '54%', left: '50%' },
+                { name: '8', role: 'MC', top: '40%', left: '25%' },
+                { name: '10', role: 'MC', top: '40%', left: '75%' },
+                { name: '7', role: 'DC', top: '22%', left: '35%' },
+                { name: '9', role: 'DC', top: '22%', left: '65%' }
+            ],
+            'f8_1241': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '4', role: 'DFC', top: '76%', left: '35%' },
+                { name: '5', role: 'DFC', top: '76%', left: '65%' },
+                { name: '6', role: 'MC', top: '54%', left: '35%' },
+                { name: '8', role: 'MC', top: '54%', left: '65%' },
+                { name: '10', role: 'MD', top: '38%', left: '78%' },
+                { name: '7', role: 'MI', top: '38%', left: '22%' },
+                { name: '9', role: 'DC', top: '20%', left: '50%' }
+            ],
+            'fs_31': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '2', role: 'CIE', top: '74%', left: '50%' },
+                { name: '3', role: 'ALA', top: '48%', left: '22%' },
+                { name: '4', role: 'ALA', top: '48%', left: '78%' },
+                { name: '5', role: 'PIV', top: '24%', left: '50%' }
+            ],
+            'fs_40': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '2', role: 'CIE', top: '70%', left: '34%' },
+                { name: '3', role: 'CIE', top: '70%', left: '66%' },
+                { name: '4', role: 'ALA', top: '48%', left: '18%' },
+                { name: '5', role: 'ALA', top: '48%', left: '82%' }
+            ],
+            'fs_22': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '2', role: 'CIE', top: '72%', left: '30%' },
+                { name: '3', role: 'CIE', top: '72%', left: '70%' },
+                { name: '4', role: 'PIV', top: '32%', left: '30%' },
+                { name: '5', role: 'PIV', top: '32%', left: '70%' }
+            ],
+            'fs_portero': [
+                { name: '1', role: 'GK', top: '36%', left: '16%' },
+                { name: '2', role: 'CIE', top: '52%', left: '50%' },
+                { name: '3', role: 'ALA', top: '32%', left: '18%' },
+                { name: '4', role: 'ALA', top: '32%', left: '82%' },
+                { name: '5', role: 'PIV', top: '18%', left: '50%' }
+            ],
+            'fp_121': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '2', role: 'CIE', top: '74%', left: '50%' },
+                { name: '3', role: 'ALA', top: '48%', left: '22%' },
+                { name: '4', role: 'ALA', top: '48%', left: '78%' },
+                { name: '5', role: 'PIV', top: '24%', left: '50%' }
+            ],
+            'fp_13': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '2', role: 'CIE', top: '74%', left: '50%' },
+                { name: '3', role: 'ALA', top: '40%', left: '20%' },
+                { name: '5', role: 'PIV', top: '26%', left: '50%' },
+                { name: '4', role: 'ALA', top: '40%', left: '80%' }
+            ],
+            'fp_22': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '2', role: 'CIE', top: '72%', left: '30%' },
+                { name: '3', role: 'CIE', top: '72%', left: '70%' },
+                { name: '4', role: 'PIV', top: '32%', left: '30%' },
+                { name: '5', role: 'PIV', top: '32%', left: '70%' }
             ]
         };
 
@@ -8941,30 +9466,32 @@
             container.querySelectorAll('.mini-pitch-player').forEach(p => p.remove());
             
             const playersData = MINI_SYSTEM_COORDINATES[system] || MINI_SYSTEM_COORDINATES['1433'];
-            playersData.forEach(p => {
-                const playerDiv = document.createElement('div');
-                playerDiv.className = 'mini-pitch-player';
-                playerDiv.style.position = 'absolute';
-                playerDiv.style.top = p.top;
-                playerDiv.style.left = p.left;
-                playerDiv.style.transform = 'translate(-50%, -50%)';
-                playerDiv.style.display = 'flex';
-                playerDiv.style.flexDirection = 'column';
-                playerDiv.style.alignItems = 'center';
-                playerDiv.style.justifyContent = 'center';
-                playerDiv.style.gap = '2px';
-                playerDiv.style.zIndex = '2';
-                
-                playerDiv.innerHTML = `
-                    <div style="width: 18px; height: 18px; border-radius: 50%; background-color: #FF6B00; border: 1.5px solid #FFFFFF; color: #FFFFFF; font-size: 9px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-                        ${p.name}
-                    </div>
-                    <span style="font-size: 7px; color: #FFFFFF; font-weight: 700; text-transform: uppercase; background-color: #0f1e46; padding: 0.5px 2px; border-radius: 2px; white-space: nowrap; border: 0.5px solid #FFFFFF;">
-                        ${p.role}
-                    </span>
-                `;
-                container.appendChild(playerDiv);
-            });
+            if (playersData) {
+                playersData.forEach(p => {
+                    const playerDiv = document.createElement('div');
+                    playerDiv.className = 'mini-pitch-player';
+                    playerDiv.style.position = 'absolute';
+                    playerDiv.style.top = p.top;
+                    playerDiv.style.left = p.left;
+                    playerDiv.style.transform = 'translate(-50%, -50%)';
+                    playerDiv.style.display = 'flex';
+                    playerDiv.style.flexDirection = 'column';
+                    playerDiv.style.alignItems = 'center';
+                    playerDiv.style.justifyContent = 'center';
+                    playerDiv.style.gap = '2px';
+                    playerDiv.style.zIndex = '2';
+                    
+                    playerDiv.innerHTML = `
+                        <div style="width: 18px; height: 18px; border-radius: 50%; background-color: #FF6B00; border: 1.5px solid #FFFFFF; color: #FFFFFF; font-size: 9px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                            ${p.name}
+                        </div>
+                        <span style="font-size: 7px; color: #FFFFFF; font-weight: 700; text-transform: uppercase; background-color: #0f1e46; padding: 0.5px 2px; border-radius: 2px; white-space: nowrap; border: 0.5px solid #FFFFFF;">
+                            ${p.role}
+                        </span>
+                    `;
+                    container.appendChild(playerDiv);
+                });
+            }
         }
 
         const SYSTEM_FEATURES = {
@@ -9006,6 +9533,206 @@
                     'Dificultad para tapar centros laterales si el bloque se hunde demasiado.'
                 ],
                 recomendado: 'Ideal para buscar superioridad interior y profundidad por bandas manteniendo 3 defensores listos para vigilancias ofensivas.'
+            },
+            '14231': {
+                fortalezas: [
+                    'Excelente escalonamiento ofensivo con la figura del media punta.',
+                    'Doble pivote para mayor equilibrio defensivo.',
+                    'Variedad de líneas de pase por dentro y por fuera.'
+                ],
+                vigilar: [
+                    'Gran desgaste de la línea de 3 medias puntas en el repliegue.',
+                    'Posible aislamiento del delantero centro si no se conectan las líneas.',
+                    'Espacios laterales si los extremos no ayudan al doble pivote.'
+                ],
+                recomendado: 'Ideal para plantillas que cuentan con un centrocampista creativo en zona de tres cuartos y extremos con desborde.'
+            },
+            '14141': {
+                fortalezas: [
+                    'Gran densidad en campo propio que dificulta la progresión interior del rival.',
+                    'Presión alta muy eficaz orientada al bloque medio.',
+                    'Transiciones ofensivas rápidas con llegadas de segunda línea.'
+                ],
+                vigilar: [
+                    'El delantero centro puede quedar muy aislado en fase ofensiva.',
+                    'Espacio a las espaldas de los interiores si se incorporan al ataque a la vez.',
+                    'Coordinación del pivote único para cubrir todo el ancho.'
+                ],
+                recomendado: 'Apropiado para enfrentar rivales de gran calidad asociativa, buscando solidez interior y contragolpes letales.'
+            },
+            'f8_1322': {
+                fortalezas: [
+                    'Equilibrio defensivo sólido con línea de 3 defensores.',
+                    'Dos delanteros facilitan fijar defensores e inicio de presión.',
+                    'Fácil distribución de roles en el mediocampo.'
+                ],
+                vigilar: [
+                    'Línea de medios puede verse superada en amplitud.',
+                    'Falta de un pivote específico por delante de la defensa.',
+                    'Espacio lateral si los defensores exteriores no basculan rápido.'
+                ],
+                recomendado: 'Ideal para equipos en formación que buscan aprender a jugar con parejas en ataque y solidez en la iniciación.'
+            },
+            'f8_1331': {
+                fortalezas: [
+                    'Gran control y superioridad en la zona central.',
+                    'Facilidad para las transiciones rápidas.',
+                    'Amplitud con interiores bien abiertos.'
+                ],
+                vigilar: [
+                    'Poca presencia en el área si el punta queda aislado.',
+                    'Exceso de jugadores en la misma línea horizontal.',
+                    'Espacio a la espalda de los interiores.'
+                ],
+                recomendado: 'Recomendado para equipos dominadores que basan su juego en la posesión y el orden posicional en campo contrario.'
+            },
+            'f8_1232': {
+                fortalezas: [
+                    'Gran caudal de ataque con tres medios y dos puntas.',
+                    'Facilidad para recuperar tras pérdida en campo contrario.',
+                    'Variabilidad en la progresión.'
+                ],
+                vigilar: [
+                    'Defensa expuesta ante transiciones rápidas con solo dos centrales.',
+                    'Excesivo espacio para cubrir por los centrocampistas exteriores.',
+                    'Dificultad en salida de balón limpia si presionan alto.'
+                ],
+                recomendado: 'Ideal para contextos donde se busca asumir el protagonismo ofensivo y presionar alto en campo contrario.'
+            },
+            'f8_1241': {
+                fortalezas: [
+                    'Población masiva en zona de creación.',
+                    'Gran versatilidad y dinamismo en las bandas.',
+                    'Capacidad de presionar la salida del rival con muchos efectivos.'
+                ],
+                vigilar: [
+                    'Línea de dos defensores puede sufrir ante balones largos.',
+                    'Coordinación entre los cuatro mediocampistas para no ocupar mismos espacios.',
+                    'Poca presencia en el área con un solo punta.'
+                ],
+                recomendado: 'Adecuado para equipos de gran perfil técnico y dinámico en el mediocampo que buscan controlar el juego mediante la posesión.'
+            },
+            'fs_31': {
+                fortalezas: [
+                    'Presencia de un pivote de referencia que da profundidad.',
+                    'Estructura defensiva sólida con cierre central.',
+                    'Apertura de carriles laterales para las alas.'
+                ],
+                vigilar: [
+                    'Pivote muy marcado o aislado si el juego no progresa.',
+                    'Espacio central si el cierre se incorpora al ataque.',
+                    'Dependencia del uno contra uno de las alas.'
+                ],
+                recomendado: 'Formación clásica de fútbol sala, idónea para transiciones rápidas e inicio de juego con apoyos frontales.'
+            },
+            'fs_40': {
+                fortalezas: [
+                    'Movilidad constante que desorganiza la defensa rival.',
+                    'Generación de espacios a la espalda del oponente mediante arrastres.',
+                    'Control total del balón al no tener posiciones fijas.'
+                ],
+                vigilar: [
+                    'Pérdidas de balón en media cancha que dejen desprotegida la portería.',
+                    'Exigencia física altísima para mantener rotaciones.',
+                    'Falta de referencia ofensiva en área si no se lee el espacio.'
+                ],
+                recomendado: 'Ideal para plantillas técnicamente excelentes y muy coordinadas tácticamente que busquen romper defensas cerradas por movilidad.'
+            },
+            'fs_22': {
+                fortalezas: [
+                    'Estructura muy equilibrada y fácil de entender.',
+                    'Dividido en pareja defensora y pareja atacante.',
+                    'Facilidad para presionar al rival en bloque.'
+                ],
+                vigilar: [
+                    'Distancia excesiva entre la línea de atrás y la de adelante.',
+                    'Predecible si no hay rotaciones o cruces.',
+                    'Vulnerabilidad ante contraataques si se rompe la línea defensiva.'
+                ],
+                recomendado: 'Recomendado en etapas de iniciación o para simplificar la toma de decisiones defensivas y ofensivas básicas.'
+            },
+            'fs_portero': {
+                fortalezas: [
+                    'Superioridad numérica ofensiva constante (5 vs 4).',
+                    'Agotamiento físico y mental de la defensa rival.',
+                    'Control absoluto de la posesión para remontar marcadores.'
+                ],
+                vigilar: [
+                    'Cualquier error de pase resulta en gol fácil del rival.',
+                    'Presión psicológica alta sobre el pasador.',
+                    'Dificultades en el repliegue defensivo inmediato.'
+                ],
+                recomendado: 'Situación especial de juego recomendada para minutos finales con marcador adverso o para conservar la posesión ante presión extrema.'
+            },
+            'fp_121': {
+                fortalezas: [
+                    'Estructura clásica y equilibrada para el juego sobre arena.',
+                    'Amplitud de juego a través de las dos alas.',
+                    'Pivote de referencia para remates acrobáticos (chilenas).'
+                ],
+                vigilar: [
+                    'El cierre puede quedar expuesto ante desmarques de ruptura del rival.',
+                    'Gran desgaste físico de las alas en el retorno.',
+                    'Aislamiento del pivote ante defensas físicas.'
+                ],
+                recomendado: 'Ideal para establecer un patrón de juego ordenado y buscar la finalización directa tras apoyos en el pivote.'
+            },
+            'fp_13': {
+                fortalezas: [
+                    'Máxima agresividad ofensiva con tres jugadores avanzados.',
+                    'Dificulta la salida limpia del rival presionando arriba.',
+                    'Genera segundas jugadas de remate inmediato.'
+                ],
+                vigilar: [
+                    'Gran desprotección defensiva a la espalda si se supera la presión.',
+                    'Excesiva distancia del cierre único al resto de compañeros.',
+                    'Fácil contragolpe rival.'
+                ],
+                recomendado: 'Adecuado para momentos del partido donde se requiere remontar o cuando el rival presenta debilidades en la salida de balón.'
+            },
+            'fp_22': {
+                fortalezas: [
+                    'Gran solidez estructural y equilibrio en todo el campo.',
+                    'Facilidad para coberturas mutuas en defensa.',
+                    'Rotaciones sencillas de parejas.'
+                ],
+                vigilar: [
+                    'Falta de un pivote claro en el área rival.',
+                    'Juego más horizontal si no se realizan desmarques profundos.',
+                    'Predecible ante defensas zonales.'
+                ],
+                recomendado: 'Recomendado ante rivales muy dinámicos para mantener la consistencia defensiva y asegurar las vigilancias.'
+            }
+        };
+
+        const PHASE_CARD_DATA = {
+            'f11': {
+                'ofensivo': 'Salida de balón limpia, progresión por bandas y finalización con extremos abiertos.',
+                'defensivo': 'Presión alta orientada a banda, bloque medio estrecho y basculaciones.',
+                'transiciones': 'Repliegue inmediato o contraataque directo al recuperar balón en zona 2/3.',
+                'abp': 'Saques de esquina zonales, bloqueos en faltas y jugadas ensayadas.',
+                'plan': 'Modificaciones estratégicas de posicionamiento prioritarias según el rival citado.'
+            },
+            'f8': {
+                'ofensivo': 'Progresión asociativa, juego vertical con el punta y apoyos dinámicos.',
+                'defensivo': 'Repliegue en bloque medio, ayudas constantes y control de intervalos.',
+                'transiciones': 'Contraataque veloz por carriles externos o repliegue veloz tras pérdida.',
+                'abp': 'Saques de esquina directos y faltas de media distancia coordinadas.',
+                'plan': 'Variación de presiones y ritmo de juego según las dimensiones del terreno.'
+            },
+            'futsal': {
+                'ofensivo': 'Salida en rombo, paralelas, diagonales, aclarados e incorporación del portero.',
+                'defensivo': 'Presión individual estricta, defensa de cambios y ayudas en cobertura.',
+                'transiciones': 'Contras letales de 2vs1 o 3vs2 y repliegues intensivos en zona.',
+                'abp': 'Saques de banda y esquina ensayados y libres indirectos con bloqueos.',
+                'plan': 'Control de faltas acumuladas y gestión táctica de superioridad 5vs4.'
+            },
+            'fplaya': {
+                'ofensivo': 'Juego aéreo elevado, remates acrobáticos, chilenas y tiros de media distancia.',
+                'defensivo': 'Marcaje al hombre riguroso, taponamiento de líneas de tiro y presión alta.',
+                'transiciones': 'Contras ultrarápidas de área a área y repliegues de emergencia sobre arena.',
+                'abp': 'Tiros libres directos sin barrera, córners elevados y saques de banda a portería.',
+                'plan': 'Gestión de la fatiga y rotaciones rápidas de quintetos según el viento.'
             }
         };
 
@@ -9065,35 +9792,178 @@
             contentDiv.innerHTML = html;
         }
 
-        function setTacticSystem(system, btn) {
-            btn.parentNode.querySelectorAll('button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        function renderTacticSystemSelector() {
+            const container = document.getElementById('tactic-system-selector-container');
+            if (!container) return;
             
-            if (!btn.classList.contains('tactic-system-btn')) {
-                btn.parentNode.querySelectorAll('button').forEach(b => {
-                    b.style.borderColor = '';
-                    b.style.color = '';
+            container.innerHTML = '';
+            const systems = CATEGORY_SYSTEMS[activeCategory] || CATEGORY_SYSTEMS['f11'];
+            
+            systems.forEach(system => {
+                const btn = document.createElement('button');
+                btn.className = 'tactic-system-btn';
+                if (system === activeSystem) {
+                    btn.classList.add('active');
+                }
+                const label = SYSTEM_LABELS[system] || system;
+                btn.textContent = label;
+                btn.onclick = function() {
+                    setTacticSystem(system, btn);
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function updatePitchVisualStyle(category) {
+            const mainPitch = document.getElementById('football-pitch');
+            const miniPitch = document.getElementById('system-preview-pitch');
+            if (!mainPitch || !miniPitch) return;
+            
+            mainPitch.classList.remove('modality-f11', 'modality-f8', 'modality-futsal', 'modality-fplaya');
+            mainPitch.classList.add('modality-' + category);
+            
+            const svg = miniPitch.querySelector('svg');
+            
+            if (category === 'f11' || category === 'f8') {
+                miniPitch.style.backgroundColor = '#0b1736';
+                if (svg) {
+                    svg.querySelectorAll('rect, line, circle, path').forEach(el => {
+                        el.setAttribute('stroke', 'rgba(255, 255, 255, 0.12)');
+                    });
+                }
+            } else if (category === 'futsal') {
+                miniPitch.style.backgroundColor = '#0369a1';
+                if (svg) {
+                    svg.querySelectorAll('rect, line, circle, path').forEach(el => {
+                        el.setAttribute('stroke', 'rgba(255, 255, 255, 0.35)');
+                    });
+                }
+            } else if (category === 'fplaya') {
+                miniPitch.style.backgroundColor = '#d97706';
+                if (svg) {
+                    svg.querySelectorAll('rect, line, circle, path').forEach(el => {
+                        el.setAttribute('stroke', 'rgba(239, 68, 68, 0.7)');
+                    });
+                }
+            }
+        }
+
+        function updatePhaseCardsDescriptions() {
+            const data = PHASE_CARD_DATA[activeCategory];
+            if (!data) return;
+            
+            const cards = document.querySelectorAll('.tactic-cards-grid .tactic-card');
+            cards.forEach(card => {
+                const onclickAttr = card.getAttribute('onclick');
+                if (onclickAttr) {
+                    const match = onclickAttr.match(/selectTacticPhase\('([^']+)'/);
+                    if (match && match[1]) {
+                        const phase = match[1];
+                        const descSpan = card.querySelector('.tactic-card-desc');
+                        if (descSpan && data[phase]) {
+                            descSpan.textContent = data[phase];
+                        }
+                    }
+                }
+            });
+        }
+
+        function setGameModelCategory(category, btn, showNotification = true) {
+            if (btn) {
+                btn.parentNode.querySelectorAll('.tactical-tab').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            } else {
+                const tabs = document.querySelectorAll('#view-modelo .tactical-tab');
+                tabs.forEach(tab => {
+                    const onclickAttr = tab.getAttribute('onclick');
+                    if (onclickAttr && onclickAttr.includes(`'${category}'`)) {
+                        tab.classList.add('active');
+                    } else {
+                        tab.classList.remove('active');
+                    }
                 });
-                btn.style.borderColor = 'var(--accent)';
-                btn.style.color = 'var(--accent-hover)';
+            }
+            
+            activeCategory = category;
+            
+            let defaultSystem = '1433';
+            if (category === 'f8') defaultSystem = 'f8_1322';
+            else if (category === 'futsal') defaultSystem = 'fs_31';
+            else if (category === 'fplaya') defaultSystem = 'fp_121';
+            
+            activeSystem = defaultSystem;
+            
+            renderTacticSystemSelector();
+            updatePitchVisualStyle(category);
+            updatePhaseCardsDescriptions();
+            setTacticSystem(defaultSystem, null, false);
+            
+            const activeCard = document.querySelector('.tactic-cards-grid .tactic-card.active');
+            if (activeCard) {
+                selectTacticPhase(activePhase, activeCard);
+            } else {
+                selectTacticPhase('ofensivo', document.querySelector('.tactic-cards-grid .tactic-card'));
+            }
+            
+            if (showNotification) {
+                const categoryNames = {
+                    'f11': 'Fútbol 11',
+                    'f8': 'Fútbol 8',
+                    'futsal': 'Fútbol Sala',
+                    'fplaya': 'Fútbol Playa'
+                };
+                showToast(`Modalidad cambiada a ${categoryNames[category] || category}`, 'info');
+            }
+        }
+
+        function setTacticSystem(system, btn, showNotification = true) {
+            if (btn) {
+                btn.parentNode.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                if (!btn.classList.contains('tactic-system-btn')) {
+                    btn.parentNode.querySelectorAll('button').forEach(b => {
+                        b.style.borderColor = '';
+                        b.style.color = '';
+                    });
+                    btn.style.borderColor = 'var(--accent)';
+                    btn.style.color = 'var(--accent-hover)';
+                }
+            } else {
+                const container = document.getElementById('tactic-system-selector-container');
+                if (container) {
+                    container.querySelectorAll('button').forEach(b => {
+                        const label = SYSTEM_LABELS[system] || system;
+                        if (b.textContent.trim() === label.trim()) {
+                            b.classList.add('active');
+                        } else {
+                            b.classList.remove('active');
+                        }
+                    });
+                }
             }
 
             activeSystem = system;
             updatePitchRepresentation();
             updateMiniTacticPreview(system);
             updateSystemFeatures(system);
-            showToast(`Sistema táctico cambiado a ${system}`, 'success');
+            if (showNotification) {
+                showToast(`Sistema táctico cambiado a ${SYSTEM_LABELS[system] || system}`, 'success');
+            }
         }
 
         function selectTacticPhase(phase, card) {
-            card.parentNode.querySelectorAll('.tactic-card').forEach(c => c.classList.remove('active'));
-            card.classList.add('active');
+            if (card) {
+                card.parentNode.querySelectorAll('.tactic-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+            }
 
             activePhase = phase;
             
             const detailsDiv = document.getElementById('tactic-phase-details');
-            if (detailsDiv && TACTIC_PHASES_INFO[phase]) {
-                detailsDiv.innerHTML = TACTIC_PHASES_INFO[phase];
+            const phaseKey = activeCategory + '_' + phase;
+            if (detailsDiv && TACTIC_PHASES_INFO[phaseKey]) {
+                detailsDiv.innerHTML = TACTIC_PHASES_INFO[phaseKey];
             }
 
             updatePitchRepresentation();
@@ -9109,15 +9979,17 @@
 
             pitch.querySelectorAll('.pitch-player').forEach(p => p.remove());
 
-            coords.forEach((coord, i) => {
-                const playerDiv = document.createElement('div');
-                playerDiv.className = 'pitch-player';
-                if (coord.name === '1') playerDiv.classList.add('GK');
-                playerDiv.style.top = coord.top;
-                playerDiv.style.left = coord.left;
-                playerDiv.textContent = coord.name;
-                pitch.appendChild(playerDiv);
-            });
+            if (coords) {
+                coords.forEach(coord => {
+                    const playerDiv = document.createElement('div');
+                    playerDiv.className = 'pitch-player';
+                    if (coord.name === '1') playerDiv.classList.add('GK');
+                    playerDiv.style.top = coord.top;
+                    playerDiv.style.left = coord.left;
+                    playerDiv.textContent = coord.name;
+                    pitch.appendChild(playerDiv);
+                });
+            }
 
             const titleEl = document.getElementById('tactic-pitch-title');
             if (titleEl) {
@@ -9127,7 +9999,8 @@
                 if (activePhase === 'abp') phaseTitle = 'ABP (Estrategia)';
                 if (activePhase === 'plan') phaseTitle = 'Plan de Partido';
 
-                titleEl.textContent = `Pizarra Táctica: Sistema ${activeSystem.split('').join('-')} (${phaseTitle})`;
+                const systemLabel = SYSTEM_LABELS[activeSystem] || activeSystem;
+                titleEl.textContent = `Pizarra Táctica: Sistema ${systemLabel} (${phaseTitle})`;
             }
         }
 
@@ -11264,8 +12137,7 @@
             initCallFiltersListeners();
             updateDocumentCounts();
             initDragAndDrop();
-            updateMiniTacticPreview('1433');
-            updateSystemFeatures('1433');
+            setGameModelCategory('f11', null, false);
             
             // Navegar automáticamente a la pestaña indicada en el Hash de URL (si existe)
             const hash = window.location.hash.substring(1);
