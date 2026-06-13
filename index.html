@@ -615,6 +615,23 @@
             border-radius: var(--radius-sm);
         }
 
+        .btn-nav-primary {
+            background-color: #102b5c !important;
+            color: #FFFFFF !important;
+            border-radius: var(--radius-md) !important;
+            border: 1px solid transparent !important;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition-base);
+        }
+
+        .btn-nav-primary:hover {
+            background-color: #1b3d75 !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 12px rgba(16, 43, 92, 0.25) !important;
+            transform: translateY(-1px);
+        }
+
+
         /* Etiquetas (Badges / Tags) */
         .tag {
             display: inline-flex;
@@ -3686,8 +3703,8 @@
                         <!-- Cabecera de Categoría y Botón Volver -->
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
                             <div style="display: flex; align-items: center; gap: 16px;">
-                                <button class="btn btn-outline btn-sm" onclick="switchStaffSubTab('areas')" style="font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px;">
-                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5" style="transform: rotate(180deg);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                <button class="btn btn-nav-primary btn-sm" onclick="switchStaffSubTab('areas')" style="font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="#FFFFFF" fill="none" stroke-width="2.5" style="transform: rotate(180deg);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                                     Volver a Categorías
                                 </button>
                                 <h2 id="staff-category-title" style="font-size: 22px; font-weight: 700; color: var(--primary); margin: 0; font-family: 'Outfit', sans-serif;">Categoría</h2>
