@@ -6827,17 +6827,17 @@
             },
             { 
                 id: 2, 
-                name: "Vicente Ampudia", 
+                name: "Paco Marí", 
                 role: "Seleccionador", 
                 category: "Sub-16", 
                 license: "UEFA Pro", 
-                email: "vampudia@ffcv.es", 
-                status: "En Concentración",
+                email: "pmari@ffcv.es", 
+                status: "Activo",
                 sport: "Fútbol",
                 gender: "Masculino",
                 phone: "+34 623 876 543",
                 titulos: "UEFA Pro Licencia, Especialista en Táctica y Análisis de Juego (RFEF)",
-                experiencia: "Ex-entrenador de cantera en Valencia C.F. y Levante U.D., 4 temporadas al frente de las Selecciones Cadetes de la FFCV."
+                experiencia: "Seleccionador de la Selección Valenciana Masculina Sub-16 de fútbol. Ex-entrenador formativo en canteras de la Comunidad Valenciana."
             },
             { 
                 id: 3, 
@@ -6967,69 +6967,97 @@
             },
             {
                 id: 12,
-                name: "Ana Giménez",
+                name: "Luis Sánchez",
                 role: "Seleccionador",
-                category: "Sub-19",
+                category: "Sub-14",
                 license: "UEFA Pro",
-                email: "agimenez@ffcv.es",
+                email: "lsanchez@ffcv.es",
                 status: "Activo",
                 sport: "Fútbol",
                 gender: "Femenino",
                 phone: "+34 656 789 012",
-                titulos: "UEFA Pro Licencia, Graduada en Ciencias de la Actividad Física y del Deporte",
-                experiencia: "Amplia trayectoria en el fútbol base femenino y ex-seleccionadora Sub-16 territorial."
+                titulos: "UEFA Pro Licencia, Máster en Dirección Metodológica",
+                experiencia: "Seleccionador de la Selección Valenciana Valenta Sub-14 de fútbol femenino. Amplio recorrido en fútbol formativo."
             },
             {
                 id: 13,
-                name: "Carlos Martínez",
+                name: "Fernando Luna",
                 role: "Seleccionador",
-                category: "Sub-14",
+                category: "Sub-16",
                 license: "UEFA Pro",
-                email: "cmartinez@ffcv.es",
+                email: "fluna@ffcv.es",
                 status: "Activo",
                 sport: "Fútbol",
-                gender: "Masculino",
+                gender: "Femenino",
                 phone: "+34 677 890 123",
-                titulos: "UEFA Pro Licencia, Especialista en Metodología Formativa y Dirección de Cantera",
-                experiencia: "Ex-entrenador formativo en canteras de Primera División y seleccionador de fútbol base."
+                titulos: "UEFA Pro Licencia, Graduado en Ciencias de la Actividad Física y del Deporte",
+                experiencia: "Seleccionador de la Selección Valenciana Valenta Sub-16 de fútbol femenino. Especialista en alto rendimiento."
             },
             {
                 id: 14,
-                name: "David Valero",
+                name: "Patxi Aguilar",
                 role: "Seleccionador",
-                category: "Sub-19",
+                category: "Sub-16",
                 license: "Nivel 3 Fútbol Sala",
-                email: "dvalero@ffcv.es",
+                email: "paguilar@ffcv.es",
                 status: "Activo",
                 sport: "Fútbol Sala",
                 gender: "Masculino",
                 phone: "+34 688 901 234",
-                titulos: "Entrenador Nacional Nivel 3 Fútbol Sala, Especialista en Táctica Futsal",
-                experiencia: "Entrenador nacional LNFS y seleccionador de selecciones de fútbol sala formativas FFCV."
+                titulos: "Entrenador Nacional Nivel 3 Fútbol Sala, Especialista en Análisis Táctico Futsal",
+                experiencia: "Seleccionador de la Selección Valenciana Futsal Sub-16 masculina. Dilatada trayectoria en la LNFS."
             },
             {
                 id: 15,
-                name: "María Torres",
+                name: "Mavi Sansano",
                 role: "Seleccionador",
-                category: "Sub-16",
+                category: "Sub-14",
                 license: "Nivel 2 Fútbol Sala",
-                email: "mtorres@ffcv.es",
+                email: "msansano@ffcv.es",
                 status: "En Concentración",
                 sport: "Fútbol Sala",
                 gender: "Femenino",
                 phone: "+34 699 012 345",
                 titulos: "Técnico Deportivo Nivel 2 Fútbol Sala",
-                experiencia: "Coordinadora de escuelas formativas y seleccionadora de selecciones femeninas de fútbol sala FFCV."
+                experiencia: "Seleccionadora de la Selección Valenciana Futsal Valenta Sub-14. Especialista en etapas de perfeccionamiento."
+            },
+            {
+                id: 16,
+                name: "Ana Cabello",
+                role: "Seleccionador",
+                category: "Sub-16",
+                license: "Nivel 2 Fútbol Sala",
+                email: "acabello@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol Sala",
+                gender: "Femenino",
+                phone: "+34 666 123 456",
+                titulos: "Técnico Deportivo Nivel 2 Fútbol Sala, Licenciada en Psicología Deportiva",
+                experiencia: "Seleccionadora de la Selección Valenciana Futsal Valenta Sub-16. Especialista en psicología del deporte formativo."
+            },
+            {
+                id: 17,
+                name: "Toni Puerto",
+                role: "Seleccionador",
+                category: "Sub-12",
+                license: "Nivel 2 Fútbol Sala",
+                email: "tpuerto@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                phone: "+34 611 222 333",
+                titulos: "Técnico Deportivo Nivel 2 Fútbol Sala, Especialista en Etapas de Iniciación",
+                experiencia: "Seleccionador de la Selección Valenciana Futsal Sub-12 masculina. Entrenador formador con gran bagaje en futsal base."
             }
         ];
 
         let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || DEFAULT_STAFF;
         let activeStaffRoleFilter = 'ALL';
 
-        // Sincronizar localStorage si no contiene a Ana Giménez (para cargar el nuevo staff oficial y seleccionadores)
+        // Sincronizar localStorage si no contiene a Paco Marí (para cargar el nuevo staff oficial y seleccionadores reales)
         if (localStorage.getItem('ffcv_staff')) {
             const tempStaff = JSON.parse(localStorage.getItem('ffcv_staff'));
-            if (!tempStaff.some(m => m.name === "Ana Giménez")) {
+            if (!tempStaff.some(m => m.name === "Paco Marí")) {
                 localStorage.setItem('ffcv_staff', JSON.stringify(DEFAULT_STAFF));
                 staff = DEFAULT_STAFF;
             }
