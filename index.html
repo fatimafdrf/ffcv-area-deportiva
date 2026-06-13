@@ -3579,8 +3579,8 @@
                         </button>
                     </div>
 
-                    <!-- Sub-Navegación del Staff -->
-                    <div style="display: flex; gap: 10px; margin-top: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; flex-wrap: wrap;">
+                    <!-- Sub-Navegación del Staff (Oculto para navegación jerárquica limpia de 3 niveles) -->
+                    <div style="display: none; gap: 10px; margin-top: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; flex-wrap: wrap;">
                         <button class="btn btn-outline btn-sm active" id="btn-staff-tab-areas" onclick="switchStaffSubTab('areas')" style="font-weight:600; padding: 6px 16px;">📁 Estructura por Áreas</button>
                         <button class="btn btn-outline btn-sm" id="btn-staff-tab-organigrama" onclick="switchStaffSubTab('organigrama')" style="font-weight:600; padding: 6px 16px;">📊 Organigrama Jerárquico</button>
                         <button class="btn btn-outline btn-sm" id="btn-staff-tab-listado" onclick="switchStaffSubTab('listado')" style="font-weight:600; padding: 6px 16px;">🔍 Censo y Filtros</button>
@@ -3683,6 +3683,18 @@
 
                     <!-- Sub-vista 3: Censo y Filtros -->
                     <div id="staff-subview-listado" style="display: none;">
+                        <!-- Cabecera de Categoría y Botón Volver -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px;">
+                            <div style="display: flex; align-items: center; gap: 16px;">
+                                <button class="btn btn-outline btn-sm" onclick="switchStaffSubTab('areas')" style="font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px;">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5" style="transform: rotate(180deg);"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                    Volver a Categorías
+                                </button>
+                                <h2 id="staff-category-title" style="font-size: 22px; font-weight: 700; color: var(--primary); margin: 0; font-family: 'Outfit', sans-serif;">Categoría</h2>
+                            </div>
+                            <div id="staff-category-actions"></div>
+                        </div>
+
                         <!-- Tarjeta de Filtros de Staff -->
                         <div class="filters-card" style="margin-top: 0; margin-bottom: 24px;">
 
@@ -7110,6 +7122,38 @@
 
         function selectStaffRoleFilter(role) {
             activeStaffRoleFilter = role;
+            
+            // Actualizar título dinámico de categoría
+            let categoryName = role;
+            if (role === 'Organigrama') categoryName = 'Organigrama General';
+            if (role === 'Coordinador') categoryName = 'Coordinación Deportiva';
+            if (role === 'Entrenador') categoryName = 'Entrenadores';
+            if (role === 'Seleccionador') categoryName = 'Seleccionadores';
+            if (role === 'Preparador Físico') categoryName = 'Preparadores Físicos';
+            if (role === 'Analista Técnico') categoryName = 'Analistas';
+            if (role === 'Fisioterapeuta') categoryName = 'Fisioterapeutas';
+            if (role === 'Delegado') categoryName = 'Delegados';
+            if (role === 'Médico') categoryName = 'Área Médica';
+            if (role === 'Scout') categoryName = 'Scouting';
+            
+            const titleEl = document.getElementById('staff-category-title');
+            if (titleEl) titleEl.textContent = categoryName;
+
+            // Mostrar el botón de Organigrama Jerárquico si es el Organigrama General
+            const actionsEl = document.getElementById('staff-category-actions');
+            if (actionsEl) {
+                if (role === 'Organigrama') {
+                    actionsEl.innerHTML = `
+                        <button class="btn btn-primary btn-sm" onclick="openOrganigramLightbox()" style="font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px;">
+                            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+                            Ver Organigrama Jerárquico
+                        </button>
+                    `;
+                } else {
+                    actionsEl.innerHTML = '';
+                }
+            }
+            
             switchStaffSubTab('listado');
         }
 
@@ -7141,14 +7185,15 @@
             
             activeStaffRoleFilter = 'ALL';
 
-            const coordCount = staff.filter(m => m.role.includes('Director') || m.role.includes('Coordinador') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable')).length;
+            const orgCount = staff.filter(m => m.role.includes('Director') || m.role.includes('Coordinador') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable') || m.role === 'Director técnico').length;
+            const coordCount = staff.filter(m => m.role.includes('Coordinador') || m.role.includes('Coordinación')).length;
             const selCount = staff.filter(m => m.role === 'Seleccionador').length;
-            const coachCount = staff.filter(m => m.role.includes('Entrenador') || m.role === 'Seleccionador').length;
+            const coachCount = staff.filter(m => m.role.includes('Entrenador') || m.role.includes('Asistente')).length;
             const pfCount = staff.filter(m => m.role === 'Preparador Físico').length;
             const analystCount = staff.filter(m => m.role === 'Analista Técnico').length;
-            const physioCount = staff.filter(m => m.role.includes('Fisio')).length || 1;
-            const delegCount = staff.filter(m => m.role === 'Delegado').length || 1;
-            const medCount = staff.filter(m => m.role.includes('Médic') || m.role.includes('Doctor')).length || 1;
+            const physioCount = staff.filter(m => m.role.includes('Fisio')).length;
+            const delegCount = staff.filter(m => m.role === 'Delegado').length;
+            const medCount = staff.filter(m => m.role.includes('Médic') || m.role.includes('Doctor') || m.role.includes('Enfermer')).length;
             const scoutCount = staff.filter(m => m.role.includes('Scout') || m.role === 'Analista Técnico').length;
 
             container.innerHTML = `
@@ -7162,8 +7207,8 @@
                             <p class="staff-area-desc">Estructura jerárquica unificada de la dirección deportiva y el organigrama de la FFCV.</p>
                         </div>
                         <div class="staff-area-meta">
-                            <span class="staff-area-count">${staff.length} Integrantes</span>
-                            <button class="btn btn-primary btn-sm" onclick="switchStaffSubTab('organigrama')">Ver Estructura</button>
+                            <span class="staff-area-count">${orgCount} Integrantes</span>
+                            <button class="btn btn-primary btn-sm" onclick="selectStaffRoleFilter('Organigrama')">Ver Estructura</button>
                         </div>
                     </div>
 
@@ -7173,7 +7218,7 @@
                                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><circle cx="12" cy="12" r="10" /><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" /><path d="M2 12h20" /></svg>
                             </div>
                             <h4 class="staff-area-title">Coordinación Deportiva</h4>
-                            <p class="staff-area-desc">Gestión de operaciones, logística y coordinación de selecciones.</p>
+                            <p class="staff-area-desc">Gestión de operaciones, logística y coordination de selecciones.</p>
                         </div>
                         <div class="staff-area-meta">
                             <span class="staff-area-count">${coordCount} Integrantes</span>
@@ -7240,7 +7285,7 @@
                     <div class="staff-area-card">
                         <div>
                             <div class="staff-area-icon">
-                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" /></svg>
+                                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3" /></svg>
                             </div>
                             <h4 class="staff-area-title">Fisioterapeutas</h4>
                             <p class="staff-area-desc">Prevención de lesiones, masajes de descarga y readaptación en campo.</p>
@@ -7289,7 +7334,7 @@
                         </div>
                         <div class="staff-area-meta">
                             <span class="staff-area-count">${scoutCount} Integrantes</span>
-                            <button class="btn btn-primary btn-sm" onclick="selectStaffRoleFilter('Analista Técnico')">Ver Estructura</button>
+                            <button class="btn btn-primary btn-sm" onclick="selectStaffRoleFilter('Scout')">Ver Estructura</button>
                         </div>
                     </div>
                 </div>
@@ -7368,9 +7413,24 @@
                 const matchesSport = (sportVal === 'ALL') || (mSport === sportVal) || (mSport === 'Todos') || (mSport === 'Todos los deportes');
                 const matchesCat = (catVal === 'ALL') || (m.category.includes(catVal)) || (m.category === 'General FFCV') || (m.category === 'Todas las categorías');
                 const matchesGender = (genderVal === 'ALL') || (mGender === genderVal);
-                const matchesRole = (activeStaffRoleFilter === 'ALL') || (m.role === activeStaffRoleFilter) || 
-                    (activeStaffRoleFilter === 'Entrenador' && (m.role.includes('Entrenador') || m.role === 'Seleccionador')) ||
-                    (activeStaffRoleFilter === 'Coordinador' && (m.role.includes('Coordinador') || m.role.includes('Director') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable')));
+                let matchesRole = false;
+                if (activeStaffRoleFilter === 'ALL') {
+                    matchesRole = true;
+                } else if (activeStaffRoleFilter === 'Organigrama') {
+                    matchesRole = m.role.includes('Director') || m.role.includes('Coordinador') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable') || m.role === 'Director técnico';
+                } else if (activeStaffRoleFilter === 'Coordinador') {
+                    matchesRole = m.role.includes('Coordinador') || m.role.includes('Coordinación');
+                } else if (activeStaffRoleFilter === 'Entrenador') {
+                    matchesRole = m.role.includes('Entrenador') || m.role.includes('Asistente');
+                } else if (activeStaffRoleFilter === 'Médico') {
+                    matchesRole = m.role.includes('Médic') || m.role.includes('Doctor') || m.role.includes('Enfermer');
+                } else if (activeStaffRoleFilter === 'Scout') {
+                    matchesRole = m.role.includes('Scout') || m.role === 'Analista Técnico';
+                } else if (activeStaffRoleFilter === 'Fisioterapeuta') {
+                    matchesRole = m.role.includes('Fisio') || m.role.includes('Rehabilitador');
+                } else {
+                    matchesRole = (m.role === activeStaffRoleFilter);
+                }
                 
                 return matchesSport && matchesCat && matchesGender && matchesRole;
             });
