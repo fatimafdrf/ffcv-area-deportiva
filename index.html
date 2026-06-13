@@ -2983,11 +2983,11 @@
                         </div>
                     </div>
 
-                    <div class="tactical-menu-tabs" style="margin-top: 10px;">
-                        <button class="tactical-tab active" onclick="switchPlanningSubTab('anual', this)">Planificación Anual</button>
-                        <button class="tactical-tab" onclick="switchPlanningSubTab('mensual', this)">Planificación Mensual</button>
-                        <button class="tactical-tab" onclick="switchPlanningSubTab('campeonatos', this)">Próximos Campeonatos</button>
-                        <button class="tactical-tab" onclick="switchPlanningSubTab('entrenamientos', this)">Microciclos Activos</button>
+                    <div class="config-tabs-container" style="margin-top: 10px; margin-bottom: 24px;">
+                        <button class="config-tab-btn active" onclick="switchPlanningSubTab('anual', this)">Planificación Anual</button>
+                        <button class="config-tab-btn" onclick="switchPlanningSubTab('mensual', this)">Planificación Mensual</button>
+                        <button class="config-tab-btn" onclick="switchPlanningSubTab('campeonatos', this)">Próximos Campeonatos</button>
+                        <button class="config-tab-btn" onclick="switchPlanningSubTab('entrenamientos', this)">Microciclos Activos</button>
                     </div>
 
                     <!-- Panel Anual -->
@@ -8824,7 +8824,7 @@
         
         // Cambio de sub-pestañas en planificación
         function switchPlanningSubTab(tabId, btn) {
-            btn.parentNode.querySelectorAll('.tactical-tab').forEach(t => t.classList.remove('active'));
+            btn.parentNode.querySelectorAll('.config-tab-btn').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
             
             document.querySelectorAll('.planning-sub-view').forEach(v => v.style.display = 'none');
