@@ -6858,154 +6858,814 @@
                     </div>
                 `;
             } else {
+                // Team Report Calculations
+                const techColect = r.techColectVal || 3;
+                const tactColect = r.tactColectVal || 3;
+                const physColect = r.physColectVal || 3;
+                const psycColect = r.psycColectVal || 3;
+                const groupClim = r.groupClimVal || 3;
+                
+                const averageRating = (techColect + tactColect + physColect + psycColect + groupClim) / 5;
+                const scoreOut100 = Math.round(averageRating * 20);
+                const scoreDashoffset = 251.2 - (251.2 * scoreOut100 / 100);
+                
+                let detailStatusClass = r.status === 'Aprobado' ? 'aprobado' : 'pendiente';
+                let displayStatusLabel = r.status || 'Aprobado';
+                
+                // Fallbacks and defaults
+                const clubName = r.club || (r.sport === 'Fútbol Sala' ? 'Levante U.D. Futsal' : (r.sport === 'Fútbol Playa' ? 'C.D. Playas de Valencia' : 'Selección Territorial FFCV'));
+                const groupName = r.group || (r.gender === 'Femenino' ? 'Liga Autonómica Femenina' : 'Campeonato Nacional de Selecciones');
+                const seasonName = r.season || '2026/2027';
+                const coachName = r.coach || r.scout || 'José Vicente';
+                const delegateName = r.delegate || 'Carlos Martínez';
+                
+                const played = r.teamPerformance ? r.teamPerformance.played : 0;
+                const won = r.teamPerformance ? r.teamPerformance.won : 0;
+                const drawn = r.teamPerformance ? r.teamPerformance.drawn : 0;
+                const lost = r.teamPerformance ? r.teamPerformance.lost : 0;
+                const goalsFor = r.teamPerformance ? r.teamPerformance.goalsFor : 0;
+                const goalsAgainst = r.teamPerformance ? r.teamPerformance.goalsAgainst : 0;
+                const points = (won * 3) + drawn;
+                const classification = r.teamPerformance ? (r.teamPerformance.position || '2º clasificado') : '2º clasificado';
+                
+                const playersCalled = r.participation ? (r.participation.playersCalled || 18) : 18;
+                const totalMinutes = r.participation ? (r.participation.totalMinutes || 450) : 450;
+                const attendance = r.participation ? (r.participation.attendance || '95.2%') : '95.2%';
+                const availability = r.participation ? (r.participation.availability || '90.5%') : '90.5%';
+                
+                const techBallKeep = r.techBallKeep || Math.min(5, Math.max(1, Math.round(techColect + (r.id%2 ? 0 : 0.5))));
+                const techFinishing = r.techFinishing || Math.min(5, Math.max(1, Math.round(techColect - (r.id%2 ? 0.5 : 0))));
+                const techCombinative = r.techCombinative || techColect;
+                const techSetPiece = r.techSetPiece || Math.min(5, Math.max(1, Math.round(techColect + (r.id%2 ? 0.5 : -0.5))));
+                
+                const tactOffensive = r.tactOffensive || tactColect;
+                const tactDefensive = r.tactDefensive || tactColect;
+                const tactTransitions = r.tactTransitions || Math.min(5, Math.max(1, Math.round(tactColect + (r.id%2 ? 0 : 0.5))));
+                const tactHighPress = r.tactHighPress || Math.min(5, Math.max(1, Math.round(tactColect - 0.5)));
+                const tactBallOut = r.tactBallOut || Math.min(5, Math.max(1, Math.round(tactColect + (r.id%2 ? 0.5 : 0))));
+                
+                const physStamina = r.physStamina || physColect;
+                const physSpeed = r.physSpeed || Math.min(5, Math.max(1, Math.round(physColect + (r.id%2 ? 0.5 : 0))));
+                const physStrength = r.physStrength || physColect;
+                const physAgility = r.physAgility || Math.min(5, Math.max(1, Math.round(physColect - (r.id%2 ? 0 : 0.5))));
+                const physInjuryPrev = r.physInjuryPrev || Math.min(5, Math.max(1, Math.round(physColect + (r.id%2 ? 0 : 0.5))));
+                
+                const psycMotivation = r.psycMotivation || psycColect;
+                const psycConfidence = r.psycConfidence || Math.min(5, Math.max(1, Math.round(psycColect + (r.id%2 ? 0 : 0.5))));
+                const psycPressure = r.psycPressure || Math.min(5, Math.max(1, Math.round(psycColect - 0.5)));
+                const psycMental = r.psycMental || psycColect;
+                const psycResilience = r.psycResilience || Math.min(5, Math.max(1, Math.round(psycColect + (r.id%2 ? 0.5 : 0))));
+                
+                const yellowCards = r.discipline ? (r.discipline.yellowCards || 0) : 0;
+                const redCards = r.discipline ? (r.discipline.redCards || 0) : 0;
+                const sanctions = r.discipline ? (r.discipline.sanctions || 'Ninguna activa en la plantilla') : 'Ninguna activa en la plantilla';
+                
+                const behaviorPlayers = r.behaviorPlayers || 'Ejemplar';
+                const behaviorStaff = r.behaviorStaff || 'Correcto / Profesional';
+                const behaviorParents = r.behaviorParents || 'Correcto / Sin incidencias';
+                
+                const objectivesMet = r.objectivesMet || 'Fase de grupos superada invictos. Consolidación de un bloque defensivo compacto.';
+                const aspectsToImprove = r.aspectsToImprove || 'Efectividad en transiciones ofensivas rápidas y segundas jugadas.';
+                const observationsGeneral = r.objectivesObs || 'El equipo muestra una cohesión de grupo muy alta, asimilando correctamente el modelo de juego federativo.';
+                
+                const finalValuation = r.finalValuation || 'Excelente progresión del grupo. Se recomienda mantener el mismo núcleo táctico para la siguiente fase del torneo.';
+                const coachSign = r.scout || 'José Vicente';
+                const reportDate = r.date || '10 Jun 2026';
+
+                const generateProgressBar = (label, val) => {
+                    const pct = (val / 5) * 100;
+                    return `
+                        <div class="team-val-row">
+                            <div class="team-val-header">
+                                <span>${label}</span>
+                                <div class="team-val-stars-container">
+                                    ${getStarsHtml(val)}
+                                    <span style="font-weight:700; margin-left:6px; font-size:10px;">${val}/5</span>
+                                </div>
+                            </div>
+                            <div class="team-val-bar-bg">
+                                <div class="team-val-bar-fill" style="width: ${pct}%;"></div>
+                            </div>
+                        </div>
+                    `;
+                };
+
                 html = `
                     <style>
-                        .detail-section {
-                            border: 1px solid var(--border-color);
+                        .team-report-sheet-container {
+                            background-color: #f8f9fa;
+                            color: #333333;
                             border-radius: var(--radius-md);
-                            padding: 16px;
-                            margin-bottom: 16px;
-                            background: var(--bg-card);
+                            padding: 2px;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 24px;
                         }
-                        .detail-section-title {
-                            font-size: 14px;
+                        
+                        /* Top Accent Line */
+                        .team-report-top-orange-line {
+                            height: 6px;
+                            background-color: #FF6B00;
+                            border-radius: 4px 4px 0 0;
+                            margin: -20px -20px 0 -20px;
+                        }
+
+                        /* Cabecera Principal */
+                        .team-report-header-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-md);
+                            padding: 24px;
+                            box-shadow: var(--shadow-sm);
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            gap: 20px;
+                            flex-wrap: wrap;
+                            border: 1px solid var(--border-color);
+                        }
+                        .team-report-header-left {
+                            display: flex;
+                            align-items: center;
+                            gap: 20px;
+                            flex-wrap: wrap;
+                        }
+                        .team-report-header-info {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 6px;
+                        }
+                        .team-report-badge-container {
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            flex-wrap: wrap;
+                        }
+                        .team-report-badge-tag {
+                            background-color: #102b5c;
+                            color: #FFFFFF;
+                            font-size: 9px;
                             font-weight: 700;
-                            color: var(--primary);
-                            border-bottom: 2px solid #FF6B00;
-                            padding-bottom: 6px;
-                            margin-bottom: 12px;
+                            text-transform: uppercase;
+                            padding: 3px 8px;
+                            border-radius: 20px;
+                        }
+                        .team-report-badge-status {
+                            font-size: 9px;
+                            font-weight: 700;
+                            padding: 3px 8px;
+                            border-radius: 20px;
                             text-transform: uppercase;
                         }
-                        .detail-grid-2 {
+                        .team-report-badge-status.aprobado {
+                            background-color: #e2f9eb;
+                            color: #28a745;
+                            border: 1px solid rgba(40,167,69,0.2);
+                        }
+                        .team-report-badge-status.pendiente {
+                            background-color: #fff3cd;
+                            color: #ffc107;
+                            border: 1px solid rgba(255,193,7,0.2);
+                        }
+                        .team-report-name {
+                            font-size: 22px;
+                            font-weight: 800;
+                            color: #102b5c;
+                            margin: 0;
+                        }
+                        .team-report-club {
+                            font-size: 13px;
+                            font-weight: 600;
+                            color: #555555;
+                        }
+                        
+                        /* Circular Rating */
+                        .team-rating-circle-container {
+                            position: relative;
+                            width: 80px;
+                            height: 80px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        .team-rating-circle-bg {
+                            transform: rotate(-90deg);
+                        }
+                        .team-rating-circle-text {
+                            position: absolute;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        .team-rating-circle-val {
+                            font-size: 20px;
+                            font-weight: 800;
+                            color: #FF6B00;
+                        }
+                        .team-rating-circle-label {
+                            font-size: 8px;
+                            font-weight: 700;
+                            color: var(--text-muted);
+                            text-transform: uppercase;
+                        }
+
+                        /* Blocks Headers */
+                        .team-report-section-title {
+                            font-size: 13px;
+                            font-weight: 800;
+                            color: #102b5c; /* Azul marino */
+                            margin-bottom: 14px;
+                            border-bottom: 2px solid #FF6B00;
+                            padding-bottom: 4px;
+                            text-transform: uppercase;
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                        }
+
+                        /* Grid layouts */
+                        .team-report-grid-half {
                             display: grid;
                             grid-template-columns: 1fr 1fr;
-                            gap: 12px;
+                            gap: 16px;
                         }
-                        .detail-grid-3 {
+                        .team-report-grid-3 {
                             display: grid;
-                            grid-template-columns: 1fr 1fr 1fr;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 16px;
+                        }
+                        .team-report-grid-4 {
+                            display: grid;
+                            grid-template-columns: repeat(4, 1fr);
+                            gap: 16px;
+                        }
+                        @media (max-width: 768px) {
+                            .team-report-grid-half, .team-report-grid-3, .team-report-grid-4 {
+                                grid-template-columns: 1fr;
+                            }
+                        }
+
+                        /* Fast Stats */
+                        .team-fast-stats-grid {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
                             gap: 12px;
                         }
-                        .detail-label {
-                            font-size: 12px;
+                        .team-fast-stat-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-sm);
+                            border: 1px solid var(--border-color);
+                            padding: 12px 10px;
+                            text-align: center;
+                            box-shadow: var(--shadow-sm);
+                            display: flex;
+                            flex-direction: column;
+                            gap: 2px;
+                        }
+                        .team-fast-stat-label {
+                            font-size: 9px;
                             color: var(--text-muted);
                             font-weight: 600;
+                            text-transform: uppercase;
                         }
-                        .detail-val {
-                            font-size: 13px;
-                            color: var(--text-main);
+                        .team-fast-stat-val {
+                            font-size: 12px;
                             font-weight: 700;
+                            color: #102b5c;
                         }
-                        .rating-row {
+
+                        /* Cards */
+                        .team-white-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-md);
+                            padding: 16px;
+                            box-shadow: var(--shadow-sm);
+                            border: 1px solid var(--border-color);
+                        }
+
+                        /* Progress Bar List Rows */
+                        .team-val-row {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 4px;
+                            margin-bottom: 12px;
+                        }
+                        .team-val-row:last-child {
+                            margin-bottom: 0;
+                        }
+                        .team-val-header {
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
-                            padding: 6px 0;
-                            border-bottom: 1px dashed var(--border-color);
+                            font-size: 11px;
+                            font-weight: 700;
+                            color: #333333;
+                        }
+                        .team-val-stars-container {
+                            display: flex;
+                            align-items: center;
+                            gap: 4px;
+                        }
+                        .team-val-bar-bg {
+                            height: 6px;
+                            background-color: #e9ecef;
+                            border-radius: 3px;
+                            overflow: hidden;
+                        }
+                        .team-val-bar-fill {
+                            height: 100%;
+                            background: linear-gradient(90deg, #102b5c, #FF6B00);
+                            border-radius: 3px;
+                            transition: width 0.6s ease;
+                        }
+
+                        /* Performance Metrics */
+                        .team-perf-stats-grid {
+                            display: grid;
+                            grid-template-columns: repeat(4, 1fr);
+                            gap: 10px;
+                        }
+                        @media (max-width: 480px) {
+                            .team-perf-stats-grid {
+                                grid-template-columns: repeat(2, 1fr);
+                            }
+                        }
+                        .team-perf-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-sm);
+                            border: 1px solid var(--border-color);
+                            padding: 10px 6px;
+                            text-align: center;
+                            box-shadow: var(--shadow-sm);
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 3px;
+                        }
+                        .team-perf-icon {
+                            font-size: 16px;
+                        }
+                        .team-perf-val {
+                            font-size: 15px;
+                            font-weight: 800;
+                            color: #102b5c;
+                            line-height: 1;
+                        }
+                        .team-perf-label {
+                            font-size: 9px;
+                            color: var(--text-muted);
+                            font-weight: 700;
+                            text-transform: uppercase;
+                        }
+
+                        /* Highlight Blocks */
+                        .team-hl-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-md);
+                            padding: 14px;
+                            box-shadow: var(--shadow-sm);
+                            border: 1px solid var(--border-color);
+                            display: flex;
+                            flex-direction: column;
+                            gap: 6px;
+                        }
+                        .team-hl-card.obj-met {
+                            border-left: 4px solid #28a745;
+                        }
+                        .team-hl-card.asp-improve {
+                            border-left: 4px solid #102b5c;
+                        }
+                        .team-hl-card.obs-general {
+                            border-left: 4px solid #FF6B00;
+                        }
+                        .team-hl-title {
+                            font-size: 11px;
+                            font-weight: 800;
+                            text-transform: uppercase;
+                            display: flex;
+                            align-items: center;
+                            gap: 5px;
+                        }
+                        .team-hl-content {
+                            font-size: 12px;
+                            color: #555555;
+                            line-height: 1.5;
+                            margin: 0;
+                        }
+
+                        /* Behaviour Cards */
+                        .team-beh-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-sm);
+                            border: 1px solid var(--border-color);
+                            padding: 12px;
+                            box-shadow: var(--shadow-sm);
+                            display: flex;
+                            flex-direction: column;
+                            gap: 4px;
+                        }
+                        .team-beh-header {
+                            display: flex;
+                            justify-content: space-between;
+                            font-size: 10px;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                            color: #102b5c;
+                        }
+                        .team-beh-status {
+                            color: #28a745;
+                            font-weight: 800;
+                        }
+
+                        /* Quote Box */
+                        .team-quote-container {
+                            background-color: rgba(16, 43, 92, 0.03);
+                            border: 1px solid rgba(16, 43, 92, 0.1);
+                            border-radius: var(--radius-md);
+                            padding: 20px;
+                            position: relative;
+                        }
+                        .team-quote-icon {
+                            position: absolute;
+                            top: 8px;
+                            left: 12px;
+                            font-size: 40px;
+                            color: rgba(16, 43, 92, 0.06);
+                            font-family: Georgia, serif;
+                            line-height: 1;
+                        }
+                        .team-quote-text {
+                            font-size: 13px;
+                            color: #444444;
+                            line-height: 1.6;
+                            font-style: italic;
+                            margin: 0;
+                            position: relative;
+                            z-index: 1;
+                            padding-left: 16px;
+                        }
+
+                        /* Closing footer */
+                        .team-footer-card {
+                            background-color: #FFFFFF;
+                            border-radius: var(--radius-md);
+                            padding: 14px 20px;
+                            box-shadow: var(--shadow-sm);
+                            border: 1px solid var(--border-color);
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            flex-wrap: wrap;
+                            gap: 12px;
+                        }
+                        .team-footer-item {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 2px;
+                        }
+                        .team-footer-label {
+                            font-size: 8px;
+                            color: var(--text-muted);
+                            font-weight: 700;
+                            text-transform: uppercase;
+                        }
+                        .team-footer-val {
+                            font-size: 11px;
+                            font-weight: 700;
+                            color: #333333;
                         }
                     </style>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">1. Datos Generales</div>
-                        <div class="detail-grid-2">
-                            <div><span class="detail-label">Nombre del Equipo / Selección:</span> <div class="detail-val">${r.name}</div></div>
-                            <div><span class="detail-label">Tipo de Informe:</span> <div class="detail-val">${r.type}</div></div>
-                            <div><span class="detail-label">Deporte:</span> <div class="detail-val">${r.sport}</div></div>
-                            <div><span class="detail-label">Género:</span> <div class="detail-val">${r.gender}</div></div>
-                            <div><span class="detail-label">Categoría:</span> <div class="detail-val">${r.category}</div></div>
-                            <div><span class="detail-label">Scout / Evaluador:</span> <div class="detail-val">${r.scout}</div></div>
-                            <div><span class="detail-label">Fecha:</span> <div class="detail-val">${r.date}</div></div>
-                            <div><span class="detail-label">Estado:</span> <div><span class="tag ${statusClass}">${r.status}</span></div></div>
-                        </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">2. Rendimiento Deportivo</div>
-                        <div class="detail-grid-3">
-                            <div><span class="detail-label">Partidos Jugados:</span> <div class="detail-val">${r.teamPerformance.played}</div></div>
-                            <div><span class="detail-label">Partidos Ganados:</span> <div class="detail-val">${r.teamPerformance.won}</div></div>
-                            <div><span class="detail-label">Partidos Empatados:</span> <div class="detail-val">${r.teamPerformance.drawn}</div></div>
-                            <div><span class="detail-label">Partidos Perdidos:</span> <div class="detail-val">${r.teamPerformance.lost}</div></div>
-                            <div><span class="detail-label">Goles a Favor:</span> <div class="detail-val">${r.teamPerformance.goalsFor}</div></div>
-                            <div><span class="detail-label">Goles en Contra:</span> <div class="detail-val">${r.teamPerformance.goalsAgainst}</div></div>
-                        </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">3. Participación</div>
-                        <div class="detail-grid-2">
-                            <div><span class="detail-label">Jugadores Convocados:</span> <div class="detail-val">${r.participation.playersCalled}</div></div>
-                            <div><span class="detail-label">Minutos Totales:</span> <div class="detail-val">${r.participation.totalMinutes} min</div></div>
-                        </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">4. Valoración Técnica Colectiva</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Precisión técnica y ejecución táctica grupal</span>
-                            <div>
-                                ${getStarsHtml(r.techColectVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.techColectVal}/5 (${getRatingLabel(r.techColectVal)})</span>
+
+                    <div class="team-report-sheet-container">
+                        <!-- Top Accent Line -->
+                        <div class="team-report-top-orange-line"></div>
+                        
+                        <!-- 1. Cabecera Principal -->
+                        <div class="team-report-header-card">
+                            <div class="team-report-header-left">
+                                <div class="team-shield-container" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; background: #FFFFFF; border-radius: 50%; box-shadow: var(--shadow-sm); border: 2px solid #FF6B00; padding: 6px;">
+                                    <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                                        <path d="M50 10 L80 25 L80 60 C80 75, 50 90, 50 90 C50 90, 20 75, 20 60 L20 25 Z" fill="#102b5c" stroke="#FF6B00" stroke-width="3"/>
+                                        <path d="M50 10 L50 90 M20 45 L80 45" stroke="#FFFFFF" stroke-width="2" opacity="0.3"/>
+                                        <text x="50" y="55" fill="#FFFFFF" font-size="12" font-weight="900" text-anchor="middle" letter-spacing="1">FFCV</text>
+                                        <polygon points="50,22 53,28 60,28 55,32 57,38 50,34 43,38 45,32 40,28 47,28" fill="#FF6B00"/>
+                                    </svg>
+                                </div>
+                                <div class="team-report-header-info">
+                                    <div class="team-report-badge-container">
+                                        <span class="team-report-badge-tag">Informe de Equipo</span>
+                                        <span class="team-report-badge-status ${detailStatusClass}">${displayStatusLabel}</span>
+                                    </div>
+                                    <h2 class="team-report-name">${r.name}</h2>
+                                    <div class="team-report-club">${clubName} • ${r.sport} ${r.gender}</div>
+                                </div>
+                            </div>
+                            <div class="team-report-header-right">
+                                <div class="team-rating-circle-container">
+                                    <svg class="team-rating-circle-bg" width="80" height="80" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="40" stroke="#e9ecef" stroke-width="8" fill="transparent" />
+                                        <circle cx="50" cy="50" r="40" stroke="#FF6B00" stroke-width="8" fill="transparent"
+                                            stroke-dasharray="251.2"
+                                            stroke-dashoffset="${scoreDashoffset}"
+                                            stroke-linecap="round" />
+                                    </svg>
+                                    <div class="team-rating-circle-text">
+                                        <span class="team-rating-circle-val">${scoreOut100}</span>
+                                        <span class="team-rating-circle-label">Global</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">5. Valoración Táctica Colectiva</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Sincronización de bloques y transiciones</span>
-                            <div>
-                                ${getStarsHtml(r.tactColectVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.tactColectVal}/5 (${getRatingLabel(r.tactColectVal)})</span>
+
+                        <!-- 2. Datos Rápidos -->
+                        <div>
+                            <div class="team-fast-stats-grid">
+                                <div class="team-fast-stat-card">
+                                    <span class="team-fast-stat-label">Categoría</span>
+                                    <span class="team-fast-stat-val">${r.category}</span>
+                                </div>
+                                <div class="team-fast-stat-card">
+                                    <span class="team-fast-stat-label">Grupo</span>
+                                    <span class="team-fast-stat-val" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${groupName}">${groupName}</span>
+                                </div>
+                                <div class="team-fast-stat-card">
+                                    <span class="team-fast-stat-label">Temporada</span>
+                                    <span class="team-fast-stat-val">${seasonName}</span>
+                                </div>
+                                <div class="team-fast-stat-card">
+                                    <span class="team-fast-stat-label">Entrenador</span>
+                                    <span class="team-fast-stat-val">${coachName}</span>
+                                </div>
+                                <div class="team-fast-stat-card">
+                                    <span class="team-fast-stat-label">Delegado</span>
+                                    <span class="team-fast-stat-val">${delegateName}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">6. Valoración Física Colectiva</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Intensidad física y fondo atlético grupal</span>
-                            <div>
-                                ${getStarsHtml(r.physColectVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.physColectVal}/5 (${getRatingLabel(r.physColectVal)})</span>
+
+                        <!-- 3. Rendimiento Deportivo -->
+                        <div>
+                            <h3 class="team-report-section-title">📊 Rendimiento Deportivo</h3>
+                            <div class="team-report-grid-half">
+                                <div class="team-white-card" style="display: flex; flex-direction: column; justify-content: center;">
+                                    <div class="team-perf-stats-grid">
+                                        <div class="team-perf-card">
+                                            <span class="team-perf-icon">⚽</span>
+                                            <span class="team-perf-val">${played}</span>
+                                            <span class="team-perf-label">PJ</span>
+                                        </div>
+                                        <div class="team-perf-card" style="border-bottom: 2px solid #28a745;">
+                                            <span class="team-perf-icon" style="color: #28a745;">W</span>
+                                            <span class="team-perf-val">${won}</span>
+                                            <span class="team-perf-label">G</span>
+                                        </div>
+                                        <div class="team-perf-card" style="border-bottom: 2px solid #6c757d;">
+                                            <span class="team-perf-icon" style="color: #6c757d;">D</span>
+                                            <span class="team-perf-val">${drawn}</span>
+                                            <span class="team-perf-label">E</span>
+                                        </div>
+                                        <div class="team-perf-card" style="border-bottom: 2px solid #dc3545;">
+                                            <span class="team-perf-icon" style="color: #dc3545;">L</span>
+                                            <span class="team-perf-val">${lost}</span>
+                                            <span class="team-perf-label">P</span>
+                                        </div>
+                                        <div class="team-perf-card">
+                                            <span class="team-perf-icon">🎯</span>
+                                            <span class="team-perf-val">${goalsFor}</span>
+                                            <span class="team-perf-label">GF</span>
+                                        </div>
+                                        <div class="team-perf-card">
+                                            <span class="team-perf-icon">🛡️</span>
+                                            <span class="team-perf-val">${goalsAgainst}</span>
+                                            <span class="team-perf-label">GC</span>
+                                        </div>
+                                        <div class="team-perf-card" style="background-color: rgba(255, 107, 0, 0.05); border: 1px solid rgba(255,107,0,0.2);">
+                                            <span class="team-perf-icon" style="color: #FF6B00;">🏆</span>
+                                            <span class="team-perf-val" style="color: #FF6B00;">${points}</span>
+                                            <span class="team-perf-label">Puntos</span>
+                                        </div>
+                                        <div class="team-perf-card">
+                                            <span class="team-perf-icon">📈</span>
+                                            <span class="team-perf-val" style="font-size:12px;">${classification}</span>
+                                            <span class="team-perf-label">Clasif.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="team-white-card" style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; gap: 8px;">
+                                    <span class="team-fast-stat-label">Evolución en Clasificación (Últimas 5 Jornadas)</span>
+                                    <div style="display:flex; align-items:center; gap: 16px; width: 100%; justify-content:center;">
+                                        <svg viewBox="0 0 100 30" style="width: 130px; height: 40px; overflow:visible;">
+                                            <path d="M10,24 L30,18 L50,20 L70,8 L90,5" fill="none" stroke="#FF6B00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <circle cx="10" cy="24" r="3" fill="#102b5c" stroke="#FFFFFF" stroke-width="1"/>
+                                            <circle cx="30" cy="18" r="3" fill="#102b5c" stroke="#FFFFFF" stroke-width="1"/>
+                                            <circle cx="50" cy="20" r="3" fill="#102b5c" stroke="#FFFFFF" stroke-width="1"/>
+                                            <circle cx="70" cy="8" r="3" fill="#102b5c" stroke="#FFFFFF" stroke-width="1"/>
+                                            <circle cx="90" cy="5" r="3" fill="#FF6B00" stroke="#FFFFFF" stroke-width="1"/>
+                                            <text x="10" y="30" fill="#888" font-size="6" text-anchor="middle">J1</text>
+                                            <text x="30" y="30" fill="#888" font-size="6" text-anchor="middle">J2</text>
+                                            <text x="50" y="30" fill="#888" font-size="6" text-anchor="middle">J3</text>
+                                            <text x="70" y="30" fill="#888" font-size="6" text-anchor="middle">J4</text>
+                                            <text x="90" y="30" fill="#888" font-size="6" text-anchor="middle">J5</text>
+                                        </svg>
+                                        <div style="text-align: left;">
+                                            <div style="font-size: 14px; font-weight: 800; color: #FF6B00;">Tendencia Alza</div>
+                                            <div style="font-size: 9px; color: var(--text-muted);">Posición inicial: 5º → Actual: 2º</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">7. Valoración Psicológica Colectiva</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Concentración colectiva y resiliencia ante adversidad</span>
-                            <div>
-                                ${getStarsHtml(r.psycColectVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.psycColectVal}/5 (${getRatingLabel(r.psycColectVal)})</span>
+
+                        <!-- 4. Participación -->
+                        <div>
+                            <h3 class="team-report-section-title">👥 Participación y Carga</h3>
+                            <div class="team-report-grid-half">
+                                <div class="team-white-card" style="display:flex; flex-direction:column; gap:12px;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span class="team-fast-stat-label">Jugadores Utilizados:</span>
+                                        <strong style="color:#102b5c; font-size:13px;">${playersCalled} convocados</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span class="team-fast-stat-label">Minutos Totales:</span>
+                                        <strong style="color:#102b5c; font-size:13px;">${totalMinutes} min</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span class="team-fast-stat-label">Asistencia Media Entrenamientos:</span>
+                                        <strong style="color:#28a745; font-size:13px;">${attendance}</strong>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <span class="team-fast-stat-label">Disponibilidad de Plantilla:</span>
+                                        <strong style="color:#FF6B00; font-size:13px;">${availability}</strong>
+                                    </div>
+                                </div>
+                                <div class="team-white-card" style="display:flex; flex-direction:column; justify-content:center; gap:8px;">
+                                    <span class="team-fast-stat-label" style="margin-bottom:4px;">Distribución de Minutos de Juego</span>
+                                    <div style="display: flex; height: 10px; border-radius: 5px; overflow: hidden;">
+                                        <div style="width: 70%; background-color: #102b5c;" title="Titulares Frecuentes"></div>
+                                        <div style="width: 22%; background-color: #FF6B00;" title="Rotación Directa"></div>
+                                        <div style="width: 8%; background-color: #e9ecef;" title="Reserva / Menos utilizados"></div>
+                                    </div>
+                                    <div style="display:flex; justify-content:space-between; font-size:9px; font-weight:700; color:#555555; margin-top:4px;">
+                                        <span style="color:#102b5c;">■ Titulares (70%)</span>
+                                        <span style="color:#FF6B00;">■ Rotación (22%)</span>
+                                        <span style="color:#888888;">■ Reserva (8%)</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">8. Disciplina</div>
-                        <div class="detail-grid-3">
-                            <div><span class="detail-label">Tarjetas Amarillas:</span> <div class="detail-val">${r.discipline.yellowCards}</div></div>
-                            <div><span class="detail-label">Tarjetas Rojas:</span> <div class="detail-val">${r.discipline.redCards}</div></div>
-                            <div><span class="detail-label">Faltas Cometidas:</span> <div class="detail-val">${r.discipline.foulsCommitted}</div></div>
-                        </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">9. Comportamiento Deportivo / Clima Grupal</div>
-                        <div class="rating-row">
-                            <span class="detail-val">Respeto, unión de vestuario y actitud grupal</span>
-                            <div>
-                                ${getStarsHtml(r.groupClimVal)}
-                                <span style="font-weight:700; margin-left:8px;">${r.groupClimVal}/5 (${getRatingLabel(r.groupClimVal)})</span>
+
+                        <!-- Grid 2 Columnas para Valoración Técnica y Táctica -->
+                        <div class="team-report-grid-half">
+                            <!-- 5. Valoración Técnica Colectiva -->
+                            <div class="team-white-card">
+                                <h3 class="team-report-section-title" style="border-bottom: 2px solid #FF6B00;">⚽ Valoración Técnica Colectiva</h3>
+                                ${generateProgressBar('Conservación de balón', techBallKeep)}
+                                ${generateProgressBar('Finalización', techFinishing)}
+                                ${generateProgressBar('Juego combinativo', techCombinative)}
+                                ${generateProgressBar('Balón parado (ABP)', techSetPiece)}
+                            </div>
+                            
+                            <!-- 6. Valoración Táctica Colectiva -->
+                            <div class="team-white-card">
+                                <h3 class="team-report-section-title" style="border-bottom: 2px solid #FF6B00;">🧭 Valoración Táctica Colectiva</h3>
+                                ${generateProgressBar('Organización ofensiva', tactOffensive)}
+                                ${generateProgressBar('Organización defensiva', tactDefensive)}
+                                ${generateProgressBar('Transiciones (Of/Def)', tactTransitions)}
+                                ${generateProgressBar('Presión alta', tactHighPress)}
+                                ${generateProgressBar('Salida de balón', tactBallOut)}
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="detail-section">
-                        <div class="detail-section-title">10. Objetivos y Observaciones</div>
-                        <p style="font-size:13px; color:var(--text-main); white-space:pre-line; line-height:1.6; margin:0;">${r.objectivesObs || 'Sin observaciones registradas.'}</p>
+
+                        <!-- Grid 2 Columnas para Valoración Física y Psicológica -->
+                        <div class="team-report-grid-half">
+                            <!-- 7. Valoración Física Colectiva -->
+                            <div class="team-white-card">
+                                <h3 class="team-report-section-title" style="border-bottom: 2px solid #FF6B00;">⚡ Valoración Física Colectiva</h3>
+                                ${generateProgressBar('Resistencia aeróbica/específica', physStamina)}
+                                ${generateProgressBar('Velocidad y aceleración grupal', physSpeed)}
+                                ${generateProgressBar('Fuerza y duelos corporales', physStrength)}
+                                ${generateProgressBar('Agilidad y coordinación colectiva', physAgility)}
+                                ${generateProgressBar('Prevención de lesiones', physInjuryPrev)}
+                            </div>
+                            
+                            <!-- 8. Valoración Psicológica Colectiva -->
+                            <div class="team-white-card">
+                                <h3 class="team-report-section-title" style="border-bottom: 2px solid #FF6B00;">🧠 Valoración Psicológica Colectiva</h3>
+                                ${generateProgressBar('Motivación y compromiso grupal', psycMotivation)}
+                                ${generateProgressBar('Confianza colectiva', psycConfidence)}
+                                ${generateProgressBar('Gestión de la presión', psycPressure)}
+                                ${generateProgressBar('Mentalidad competitiva', psycMental)}
+                                ${generateProgressBar('Resiliencia colectiva', psycResilience)}
+                            </div>
+                        </div>
+
+                        <!-- 9. Disciplina y 10. Comportamiento Deportivo (Grid 2 columnas) -->
+                        <div class="team-report-grid-half">
+                            <!-- 9. Disciplina -->
+                            <div class="team-white-card" style="display:flex; flex-direction:column; gap:10px;">
+                                <h3 class="team-report-section-title" style="border-bottom:2px solid #FF6B00; margin-bottom:8px;">🛡️ Disciplina</h3>
+                                <div style="display:flex; gap:12px;">
+                                    <div style="flex:1; text-align:center; padding:10px; background:#fff3cd; border-radius:var(--radius-sm); border:1px solid rgba(255,193,7,0.3);">
+                                        <span style="font-size:18px;">🟨</span>
+                                        <div style="font-size:14px; font-weight:800; color:#664d03; margin:2px 0;">${yellowCards}</div>
+                                        <span style="font-size:9px; color:#664d03; font-weight:700; text-transform:uppercase;">Amarillas</span>
+                                    </div>
+                                    <div style="flex:1; text-align:center; padding:10px; background:#f8d7da; border-radius:var(--radius-sm); border:1px solid rgba(220,53,69,0.3);">
+                                        <span style="font-size:18px;">🟥</span>
+                                        <div style="font-size:14px; font-weight:800; color:#842029; margin:2px 0;">${redCards}</div>
+                                        <span style="font-size:9px; color:#842029; font-weight:700; text-transform:uppercase;">Rojas</span>
+                                    </div>
+                                </div>
+                                <div style="font-size:11px; padding:10px; background:#f8f9fa; border-radius:var(--radius-sm); border:1px solid var(--border-color); display:flex; flex-direction:column; gap:2px;">
+                                    <span style="font-weight:700; color:var(--text-muted); font-size:8px; text-transform:uppercase;">Sanciones Activas:</span>
+                                    <span style="color:#555555; font-weight:600;">${sanctions}</span>
+                                </div>
+                            </div>
+                            
+                            <!-- 10. Comportamiento Deportivo -->
+                            <div class="team-white-card" style="display:flex; flex-direction:column; gap:10px;">
+                                <h3 class="team-report-section-title" style="border-bottom:2px solid #FF6B00; margin-bottom:8px;">🤝 Comportamiento Deportivo</h3>
+                                <div class="team-beh-card">
+                                    <div class="team-beh-header">
+                                        <span>Jugadores / Plantilla</span>
+                                        <span class="team-beh-status">${behaviorPlayers}</span>
+                                    </div>
+                                    <div class="team-val-bar-bg"><div class="team-val-bar-fill" style="width: 95%; background-color:#28a745;"></div></div>
+                                </div>
+                                <div class="team-beh-card">
+                                    <div class="team-beh-header">
+                                        <span>Cuerpo Técnico</span>
+                                        <span class="team-beh-status">${behaviorStaff}</span>
+                                    </div>
+                                    <div class="team-val-bar-bg"><div class="team-val-bar-fill" style="width: 100%; background-color:#28a745;"></div></div>
+                                </div>
+                                <div class="team-beh-card">
+                                    <div class="team-beh-header">
+                                        <span>Familias y Afición</span>
+                                        <span class="team-beh-status" style="color: #FF6B00;">${behaviorParents}</span>
+                                    </div>
+                                    <div class="team-val-bar-bg"><div class="team-val-bar-fill" style="width: 85%; background-color:#FF6B00;"></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 11. Objetivos y Observaciones (Tres Tarjetas Destacadas) -->
+                        <div>
+                            <h3 class="team-report-section-title">📋 Objetivos y Observaciones Colectivas</h3>
+                            <div class="team-report-grid-3">
+                                <div class="team-hl-card obj-met">
+                                    <span class="team-hl-title" style="color: #28a745;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        Objetivos Cumplidos
+                                    </span>
+                                    <p class="team-hl-content">${objectivesMet}</p>
+                                </div>
+                                <div class="team-hl-card asp-improve">
+                                    <span class="team-hl-title" style="color: #102b5c;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                                        Aspectos a Mejorar
+                                    </span>
+                                    <p class="team-hl-content">${aspectsToImprove}</p>
+                                </div>
+                                <div class="team-hl-card obs-general">
+                                    <span class="team-hl-title" style="color: #FF6B00;">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                        Observaciones Generales
+                                    </span>
+                                    <p class="team-hl-content">${observationsGeneral}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 12. Resumen final (Valoración Final y Cita) -->
+                        <div>
+                            <h3 class="team-report-section-title">📝 Conclusión y Valoración Final</h3>
+                            <div class="team-quote-container">
+                                <span class="team-quote-icon">“</span>
+                                <p class="team-quote-text">${finalValuation}</p>
+                            </div>
+                        </div>
+
+                        <!-- Pie del informe (Resumen final metadata) -->
+                        <div class="team-footer-card">
+                            <div class="team-footer-item">
+                                <span class="team-footer-label">Evaluador</span>
+                                <span class="team-footer-val">${r.scout}</span>
+                            </div>
+                            <div class="team-footer-item">
+                                <span class="team-footer-label">Firma / Cargo</span>
+                                <span class="team-footer-val">${coachSign} - Analista Deportivo</span>
+                            </div>
+                            <div class="team-footer-item">
+                                <span class="team-footer-label">Fecha del Informe</span>
+                                <span class="team-footer-val">${reportDate}</span>
+                            </div>
+                            <div class="team-footer-item">
+                                <span class="team-footer-label">Nivel Colectivo</span>
+                                <span class="team-footer-val" style="color:#FF6B00; font-weight:800;">${getRatingLabel(averageRating)}</span>
+                            </div>
+                        </div>
                     </div>
                 `;
             }
