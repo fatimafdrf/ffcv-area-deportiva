@@ -7517,9 +7517,15 @@
                                 <span>Contacto:</span>
                                 <span style="color:var(--accent); font-weight:600;">${member.email}</span>
                             </div>
-                            <div class="staff-meta-item" style="margin-top:4px;">
-                                <span>Disponibilidad:</span>
-                                <span class="tag ${statusClass}" style="font-size:10px;">${member.status}</span>
+                            <div class="staff-meta-item" style="margin-top:4px; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                                <div>
+                                    <span>Disponibilidad:</span>
+                                    <span class="tag ${statusClass}" style="font-size:10px;">${member.status}</span>
+                                </div>
+                                <span style="color: var(--accent); font-size: 12px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+                                    Ver Funciones
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" fill="none" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -7803,23 +7809,23 @@
                         </div>
 
                         <!-- Qué no debe hacer -->
-                        <div style="background-color: rgba(255, 107, 0, 0.08); border: 1px solid rgba(255, 107, 0, 0.2); padding: 18px; border-radius: var(--radius-md);">
-                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 107, 0, 0.2); padding-bottom: 6px;">Qué no debe hacer</h4>
+                        <div style="background-color: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); padding: 18px; border-radius: var(--radius-md);">
+                            <h4 style="color: #EF4444; font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding-bottom: 6px;">Qué no debe hacer</h4>
                             <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No trabajar desconectado del modelo táctico.
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No trabajar desconectado del modelo táctico
                                 </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No mantener relaciones externas no autorizadas.
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No mantener relaciones externas no autorizadas
                                 </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No priorizar solo el aspecto físico.
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No priorizar solo el aspecto físico
                                 </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No compartir datos físicos privados.
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No compartir datos físicos privados
                                 </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No interactuar privadamente con jugadores/as.
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No actuar privadamente con jugadores/as
                                 </li>
                             </ul>
                         </div>
