@@ -7175,7 +7175,7 @@
                         </div>
                         <div class="staff-area-meta">
                             <span class="staff-area-count">${selCount} Integrantes</span>
-                            <button class="btn btn-primary btn-sm" onclick="selectStaffRoleFilter('Seleccionador')">Ver Estructura</button>
+                            <button class="btn btn-primary btn-sm" onclick="openSeleccionadoresModal()">Ver Estructura</button>
                         </div>
                     </div>
 
@@ -7407,6 +7407,110 @@
                     </div>
                 `;
             });
+        }
+
+        function openSeleccionadoresModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'modal-seleccionadores-detail';
+            overlay.innerHTML = `
+                <div class="modal-card" style="max-width: 750px; background-color: var(--primary-dark); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.15);">
+                    <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 16px;">
+                        <h3 class="modal-title" style="color: var(--accent); font-size: 20px; font-weight: 700;">Seleccionador/a</h3>
+                        <button class="close-btn" onclick="document.getElementById('modal-seleccionadores-detail').remove()" style="color: #FFFFFF; opacity: 0.8; font-size: 24px; background: none; border: none; cursor: pointer;">×</button>
+                    </div>
+                    <div class="modal-body" style="padding: 24px 0 12px 0; display: flex; flex-direction: column; gap: 24px;">
+                        
+                        <!-- Misión -->
+                        <div style="background-color: var(--primary-light); padding: 16px 20px; border-radius: var(--radius-md); border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Misión</h4>
+                            <p style="color: #FFFFFF; font-size: 14px; line-height: 1.5; margin: 0;">Dirigir técnica, metodológica y competitivamente una selección territorial, garantizando la aplicación del modelo de juego FFCV y el desarrollo integral de los jugadores/as.</p>
+                        </div>
+                        
+                        <!-- Columnas de Contenido -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            
+                            <!-- Funciones Principales -->
+                            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Funciones Principales</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Diseñar y dirigir entrenamientos
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Aplicar modelo de juego FFCV
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Seguimiento de jugadores y gestionar convocatorias
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Coordinar cuerpo técnico
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Control y dominio de la competición
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Representar identidad FFCV
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Competencias Clave -->
+                            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Competencias Clave</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Liderazgo técnico y humano
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Conocimiento táctico y metodológico
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Toma de decisiones
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Gestión de grupo y obtener máximo rendimiento
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Capacidad analítica
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Comunicación y liderazgo
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+
+                        <!-- Qué no debe hacer -->
+                        <div style="background-color: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); padding: 18px; border-radius: var(--radius-md);">
+                            <h4 style="color: #EF4444; font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding-bottom: 6px;">Qué no debe hacer</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No mantener relaciones privadas con clubes, agentes o familias.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No mantener conversaciones privadas con jugadores/as.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No actuar fuera de la línea metodológica.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No facilitar información técnica de jugadores/as.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No seguir ni interactuar con jugadores/as en RRSS.
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; margin-top: 12px;">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-seleccionadores-detail').remove()" style="width:100%; border: none;">Cerrar Panel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
         }
 
         function openEntrenadoresModal() {
