@@ -7174,19 +7174,48 @@
                 phone: "+34 688 333 444",
                 titulos: "Técnica en Gestión Deportiva y Operaciones Logísticas",
                 experiencia: "Asistente de material en canteras de Primera División femenina."
+            },
+            {
+                id: 25,
+                name: "Pablo Ruiz",
+                role: "Analista",
+                category: "Sub-16",
+                license: "UEFA B - Videoanálisis",
+                email: "pruiz@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 699 111 222",
+                titulos: "Curso Nacional de Analista de Fútbol (RFEF)",
+                experiencia: "4 años de experiencia en análisis de juego en Tercera División."
+            },
+            {
+                id: 26,
+                name: "Elena Gómez",
+                role: "Analista",
+                category: "Sub-19",
+                license: "UEFA A - Videoanálisis",
+                email: "egomez@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 699 333 444",
+                titulos: "Máster en Big Data Deportivo",
+                experiencia: "Analista de rendimiento y video en clubes de Liga F."
             }
         ];
 
         let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || DEFAULT_STAFF;
         let activeStaffRoleFilter = 'ALL';
 
-        // Sincronizar localStorage si no contiene a Paco Marí, o si no contiene entrenadores asistentes, o si no contiene entrenadores de porteros, o si no contiene utilleros
+        // Sincronizar localStorage si no contiene a Paco Marí, o si no contiene entrenadores asistentes, o si no contiene entrenadores de porteros, o si no contiene utilleros, o si no contiene a Pablo Ruiz
         if (localStorage.getItem('ffcv_staff')) {
             const tempStaff = JSON.parse(localStorage.getItem('ffcv_staff'));
             if (!tempStaff.some(m => m.name === "Paco Marí") || 
                 !tempStaff.some(m => m.role.includes('Entrenador') || m.role.includes('Asistente')) ||
                 !tempStaff.some(m => m.role.includes('Portero') || m.role.includes('Portera')) ||
-                !tempStaff.some(m => m.role.includes('Utillero') || m.role.includes('Utillera'))) {
+                !tempStaff.some(m => m.role.includes('Utillero') || m.role.includes('Utillera')) ||
+                !tempStaff.some(m => m.name === "Pablo Ruiz")) {
                 localStorage.setItem('ffcv_staff', JSON.stringify(DEFAULT_STAFF));
                 staff = DEFAULT_STAFF;
             }
@@ -7233,7 +7262,7 @@
             if (role === 'Utillero') categoryName = 'Asistente / Utillero/a';
             if (role === 'Seleccionador') categoryName = 'Seleccionadores';
             if (role === 'Preparador Físico') categoryName = 'Preparadores Físicos';
-            if (role === 'Analista Técnico') categoryName = 'Analistas';
+            if (role === 'Analista Técnico' || role === 'Analista') categoryName = 'Analistas';
             if (role === 'Fisioterapeuta') categoryName = 'Fisioterapeutas';
             if (role === 'Delegado') categoryName = 'Delegados';
             if (role === 'Médico') categoryName = 'Área Médica';
@@ -7295,11 +7324,11 @@
             const gkCount = staff.filter(m => m.role.includes('Portero') || m.role.includes('Portera')).length;
             const utilityCount = staff.filter(m => m.role.includes('Utillero') || m.role.includes('Utillera')).length;
             const pfCount = staff.filter(m => m.role === 'Preparador Físico').length;
-            const analystCount = staff.filter(m => m.role === 'Analista Técnico').length;
+            const analystCount = staff.filter(m => m.role === 'Analista Técnico' || m.role === 'Analista').length;
             const physioCount = staff.filter(m => m.role.includes('Fisio')).length;
             const delegCount = staff.filter(m => m.role === 'Delegado').length;
             const medCount = staff.filter(m => m.role.includes('Médic') || m.role.includes('Doctor') || m.role.includes('Enfermer')).length;
-            const scoutCount = staff.filter(m => m.role.includes('Scout') || m.role === 'Analista Técnico').length;
+            const scoutCount = staff.filter(m => m.role.includes('Scout') || m.role === 'Analista Técnico' || m.role === 'Analista').length;
 
             container.innerHTML = `
                 <div class="staff-dashboard-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
@@ -7562,7 +7591,9 @@
                 } else if (activeStaffRoleFilter === 'Médico') {
                     matchesRole = m.role.includes('Médic') || m.role.includes('Doctor') || m.role.includes('Enfermer');
                 } else if (activeStaffRoleFilter === 'Scout') {
-                    matchesRole = m.role.includes('Scout') || m.role === 'Analista Técnico';
+                    matchesRole = m.role.includes('Scout') || m.role === 'Analista Técnico' || m.role === 'Analista';
+                } else if (activeStaffRoleFilter === 'Analista Técnico' || activeStaffRoleFilter === 'Analista') {
+                    matchesRole = m.role === 'Analista Técnico' || m.role === 'Analista';
                 } else if (activeStaffRoleFilter === 'Fisioterapeuta') {
                     matchesRole = m.role.includes('Fisio') || m.role.includes('Rehabilitador');
                 } else {
@@ -7585,7 +7616,7 @@
                 let badgeStyle = 'background-color: var(--accent-light); color: var(--accent-hover);';
                 if (member.role === 'Segundo Entrenador') badgeStyle = 'background-color: var(--info-light); color: var(--info);';
                 if (member.role === 'Preparador Físico') badgeStyle = 'background-color: #e6f4ea; color: #137333;';
-                if (member.role === 'Analista Técnico') badgeStyle = 'background-color: #fef7e0; color: #b06000;';
+                if (member.role === 'Analista Técnico' || member.role === 'Analista') badgeStyle = 'background-color: #fef7e0; color: #b06000;';
                 if (member.role === 'Delegado') badgeStyle = 'background-color: #fce8e6; color: #c5221f;';
                 if (member.role.includes('Coordinador') || member.role.includes('Coordinación')) badgeStyle = 'background-color: var(--info-light); color: var(--info);';
                 if (member.role.includes('Director')) badgeStyle = 'background-color: var(--primary); color: #FFFFFF;';
@@ -8150,7 +8181,7 @@
                 openUtillerosModal();
             } else if (member.role === 'Preparador Físico') {
                 openPreparadoresModal();
-            } else if (member.role === 'Analista Técnico') {
+            } else if (member.role === 'Analista Técnico' || member.role === 'Analista') {
                 openAnalistasModal();
             } else if (member.role.includes('Coordinador') || member.role.includes('Coordinación') || member.role.includes('Director') || member.role.includes('Vicepresidente') || member.role.includes('Responsable')) {
                 openCoordinacionModal();
@@ -8244,42 +8275,22 @@
                                     <span style="color: var(--accent); font-weight: bold;">✕</span> No gestionar convocatorias oficiales sin la debida autorización deportiva.
                                 </li>
                                 <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No priorizar intereses particulares frente a los federativos.
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No difundir o compartir información interna o de carácter sensible.
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No establecer relaciones comerciales con clubes, agentes o familias.
-                                </li>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; margin-top: 12px;">
-                        <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-coordinacion-detail').remove()" style="width:100%; border: none;">Cerrar Panel</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(overlay);
-        }
-
-        function openAnalistasModal() {
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No priorizar intereses particulares frente a los federativo        function openAnalistasModal() {
             const overlay = document.createElement('div');
             overlay.className = 'modal-overlay active';
             overlay.id = 'modal-analistas-detail';
             overlay.innerHTML = `
                 <div class="modal-card" style="max-width: 750px; background-color: var(--primary-dark); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.15);">
                     <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 16px;">
-                        <h3 class="modal-title" style="color: var(--accent); font-size: 20px; font-weight: 700;">Analista Técnico/a</h3>
+                        <h3 class="modal-title" style="color: var(--accent); font-size: 20px; font-weight: 700;">Analista</h3>
                         <button class="close-btn" onclick="document.getElementById('modal-analistas-detail').remove()" style="color: #FFFFFF; opacity: 0.8; font-size: 24px; background: none; border: none; cursor: pointer;">×</button>
                     </div>
                     <div class="modal-body" style="padding: 24px 0 12px 0; display: flex; flex-direction: column; gap: 24px;">
                         
                         <!-- Misión -->
                         <div style="background-color: var(--primary-light); padding: 16px 20px; border-radius: var(--radius-md); border-left: 4px solid var(--accent);">
-                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Misión</h4>
-                            <p style="color: #FFFFFF; font-size: 14px; line-height: 1.5; margin: 0;">Optimizar la preparación táctica y el rendimiento deportivo mediante el análisis audiovisual exhaustivo del propio equipo y de los rivales competitivos.</p>
+                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Misión del puesto</h4>
+                            <p style="color: #FFFFFF; font-size: 14px; line-height: 1.5; margin: 0;">Aportar información objetiva y estratégica para optimizar el rendimiento individual y colectivo mediante el análisis del juego.</p>
                         </div>
                         
                         <!-- Columnas de Contenido -->
@@ -8290,22 +8301,19 @@
                                 <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Funciones Principales</h4>
                                 <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Grabar y editar sesiones de entrenamiento y partidos
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Analizar rivales
                                     </li>
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Elaborar informes tácticos del rival
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Editar vídeo
                                     </li>
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Analizar el rendimiento colectivo e individual
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Detectar patrones de juego y proponer plan propio
                                     </li>
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Crear vídeos de feedback táctico para jugadores
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Elaborar informes
                                     </li>
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Mantener base de datos de scouting actualizada
-                                    </li>
-                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Dar soporte metodológico audiovisual al seleccionador
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Soporte estratégico
                                     </li>
                                 </ul>
                             </div>
@@ -8315,22 +8323,19 @@
                                 <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Competencias Clave</h4>
                                 <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Dominio de software de videoanálisis
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Capacidad analítica
                                     </li>
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Capacidad de observación y detalle
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Manejo software audiovisual
                                     </li>
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Organización de archivos y base de datos
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Observación táctica
                                     </li>
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Comprensión profunda de táctica de juego
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Organización información
                                     </li>
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Trabajo interdisciplinar
-                                    </li>
-                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Comunicación y capacidad de síntesis
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Comunicación visual
                                     </li>
                                 </ul>
                             </div>
@@ -8338,23 +8343,23 @@
                         </div>
 
                         <!-- Qué no debe hacer -->
-                        <div style="background-color: rgba(255, 107, 0, 0.08); border: 1px solid rgba(255, 107, 0, 0.2); padding: 18px; border-radius: var(--radius-md);">
-                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 107, 0, 0.2); padding-bottom: 6px;">Qué no debe hacer</h4>
+                        <div style="background-color: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); padding: 18px; border-radius: var(--radius-md);">
+                            <h4 style="color: #EF4444; font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding-bottom: 6px;">Qué no debe hacer</h4>
                             <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No compartir informes tácticos o vídeos fuera del cuerpo técnico.
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No generar conclusiones sin evidencia
                                 </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No intervenir en la toma de decisiones directas sin aprobación.
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No compartir información interna del cuerpo técnico
                                 </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No priorizar el análisis individual sobre los objetivos colectivos.
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No condicionar decisiones deportivas
                                 </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No realizar valoraciones públicas no autorizadas sobre rivales.
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No manipular datos o vídeos
                                 </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
-                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No mantener comunicación extra-deportiva con agentes o familiares.
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No trabajar desconectado del modelo de juego
                                 </li>
                             </ul>
                         </div>
