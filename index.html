@@ -7175,7 +7175,7 @@
                         </div>
                         <div class="staff-area-meta">
                             <span class="staff-area-count">${selCount} Integrantes</span>
-                            <button class="btn btn-primary btn-sm" onclick="openSeleccionadoresModal()">Ver Estructura</button>
+                            <button class="btn btn-primary btn-sm" onclick="openRoleStaffListModal('Seleccionador', 'Seleccionadores')">Ver Estructura</button>
                         </div>
                     </div>
 
@@ -7189,7 +7189,7 @@
                         </div>
                         <div class="staff-area-meta">
                             <span class="staff-area-count">${coachCount} Integrantes</span>
-                            <button class="btn btn-primary btn-sm" onclick="openEntrenadoresModal()">Ver Estructura</button>
+                            <button class="btn btn-primary btn-sm" onclick="openRoleStaffListModal('Entrenador', 'Entrenadores')">Ver Estructura</button>
                         </div>
                     </div>
 
@@ -7203,7 +7203,7 @@
                         </div>
                         <div class="staff-area-meta">
                             <span class="staff-area-count">${pfCount} Integrantes</span>
-                            <button class="btn btn-primary btn-sm" onclick="openPreparadoresModal()">Ver Estructura</button>
+                            <button class="btn btn-primary btn-sm" onclick="openRoleStaffListModal('Preparador Físico', 'Preparadores Físicos')">Ver Estructura</button>
                         </div>
                     </div>
 
@@ -7217,7 +7217,7 @@
                         </div>
                         <div class="staff-area-meta">
                             <span class="staff-area-count">${analystCount} Integrantes</span>
-                            <button class="btn btn-primary btn-sm" onclick="selectStaffRoleFilter('Analista Técnico')">Ver Estructura</button>
+                            <button class="btn btn-primary btn-sm" onclick="openRoleStaffListModal('Analista Técnico', 'Analistas')">Ver Estructura</button>
                         </div>
                     </div>
 
@@ -7715,6 +7715,209 @@
                     </div>
                     <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; margin-top: 12px;">
                         <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-preparadores-detail').remove()" style="width:100%; border: none;">Cerrar Panel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function openRoleStaffListModal(roleType, roleTitle) {
+            // Filtrar staff por tipo de rol
+            let filtered = [];
+            if (roleType === 'Seleccionador') {
+                filtered = staff.filter(m => m.role === 'Seleccionador');
+            } else if (roleType === 'Entrenador') {
+                filtered = staff.filter(m => m.role.includes('Entrenador'));
+            } else if (roleType === 'Preparador Físico') {
+                filtered = staff.filter(m => m.role === 'Preparador Físico');
+            } else if (roleType === 'Analista Técnico') {
+                filtered = staff.filter(m => m.role === 'Analista Técnico');
+            } else {
+                filtered = staff.filter(m => m.role === roleType);
+            }
+
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'modal-role-staff-list';
+            
+            // Construir HTML de las tarjetas
+            let cardsHtml = '';
+            if (filtered.length === 0) {
+                cardsHtml = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+                        No hay integrantes registrados en esta categoría.
+                    </div>
+                `;
+            } else {
+                filtered.forEach(member => {
+                    const initials = member.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                    
+                    let badgeStyle = 'background-color: var(--accent-light); color: var(--accent-hover);';
+                    if (member.role === 'Segundo Entrenador') badgeStyle = 'background-color: var(--info-light); color: var(--info);';
+                    if (member.role === 'Preparador Físico') badgeStyle = 'background-color: #e6f4ea; color: #137333;';
+                    if (member.role === 'Analista Técnico') badgeStyle = 'background-color: #fef7e0; color: #b06000;';
+                    if (member.role === 'Delegado') badgeStyle = 'background-color: #fce8e6; color: #c5221f;';
+                    if (member.role.includes('Coordinador') || member.role.includes('Coordinación')) badgeStyle = 'background-color: var(--info-light); color: var(--info);';
+                    if (member.role.includes('Director')) badgeStyle = 'background-color: var(--primary); color: #FFFFFF;';
+                    
+                    let statusClass = 'tag-success';
+                    if (member.status === 'En Concentración') statusClass = 'tag-warning';
+                    if (member.status === 'De Vacaciones') statusClass = 'tag-info';
+
+                    // Determinar onclick para ver funciones
+                    let onclickFn = '';
+                    if (member.role === 'Seleccionador') {
+                        onclickFn = 'openSeleccionadoresModal()';
+                    } else if (member.role.includes('Entrenador')) {
+                        onclickFn = 'openEntrenadoresModal()';
+                    } else if (member.role === 'Preparador Físico') {
+                        onclickFn = 'openPreparadoresModal()';
+                    } else if (member.role === 'Analista Técnico') {
+                        onclickFn = 'openAnalistasModal()';
+                    } else {
+                        onclickFn = `openStaffDetailModal(${member.id})`;
+                    }
+
+                    cardsHtml += `
+                        <div class="staff-card" style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 20px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: left;">
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                                    <div style="background-color: var(--primary-light); color: var(--accent); font-weight: 700; width: 44px; height: 44px; font-size: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1.5px solid var(--accent); text-align: center;">${initials}</div>
+                                    <div>
+                                        <h4 style="font-size: 15px; color: #FFFFFF; font-weight: 700; margin: 0; text-align: left;">${member.name}</h4>
+                                        <span class="staff-role-badge" style="${badgeStyle} font-size: 10px; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-top: 4px; font-weight: 600;">${member.role}</span>
+                                    </div>
+                                </div>
+                                <div style="display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #E0E0E0; text-align: left;">
+                                    <div><span style="color: var(--text-muted);">Categoría:</span> <strong>${member.category}</strong></div>
+                                    <div><span style="color: var(--text-muted);">Deporte:</span> <strong>${member.sport || 'Fútbol'}</strong></div>
+                                    <div><span style="color: var(--text-muted);">Contacto:</span> <span style="color: var(--accent); font-weight: 500;">${member.email}</span></div>
+                                    <div style="margin-top: 4px;"><span class="tag ${statusClass}" style="font-size: 10px;">${member.status}</span></div>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-sm" onclick="document.getElementById('modal-role-staff-list').remove(); ${onclickFn}" style="width: 100%; font-size: 12px; padding: 8px; margin-top: 10px; font-weight: 600;">Ver funciones</button>
+                        </div>
+                    `;
+                });
+            }
+
+            overlay.innerHTML = `
+                <div class="modal-card" style="max-width: 850px; background-color: var(--primary-dark); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.15); width: 90%; max-height: 85vh; display: flex; flex-direction: column;">
+                    <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 16px; flex-shrink: 0;">
+                        <h3 class="modal-title" style="color: var(--accent); font-size: 20px; font-weight: 700;">Estructura: ${roleTitle}</h3>
+                        <button class="close-btn" onclick="document.getElementById('modal-role-staff-list').remove()" style="color: #FFFFFF; opacity: 0.8; font-size: 24px; background: none; border: none; cursor: pointer;">×</button>
+                    </div>
+                    <div class="modal-body" style="padding: 24px 0 12px 0; overflow-y: auto; flex-grow: 1;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; padding: 2px; max-height: 55vh;">
+                            ${cardsHtml}
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; margin-top: 12px; flex-shrink: 0;">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-role-staff-list').remove()" style="width:100%; border: none;">Cerrar Listado</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function openAnalistasModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'modal-analistas-detail';
+            overlay.innerHTML = `
+                <div class="modal-card" style="max-width: 750px; background-color: var(--primary-dark); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.15);">
+                    <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 16px;">
+                        <h3 class="modal-title" style="color: var(--accent); font-size: 20px; font-weight: 700;">Analista Técnico/a</h3>
+                        <button class="close-btn" onclick="document.getElementById('modal-analistas-detail').remove()" style="color: #FFFFFF; opacity: 0.8; font-size: 24px; background: none; border: none; cursor: pointer;">×</button>
+                    </div>
+                    <div class="modal-body" style="padding: 24px 0 12px 0; display: flex; flex-direction: column; gap: 24px;">
+                        
+                        <!-- Misión -->
+                        <div style="background-color: var(--primary-light); padding: 16px 20px; border-radius: var(--radius-md); border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Misión</h4>
+                            <p style="color: #FFFFFF; font-size: 14px; line-height: 1.5; margin: 0;">Optimizar la preparación táctica y el rendimiento deportivo mediante el análisis audiovisual exhaustivo del propio equipo y de los rivales competitivos.</p>
+                        </div>
+                        
+                        <!-- Columnas de Contenido -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            
+                            <!-- Funciones Principales -->
+                            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Funciones Principales</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Grabar y editar sesiones de entrenamiento y partidos
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Elaborar informes tácticos del rival
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Analizar el rendimiento colectivo e individual
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Crear vídeos de feedback táctico para jugadores
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Mantener base de datos de scouting actualizada
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Dar soporte metodológico audiovisual al seleccionador
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Competencias Clave -->
+                            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Competencias Clave</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Dominio de software de videoanálisis
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Capacidad de observación y detalle
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Organización de archivos y base de datos
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Comprensión profunda de táctica de juego
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Trabajo interdisciplinar
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Comunicación y capacidad de síntesis
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+
+                        <!-- Qué no debe hacer -->
+                        <div style="background-color: rgba(255, 107, 0, 0.08); border: 1px solid rgba(255, 107, 0, 0.2); padding: 18px; border-radius: var(--radius-md);">
+                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 107, 0, 0.2); padding-bottom: 6px;">Qué no debe hacer</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No compartir informes tácticos o vídeos fuera del cuerpo técnico.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No intervenir en la toma de decisiones directas sin aprobación.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No priorizar el análisis individual sobre los objetivos colectivos.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No realizar valoraciones públicas no autorizadas sobre rivales.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No mantener comunicación extra-deportiva con agentes o familiares.
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; margin-top: 12px;">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-analistas-detail').remove()" style="width:100%; border: none;">Cerrar Panel</button>
                     </div>
                 </div>
             `;
