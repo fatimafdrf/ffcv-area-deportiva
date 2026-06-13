@@ -2327,10 +2327,200 @@
             line-height: 1.5;
             opacity: 1;
         }
+
+        /* Estilos de Autenticación */
+        #auth-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f1e46 0%, #060d1f 100%);
+            font-family: 'Outfit', sans-serif;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .auth-card {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 40px 32px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 0.4s ease-out;
+        }
+        .auth-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        .auth-logo-svg {
+            width: 40px;
+            height: 40px;
+        }
+        .auth-brand-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .auth-brand-name {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f1e46;
+            line-height: 1.1;
+        }
+        .auth-brand-sub {
+            font-size: 11px;
+            font-weight: 600;
+            color: #FF6B00;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .auth-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0f1e46;
+            margin: 0;
+            text-align: center;
+        }
+        .auth-subtitle {
+            font-size: 14px;
+            color: #6B7280;
+            text-align: center;
+            margin-top: 6px;
+            margin-bottom: 24px;
+        }
+        .auth-alert {
+            background-color: #FEE2E2;
+            border: 1px solid #FCA5A5;
+            color: #991B1B;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 18px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        .auth-link {
+            color: #FF6B00;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .auth-link:hover {
+            color: #e05e00;
+            text-decoration: underline;
+        }
+        .auth-footer-text {
+            text-align: center;
+            font-size: 14px;
+            color: #4B5563;
+            margin-top: 24px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         </style>
 </head>
 
 <body>
+    <!-- Contenedor de Autenticación -->
+    <div id="auth-container" style="display: none;">
+        <div class="auth-card">
+            <div class="auth-brand">
+                <!-- SVG Logo de Fútbol Estilizado -->
+                <svg class="auth-logo-svg" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="#FF6B00" stroke-width="2" fill="none" />
+                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="#FF6B00" stroke-width="1.5" />
+                    <path d="M2 12h20" stroke="#FF6B00" stroke-width="1.5" />
+                    <circle cx="12" cy="12" r="3" fill="#FF6B00" />
+                </svg>
+                <div class="auth-brand-text">
+                    <span class="auth-brand-name">FFCV</span>
+                    <span class="auth-brand-sub">Área Deportiva</span>
+                </div>
+            </div>
+            
+            <!-- Vista de Login -->
+            <div id="auth-login-view">
+                <h2 class="auth-title">Iniciar Sesión</h2>
+                <p class="auth-subtitle">Acceso al Panel de Gestión Deportiva FFCV</p>
+                
+                <div id="login-error-alert" class="auth-alert" style="display: none;"></div>
+                
+                <form id="login-form" onsubmit="handleLoginSubmit(event)">
+                    <div class="form-group" style="margin-bottom: 16px;">
+                        <label class="form-label" for="login-email">Correo Electrónico</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="ejemplo@ffcv.es" required style="width: 100%; height: 42px; background: #FFFFFF;" />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <label class="form-label" for="login-password" style="margin: 0;">Contraseña</label>
+                            <a href="#" class="auth-link" style="font-size: 12px;" onclick="showToast('Recuperación de contraseña no disponible en esta demo', 'info')">¿Olvidaste tu contraseña?</a>
+                        </div>
+                        <input type="password" id="login-password" class="form-input" placeholder="••••••••" required style="width: 100%; height: 42px; background: #FFFFFF;" />
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; height: 42px; background-color: #FF6B00; border-color: #FF6B00; border-radius: 10px; font-weight: 700;">Iniciar Sesión</button>
+                </form>
+                
+                <div class="auth-footer-text">
+                    ¿No tienes cuenta? <a href="#" class="auth-link" onclick="toggleAuthView('register')">Regístrate</a>
+                </div>
+            </div>
+            
+            <!-- Vista de Registro -->
+            <div id="auth-register-view" style="display: none;">
+                <h2 class="auth-title">Crear Cuenta</h2>
+                <p class="auth-subtitle">Regístrate en la plataforma FFCV</p>
+                
+                <div id="register-error-alert" class="auth-alert" style="display: none;"></div>
+                
+                <form id="register-form" onsubmit="handleRegisterSubmit(event)">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" for="register-name">Nombre</label>
+                            <input type="text" id="register-name" class="form-input" placeholder="Juan" required style="width: 100%; height: 40px; background: #FFFFFF;" />
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" for="register-surname">Apellidos</label>
+                            <input type="text" id="register-surname" class="form-input" placeholder="García" required style="width: 100%; height: 40px; background: #FFFFFF;" />
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label class="form-label" for="register-email">Correo Electrónico</label>
+                        <input type="email" id="register-email" class="form-input" placeholder="correo@ffcv.es" required style="width: 100%; height: 40px; background: #FFFFFF;" />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 14px;">
+                        <label class="form-label" for="register-role">Rol Inicial</label>
+                        <select id="register-role" class="form-select" style="width: 100%; height: 40px; background: #FFFFFF; border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0 12px; font-size: 14px; font-family: inherit;">
+                            <option value="Director Deportivo">Director Deportivo</option>
+                            <option value="Coordinador">Coordinador</option>
+                            <option value="Técnico">Técnico</option>
+                            <option value="Administrador">Administrador</option>
+                        </select>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" for="register-password">Contraseña</label>
+                            <input type="password" id="register-password" class="form-input" placeholder="••••••••" required style="width: 100%; height: 40px; background: #FFFFFF;" />
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label" for="register-confirm-password">Confirmar</label>
+                            <input type="password" id="register-confirm-password" class="form-input" placeholder="••••••••" required style="width: 100%; height: 40px; background: #FFFFFF;" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; height: 42px; background-color: #FF6B00; border-color: #FF6B00; border-radius: 10px; font-weight: 700;">Crear Cuenta</button>
+                </form>
+                
+                <div class="auth-footer-text">
+                    ¿Ya tienes una cuenta? <a href="#" class="auth-link" onclick="toggleAuthView('login')">Inicia sesión</a>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="app-container">
 
         <!-- ==========================================================================
@@ -2400,12 +2590,21 @@
             </nav>
 
             <!-- Pie de Usuario -->
-            <div class="sidebar-footer">
-                <div class="user-avatar" id="sidebar-user-avatar">IJ</div>
-                <div class="user-info">
-                    <span class="user-name" id="sidebar-user-name">I. Jordá</span>
-                    <span class="user-role" id="sidebar-user-role">Director Deportivo</span>
+            <div class="sidebar-footer" style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="user-avatar" id="sidebar-user-avatar">IJ</div>
+                    <div class="user-info">
+                        <span class="user-name" id="sidebar-user-name">I. Jordá</span>
+                        <span class="user-role" id="sidebar-user-role">Director Deportivo</span>
+                    </div>
                 </div>
+                <button onclick="handleLogout()" style="background: transparent; border: none; color: #FF6B00; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 6px; border-radius: 6px; transition: background-color 0.2s;" title="Cerrar sesión" onmouseover="this.style.backgroundColor='rgba(255, 107, 0, 0.1)'" onmouseout="this.style.backgroundColor='transparent'">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
+                </button>
             </div>
         </aside>
 
@@ -5058,6 +5257,142 @@
          D. LÓGICA DE APLICACIÓN EN JAVASCRIPT
          ========================================================================== -->
     <script>
+        /* ==========================================================================
+           D.0 SISTEMA DE AUTENTICACIÓN (FRONTEND / LOCALSTORAGE SIMULADO)
+           ========================================================================== */
+        function initDefaultUsers() {
+            if (!localStorage.getItem('ffcv_registered_users')) {
+                const defaultUsers = [
+                    { email: 'director@ffcv.es', password: 'password', name: 'Ildefonso', surname: 'Jordá', role: 'Director Deportivo' },
+                    { email: 'coordinador@ffcv.es', password: 'password', name: 'Carlos', surname: 'Gómez', role: 'Coordinador' },
+                    { email: 'tecnico@ffcv.es', password: 'password', name: 'Ana', surname: 'Martínez', role: 'Técnico' },
+                    { email: 'admin@ffcv.es', password: 'password', name: 'Admin', surname: 'FFCV', role: 'Administrador' }
+                ];
+                localStorage.setItem('ffcv_registered_users', JSON.stringify(defaultUsers));
+            }
+        }
+
+        function checkAuthSession() {
+            const user = JSON.parse(localStorage.getItem('ffcv_logged_in_user'));
+            const authContainer = document.getElementById('auth-container');
+            const appContainer = document.querySelector('.app-container');
+            
+            if (user) {
+                if (authContainer) authContainer.style.display = 'none';
+                if (appContainer) appContainer.style.display = 'flex';
+                
+                const nameEl = document.getElementById('sidebar-user-name');
+                const roleEl = document.getElementById('sidebar-user-role');
+                const avatarEl = document.getElementById('sidebar-user-avatar');
+                
+                if (nameEl) nameEl.textContent = `${user.name.charAt(0)}. ${user.surname}`;
+                if (roleEl) roleEl.textContent = user.role;
+                if (avatarEl) avatarEl.textContent = `${user.name.charAt(0)}${user.surname.charAt(0)}`.toUpperCase();
+            } else {
+                if (appContainer) appContainer.style.display = 'none';
+                if (authContainer) authContainer.style.display = 'flex';
+                toggleAuthView('login');
+            }
+        }
+
+        function toggleAuthView(view) {
+            const loginView = document.getElementById('auth-login-view');
+            const registerView = document.getElementById('auth-register-view');
+            const loginAlert = document.getElementById('login-error-alert');
+            const registerAlert = document.getElementById('register-error-alert');
+            
+            if (loginAlert) loginAlert.style.display = 'none';
+            if (registerAlert) registerAlert.style.display = 'none';
+            
+            if (view === 'login') {
+                if (loginView) loginView.style.display = 'block';
+                if (registerView) registerView.style.display = 'none';
+            } else {
+                if (loginView) loginView.style.display = 'none';
+                if (registerView) registerView.style.display = 'block';
+                const regForm = document.getElementById('register-form');
+                if (regForm) regForm.reset();
+            }
+        }
+
+        function handleLoginSubmit(event) {
+            event.preventDefault();
+            const emailInput = document.getElementById('login-email').value.trim().toLowerCase();
+            const passwordInput = document.getElementById('login-password').value;
+            const errorAlert = document.getElementById('login-error-alert');
+            
+            if (errorAlert) errorAlert.style.display = 'none';
+            
+            const users = JSON.parse(localStorage.getItem('ffcv_registered_users') || '[]');
+            const matchedUser = users.find(u => u.email === emailInput && u.password === passwordInput);
+            
+            if (matchedUser) {
+                localStorage.setItem('ffcv_logged_in_user', JSON.stringify(matchedUser));
+                showToast(`¡Bienvenido, ${matchedUser.name}!`, 'success');
+                const logForm = document.getElementById('login-form');
+                if (logForm) logForm.reset();
+                checkAuthSession();
+            } else {
+                if (errorAlert) {
+                    errorAlert.textContent = 'Correo electrónico o contraseña incorrectos.';
+                    errorAlert.style.display = 'block';
+                }
+            }
+        }
+
+        function handleRegisterSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('register-name').value.trim();
+            const surname = document.getElementById('register-surname').value.trim();
+            const email = document.getElementById('register-email').value.trim().toLowerCase();
+            const role = document.getElementById('register-role').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const errorAlert = document.getElementById('register-error-alert');
+            
+            if (errorAlert) errorAlert.style.display = 'none';
+            
+            if (password.length < 6) {
+                if (errorAlert) {
+                    errorAlert.textContent = 'La contraseña debe tener al menos 6 caracteres.';
+                    errorAlert.style.display = 'block';
+                }
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                if (errorAlert) {
+                    errorAlert.textContent = 'Las contraseñas no coinciden.';
+                    errorAlert.style.display = 'block';
+                }
+                return;
+            }
+            
+            const users = JSON.parse(localStorage.getItem('ffcv_registered_users') || '[]');
+            const emailExists = users.some(u => u.email === email);
+            if (emailExists) {
+                if (errorAlert) {
+                    errorAlert.textContent = 'El correo electrónico ya está registrado.';
+                    errorAlert.style.display = 'block';
+                }
+                return;
+            }
+            
+            const newUser = { name, surname, email, role, password };
+            users.push(newUser);
+            localStorage.setItem('ffcv_registered_users', JSON.stringify(users));
+            
+            showToast('Cuenta creada con éxito. Inicia sesión ahora.', 'success');
+            toggleAuthView('login');
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('ffcv_logged_in_user');
+            showToast('Sesión cerrada correctamente.', 'info');
+            checkAuthSession();
+            window.location.hash = 'dashboard';
+        }
+
         /* ==========================================================================
            D.1 BASE DE DATOS INICIAL DE LA APP (PERSISTENCIA CON LOCALSTORAGE)
            ========================================================================== */
@@ -12131,6 +12466,9 @@
            E. ARRANCAR APLICACIÓN
            ========================================================================== */
         window.addEventListener('DOMContentLoaded', () => {
+            initDefaultUsers();
+            checkAuthSession();
+            
             updateCounts();
             renderDashboardView();
             renderStaff();
