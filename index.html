@@ -7146,18 +7146,47 @@
                 phone: "+34 655 555 666",
                 titulos: "UEFA Goalkeeper A, Licenciada en Ciencias de la Actividad Física",
                 experiencia: "Preparadora de porteras de las selecciones autonómicas Valenta."
+            },
+            {
+                id: 23,
+                name: "Manuel Ortiz",
+                role: "Asistente / Utillero/a",
+                category: "Sub-16",
+                license: "Utillaje Deportivo FFCV",
+                email: "mortiz@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 688 111 222",
+                titulos: "Certificado de Logística y Equipamiento Deportivo",
+                experiencia: "8 años como encargado de material en clubes de Tercera División y selecciones base."
+            },
+            {
+                id: 24,
+                name: "Carla Sanz",
+                role: "Asistente / Utillero/a",
+                category: "Sub-19",
+                license: "Utillaje Deportivo FFCV",
+                email: "csanz@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 688 333 444",
+                titulos: "Técnica en Gestión Deportiva y Operaciones Logísticas",
+                experiencia: "Asistente de material en canteras de Primera División femenina."
             }
         ];
 
         let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || DEFAULT_STAFF;
         let activeStaffRoleFilter = 'ALL';
 
-        // Sincronizar localStorage si no contiene a Paco Marí, o si no contiene entrenadores asistentes, o si no contiene entrenadores de porteros
+        // Sincronizar localStorage si no contiene a Paco Marí, o si no contiene entrenadores asistentes, o si no contiene entrenadores de porteros, o si no contiene utilleros
         if (localStorage.getItem('ffcv_staff')) {
             const tempStaff = JSON.parse(localStorage.getItem('ffcv_staff'));
             if (!tempStaff.some(m => m.name === "Paco Marí") || 
                 !tempStaff.some(m => m.role.includes('Entrenador') || m.role.includes('Asistente')) ||
-                !tempStaff.some(m => m.role.includes('Portero') || m.role.includes('Portera'))) {
+                !tempStaff.some(m => m.role.includes('Portero') || m.role.includes('Portera')) ||
+                !tempStaff.some(m => m.role.includes('Utillero') || m.role.includes('Utillera'))) {
                 localStorage.setItem('ffcv_staff', JSON.stringify(DEFAULT_STAFF));
                 staff = DEFAULT_STAFF;
             }
@@ -7201,6 +7230,7 @@
             if (role === 'Coordinador') categoryName = 'Coordinación Deportiva';
             if (role === 'Entrenador') categoryName = 'Entrenadores';
             if (role === 'Portero') categoryName = 'Entrenadores/as de Porteros/as';
+            if (role === 'Utillero') categoryName = 'Asistente / Utillero/a';
             if (role === 'Seleccionador') categoryName = 'Seleccionadores';
             if (role === 'Preparador Físico') categoryName = 'Preparadores Físicos';
             if (role === 'Analista Técnico') categoryName = 'Analistas';
@@ -7261,8 +7291,9 @@
             const orgCount = staff.filter(m => m.role.includes('Director') || m.role.includes('Coordinador') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable') || m.role === 'Director técnico').length;
             const coordCount = staff.filter(m => m.role.includes('Coordinador') || m.role.includes('Coordinación')).length;
             const selCount = staff.filter(m => m.role === 'Seleccionador').length;
-            const coachCount = staff.filter(m => (m.role.includes('Entrenador') || m.role.includes('Asistente')) && !m.role.includes('Portero') && !m.role.includes('Portera')).length;
+            const coachCount = staff.filter(m => (m.role.includes('Entrenador') || m.role.includes('Asistente')) && !m.role.includes('Portero') && !m.role.includes('Portera') && !m.role.includes('Utillero') && !m.role.includes('Utillera')).length;
             const gkCount = staff.filter(m => m.role.includes('Portero') || m.role.includes('Portera')).length;
+            const utilityCount = staff.filter(m => m.role.includes('Utillero') || m.role.includes('Utillera')).length;
             const pfCount = staff.filter(m => m.role === 'Preparador Físico').length;
             const analystCount = staff.filter(m => m.role === 'Analista Técnico').length;
             const physioCount = staff.filter(m => m.role.includes('Fisio')).length;
@@ -7339,6 +7370,20 @@
                         <div class="staff-area-meta">
                             <span class="staff-area-count">${gkCount} Integrantes</span>
                             <button class="btn btn-primary btn-sm" onclick="selectStaffRoleFilter('Portero')">Ver Estructura</button>
+                        </div>
+                    </div>
+
+                    <div class="staff-area-card">
+                        <div>
+                            <div class="staff-area-icon">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                            </div>
+                            <h4 class="staff-area-title">Asistente / Utillero/a</h4>
+                            <p class="staff-area-desc">Gestión, preparación y control logístico del material deportivo para entrenamientos y viajes.</p>
+                        </div>
+                        <div class="staff-area-meta">
+                            <span class="staff-area-count">${utilityCount} Integrantes</span>
+                            <button class="btn btn-primary btn-sm" onclick="selectStaffRoleFilter('Utillero')">Ver Estructura</button>
                         </div>
                     </div>
 
@@ -7509,9 +7554,11 @@
                 } else if (activeStaffRoleFilter === 'Coordinador') {
                     matchesRole = m.role.includes('Coordinador') || m.role.includes('Coordinación');
                 } else if (activeStaffRoleFilter === 'Entrenador') {
-                    matchesRole = (m.role.includes('Entrenador') || m.role.includes('Asistente')) && !m.role.includes('Portero') && !m.role.includes('Portera');
+                    matchesRole = (m.role.includes('Entrenador') || m.role.includes('Asistente')) && !m.role.includes('Portero') && !m.role.includes('Portera') && !m.role.includes('Utillero') && !m.role.includes('Utillera');
                 } else if (activeStaffRoleFilter === 'Portero') {
                     matchesRole = m.role.includes('Portero') || m.role.includes('Portera');
+                } else if (activeStaffRoleFilter === 'Utillero') {
+                    matchesRole = m.role.includes('Utillero') || m.role.includes('Utillera');
                 } else if (activeStaffRoleFilter === 'Médico') {
                     matchesRole = m.role.includes('Médic') || m.role.includes('Doctor') || m.role.includes('Enfermer');
                 } else if (activeStaffRoleFilter === 'Scout') {
@@ -7985,6 +8032,104 @@
             document.body.appendChild(overlay);
         }
 
+        function openUtillerosModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'modal-utilleros-detail';
+            overlay.innerHTML = `
+                <div class="modal-card" style="max-width: 750px; background-color: var(--primary-dark); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.15);">
+                    <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 16px;">
+                        <h3 class="modal-title" style="color: var(--accent); font-size: 20px; font-weight: 700;">Asistente / Utillero/a</h3>
+                        <button class="close-btn" onclick="document.getElementById('modal-utilleros-detail').remove()" style="color: #FFFFFF; opacity: 0.8; font-size: 24px; background: none; border: none; cursor: pointer;">×</button>
+                    </div>
+                    <div class="modal-body" style="padding: 24px 0 12px 0; display: flex; flex-direction: column; gap: 24px;">
+                        
+                        <!-- Misión -->
+                        <div style="background-color: var(--primary-light); padding: 16px 20px; border-radius: var(--radius-md); border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Misión del puesto</h4>
+                            <p style="color: #FFFFFF; font-size: 14px; line-height: 1.5; margin: 0;">Garantizar el correcto funcionamiento operativo y logístico de entrenamientos, partidos y concentraciones.</p>
+                        </div>
+                        
+                        <!-- Columnas de Contenido -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            
+                            <!-- Funciones Principales -->
+                            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Funciones Principales</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Preparar material
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Control logístico
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Apoyo operativo
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Control de material
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Soporte entrenamientos
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Competencias Clave -->
+                            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Competencias Clave</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Organización
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Responsabilidad
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Trabajo en equipo
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Atención al detalle
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Proactividad
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+
+                        <!-- Qué no debe hacer -->
+                        <div style="background-color: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.2); padding: 18px; border-radius: var(--radius-md);">
+                            <h4 style="color: #EF4444; font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(239, 68, 68, 0.2); padding-bottom: 6px;">Qué no debe hacer</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No abandonar funciones asignadas
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No generar desorganización operativa
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No compartir información interna
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No actuar fuera de sus responsabilidades
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No intervenir directamente con jugadores/as sin autorización
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; margin-top: 12px;">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-utilleros-detail').remove()" style="width:100%; border: none;">Cerrar Panel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
         function openRoleSpecificModal(memberId) {
             const member = staff.find(m => m.id === memberId);
             if (!member) return;
@@ -7994,11 +8139,15 @@
             } else if (member.role.includes('Entrenador') || member.role.includes('Asistente')) {
                 if (member.role.includes('Portero') || member.role.includes('Portera')) {
                     openPorterosModal();
+                } else if (member.role.includes('Utillero') || member.role.includes('Utillera')) {
+                    openUtillerosModal();
                 } else {
                     openEntrenadoresModal();
                 }
             } else if (member.role.includes('Portero') || member.role.includes('Portera')) {
                 openPorterosModal();
+            } else if (member.role.includes('Utillero') || member.role.includes('Utillera')) {
+                openUtillerosModal();
             } else if (member.role === 'Preparador Físico') {
                 openPreparadoresModal();
             } else if (member.role === 'Analista Técnico') {
