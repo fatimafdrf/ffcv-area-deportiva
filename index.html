@@ -7603,8 +7603,8 @@
                         
                         <!-- Misión -->
                         <div style="background-color: var(--primary-light); padding: 16px 20px; border-radius: var(--radius-md); border-left: 4px solid var(--accent);">
-                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Misión</h4>
-                            <p style="color: #FFFFFF; font-size: 14px; line-height: 1.5; margin: 0;">Dar soporte técnico y metodológico al seleccionador/a, contribuyendo al desarrollo de entrenamientos, análisis y gestión del equipo.</p>
+                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Misión del puesto</h4>
+                            <p style="color: #FFFFFF; font-size: 14px; line-height: 1.5; margin: 0;">Dar soporte técnico y metodológico al seleccionador/a contribuyendo al desarrollo de entrenamientos, análisis y gestión del equipo.</p>
                         </div>
                         
                         <!-- Columnas de Contenido -->
@@ -7629,9 +7629,6 @@
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
                                         <span style="color: var(--accent); font-weight: bold;">•</span> Seguimiento y observación de jugadores
                                     </li>
-                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Apoyo operativo
-                                    </li>
                                 </ul>
                             </div>
                             
@@ -7654,9 +7651,6 @@
                                     <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
                                         <span style="color: var(--accent); font-weight: bold;">•</span> Observación y evaluación
                                     </li>
-                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
-                                        <span style="color: var(--accent); font-weight: bold;">•</span> Adaptabilidad
-                                    </li>
                                 </ul>
                             </div>
                             
@@ -7670,16 +7664,16 @@
                                     <span style="color: #EF4444; font-weight: bold;">✕</span> No contradecir públicamente al seleccionador/a.
                                 </li>
                                 <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No facilitar información técnica de jugadores/as.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
                                     <span style="color: #EF4444; font-weight: bold;">✕</span> No mantener relaciones privadas con familias o agentes.
                                 </li>
                                 <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
+                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No seguir ni interactuar con jugadores/as mediante RRSS.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
                                     <span style="color: #EF4444; font-weight: bold;">✕</span> No romper la unidad del cuerpo técnico.
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
-                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No compartir información interna.
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FEE2E2;">
-                                    <span style="color: #EF4444; font-weight: bold;">✕</span> No interactuar con jugadores/as mediante RRSS.
                                 </li>
                             </ul>
                         </div>
@@ -7803,7 +7797,7 @@
             
             if (member.role === 'Seleccionador') {
                 openSeleccionadoresModal();
-            } else if (member.role.includes('Entrenador')) {
+            } else if (member.role.includes('Entrenador') || member.role.includes('Asistente')) {
                 openEntrenadoresModal();
             } else if (member.role === 'Preparador Físico') {
                 openPreparadoresModal();
