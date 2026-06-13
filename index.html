@@ -7203,7 +7203,7 @@
                         </div>
                         <div class="staff-area-meta">
                             <span class="staff-area-count">${pfCount} Integrantes</span>
-                            <button class="btn btn-primary btn-sm" onclick="selectStaffRoleFilter('Preparador Físico')">Ver Estructura</button>
+                            <button class="btn btn-primary btn-sm" onclick="openPreparadoresModal()">Ver Estructura</button>
                         </div>
                     </div>
 
@@ -7611,6 +7611,110 @@
                     </div>
                     <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; margin-top: 12px;">
                         <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-entrenadores-detail').remove()" style="width:100%; border: none;">Cerrar Panel</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        function openPreparadoresModal() {
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay active';
+            overlay.id = 'modal-preparadores-detail';
+            overlay.innerHTML = `
+                <div class="modal-card" style="max-width: 750px; background-color: var(--primary-dark); color: #FFFFFF; border: 1px solid rgba(255, 255, 255, 0.15);">
+                    <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 16px;">
+                        <h3 class="modal-title" style="color: var(--accent); font-size: 20px; font-weight: 700;">Preparador/a Físico/a</h3>
+                        <button class="close-btn" onclick="document.getElementById('modal-preparadores-detail').remove()" style="color: #FFFFFF; opacity: 0.8; font-size: 24px; background: none; border: none; cursor: pointer;">×</button>
+                    </div>
+                    <div class="modal-body" style="padding: 24px 0 12px 0; display: flex; flex-direction: column; gap: 24px;">
+                        
+                        <!-- Misión -->
+                        <div style="background-color: var(--primary-light); padding: 16px 20px; border-radius: var(--radius-md); border-left: 4px solid var(--accent);">
+                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 0.5px;">Misión</h4>
+                            <p style="color: #FFFFFF; font-size: 14px; line-height: 1.5; margin: 0;">Optimizar el rendimiento físico integrando el trabajo condicional dentro del modelo de juego y las necesidades competitivas.</p>
+                        </div>
+                        
+                        <!-- Columnas de Contenido -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            
+                            <!-- Funciones Principales -->
+                            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Funciones Principales</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Diseñar tareas condicionales
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Monitorizar cargas
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Coordinar activaciones y recuperaciones
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Seguimiento físico
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Prevención de lesiones
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Coordinación con staff
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Competencias Clave -->
+                            <div style="background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 18px; border-radius: var(--radius-md);">
+                                <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 6px;">Competencias Clave</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Planificación
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Capacidad analítica
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Organización
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Control del rendimiento
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Trabajo interdisciplinar
+                                    </li>
+                                    <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4;">
+                                        <span style="color: var(--accent); font-weight: bold;">•</span> Comunicación
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                        </div>
+
+                        <!-- Qué no debe hacer -->
+                        <div style="background-color: rgba(255, 107, 0, 0.08); border: 1px solid rgba(255, 107, 0, 0.2); padding: 18px; border-radius: var(--radius-md);">
+                            <h4 style="color: var(--accent); font-size: 14px; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.5px; border-bottom: 1px solid rgba(255, 107, 0, 0.2); padding-bottom: 6px;">Qué no debe hacer</h4>
+                            <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No trabajar desconectado del modelo táctico.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No mantener relaciones externas no autorizadas.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No priorizar solo el aspecto físico.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No compartir datos físicos privados.
+                                </li>
+                                <li style="display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; color: #FFEADB;">
+                                    <span style="color: var(--accent); font-weight: bold;">✕</span> No interactuar privadamente con jugadores/as.
+                                </li>
+                            </ul>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; margin-top: 12px;">
+                        <button type="button" class="btn btn-primary" onclick="document.getElementById('modal-preparadores-detail').remove()" style="width:100%; border: none;">Cerrar Panel</button>
                     </div>
                 </div>
             `;
