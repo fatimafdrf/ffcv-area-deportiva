@@ -3249,38 +3249,41 @@
                             </style>
                             
                             <!-- Cabecera Visual de Sistemas de Juego -->
-                            <div class="section-sub-header" style="background: linear-gradient(135deg, #0f1e46 0%, #15295f 100%); border-left: 4px solid var(--accent); padding: 18px 24px; border-radius: var(--radius-lg); display: flex; align-items: center; gap: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 8px;">
-                                <div style="background-color: rgba(255, 107, 0, 0.15); color: var(--accent); width: 44px; height: 44px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(255, 107, 0, 0.25);">
-                                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" fill="none" stroke-width="2.5"><circle cx="12" cy="12" r="10" /><line x1="12" y1="2" x2="12" y2="22" /><line x1="2" y1="12" x2="22" y2="12" /><circle cx="12" cy="12" r="4" /></svg>
+                            <div class="section-sub-header" style="background: linear-gradient(135deg, #0f1e46 0%, #15295f 100%); border-left: 4px solid var(--accent); padding: 14px 20px; border-radius: var(--radius-lg); display: flex; align-items: center; gap: 14px; box-shadow: var(--shadow-sm); border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 0px;">
+                                <div style="background-color: rgba(255, 107, 0, 0.15); color: var(--accent); width: 38px; height: 38px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(255, 107, 0, 0.25);">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2.5"><circle cx="12" cy="12" r="10" /><line x1="12" y1="2" x2="12" y2="22" /><line x1="2" y1="12" x2="22" y2="12" /><circle cx="12" cy="12" r="4" /></svg>
                                 </div>
                                 <div style="flex: 1;">
-                                    <h2 style="font-size: 15px; font-weight: 800; color: #FFFFFF; margin: 0; text-transform: uppercase; letter-spacing: 0.75px;">Sistemas de Juego</h2>
-                                    <p style="font-size: 11.5px; color: rgba(255, 255, 255, 0.75); margin: 4px 0 0 0; line-height: 1.45;">Definición de estructuras tácticas base utilizadas por las selecciones FFCV para la organización ofensiva y defensiva.</p>
+                                    <h2 style="font-size: 14.5px; font-weight: 800; color: #FFFFFF; margin: 0; text-transform: uppercase; letter-spacing: 0.75px;">Sistemas de Juego</h2>
+                                    <p style="font-size: 11px; color: rgba(255, 255, 255, 0.75); margin: 3px 0 0 0; line-height: 1.45;">Definición de estructuras tácticas base utilizadas por las selecciones FFCV para la organización ofensiva y defensiva.</p>
                                 </div>
                             </div>
 
                             <!-- Tarjeta de Selección de Sistema -->
-                            <div class="filters-card" style="margin-top: 0; margin-bottom: 0; background: #0f1e46; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 24px rgba(15, 30, 70, 0.2);">
+                            <div class="filters-card" style="margin-top: 0; margin-bottom: 0; padding: 20px; display: flex; flex-direction: column; gap: 14px;">
 
                                 <!-- Cabecera del Bloque: Formación Principal -->
-                                <div style="display: flex; flex-direction: column; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 12px; margin-bottom: 16px; margin-top: 4px;">
+                                <div style="display: flex; flex-direction: column; gap: 4px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 2px;">
                                     <div style="display: flex; align-items: center; gap: 8px;">
-                                        <div style="background-color: var(--accent); width: 6px; height: 16px; border-radius: 2px;"></div>
-                                        <h3 style="font-size: 13px; font-weight: 800; color: #FFFFFF; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Formación Principal</h3>
+                                        <div style="background-color: var(--accent); width: 4px; height: 14px; border-radius: 2px;"></div>
+                                        <h4 style="font-size: 12.5px; font-weight: 700; color: #0f1e46; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Formación Principal</h4>
                                     </div>
-                                    <span style="font-size: 11px; color: rgba(255, 255, 255, 0.75); line-height: 1.45;">Selecciona una estructura táctica para visualizar la distribución de jugadores en el terreno de juego.</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">Selecciona una estructura táctica para visualizar la distribución de jugadores en el terreno de juego.</span>
                                 </div>
 
-                                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 2px;">
                                     <button class="tactic-system-btn active" onclick="setTacticSystem('1433', this)">1-4-3-3</button>
                                     <button class="tactic-system-btn" onclick="setTacticSystem('1442', this)">1-4-4-2</button>
                                     <button class="tactic-system-btn" onclick="setTacticSystem('1352', this)">1-3-5-2</button>
                                 </div>
                                 
-                                <!-- Visualización Táctica del Sistema Seleccionado -->
-                                <div style="margin-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; display: flex; flex-direction: column; gap: 8px;">
-                                    <span style="font-size: 11px; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.5px;">Esquema Táctico Base:</span>
-                                    <div id="system-preview-pitch" style="position: relative; width: 100%; height: 260px; background-color: #0b1736; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.15); overflow: hidden; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
+                                <!-- Campo Táctico -->
+                                <div style="margin-top: 4px; border-top: 1px solid var(--border-color); padding-top: 12px; display: flex; flex-direction: column; gap: 8px;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div style="background-color: var(--accent); width: 4px; height: 14px; border-radius: 2px;"></div>
+                                        <h4 style="font-size: 12.5px; font-weight: 700; color: #0f1e46; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Campo Táctico</h4>
+                                    </div>
+                                    <div id="system-preview-pitch" style="position: relative; width: 100%; height: 260px; background-color: #0b1736; border-radius: 8px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
                                         <svg viewBox="0 0 100 100" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" preserveAspectRatio="none">
                                             <!-- Blue-tinted tactical pitch lines -->
                                             <rect x="4" y="4" width="92" height="92" rx="2" fill="none" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1.2" />
@@ -3300,21 +3303,25 @@
                                     </div>
                                 </div>
 
-                                <!-- Características del Sistema (Ficha Dinámica) -->
-                                <div style="margin-top: 18px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 18px; display: flex; flex-direction: column; gap: 12px;">
-                                    <h4 style="font-size: 12px; font-weight: 800; color: #FFFFFF; margin: 0; text-transform: uppercase; letter-spacing: 0.75px; display: flex; align-items: center; gap: 8px;">
-                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="var(--accent)" fill="none" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                                        Características del Sistema
-                                    </h4>
+                                <!-- Análisis del Sistema -->
+                                <div style="margin-top: 4px; border-top: 1px solid var(--border-color); padding-top: 12px; display: flex; flex-direction: column; gap: 10px;">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <div style="background-color: var(--accent); width: 4px; height: 14px; border-radius: 2px;"></div>
+                                        <h4 style="font-size: 12.5px; font-weight: 700; color: #0f1e46; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Análisis del Sistema</h4>
+                                    </div>
                                     <div id="system-features-content" style="display: flex; flex-direction: column; gap: 10px;">
                                         <!-- Dinámico mediante JS -->
                                     </div>
                                 </div>
                             </div>
                             
-                            <div class="panel">
-                                <h3 class="panel-title">Fase de Juego</h3>
-                                <div class="tactic-cards-grid">
+                            <div class="panel" style="padding: 20px; display: flex; flex-direction: column; gap: 14px;">
+                                <!-- Cabecera del Bloque: Fase de Juego -->
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="background-color: var(--accent); width: 4px; height: 14px; border-radius: 2px;"></div>
+                                    <h4 style="font-size: 12.5px; font-weight: 700; color: #0f1e46; margin: 0; text-transform: uppercase; letter-spacing: 0.5px;">Fase de Juego</h4>
+                                </div>
+                                <div class="tactic-cards-grid" style="margin-top: 0;">
                                     <div class="tactic-card active" onclick="selectTacticPhase('ofensivo', this)">
                                         <span class="tactic-card-title">Aspectos Ofensivos</span>
                                         <span class="tactic-card-desc">Salida de balón limpia, progresión por bandas y finalización con extremos abiertos.</span>
@@ -8999,12 +9006,12 @@
             
             let html = `
                 <!-- Fortalezas -->
-                <div style="background: rgba(46, 125, 50, 0.12); border: 1px solid rgba(46, 125, 50, 0.3); border-radius: 8px; padding: 10px 12px; transition: all 0.3s ease;">
+                <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 8px; padding: 12px 14px; transition: all 0.3s ease;">
                     <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-                        <span style="color: #4CAF50; display: inline-flex;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
-                        <span style="font-size: 11px; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.5px;">Fortalezas</span>
+                        <span style="color: #2e7d32; display: inline-flex;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>
+                        <span style="font-size: 11px; font-weight: 800; color: #1b5e20; text-transform: uppercase; letter-spacing: 0.5px;">Fortalezas</span>
                     </div>
-                    <ul style="margin: 0; padding-left: 16px; font-size: 11px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
+                    <ul style="margin: 0; padding-left: 16px; font-size: 11.5px; color: #1b5e20; font-weight: 600; line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
             `;
             
             features.fortalezas.forEach(f => {
@@ -9016,12 +9023,12 @@
                 </div>
                 
                 <!-- Aspectos a vigilar -->
-                <div style="background: rgba(255, 152, 0, 0.12); border: 1px solid rgba(255, 152, 0, 0.3); border-radius: 8px; padding: 10px 12px; transition: all 0.3s ease;">
+                <div style="background: #fff3e0; border: 1px solid #ffe0b2; border-radius: 8px; padding: 12px 14px; transition: all 0.3s ease;">
                     <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-                        <span style="color: #FF9800; display: inline-flex;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
-                        <span style="font-size: 11px; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.5px;">Aspectos a vigilar</span>
+                        <span style="color: #ef6c00; display: inline-flex;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+                        <span style="font-size: 11px; font-weight: 800; color: #e65100; text-transform: uppercase; letter-spacing: 0.5px;">Aspectos a vigilar</span>
                     </div>
-                    <ul style="margin: 0; padding-left: 16px; font-size: 11px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
+                    <ul style="margin: 0; padding-left: 16px; font-size: 11.5px; color: #e65100; font-weight: 600; line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
             `;
             
             features.vigilar.forEach(v => {
@@ -9033,12 +9040,12 @@
                 </div>
                 
                 <!-- Uso recomendado -->
-                <div style="background: rgba(33, 150, 243, 0.12); border: 1px solid rgba(33, 150, 243, 0.3); border-radius: 8px; padding: 10px 12px; transition: all 0.3s ease;">
+                <div style="background: #e3f2fd; border: 1px solid #bbdefb; border-radius: 8px; padding: 12px 14px; transition: all 0.3s ease;">
                     <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-                        <span style="color: #2196F3; display: inline-flex;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
-                        <span style="font-size: 11px; font-weight: 800; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.5px;">Uso recomendado</span>
+                        <span style="color: #1565c0; display: inline-flex;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+                        <span style="font-size: 11px; font-weight: 800; color: #0d47a1; text-transform: uppercase; letter-spacing: 0.5px;">Uso recomendado</span>
                     </div>
-                    <p style="margin: 0; font-size: 11px; color: rgba(255, 255, 255, 0.85); line-height: 1.5; padding-left: 4px;">
+                    <p style="margin: 0; font-size: 11.5px; color: #0d47a1; font-weight: 600; line-height: 1.5; padding-left: 4px;">
                         ${features.recomendado}
                     </p>
                 </div>
