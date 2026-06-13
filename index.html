@@ -3270,6 +3270,29 @@
                                     <button class="tactic-system-btn" onclick="setTacticSystem('1442', this)">1-4-4-2</button>
                                     <button class="tactic-system-btn" onclick="setTacticSystem('1352', this)">1-3-5-2</button>
                                 </div>
+                                
+                                <!-- Visualización Táctica del Sistema Seleccionado -->
+                                <div style="margin-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 16px; display: flex; flex-direction: column; gap: 8px;">
+                                    <span style="font-size: 11px; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 0.5px;">Esquema Táctico Base:</span>
+                                    <div id="system-preview-pitch" style="position: relative; width: 100%; height: 260px; background-color: #0b1736; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.15); overflow: hidden; box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);">
+                                        <svg viewBox="0 0 100 100" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;" preserveAspectRatio="none">
+                                            <!-- Blue-tinted tactical pitch lines -->
+                                            <rect x="4" y="4" width="92" height="92" rx="2" fill="none" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1.2" />
+                                            <line x1="4" y1="50" x2="96" y2="50" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1.2" />
+                                            <circle cx="50" cy="50" r="12" fill="none" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1.2" />
+                                            <circle cx="50" cy="50" r="1" fill="rgba(255, 255, 255, 0.2)" />
+                                            <rect x="25" y="4" width="50" height="15" fill="none" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1.2" />
+                                            <rect x="25" y="81" width="50" height="15" fill="none" stroke="rgba(255, 255, 255, 0.12)" stroke-width="1.2" />
+                                            <rect x="38" y="4" width="24" height="5" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="0.8" />
+                                            <rect x="38" y="91" width="24" height="5" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="0.8" />
+                                            <path d="M 4 8 A 4 4 0 0 0 8 4" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="0.8" />
+                                            <path d="M 92 4 A 4 4 0 0 0 96 8" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="0.8" />
+                                            <path d="M 4 92 A 4 4 0 0 0 8 96" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="0.8" />
+                                            <path d="M 96 92 A 4 4 0 0 0 92 96" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="0.8" />
+                                        </svg>
+                                        <!-- Players rendered dynamically -->
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="panel">
@@ -8833,6 +8856,82 @@
             }
         };
 
+        const MINI_SYSTEM_COORDINATES = {
+            '1433': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '3', role: 'LI', top: '68%', left: '15%' },
+                { name: '4', role: 'DFC', top: '76%', left: '36%' },
+                { name: '5', role: 'DFC', top: '76%', left: '64%' },
+                { name: '2', role: 'LD', top: '68%', left: '85%' },
+                { name: '6', role: 'MCD', top: '58%', left: '50%' },
+                { name: '8', role: 'MC', top: '46%', left: '30%' },
+                { name: '10', role: 'MC', top: '46%', left: '70%' },
+                { name: '11', role: 'EI', top: '24%', left: '16%' },
+                { name: '7', role: 'ED', top: '24%', left: '84%' },
+                { name: '9', role: 'DC', top: '16%', left: '50%' }
+            ],
+            '1442': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '3', role: 'LI', top: '70%', left: '15%' },
+                { name: '4', role: 'DFC', top: '76%', left: '36%' },
+                { name: '5', role: 'DFC', top: '76%', left: '64%' },
+                { name: '2', role: 'LD', top: '70%', left: '85%' },
+                { name: '6', role: 'MC', top: '52%', left: '36%' },
+                { name: '8', role: 'MC', top: '52%', left: '64%' },
+                { name: '11', role: 'MI', top: '44%', left: '16%' },
+                { name: '7', role: 'MD', top: '44%', left: '84%' },
+                { name: '10', role: 'DC', top: '20%', left: '36%' },
+                { name: '9', role: 'DC', top: '20%', left: '64%' }
+            ],
+            '1352': [
+                { name: '1', role: 'GK', top: '88%', left: '50%' },
+                { name: '4', role: 'DFC', top: '76%', left: '32%' },
+                { name: '5', role: 'DFC', top: '78%', left: '50%' },
+                { name: '3', role: 'DFC', top: '76%', left: '68%' },
+                { name: '11', role: 'CARI', top: '50%', left: '14%' },
+                { name: '6', role: 'MCD', top: '60%', left: '50%' },
+                { name: '8', role: 'MC', top: '45%', left: '32%' },
+                { name: '10', role: 'MC', top: '45%', left: '68%' },
+                { name: '7', role: 'CARD', top: '50%', left: '86%' },
+                { name: '9', role: 'DC', top: '18%', left: '36%' },
+                { name: '14', role: 'DC', top: '18%', left: '64%' }
+            ]
+        };
+
+        function updateMiniTacticPreview(system) {
+            const container = document.getElementById('system-preview-pitch');
+            if (!container) return;
+            
+            // Clear previous players
+            container.querySelectorAll('.mini-pitch-player').forEach(p => p.remove());
+            
+            const playersData = MINI_SYSTEM_COORDINATES[system] || MINI_SYSTEM_COORDINATES['1433'];
+            playersData.forEach(p => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'mini-pitch-player';
+                playerDiv.style.position = 'absolute';
+                playerDiv.style.top = p.top;
+                playerDiv.style.left = p.left;
+                playerDiv.style.transform = 'translate(-50%, -50%)';
+                playerDiv.style.display = 'flex';
+                playerDiv.style.flexDirection = 'column';
+                playerDiv.style.alignItems = 'center';
+                playerDiv.style.justifyContent = 'center';
+                playerDiv.style.gap = '2px';
+                playerDiv.style.zIndex = '2';
+                
+                playerDiv.innerHTML = `
+                    <div style="width: 18px; height: 18px; border-radius: 50%; background-color: #FF6B00; border: 1.5px solid #FFFFFF; color: #FFFFFF; font-size: 9px; font-weight: 800; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+                        ${p.name}
+                    </div>
+                    <span style="font-size: 7px; color: #FFFFFF; font-weight: 700; text-transform: uppercase; background-color: rgba(15, 30, 70, 0.75); padding: 0.5px 2px; border-radius: 2px; white-space: nowrap; border: 0.5px solid rgba(255,255,255,0.1);">
+                        ${p.role}
+                    </span>
+                `;
+                container.appendChild(playerDiv);
+            });
+        }
+
         function setTacticSystem(system, btn) {
             btn.parentNode.querySelectorAll('button').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -8848,6 +8947,7 @@
 
             activeSystem = system;
             updatePitchRepresentation();
+            updateMiniTacticPreview(system);
             showToast(`Sistema táctico cambiado a ${system}`, 'success');
         }
 
@@ -11030,6 +11130,7 @@
             initCallFiltersListeners();
             updateDocumentCounts();
             initDragAndDrop();
+            updateMiniTacticPreview('1433');
             
             // Navegar automáticamente a la pestaña indicada en el Hash de URL (si existe)
             const hash = window.location.hash.substring(1);
