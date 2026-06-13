@@ -6964,16 +6964,72 @@
                 phone: "+34 600 777 888",
                 titulos: "Coordinador de la Sección Masculina FFCV",
                 experiencia: "Gestión de convocatorias, entrenamientos y logística de las selecciones masculinas autonómicas."
+            },
+            {
+                id: 12,
+                name: "Ana Giménez",
+                role: "Seleccionador",
+                category: "Sub-19",
+                license: "UEFA Pro",
+                email: "agimenez@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 656 789 012",
+                titulos: "UEFA Pro Licencia, Graduada en Ciencias de la Actividad Física y del Deporte",
+                experiencia: "Amplia trayectoria en el fútbol base femenino y ex-seleccionadora Sub-16 territorial."
+            },
+            {
+                id: 13,
+                name: "Carlos Martínez",
+                role: "Seleccionador",
+                category: "Sub-14",
+                license: "UEFA Pro",
+                email: "cmartinez@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 677 890 123",
+                titulos: "UEFA Pro Licencia, Especialista en Metodología Formativa y Dirección de Cantera",
+                experiencia: "Ex-entrenador formativo en canteras de Primera División y seleccionador de fútbol base."
+            },
+            {
+                id: 14,
+                name: "David Valero",
+                role: "Seleccionador",
+                category: "Sub-19",
+                license: "Nivel 3 Fútbol Sala",
+                email: "dvalero@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                phone: "+34 688 901 234",
+                titulos: "Entrenador Nacional Nivel 3 Fútbol Sala, Especialista en Táctica Futsal",
+                experiencia: "Entrenador nacional LNFS y seleccionador de selecciones de fútbol sala formativas FFCV."
+            },
+            {
+                id: 15,
+                name: "María Torres",
+                role: "Seleccionador",
+                category: "Sub-16",
+                license: "Nivel 2 Fútbol Sala",
+                email: "mtorres@ffcv.es",
+                status: "En Concentración",
+                sport: "Fútbol Sala",
+                gender: "Femenino",
+                phone: "+34 699 012 345",
+                titulos: "Técnico Deportivo Nivel 2 Fútbol Sala",
+                experiencia: "Coordinadora de escuelas formativas y seleccionadora de selecciones femeninas de fútbol sala FFCV."
             }
         ];
 
         let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || DEFAULT_STAFF;
         let activeStaffRoleFilter = 'ALL';
 
-        // Sincronizar localStorage si no contiene a Jordi Lucena (para cargar el nuevo staff oficial)
+        // Sincronizar localStorage si no contiene a Ana Giménez (para cargar el nuevo staff oficial y seleccionadores)
         if (localStorage.getItem('ffcv_staff')) {
             const tempStaff = JSON.parse(localStorage.getItem('ffcv_staff'));
-            if (!tempStaff.some(m => m.name === "Jordi Lucena")) {
+            if (!tempStaff.some(m => m.name === "Ana Giménez")) {
                 localStorage.setItem('ffcv_staff', JSON.stringify(DEFAULT_STAFF));
                 staff = DEFAULT_STAFF;
             }
