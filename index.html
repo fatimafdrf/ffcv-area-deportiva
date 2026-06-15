@@ -121,10 +121,10 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .brand-logo-svg {
-            width: 42px;
-            height: 42px;
-            fill: var(--accent);
+        .brand-logo-img {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
             filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
         }
 
@@ -2356,9 +2356,10 @@
             gap: 12px;
             margin-bottom: 32px;
         }
-        .auth-logo-svg {
-            width: 40px;
-            height: 40px;
+        .auth-logo-img {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
         }
         .auth-brand-text {
             display: flex;
@@ -2431,13 +2432,8 @@
     <div id="auth-container" style="display: none;">
         <div class="auth-card">
             <div class="auth-brand">
-                <!-- SVG Logo de Fútbol Estilizado -->
-                <svg class="auth-logo-svg" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" stroke="#FF6B00" stroke-width="2" fill="none" />
-                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="#FF6B00" stroke-width="1.5" />
-                    <path d="M2 12h20" stroke="#FF6B00" stroke-width="1.5" />
-                    <circle cx="12" cy="12" r="3" fill="#FF6B00" />
-                </svg>
+                <!-- Logotipo Oficial FFCV -->
+                <img src="assets/logo-oficial.png" class="auth-logo-img" alt="FFCV Logo Oficial" />
                 <div class="auth-brand-text">
                     <span class="auth-brand-name">FFCV</span>
                     <span class="auth-brand-sub">Área Deportiva</span>
@@ -2553,13 +2549,8 @@
              ========================================================================== -->
         <aside class="sidebar" id="app-sidebar">
             <div class="sidebar-brand">
-                <!-- SVG Logo de Fútbol Estilizado -->
-                <svg class="brand-logo-svg" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" />
-                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" stroke="currentColor" stroke-width="1.5" />
-                    <path d="M2 12h20" stroke="currentColor" stroke-width="1.5" />
-                    <circle cx="12" cy="12" r="3" fill="currentColor" />
-                </svg>
+                <!-- Logotipo Oficial FFCV -->
+                <img src="assets/logo-oficial.png" class="brand-logo-img" alt="FFCV Logo Oficial" />
                 <div class="brand-text">
                     <span class="brand-name">FFCV</span>
                     <span class="brand-sub">Área Deportiva</span>
