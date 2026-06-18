@@ -5617,7 +5617,25 @@
                     errorAlert.textContent = 'El correo electrónico ya está registrado.';
                     errorAlert.style.display = 'block';
                 }
-          /* ==========================================================================
+                return;
+            }
+            
+            const newUser = { name, surname, email, role, password };
+            users.push(newUser);
+            localStorage.setItem('ffcv_registered_users', JSON.stringify(users));
+            
+            showToast('Cuenta creada con éxito. Inicia sesión ahora.', 'success');
+            toggleAuthView('login');
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('ffcv_logged_in_user');
+            showToast('Sesión cerrada correctamente.', 'info');
+            checkAuthSession();
+            window.location.hash = 'dashboard';
+        }
+
+        /* ==========================================================================
            D.1 BASE DE DATOS INICIAL DE LA APP (PERSISTENCIA CON LOCALSTORAGE)
            ========================================================================== */
         const DEFAULT_PLAYERS = [
@@ -5676,6 +5694,21 @@
                 sport: "Fútbol",
                 category: "Sub-16",
                 gender: "Masculina",
+                modality: "f11"
+            },
+            {
+                id: 9,
+                name: "Entrenamiento Valenta Sub-19 F11",
+                location: "Campo federativo Miguel Monleón, Picassent",
+                time: "17:00 h",
+                status: "Confirmada",
+                date: "2026-06-22",
+                players: [4],
+                season: "2026/2027",
+                province: "Valencia",
+                sport: "Fútbol",
+                category: "Sub-19",
+                gender: "Femenina",
                 modality: "f11"
             },
             // Fútbol 8
@@ -5857,9 +5890,53 @@
                 objectivesObs: "Equipo con bloque bajo muy sólido. Sufren en la espalda de los laterales si hay transiciones rápidas.",
                 modality: "f11"
             },
+            {
+                id: 4,
+                type: "Equipo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                category: "Sub-19",
+                name: "Selección Femenina Sub-19 F11",
+                date: "15 Jun 2026",
+                scout: "Esther Romero",
+                rating: 4.5,
+                status: "Aprobado",
+                teamPerformance: { played: 6, won: 4, drawn: 1, lost: 1, goalsFor: 14, goalsAgainst: 5 },
+                participation: { playersCalled: 18, totalMinutes: 540 },
+                techColectVal: 4,
+                tactColectVal: 4,
+                physColectVal: 4,
+                psycColectVal: 5,
+                discipline: { yellowCards: 2, redCards: 0, foulsCommitted: 35 },
+                groupClimVal: 5,
+                objectivesObs: "Bloque muy cohesionado. Excelente progresión en transiciones y control del tempo en campo contrario.",
+                modality: "f11"
+            },
             // Fútbol 8
             {
                 id: 5,
+                type: "Individual",
+                sport: "Fútbol",
+                gender: "Masculino",
+                category: "Sub-12",
+                name: "Leo Martínez",
+                date: "16 Jun 2026",
+                scout: "Rubén Mora",
+                rating: 4.2,
+                status: "Aprobado",
+                participation: { matches: 6, started: 5, minutes: 240, substitute: 1 },
+                techVal: 4,
+                tactVal: 4,
+                physVal: 3,
+                psycVal: 4,
+                attVal: 4,
+                socVal: 5,
+                stats: { goles: 5, asistencias: 3, recuperaciones: 12, tarjetasA: 0, tarjetasR: 0 },
+                observations: "Delantero dinámico con excelente desmarque de ruptura. Buena pegada con pierna diestra.",
+                modality: "f8"
+            },
+            {
+                id: 6,
                 type: "Individual",
                 sport: "Fútbol",
                 gender: "Femenino",
@@ -5881,7 +5958,7 @@
                 modality: "f8"
             },
             {
-                id: 6,
+                id: 7,
                 type: "Equipo",
                 sport: "Fútbol",
                 gender: "Masculino",
@@ -5902,31 +5979,31 @@
                 objectivesObs: "Gran circulación del balón y juego posicional. Dominan las transiciones ofensivas rápidamente.",
                 modality: "f8"
             },
+            {
+                id: 8,
+                type: "Equipo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                category: "Sub-12",
+                name: "Selección Femenina Sub-12 F8",
+                date: "16 Jun 2026",
+                scout: "Esther Romero",
+                rating: 4.1,
+                status: "En Revisión",
+                teamPerformance: { played: 4, won: 2, drawn: 1, lost: 1, goalsFor: 9, goalsAgainst: 6 },
+                participation: { playersCalled: 12, totalMinutes: 200 },
+                techColectVal: 4,
+                tactColectVal: 3,
+                physColectVal: 4,
+                psycColectVal: 4,
+                discipline: { yellowCards: 0, redCards: 0, foulsCommitted: 12 },
+                groupClimVal: 4,
+                objectivesObs: "Equipo con gran espíritu competitivo. Requiere trabajar basculación y marcas en saques de esquina.",
+                modality: "f8"
+            },
             // Fútbol Sala
             {
-                id: 4,
-                type: "Equipo",
-                sport: "Fútbol Sala",
-                gender: "Femenino",
-                category: "Sub-19",
-                name: "Selección Femenina Futsal Sub-19",
-                date: "13 Jun 2026",
-                scout: "Esther Romero",
-                rating: 4.8,
-                status: "Aprobado",
-                teamPerformance: { played: 10, won: 9, drawn: 0, lost: 1, goalsFor: 45, goalsAgainst: 12 },
-                participation: { playersCalled: 14, totalMinutes: 400 },
-                techColectVal: 5,
-                tactColectVal: 5,
-                physColectVal: 4,
-                psycColectVal: 5,
-                discipline: { yellowCards: 2, redCards: 0, foulsCommitted: 40 },
-                groupClimVal: 5,
-                objectivesObs: "Excelente rendimiento táctico y pegada. Grupo muy unido y enfocado en la fase de clasificación.",
-                modality: "futsal"
-            },
-            {
-                id: 7,
+                id: 9,
                 type: "Individual",
                 sport: "Fútbol Sala",
                 gender: "Masculino",
@@ -5947,9 +6024,97 @@
                 observations: "Cierre de gran presencia defensiva. Rápido en coberturas y con excelente criterio de salida.",
                 modality: "futsal"
             },
+            {
+                id: 10,
+                type: "Individual",
+                sport: "Fútbol Sala",
+                gender: "Femenino",
+                category: "Sub-19",
+                name: "Noa Segura",
+                date: "17 Jun 2026",
+                scout: "Esther Romero",
+                rating: 4.6,
+                status: "Aprobado",
+                participation: { matches: 8, started: 8, minutes: 160, substitute: 0 },
+                techVal: 5,
+                tactVal: 4,
+                physVal: 4,
+                psycVal: 5,
+                attVal: 4,
+                socVal: 4,
+                stats: { goles: 0, asistencias: 2, recuperaciones: 15, tarjetasA: 0, tarjetasR: 0 },
+                observations: "Portera con reflejos sobresalientes. Excelente juego con los pies, facilitando la salida de presión.",
+                modality: "futsal"
+            },
+            {
+                id: 11,
+                type: "Equipo",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                category: "Sub-16",
+                name: "Selección Masculina Futsal Sub-16",
+                date: "14 Jun 2026",
+                scout: "Vicente Ampudia",
+                rating: 4.3,
+                status: "En Revisión",
+                teamPerformance: { played: 8, won: 5, drawn: 2, lost: 1, goalsFor: 32, goalsAgainst: 18 },
+                participation: { playersCalled: 14, totalMinutes: 320 },
+                techColectVal: 4,
+                tactColectVal: 4,
+                physColectVal: 4,
+                psycColectVal: 4,
+                discipline: { yellowCards: 4, redCards: 1, foulsCommitted: 45 },
+                groupClimVal: 4,
+                objectivesObs: "Foco en la velocidad de rotación del rombo. Buena finalización de las jugadas en segundo palo.",
+                modality: "futsal"
+            },
+            {
+                id: 12,
+                type: "Equipo",
+                sport: "Fútbol Sala",
+                gender: "Femenino",
+                category: "Sub-19",
+                name: "Selección Femenina Futsal Sub-19",
+                date: "13 Jun 2026",
+                scout: "Esther Romero",
+                rating: 4.8,
+                status: "Aprobado",
+                teamPerformance: { played: 10, won: 9, drawn: 0, lost: 1, goalsFor: 45, goalsAgainst: 12 },
+                participation: { playersCalled: 14, totalMinutes: 400 },
+                techColectVal: 5,
+                tactColectVal: 5,
+                physColectVal: 4,
+                psycColectVal: 5,
+                discipline: { yellowCards: 2, redCards: 0, foulsCommitted: 40 },
+                groupClimVal: 5,
+                objectivesObs: "Excelente rendimiento táctico y pegada. Grupo muy unido y enfocado en la fase de clasificación.",
+                modality: "futsal"
+            },
             // Fútbol Playa
             {
-                id: 8,
+                id: 13,
+                type: "Individual",
+                sport: "Fútbol Playa",
+                gender: "Masculino",
+                category: "Sub-19",
+                name: "Carlos Arenas",
+                date: "15 Jun 2026",
+                scout: "José Vicente",
+                rating: 4.3,
+                status: "Aprobado",
+                participation: { matches: 8, started: 6, minutes: 210, substitute: 2 },
+                techVal: 4,
+                tactVal: 4,
+                physVal: 5,
+                psycVal: 4,
+                attVal: 4,
+                socVal: 4,
+                stats: { goles: 6, asistencias: 4, recuperaciones: 10, tarjetasA: 1, tarjetasR: 0 },
+                observations: "Ala muy potente físicamente. Gran despliegue en arena y disparo de media distancia preciso.",
+                modality: "fplaya"
+            },
+            {
+                id: 14,
                 type: "Individual",
                 sport: "Fútbol Playa",
                 gender: "Femenino",
@@ -5971,7 +6136,7 @@
                 modality: "fplaya"
             },
             {
-                id: 9,
+                id: 15,
                 type: "Equipo",
                 sport: "Fútbol Playa",
                 gender: "Masculino",
@@ -5990,6 +6155,28 @@
                 discipline: { yellowCards: 1, redCards: 0, foulsCommitted: 15 },
                 groupClimVal: 4,
                 objectivesObs: "Equipo con alta intensidad física en arena. Falta precisión en saques rápidos del guardameta.",
+                modality: "fplaya"
+            },
+            {
+                id: 16,
+                type: "Equipo",
+                sport: "Fútbol Playa",
+                gender: "Femenino",
+                category: "Sub-19",
+                name: "Selección Femenina Playa Sub-19",
+                date: "16 Jun 2026",
+                scout: "Esther Romero",
+                rating: 4.4,
+                status: "Aprobado",
+                teamPerformance: { played: 4, won: 3, drawn: 0, lost: 1, goalsFor: 12, goalsAgainst: 8 },
+                participation: { playersCalled: 8, totalMinutes: 144 },
+                techColectVal: 4,
+                tactColectVal: 4,
+                physColectVal: 4,
+                psycColectVal: 4,
+                discipline: { yellowCards: 0, redCards: 0, foulsCommitted: 10 },
+                groupClimVal: 5,
+                objectivesObs: "Excelente juego combinativo por alto. Muy ordenadas defensivamente y veloces en repliegue.",
                 modality: "fplaya"
             }
         ];
@@ -6010,182 +6197,6 @@
             { id: 9, title: "Entrenamiento Playa Femenino", date: "2026-06-26", type: "training", location: "Playa de la Malvarrosa", modality: "fplaya" }
         ];
 
-        const DEFAULT_PLANNING_DATA = {
-            'f11': {
-                anual: [
-                    { title: "Fase 1: Convocatorias, Captación y Visados (Septiembre - Octubre)", desc: "Entrenamientos en Picassent y partidos amistosos contra escuelas conveniadas para consolidar la preselección.", tag: "Completada", tagClass: "tag-success" },
-                    { title: "Fase 2: Primera Fase del Campeonato de España (Noviembre - Diciembre)", desc: "Encuentros oficiales territoriales del CNSA. El objetivo es clasificar al grupo Oro de la RFEF.", tag: "En Curso", tagClass: "tag-info" },
-                    { title: "Fase 3: Fase Oro / Fase Plata CNSA (Febrero - Marzo)", desc: "Enfrentamientos competitivos contra los mejores clasificados de otras autonomías de España.", tag: "Planificado", tagClass: "tag-warning" },
-                    { title: "Fase 4: Fase Final - Play Offs del CNSA (Mayo - Junio)", desc: "Concentración táctica autonómica, disputa de semifinales y finales nacionales por el título español RFEF.", tag: "Pendiente", tagClass: "tag-danger" }
-                ],
-                mensual: {
-                    month: "Junio 2026",
-                    weeks: [
-                        { week: "Semana 1", title: "Puesta a Punto", desc: "Pruebas de esfuerzo y test físicos de velocidad con GPS en Picassent.", tagClass: "tag-info" },
-                        { week: "Semana 2", title: "Salida en Corto", desc: "Táctica defensiva y progresión con balón buscando al tercer hombre.", tagClass: "tag-warning" },
-                        { week: "Semana 3", title: "ABP Estrategia", desc: "Saques de esquina zonales, bloqueos en faltas y jugadas ensayadas.", tagClass: "tag-success" },
-                        { week: "Semana 4", title: "Amistoso Técnico", desc: "Concentración de 3 días y partido preparatorio de entrenamiento.", tagClass: "tag-danger" }
-                    ]
-                },
-                campeonatos: [
-                    { title: "Campeonato de España de Selecciones Autonómicas Sub-16 (CNSA)", desc: "Lugar: Zaragoza (Aragón) · Fechas: 24 al 28 de Noviembre de 2026 · Meta: Clasificar en el Grupo Oro RFEF.", tag: "Sub-16 Masc", tagClass: "tag-warning" },
-                    { title: "Fase Oro Nacional Femenina Sub-14 y Sub-16", desc: "Lugar: Las Rozas (Madrid) · Fechas: 12 al 15 de Febrero de 2027 · Meta: Avanzar a la Final Four Nacional.", tag: "Sub-14/16 Fem", tagClass: "tag-success" },
-                    { title: "Fase Final Oro Masculina CNSA Cadete e Infantil", desc: "Lugar: Sede por determinar · Fechas: 18 al 21 de Junio de 2027 · Meta: Disputar el Título Nacional de España.", tag: "Sub-14/16 Masc", tagClass: "tag-info" }
-                ],
-                microciclos: [
-                    {
-                        header: "Microciclo 11 (Completado)", status: "Cerrado", tagClass: "tag-success",
-                        cards: [
-                            { type: "Física", typeClass: "tag-info", title: "Acondicionamiento Aeróbico", desc: "Foco en resistencia general y transiciones medias.", progress: 100 },
-                            { type: "Táctica", typeClass: "tag-warning", title: "Repliegue Defensivo", desc: "Bloque bajo y coordinación de basculación en línea de 4.", progress: 100 }
-                        ]
-                    },
-                    {
-                        header: "Microciclo 12 (Actual)", status: "En Curso", tagClass: "tag-warning",
-                        cards: [
-                            { type: "Táctica", typeClass: "tag-warning", title: "Presión Tras Pérdida", desc: "Reducción de espacios tras pérdida en zona 3. Acoso rápido al poseedor.", progress: 75 },
-                            { type: "Física", typeClass: "tag-info", title: "Fuerza Explosiva", desc: "Transferencia en saltos pliométricos y sprints de 5 metros.", progress: 40 }
-                        ]
-                    },
-                    {
-                        header: "Microciclo 13 (Siguiente)", status: "Pendiente", tagClass: "tag-danger",
-                        cards: [
-                            { type: "ABP", typeClass: "tag-success", title: "Saques de Esquina", desc: "Defensa zonal vs mixta y jugadas ensayadas al segundo palo.", progress: 0 }
-                        ]
-                    }
-                ]
-            },
-            'f8': {
-                anual: [
-                    { title: "Fase 1: Captación y Formación Inicial (Septiembre - Octubre)", desc: "Visitas a escuelas y preselecciones locales de fútbol 8.", tag: "Completada", tagClass: "tag-success" },
-                    { title: "Fase 2: Liga Autonómica y Torneos Provinciales (Noviembre - Febrero)", desc: "Seguimiento de jugadores alevines en ligas y copas federativas.", tag: "En Curso", tagClass: "tag-info" },
-                    { title: "Fase 3: Campeonato Nacional de Selecciones Minifútbol (Marzo - Abril)", desc: "Preparación específica en Picassent para la fase nacional Sub-12.", tag: "Planificado", tagClass: "tag-warning" },
-                    { title: "Fase 4: Clausura y Memoria de Rendimiento (Mayo - Junio)", desc: "Evaluación de la progresión técnica de los niños y niñas seleccionados.", tag: "Pendiente", tagClass: "tag-danger" }
-                ],
-                mensual: {
-                    month: "Junio 2026",
-                    weeks: [
-                        { week: "Semana 1", title: "Control y Pase", desc: "Ejercicios de pase corto, control orientado y apoyos constantes.", tagClass: "tag-info" },
-                        { week: "Semana 2", title: "Conducción y Dribbling", desc: "Trabajo técnico en 1v1 y cambios de ritmo con balón conducido.", tagClass: "tag-warning" },
-                        { week: "Semana 3", title: "Transiciones Rápidas", desc: "Transición rápida tras robo de balón y desmarques de apoyo.", tagClass: "tag-success" },
-                        { week: "Semana 4", title: "Triangulaciones F8", desc: "Creación de líneas de pase diagonales y tercer hombre en F8.", tagClass: "tag-danger" }
-                    ]
-                },
-                campeonatos: [
-                    { title: "Campeonato de España Alevín Fútbol 8 Sub-12 Masculino", desc: "Lugar: Valencia · Fechas: 15 al 18 de Abril de 2027 · Meta: Disputar la final ante nuestra afición.", tag: "Sub-12 Masc", tagClass: "tag-warning" },
-                    { title: "Campeonato de España Alevín F8 Sub-12 Femenino", desc: "Lugar: Madrid (Las Rozas) · Fechas: 22 al 25 de Abril de 2027 · Meta: Alcanzar las semifinales del torneo nacional.", tag: "Sub-12 Fem", tagClass: "tag-success" }
-                ],
-                microciclos: [
-                    {
-                        header: "Microciclo 5 (Completado)", status: "Cerrado", tagClass: "tag-success",
-                        cards: [
-                            { type: "Táctica", typeClass: "tag-warning", title: "Familiarización de Espacios", desc: "Distribución en el campo y ocupación racional de zonas.", progress: 100 },
-                            { type: "Técnica", typeClass: "tag-success", title: "Juego de Posición F8", desc: "Mantenimiento de balón 4v4 con comodines exteriores.", progress: 100 }
-                        ]
-                    },
-                    {
-                        header: "Microciclo 6 (Actual)", status: "En Curso", tagClass: "tag-warning",
-                        cards: [
-                            { type: "Técnica", typeClass: "tag-success", title: "Toma de Decisiones F8", desc: "Superioridades 3v2 en zona de finalización con porterías.", progress: 80 },
-                            { type: "Física", typeClass: "tag-info", title: "Coordinación y Agilidad", desc: "Circuitos de agilidad motriz con escaleras coordinativas.", progress: 50 }
-                        ]
-                    },
-                    {
-                        header: "Microciclo 7 (Siguiente)", status: "Pendiente", tagClass: "tag-danger",
-                        cards: [
-                            { type: "Táctica", typeClass: "tag-warning", title: "Ataque Organizado F8", desc: "Movilidad de extremos y doblar por fuera con laterales.", progress: 0 }
-                        ]
-                    }
-                ]
-            },
-            'futsal': {
-                anual: [
-                    { title: "Fase 1: Detección y Convocatorias Iniciales (Octubre - Noviembre)", desc: "Visados y jornadas de entrenamiento en pabellones territoriales.", tag: "Completada", tagClass: "tag-success" },
-                    { title: "Fase 2: Concentraciones y Partidos de Preparación (Diciembre - Enero)", desc: "Amistosos contra filiales y equipos de Segunda División.", tag: "En Curso", tagClass: "tag-info" },
-                    { title: "Fase 3: Fase Única del Campeonato de España Selecciones (Febrero - Marzo)", desc: "Disputa del campeonato nacional en categorías Sub-16 y Sub-19.", tag: "Planificado", tagClass: "tag-warning" },
-                    { title: "Fase 4: Torneos Internacionales y Clausura (Abril - Junio)", desc: "Participación en torneos amistosos internacionales y cierre técnico.", tag: "Pendiente", tagClass: "tag-danger" }
-                ],
-                mensual: {
-                    month: "Junio 2026",
-                    weeks: [
-                        { week: "Semana 1", title: "Defensa y Cambios de Marca", desc: "Defensa individual, ajustes de coberturas y cambios en bloque.", tagClass: "tag-info" },
-                        { week: "Semana 2", title: "Salida de Presión 3-1", desc: "Estrategias de salida ante presión alta usando el pívot como referencia.", tagClass: "tag-warning" },
-                        { week: "Semana 3", title: "ABP Futsal (Saques y Córners)", desc: "Jugadas ensayadas de córner, banda y faltas al borde del área.", tagClass: "tag-success" },
-                        { week: "Semana 4", title: "Ataque 5v4 (Portero-Jugador)", desc: "Superioridades numéricas de ataque 5v4 y repliegue defensivo rápido.", tagClass: "tag-danger" }
-                    ]
-                },
-                campeonatos: [
-                    { title: "Campeonato de España Selecciones Autonómicas Sub-19 Futsal", desc: "Lugar: Murcia · Fechas: 05 al 09 de Febrero de 2027 · Meta: Avanzar a la Fase Final de Selecciones.", tag: "Sub-19 Masc", tagClass: "tag-warning" },
-                    { title: "Campeonato de España Selecciones Autonómicas Sub-16 Futsal Femenino", desc: "Lugar: Santiago de Compostela · Fechas: 12 al 16 de Marzo de 2027 · Meta: Disputar la Fase Final Oro RFEF.", tag: "Sub-16 Fem", tagClass: "tag-success" }
-                ],
-                microciclos: [
-                    {
-                        header: "Microciclo 8 (Completado)", status: "Cerrado", tagClass: "tag-success",
-                        cards: [
-                            { type: "Táctica", typeClass: "tag-warning", title: "Rotaciones y Aclimatación", desc: "Movilidad constante en el 4-0 con pases rápidos.", progress: 100 },
-                            { type: "Táctica", typeClass: "tag-warning", title: "Defensa de Cambios", desc: "Coordinación en defensa de cambios ante bloqueos del rival.", progress: 100 }
-                        ]
-                    },
-                    {
-                        header: "Microciclo 9 (Actual)", status: "En Curso", tagClass: "tag-warning",
-                        cards: [
-                            { type: "Técnica", typeClass: "tag-success", title: "Salidas de Banda Futsal", desc: "Estrategia de saques de banda dinámicos con finalización.", progress: 70 },
-                            { type: "Técnica", typeClass: "tag-success", title: "Finalización 1v1", desc: "Dribbling de alas en banda y tiro a portería en velocidad.", progress: 60 }
-                        ]
-                    },
-                    {
-                        header: "Microciclo 10 (Siguiente)", status: "Pendiente", tagClass: "tag-danger",
-                        cards: [
-                            { type: "ABP", typeClass: "tag-success", title: "Estrategias de 5v4", desc: "Movimientos coordinados del portero-jugador ofensivo.", progress: 0 }
-                        ]
-                    }
-                ]
-            },
-            'fplaya': {
-                anual: [
-                    { title: "Fase 1: Captación de Jugadores en Ligas de Playa (Abril - Mayo)", desc: "Visitas a torneos locales en la costa para preseleccionar futbolistas.", tag: "Completada", tagClass: "tag-success" },
-                    { title: "Fase 2: Concentraciones y Adaptación a la Arena (Junio)", desc: "Entrenamientos físicos y técnicos de arena en la sede federativa.", tag: "En Curso", tagClass: "tag-info" },
-                    { title: "Fase 3: Campeonato de España Selecciones Autonómicas (Julio)", desc: "Disputa del torneo nacional RFEF en todas las categorías.", tag: "Planificado", tagClass: "tag-warning" },
-                    { title: "Fase 4: Copa Interterritorial (Agosto)", desc: "Torneo de clausura y cierre de temporada competitiva de playa.", tag: "Pendiente", tagClass: "tag-danger" }
-                ],
-                mensual: {
-                    month: "Junio 2026",
-                    weeks: [
-                        { week: "Semana 1", title: "Física y Adaptación a la Arena", desc: "Trabajo condicional en arena profunda para potenciar el salto.", tagClass: "tag-info" },
-                        { week: "Semana 2", title: "Chilenas y Remates de Volea", desc: "Entrenamiento de remates acrobáticos y chilenas levantando el balón.", tagClass: "tag-warning" },
-                        { week: "Semana 3", title: "Transiciones Rápidas en Arena", desc: "Ataque directo de 3 pases buscando al pívot de referencia.", tagClass: "tag-success" },
-                        { week: "Semana 4", title: "Saques de Portero y Tiros Libres", desc: "Estrategias a partir del saque de puerta y tiro libre directo.", tagClass: "tag-danger" }
-                    ]
-                },
-                campeonatos: [
-                    { title: "Campeonato de España de Selecciones Autonómicas Playa Sub-19", desc: "Lugar: Cádiz · Fechas: 10 al 14 de Julio de 2026 · Meta: Lograr el título nacional de selecciones.", tag: "Sub-19 Masc", tagClass: "tag-warning" },
-                    { title: "Campeonato de España de Selecciones Autonómicas Playa Femenina", desc: "Lugar: Torredembarra · Fechas: 24 al 28 de Julio de 2026 · Meta: Conseguir medalla en el torneo absoluto femenino.", tag: "Senior Fem", tagClass: "tag-success" }
-                ],
-                microciclos: [
-                    {
-                        header: "Microciclo 1 (Completado)", status: "Cerrado", tagClass: "tag-success",
-                        cards: [
-                            { type: "Física", typeClass: "tag-info", title: "Fuerza Arena y Resistencia", desc: "Desplazamientos específicos de velocidad y salto en arena.", progress: 100 },
-                            { type: "Técnica", typeClass: "tag-success", title: "Elevación del Balón", desc: "Controles orientados levantando la pelota para evitar el bote.", progress: 100 }
-                        ]
-                    },
-                    {
-                        header: "Microciclo 2 (Actual)", status: "En Curso", tagClass: "tag-warning",
-                        cards: [
-                            { type: "Técnica", typeClass: "tag-success", title: "Tiros Acrobáticos", desc: "Coordinación y ejecución de chilenas, tijeras y voleas aéreas.", progress: 75 },
-                            { type: "Táctica", typeClass: "tag-warning", title: "Bloqueos en Arena", desc: "Movilidad de pivot y bloqueos dinámicos en ataque 1-3.", progress: 30 }
-                        ]
-                    },
-                    {
-                        header: "Microciclo 3 (Siguiente)", status: "Pendiente", tagClass: "tag-danger",
-                        cards: [
-                            { type: "ABP", typeClass: "tag-success", title: "Saques de Córner Playa", desc: "Jugadas de estrategia de córner enviando balones al segundo palo.", progress: 0 }
-                        ]
-                    }
-                ]
-            }
-        };
-
         // Cargar o Inicializar Datos
         let players = JSON.parse(localStorage.getItem('ffcv_players')) || DEFAULT_PLAYERS;
         let convocatorias = JSON.parse(localStorage.getItem('ffcv_calls')) || DEFAULT_CALLS;
@@ -6196,7 +6207,7 @@
         // Sincronizar localStorage para Informes (formato nuevo de 1 a 5 y campos sport/gender)
         if (localStorage.getItem('ffcv_reports')) {
             const tempReports = JSON.parse(localStorage.getItem('ffcv_reports'));
-            if (tempReports.length === 0 || tempReports.some(r => r.position || !r.sport)) {
+            if (tempReports.length < 16 || tempReports.some(r => r.position || !r.sport)) {
                 localStorage.setItem('ffcv_reports', JSON.stringify(DEFAULT_REPORTS));
                 reports = DEFAULT_REPORTS;
             }
@@ -6250,7 +6261,7 @@
         // Sincronizar localStorage para Informes (formato nuevo de 1 a 5 y campos sport/gender)
         if (localStorage.getItem('ffcv_reports')) {
             const tempReports = JSON.parse(localStorage.getItem('ffcv_reports'));
-            if (tempReports.length === 0 || tempReports.some(r => r.position || !r.sport)) {
+            if (tempReports.length < 16 || tempReports.some(r => r.position || !r.sport)) {
                 localStorage.setItem('ffcv_reports', JSON.stringify(DEFAULT_REPORTS));
                 reports = DEFAULT_REPORTS;
             }
@@ -12099,13 +12110,31 @@
             showToast('Filtros del staff restablecidos', 'info');
         }
 
+        function memberMatchesModality(member, targetModality) {
+            const sport = member.sport;
+            const category = member.category;
+            if (sport === 'Todos los deportes' || sport === 'Todos' || sport === 'Todos/as' || category === 'General FFCV' || category === 'Todas las categorías') {
+                return true;
+            }
+            if (targetModality === 'f11' || targetModality === 'f8') {
+                return sport === 'Fútbol';
+            }
+            if (targetModality === 'futsal') {
+                return sport === 'Fútbol Sala' || sport === 'Futsal';
+            }
+            if (targetModality === 'fplaya') {
+                return sport === 'Fútbol Playa' || sport === 'Playa';
+            }
+            return false;
+        }
+
         function renderStaffAreasDashboard() {
             const container = document.getElementById('staff-subview-areas');
             if (!container) return;
             
             activeStaffRoleFilter = 'ALL';
 
-            const filteredStaff = staff.filter(m => m.modality === currentModality);
+            const filteredStaff = staff.filter(m => memberMatchesModality(m, currentModality));
 
             const orgCount = filteredStaff.filter(m => m.role.includes('Director') || m.role.includes('Coordinador') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable') || m.role === 'Director técnico').length;
             const coordCount = filteredStaff.filter(m => m.role.includes('Coordinador') || m.role.includes('Coordinación')).length;
@@ -12359,7 +12388,7 @@
             const genderVal = document.getElementById('filter-staff-gender') ? document.getElementById('filter-staff-gender').value : 'ALL';
 
             const filtered = staff.filter(m => {
-                const matchesModality = m.modality === currentModality;
+                const matchesModality = memberMatchesModality(m, currentModality);
                 const mSport = m.sport || 'Fútbol';
                 const mGender = m.gender || 'Masculino';
                 
