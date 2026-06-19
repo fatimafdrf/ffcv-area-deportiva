@@ -3501,10 +3501,10 @@
                      B.5.2 VISTA: MODELO DE JUEGO
                      ========================================================================== -->
                 <section class="view" id="view-modelo">
-                    <div class="hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px;">
+                    <div class="hero-banner" id="modelo-hero-banner" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:28px; transition: border-left 0.3s ease;">
                         <div style="flex:1; min-width:280px;">
-                            <h1 class="hero-title">MODELO DE JUEGO</h1>
-                            <p class="hero-desc" style="margin: 0; margin-top: 6px; color: #FFFFFF; opacity: 1;">Definición de principios tácticos, sistemas de juego, comportamientos colectivos y metodología deportiva.</p>
+                            <h1 class="hero-title" id="modelo-hero-title">MODELO DE JUEGO</h1>
+                            <p class="hero-desc" id="modelo-hero-desc" style="margin: 0; margin-top: 6px; color: #FFFFFF; opacity: 1;">Definición de principios tácticos, sistemas de juego, comportamientos colectivos y metodología deportiva.</p>
                         </div>
                         <div style="display:flex; gap:10px;">
                             <button class="btn btn-outline" onclick="showToast('Esquema táctico exportado a PDF', 'success')">Exportar PDF</button>
@@ -3523,6 +3523,16 @@
                     <!-- Pestañas de Subcategorías/Selecciones -->
                     <div id="modelo-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;">
                         <!-- Dinámico mediante JS -->
+                    </div>
+
+                    <!-- Indicador Breadcrumb -->
+                    <div id="modelo-breadcrumb-indicator" style="display: none; font-size: 13px; font-weight: 500; color: #475569; margin-top: -16px; margin-bottom: 24px; padding: 10px 16px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; align-items: center; gap: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); width: fit-content; transition: all 0.3s ease;">
+                        <span style="color: #64748b;">Mostrando:</span>
+                        <span style="font-weight: 600; color: #0f1e46;">Modelo de Juego</span>
+                        <span style="color: #cbd5e1; margin: 0 4px;">·</span>
+                        <span id="modelo-breadcrumb-mod" style="font-weight: 600; color: var(--accent);"></span>
+                        <span style="color: #cbd5e1; margin: 0 4px;">·</span>
+                        <span id="modelo-breadcrumb-sub" style="font-weight: 600; color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; letter-spacing: 0.25px; transition: all 0.3s ease;"></span>
                     </div>
 
                     <div class="tactic-layout">
@@ -11022,6 +11032,7 @@
         const SUBMODALITY_MODEL_DATA = {
             'f11_regiones': {
                 name: "Selección Regiones F11",
+                color: "#0d9488",
                 description: "Modelo de juego adaptado para la Selección de Regiones de Fútbol 11, orientado a la detección y desarrollo de talento territorial.",
                 systems: ['1442', '1433'],
                 defaultSystem: '1442',
@@ -11034,8 +11045,12 @@
                 },
                 principles: {
                     'ofensivo': `
-                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Regiones F11):</strong>
-                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Amplitud exterior mediante interiores y laterales ofensivos.<br>2. Juego directo controlado buscando segundas jugadas de los puntas.<br>3. Finalización rápida acumulando hasta tres rematadores.</p>
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Objetivos y Principios Ofensivos (Regiones F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">
+                            <strong>Objetivos específicos:</strong> Detección de talento regional, cohesión colectiva a corto plazo y competitividad extrema.<br>
+                            <strong>Principios Ofensivos:</strong><br>
+                            1. Amplitud exterior mediante interiores y laterales ofensivos.<br>2. Juego directo controlado buscando segundas jugadas de los puntas.<br>3. Finalización rápida acumulando hasta tres rematadores.
+                        </p>
                     `,
                     'defensivo': `
                         <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Regiones F11):</strong>
@@ -11069,6 +11084,7 @@
             },
             'f11_sub14': {
                 name: "Selección Sub-14 F11",
+                color: "#3b82f6",
                 description: "Modelo de juego orientado al aprendizaje de conceptos colectivos, priorizando el juego combinativo y el desarrollo técnico.",
                 systems: ['1433', '14231'],
                 defaultSystem: '1433',
@@ -11081,11 +11097,15 @@
                 },
                 principles: {
                     'ofensivo': `
-                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-14 F11):</strong>
-                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Inicio de juego asociativo desde el área propia.<br>2. Búsqueda de superioridades numéricas locales (triangulaciones).<br>3. Desmarques de apoyo para ofrecer líneas de pase limpias.</p>
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Objetivos Formativos y Principios Ofensivos (Sub-14 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">
+                            <strong>Objetivos formativos:</strong> Asimilación del juego de posición, triangulaciones en apoyos, aprendizaje táctico e iniciación al tercer hombre.<br>
+                            <strong>Principios Ofensivos:</strong><br>
+                            1. Inicio de juego asociativo desde el área propia.<br>2. Búsqueda de superioridades numéricas locales (triangulaciones).<br>3. Desmarques de apoyo para ofrecer líneas de pase limpias.
+                        </p>
                     `,
                     'defensivo': `
-                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-14 F11):</strong>
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos Sub-14 (Sub-14 F11):</strong>
                         <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Presión coordinada en campo rival para recuperar rápido.<br>2. Orientación de la marca y posicionamiento perfilado corporal.<br>3. Foco en la anticipación y no cometer faltas innecesarias.</p>
                     `,
                     'transiciones': `
@@ -11116,6 +11136,7 @@
             },
             'f11_sub16': {
                 name: "Selección Sub-16 F11",
+                color: "#8b5cf6",
                 description: "Modelo enfocado en la especialización táctica avanzada, el rigor estructural y el juego dinámico de alta velocidad.",
                 systems: ['14231', '1433', '1352'],
                 defaultSystem: '14231',
@@ -11128,8 +11149,12 @@
                 },
                 principles: {
                     'ofensivo': `
-                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-16 F11):</strong>
-                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Circulación de balón a alta velocidad para desorganizar al rival.<br>2. Intercambio de posiciones y rotaciones de extremos y media punta.<br>3. Romper líneas rivales mediante conducciones del central o pases filtrados.</p>
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Conceptos Tácticos Avanzados (Sub-16 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">
+                            <strong>Conceptos avanzados:</strong> Rotaciones interlineales, tercer hombre bajo presión alta y amplitud con laterales doblados.<br>
+                            <strong>Principios Ofensivos:</strong><br>
+                            1. Circulación de balón a alta velocidad para desorganizar al rival.<br>2. Intercambio de posiciones y rotaciones de extremos y media punta.<br>3. Romper líneas rivales mediante conducciones del central o pases filtrados.
+                        </p>
                     `,
                     'defensivo': `
                         <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-16 F11):</strong>
@@ -11168,6 +11193,7 @@
             },
             'f8_sub12': {
                 name: "Selección Sub-12 F8",
+                color: "#ec4899",
                 description: "Modelo de juego orientado al desarrollo técnico, ocupación lógica de espacios y comprensión básica del juego combinativo en Fútbol 8.",
                 systems: ['f8_1322', 'f8_1331'],
                 defaultSystem: 'f8_1322',
@@ -11215,6 +11241,7 @@
             },
             'futsal_sub12': {
                 name: "Selección Sub-12 Futsal",
+                color: "#06b6d4",
                 description: "Modelo de fútbol sala base enfocado a la asimilación técnica del pase, control de suela y colocación en rombo.",
                 systems: ['fs_22', 'fs_31'],
                 defaultSystem: 'fs_22',
@@ -11262,6 +11289,7 @@
             },
             'futsal_sub14': {
                 name: "Selección Sub-14 Futsal",
+                color: "#f59e0b",
                 description: "Modelo táctico de fútbol sala orientado a las transiciones rápidas y el inicio del juego combinativo en rombo (3-1).",
                 systems: ['fs_31', 'fs_40'],
                 defaultSystem: 'fs_31',
@@ -11309,6 +11337,7 @@
             },
             'futsal_sub16': {
                 name: "Selección Sub-16 Futsal",
+                color: "#ef4444",
                 description: "Modelo táctico especializado en la movilidad extrema, el juego en falso pivot (4-0) y la presión tras pérdida coordinada.",
                 systems: ['fs_40', 'fs_31'],
                 defaultSystem: 'fs_40',
@@ -11356,6 +11385,7 @@
             },
             'futsal_sub19': {
                 name: "Selección Sub-19 Futsal",
+                color: "#6366f1",
                 description: "Modelo de juego avanzado de alta competición, dominando las rotaciones complejas, el juego de 5 y la estrategia ofensiva.",
                 systems: ['fs_31', 'fs_portero'],
                 defaultSystem: 'fs_31',
@@ -11403,6 +11433,7 @@
             },
             'fplaya_sub12': {
                 name: "Selección Sub-12 Fútbol Playa",
+                color: "#eab308",
                 description: "Modelo de iniciación a las dinámicas en arena, priorizando la técnica aérea básica y la familiarización con la inestabilidad de la arena.",
                 systems: ['fp_121', 'fp_13'],
                 defaultSystem: 'fp_121',
@@ -11450,6 +11481,7 @@
             },
             'fplaya_sub14': {
                 name: "Selección Sub-14 Fútbol Playa",
+                color: "#84cc16",
                 description: "Modelo de fútbol playa orientado al control de aire, saques rápidos del meta y transiciones ofensivas cortas.",
                 systems: ['fp_13', 'fp_22'],
                 defaultSystem: 'fp_13',
@@ -11497,6 +11529,7 @@
             },
             'fplaya_sub16': {
                 name: "Selección Sub-16 Fútbol Playa",
+                color: "#f97316",
                 description: "Modelo táctico enfocado en el dominio del juego aéreo, remates acrobáticos (chilenas y tijeretas) y fuerza en desplazamientos.",
                 systems: ['fp_22', 'fp_121'],
                 defaultSystem: 'fp_22',
@@ -11544,6 +11577,7 @@
             },
             'fplaya_sub19': {
                 name: "Selección Sub-19 Fútbol Playa",
+                color: "#d946ef",
                 description: "Modelo de alta competición especializado en estrategias avanzadas de juego aéreo, balón parado y rotación de quintetos.",
                 systems: ['fp_121', 'fp_13', 'fp_22'],
                 defaultSystem: 'fp_121',
@@ -12558,11 +12592,63 @@
             contentDiv.innerHTML = html;
         }
 
+        let lastRenderedSubModality = '';
+
         function renderGameModel() {
             const subModId = currentSubModality || (currentModality === 'f11' ? 'f11_regiones' : (currentModality === 'f8' ? 'f8_sub12' : (currentModality === 'futsal' ? 'futsal_sub12' : 'fplaya_sub12')));
             
             const modelData = SUBMODALITY_MODEL_DATA[subModId];
             if (!modelData) return;
+
+            // Reset activeSystem and activePhase to default on submodality change
+            if (subModId !== lastRenderedSubModality) {
+                activeSystem = modelData.defaultSystem;
+                activePhase = 'ofensivo';
+                lastRenderedSubModality = subModId;
+                
+                // Update active state of phase cards in UI
+                const cards = document.querySelectorAll('.tactic-cards-grid .tactic-card');
+                cards.forEach(card => {
+                    const onclickAttr = card.getAttribute('onclick');
+                    if (onclickAttr && onclickAttr.includes("'ofensivo'")) {
+                        card.classList.add('active');
+                    } else {
+                        card.classList.remove('active');
+                    }
+                });
+            }
+
+            // Update title, subtitle, and dynamic left border of the hero banner
+            const heroTitle = document.getElementById('modelo-hero-title');
+            const heroDesc = document.getElementById('modelo-hero-desc');
+            const heroBanner = document.getElementById('modelo-hero-banner');
+            if (heroTitle) {
+                heroTitle.textContent = modelData.name.toUpperCase();
+            }
+            if (heroDesc) {
+                heroDesc.textContent = modelData.description;
+            }
+            if (heroBanner) {
+                heroBanner.style.borderLeft = "6px solid " + (modelData.color || 'var(--accent)');
+            }
+
+            // Update Breadcrumb Indicator
+            const breadcrumb = document.getElementById('modelo-breadcrumb-indicator');
+            if (breadcrumb) {
+                const modName = currentModality === 'f11' ? 'Fútbol 11' : (currentModality === 'f8' ? 'Fútbol 8' : (currentModality === 'futsal' ? 'Fútbol Sala' : 'Fútbol Playa'));
+                const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
+                const subMod = subcategories.find(sub => sub.id === subModId);
+                const subName = subMod ? subMod.name : '';
+                
+                const modEl = document.getElementById('modelo-breadcrumb-mod');
+                const subEl = document.getElementById('modelo-breadcrumb-sub');
+                if (modEl && subEl) {
+                    modEl.textContent = modName;
+                    subEl.textContent = subName;
+                    subEl.style.backgroundColor = modelData.color || 'var(--accent)';
+                }
+                breadcrumb.style.display = 'flex';
+            }
             
             // 1. Update pitch visual style (lines & background)
             updatePitchVisualStyle(currentModality);
@@ -12786,11 +12872,20 @@
 
             pitch.querySelectorAll('.pitch-player').forEach(p => p.remove());
 
+            // Get submodality color
+            const subModId = currentSubModality || (currentModality === 'f11' ? 'f11_regiones' : (currentModality === 'f8' ? 'f8_sub12' : (currentModality === 'futsal' ? 'futsal_sub12' : 'fplaya_sub12')));
+            const modelData = SUBMODALITY_MODEL_DATA[subModId];
+            const identityColor = (modelData && modelData.color) ? modelData.color : 'var(--accent)';
+
             if (coords) {
                 coords.forEach(coord => {
                     const playerDiv = document.createElement('div');
                     playerDiv.className = 'pitch-player';
-                    if (coord.name === '1') playerDiv.classList.add('GK');
+                    if (coord.name === '1') {
+                        playerDiv.classList.add('GK');
+                    } else {
+                        playerDiv.style.backgroundColor = identityColor;
+                    }
                     playerDiv.style.top = coord.top;
                     playerDiv.style.left = coord.left;
                     playerDiv.textContent = coord.name;
