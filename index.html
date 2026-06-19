@@ -2076,11 +2076,11 @@
             color: #FFFFFF !important; /* Texto blanco */
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
         }
-        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container {
+        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container {
             border-radius: 12px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
-        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn {
+        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn {
             font-size: 13px;
             padding: 8px 16px;
             border-radius: 8px;
@@ -3485,6 +3485,11 @@
                         <button class="config-tab-btn" data-modality="f8" onclick="changeGlobalModality('f8', this)">⚽ Fútbol 8</button>
                         <button class="config-tab-btn" data-modality="futsal" onclick="changeGlobalModality('futsal', this)">🏟️ Fútbol Sala</button>
                         <button class="config-tab-btn" data-modality="fplaya" onclick="changeGlobalModality('fplaya', this)">🏖️ Fútbol Playa</button>
+                    </div>
+
+                    <!-- Pestañas de Subcategorías/Selecciones -->
+                    <div id="sesiones-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;">
+                        <!-- Dinámico mediante JS -->
                     </div>
 
                     <div class="sessions-grid" id="sessions-container">
@@ -5833,19 +5838,60 @@
         ];
 
         const DEFAULT_SESSIONS = [
-            // Fútbol 11
-            { id: 1, title: "Sesión 24: Transición Ofensiva F11", type: "Táctica", duration: 90, intensity: "Media-Alta", focus: "Velocidad de repliegue y pase al espacio", date: "12 Jun 2026", materials: "Conos, petos amarillos/azules, balones", block1: "Rondo dinámico 4v4+2 comodines", block2: "Juego real condicionado 8v8 con porterías", modality: "f11" },
-            { id: 2, title: "Sesión 25: ABP Defensivo F11", type: "ABP", duration: 75, intensity: "Media", focus: "Basculación defensiva ante córner cerrado", date: "15 Jun 2026", materials: "Petos rojos, vallas, mini-porterías", block1: "Activación física sin balón", block2: "Defensa grupal zonales y basculación", modality: "f11" },
-            { id: 3, title: "Sesión 26: Resistencia Aeróbica F11", type: "Física", duration: 80, intensity: "Alta", focus: "Circuitos pliométricos y resistencia", date: "18 Jun 2026", materials: "Escaleras coordinativas, vallas, cronómetro", block1: "Estiramientos y activación articular", block2: "Circuitos técnicos de fuerza explosiva", modality: "f11" },
-            // Fútbol 8
-            { id: 4, title: "Sesión 5: Iniciación a la Amplitud F8", type: "Táctica", duration: 75, intensity: "Media", focus: "Juego en amplitud y cambio de orientación", date: "10 Jun 2026", materials: "Conos de colores, balones F8", block1: "Juego de posición 3v3+2 comodines", block2: "Partido de aplicación con carriles laterales", modality: "f8" },
-            { id: 5, title: "Sesión 6: Habilidad Técnica F8", type: "Técnica", duration: 60, intensity: "Baja-Media", focus: "Control de balón y regate en zona final", date: "14 Jun 2026", materials: "Postes de slalom, balones", block1: "Circuitos de habilidad con balón", block2: "Juegos reducidos de 1v1 y 2v2", modality: "f8" },
-            // Fútbol Sala
-            { id: 6, title: "Sesión 10: Salida de Presión 3-1 Futsal", type: "Táctica", duration: 80, intensity: "Alta", focus: "Movilidad de pivot y apoyos en banda", date: "11 Jun 2026", materials: "Balones de futsal, conos, pizarra móvil", block1: "Rondo de futsal 3v1 en espacio de 20x20", block2: "Partido condicionado en pista completa", modality: "futsal" },
-            { id: 7, title: "Sesión 11: Defensa de Cambios Futsal", type: "Táctica", duration: 75, intensity: "Media-Alta", focus: "Basculación y cambios de marca en bloque", date: "16 Jun 2026", materials: "Petos, porterías reglamentarias", block1: "Simulaciones de 2v2 con cruce de marcas", block2: "Juego defensivo real 4v4", modality: "futsal" },
-            // Fútbol Playa
-            { id: 8, title: "Sesión 1: Remate Acrobático Playa", type: "Técnica", duration: 90, intensity: "Media-Alta", focus: "Chilenas y voleas levantando el balón", date: "12 Jun 2026", materials: "Redes protectoras, balones específicos de playa", block1: "Auto-pases y remate en pareja", block2: "Juego en arena de 3v3 sin bote de balón", modality: "fplaya" },
-            { id: 9, title: "Sesión 2: Desplazamientos Arena Playa", type: "Física", duration: 80, intensity: "Alta", focus: "Fuerza específica y resistencia en arena", date: "15 Jun 2026", materials: "Cintas demarcadoras, picas", block1: "Carreras con arrastre y saltos pliométricos", block2: "Partido de playa 5v5 con tiros continuos", modality: "fplaya" }
+            // Fútbol 11 - Selección Regiones
+            { id: 1, title: "Sesión 26: Resistencia Aeróbica F11", type: "Física", duration: 80, intensity: "Alta", focus: "Circuitos pliométricos y resistencia", date: "18 Jun 2026", materials: "Escaleras coordinativas, vallas, cronómetro", block1: "Estiramientos y activación articular", block2: "Circuitos técnicos de fuerza explosiva", modality: "f11", submodality: "f11_regiones" },
+            { id: 2, title: "Sesión: Preparación Torneo de Regiones", type: "Táctica", duration: 90, intensity: "Media", focus: "Estrategias de balón parado y basculaciones", date: "20 Jun 2026", materials: "Balones, picas, petos", block1: "Trabajo ABP córner y faltas laterales", block2: "Partido 11v11 real", modality: "f11", submodality: "f11_regiones" },
+            
+            // Fútbol 11 - Selección Sub-14
+            { id: 3, title: "Sesión: Juego de posición Sub-14", type: "Táctica", duration: 75, intensity: "Media", focus: "Conservación del balón y tercer hombre", date: "12 Jun 2026", materials: "Petos, cones, balones", block1: "Rondo posicional 4v4+3 comodines", block2: "Juego real reducido con zonas", modality: "f11", submodality: "f11_sub14" },
+            { id: 4, title: "Sesión: Conservación 6x6 + comodines", type: "Técnica", duration: 70, intensity: "Media", focus: "Apoyos continuos y perfilación corporal", date: "15 Jun 2026", materials: "Balones, conos", block1: "Activación técnica control y pase", block2: "Conservación con apoyos por fuera", modality: "f11", submodality: "f11_sub14" },
+            { id: 5, title: "Sesión: Finalización en superioridad", type: "Técnica", duration: 80, intensity: "Media-Alta", focus: "Transiciones ofensivas 3v2 y remates", date: "18 Jun 2026", materials: "Porterías, vallas", block1: "Oleadas de 3v2 con repliegue rápido", block2: "Partido libre en espacio medio", modality: "f11", submodality: "f11_sub14" },
+            
+            // Fútbol 11 - Selección Sub-16
+            { id: 6, title: "Sesión: Presión tras pérdida", type: "Táctica", duration: 85, intensity: "Alta", focus: "Bloque alto y acoso al poseedor", date: "11 Jun 2026", materials: "Petos, cronómetro", block1: "Juegos reducidos de transición rápida", block2: "Partido real condicionado a presionar", modality: "f11", submodality: "f11_sub16" },
+            { id: 7, title: "Sesión: Salida de balón organizada", type: "Táctica", duration: 90, intensity: "Media", focus: "Estructuras de inicio desde portero", date: "14 Jun 2026", materials: "Balones, conos, picas", block1: "Salidas 4v3 sin oposición real", block2: "Inicio de juego con presión activa del rival", modality: "f11", submodality: "f11_sub16" },
+            { id: 8, title: "Sesión: Transiciones ofensivas", type: "Táctica", duration: 80, intensity: "Alta", focus: "Velocidad de repliegue y pase al espacio", date: "17 Jun 2026", materials: "Conos, petos, balones", block1: "Rondo dinámico 4v4+2 comodines", block2: "Juego real condicionado 8v8 con porterías", modality: "f11", submodality: "f11_sub16" },
+            
+            // Fútbol 8 - Sub-12
+            { id: 9, title: "Sesión: Iniciación al juego combinativo", type: "Táctica", duration: 75, intensity: "Media", focus: "Juego en amplitud y cambio de orientación", date: "10 Jun 2026", materials: "Conos de colores, balones F8", block1: "Juego de posición 3v3+2 comodines", block2: "Partido de aplicación con carriles", modality: "f8", submodality: "f8_sub12" },
+            { id: 10, title: "Sesión: Finalización básica", type: "Técnica", duration: 60, intensity: "Media", focus: "Remate al primer toque y colocación", date: "14 Jun 2026", materials: "Postes de slalom, balones", block1: "Circuitos de habilidad con tiro", block2: "Juegos reducidos de 1v1 y 2v2", modality: "f8", submodality: "f8_sub12" },
+            { id: 11, title: "Sesión: Conservación reducida", type: "Técnica", duration: 70, intensity: "Media", focus: "Paredes y desmarques de apoyo", date: "17 Jun 2026", materials: "Petos, mini-porterías", block1: "Rondo 4v1", block2: "Juego reducido 5v5 con porterías pequeñas", modality: "f8", submodality: "f8_sub12" },
+            
+            // Fútbol Sala - Sub-12
+            { id: 12, title: "Sesión: Control de suela y pase de puntera", type: "Técnica", duration: 70, intensity: "Baja-Media", focus: "Control orientado característico de futsal", date: "10 Jun 2026", materials: "Balones de futsal, conos", block1: "Ejercicios estáticos de control y pase", block2: "1v1 en pista reducida", modality: "futsal", submodality: "futsal_sub12" },
+            { id: 13, title: "Sesión: Posicionamiento inicial de rombo", type: "Táctica", duration: 80, intensity: "Media", focus: "Distribución de cierre, alas y pivot", date: "12 Jun 2026", materials: "Pizarra, balones", block1: "Simulación de circulación estática", block2: "Partido libre en media cancha", modality: "futsal", submodality: "futsal_sub12" },
+            
+            // Fútbol Sala - Sub-14
+            { id: 14, title: "Sesión: Transiciones rápidas Sub-14", type: "Táctica", duration: 80, intensity: "Alta", focus: "Contraataque en superioridad 2v1 o 3v2", date: "15 Jun 2026", materials: "Balones de futsal, petos", block1: "Oleadas continuas de contragolpe", block2: "Juego real condicionado", modality: "futsal", submodality: "futsal_sub14" },
+            { id: 15, title: "Sesión: Repliegue defensivo Futsal", type: "Táctica", duration: 75, intensity: "Alta", focus: "Orientación corporal y cobertura tras pérdida", date: "18 Jun 2026", materials: "Balones, conos", block1: "Rondos defensivos 4v2", block2: "Juego real con penalización si no repliegan", modality: "futsal", submodality: "futsal_sub14" },
+            
+            // Fútbol Sala - Sub-16
+            { id: 16, title: "Sesión: Rotaciones 3-1", type: "Táctica", duration: 85, intensity: "Media-Alta", focus: "Movilidad de pivot y apoyos en banda", date: "11 Jun 2026", materials: "Balones de futsal, conos, pizarra móvil", block1: "Rondo de futsal 3v1 en espacio reducido", block2: "Partido condicionado en pista completa", modality: "futsal", submodality: "futsal_sub16" },
+            { id: 17, title: "Sesión: Coberturas defensivas", type: "Táctica", duration: 75, intensity: "Media-Alta", focus: "Basculación y cambios de marca en bloque", date: "16 Jun 2026", materials: "Petos, porterías reglamentarias", block1: "Simulaciones de 2v2 con cruce de marcas", block2: "Juego defensivo real 4v4", modality: "futsal", submodality: "futsal_sub16" },
+            { id: 18, title: "Sesión: Superioridades ofensivas", type: "Táctica", duration: 80, intensity: "Alta", focus: "Aprovechar espacios en 3v2 y 4v3", date: "19 Jun 2026", materials: "Balones futsal, petos", block1: "Ejercicios continuos de superioridad", block2: "Partido condicionado", modality: "futsal", submodality: "futsal_sub16" },
+            
+            // Fútbol Sala - Sub-19
+            { id: 19, title: "Sesión: Juego de 4", type: "Táctica", duration: 90, intensity: "Alta", focus: "Rotaciones paralelas y diagonales en ataque", date: "11 Jun 2026", materials: "Balones, pizarra", block1: "Circulación en rombo y paralela", block2: "Juego real de 4 para finalizar rápido", modality: "futsal", submodality: "futsal_sub19" },
+            { id: 20, title: "Sesión: Portero-jugador", type: "Táctica", duration: 85, intensity: "Media", focus: "Circulación de balón en superioridad 5v4", date: "15 Jun 2026", materials: "Balones futsal, peto comodín", block1: "Ataque 5v4 estático posicional", block2: "Defensa grupal en rombo o cuadrado", modality: "futsal", submodality: "futsal_sub19" },
+            { id: 21, title: "Sesión: Estrategia ofensiva", type: "ABP", duration: 80, intensity: "Media", focus: "Córners, saques de banda y faltas ensayadas", date: "18 Jun 2026", materials: "Pizarra, conos", block1: "Ejercicios repetitivos de ABP", block2: "Juego real con saques condicionados", modality: "futsal", submodality: "futsal_sub19" },
+            
+            // Fútbol Playa - Sub-12
+            { id: 22, title: "Sesión: Habilidad de pie levantado", type: "Técnica", duration: 60, intensity: "Baja-Media", focus: "Dominar el balón en el aire sobre arena", date: "11 Jun 2026", materials: "Balones playa, conos", block1: "Malabares y autopases", block2: "Vóley playa simplificado", modality: "fplaya", submodality: "fplaya_sub12" },
+            { id: 23, title: "Sesión: Pases cortos en arena", type: "Técnica", duration: 70, intensity: "Media", focus: "Fuerza de pase para evitar que bote el balón", date: "14 Jun 2026", materials: "Picas, balones", block1: "Rondo de pases de aire", block2: "Juego reducido de 3v3 con porterías chicas", modality: "fplaya", submodality: "fplaya_sub12" },
+            
+            // Fútbol Playa - Sub-14
+            { id: 24, title: "Sesión: Control y pase alto Sub-14", type: "Técnica", duration: 75, intensity: "Media", focus: "Levantar la bola para favorecer la volea", date: "16 Jun 2026", materials: "Balones de playa", block1: "Ejercicios estáticos de elevación", block2: "Juego condicionado a finalizar alto", modality: "fplaya", submodality: "fplaya_sub14" },
+            { id: 25, title: "Sesión: Basculaciones en arena", type: "Táctica", duration: 80, intensity: "Alta", focus: "Desplazamiento defensivo y cobertura lateral", date: "19 Jun 2026", materials: "Balones, cintas", block1: "Sombra defensiva grupal", block2: "Partido real de playa", modality: "fplaya", submodality: "fplaya_sub14" },
+            
+            // Fútbol Playa - Sub-16
+            { id: 26, title: "Sesión: Juego aéreo", type: "Técnica", duration: 90, intensity: "Media-Alta", focus: "Chilenas y voleas levantando el balón", date: "12 Jun 2026", materials: "Redes protectoras, balones específicos de playa", block1: "Auto-pases y remate en pareja", block2: "Juego en arena de 3v3 sin bote de balón", modality: "fplaya", submodality: "fplaya_sub16" },
+            { id: 27, title: "Sesión: Remates acrobáticos", type: "Técnica", duration: 80, intensity: "Alta", focus: "Tijeretas y cabezazos en plancha", date: "15 Jun 2026", materials: "Balones de playa", block1: "Centros laterales para remates acrobáticos", block2: "Juego condicionado a chilenas", modality: "fplaya", submodality: "fplaya_sub16" },
+            { id: 28, title: "Sesión: Desplazamientos en arena", type: "Física", duration: 80, intensity: "Alta", focus: "Fuerza específica y resistencia en arena", date: "17 Jun 2026", materials: "Cintas demarcadoras, picas", block1: "Carreras con arrastre y saltos pliométricos", block2: "Partido de playa 5v5 con tiros continuos", modality: "fplaya", submodality: "fplaya_sub16" },
+            
+            // Fútbol Playa - Sub-19
+            { id: 29, title: "Sesión: Estrategias ofensivas playa", type: "Táctica", duration: 90, intensity: "Alta", focus: "Salidas rápidas con el portero lanzando alto", date: "11 Jun 2026", materials: "Balones, pizarra", block1: "Lanzamientos del meta y control orientado", block2: "Partido real 5v5 condicionado", modality: "fplaya", submodality: "fplaya_sub19" },
+            { id: 30, title: "Sesión: Balón parado playa", type: "ABP", duration: 85, intensity: "Media", focus: "Faltas directas desde arena y córners ensayados", date: "14 Jun 2026", materials: "Cintas, balones", block1: "Lanzamientos de falta levantando el montículo", block2: "Juego táctico real", modality: "fplaya", submodality: "fplaya_sub19" },
+            { id: 31, title: "Sesión: Finalización en arena", type: "Técnica", duration: 80, intensity: "Alta", focus: "Tiros lejanos y juego de pivote alto", date: "18 Jun 2026", materials: "Postes, balones", block1: "Tiros tras control de aire", block2: "Partido libre de playa", modality: "fplaya", submodality: "fplaya_sub19" }
         ];
 
         const DEFAULT_REPORTS = [
@@ -6983,7 +7029,7 @@
             if (!container) return;
             container.innerHTML = '';
 
-            sessions.filter(s => s.modality === currentModality).forEach(s => {
+            sessions.filter(s => s.modality === currentModality && matchesSubModality(s, currentSubModality)).forEach(s => {
                 let badgeClass = 'tag-success';
                 let sessionNum = '';
                 let sessionName = s.title;
@@ -7077,6 +7123,7 @@
                     focus: "PDF importado correctamente",
                     pdfData: pdfData,
                     modality: currentModality,
+                    submodality: currentSubModality || "",
                     date: new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })
                 };
 
@@ -10112,6 +10159,7 @@
             const dbContainer = document.getElementById('dashboard-subcategory-tabs-container');
             const plContainer = document.getElementById('jugadores-subcategory-tabs-container');
             const cvContainer = document.getElementById('convocatorias-subcategory-tabs-container');
+            const seContainer = document.getElementById('sesiones-subcategory-tabs-container');
             
             const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
             
@@ -10144,6 +10192,10 @@
                     cvContainer.innerHTML = html;
                     cvContainer.style.display = 'flex';
                 }
+                if (seContainer) {
+                    seContainer.innerHTML = html;
+                    seContainer.style.display = 'flex';
+                }
             } else {
                 currentSubModality = '';
                 localStorage.setItem('ffcv_current_submodality', '');
@@ -10158,6 +10210,10 @@
                 if (cvContainer) {
                     cvContainer.style.display = 'none';
                     cvContainer.innerHTML = '';
+                }
+                if (seContainer) {
+                    seContainer.style.display = 'none';
+                    seContainer.innerHTML = '';
                 }
             }
         }
@@ -10200,10 +10256,22 @@
                 });
             }
 
+            const seContainer = document.getElementById('sesiones-subcategory-tabs-container');
+            if (seContainer) {
+                seContainer.querySelectorAll('.config-tab-btn').forEach(b => {
+                    if (b.getAttribute('data-submodality') === subModId) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+            }
+
             updateCounts();
             renderDashboardView();
             renderPlayersTable();
             renderConvocatorias();
+            renderSessions();
             
             if (btn) {
                 showToast(`Subcategoría: ${btn.textContent.trim()}`, 'info');
@@ -11742,6 +11810,7 @@
                 block1,
                 block2,
                 modality: currentModality,
+                submodality: currentSubModality || "",
                 date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
             };
             
@@ -13961,6 +14030,30 @@
                         else if (tLower.includes('sub-14') || tLower.includes('sub14')) e.submodality = 'fplaya_sub14';
                         else if (tLower.includes('sub-16') || tLower.includes('sub16')) e.submodality = 'fplaya_sub16';
                         else if (tLower.includes('sub-19') || tLower.includes('sub19')) e.submodality = 'fplaya_sub19';
+                    }
+                }
+            });
+
+            // Auto-asignar submodality a sesiones existentes sin submodality
+            sessions.forEach(s => {
+                if (!s.submodality && s.modality) {
+                    const tLower = s.title.toLowerCase();
+                    if (s.modality === 'f11') {
+                        if (tLower.includes('regiones')) s.submodality = 'f11_regiones';
+                        else if (tLower.includes('sub-14') || tLower.includes('sub14')) s.submodality = 'f11_sub14';
+                        else s.submodality = 'f11_sub16';
+                    } else if (s.modality === 'f8') {
+                        s.submodality = 'f8_sub12';
+                    } else if (s.modality === 'futsal') {
+                        if (tLower.includes('sub-12') || tLower.includes('sub12')) s.submodality = 'futsal_sub12';
+                        else if (tLower.includes('sub-14') || tLower.includes('sub14')) s.submodality = 'futsal_sub14';
+                        else if (tLower.includes('sub-19') || tLower.includes('sub19')) s.submodality = 'futsal_sub19';
+                        else s.submodality = 'futsal_sub16';
+                    } else if (s.modality === 'fplaya') {
+                        if (tLower.includes('sub-12') || tLower.includes('sub12')) s.submodality = 'fplaya_sub12';
+                        else if (tLower.includes('sub-14') || tLower.includes('sub14')) s.submodality = 'fplaya_sub14';
+                        else if (tLower.includes('sub-19') || tLower.includes('sub19')) s.submodality = 'fplaya_sub19';
+                        else s.submodality = 'fplaya_sub16';
                     }
                 }
             });
