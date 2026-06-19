@@ -2076,11 +2076,11 @@
             color: #FFFFFF !important; /* Texto blanco */
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
         }
-        #dashboard-subcategory-tabs-container {
+        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container {
             border-radius: 12px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
-        #dashboard-subcategory-tabs-container .config-tab-btn {
+        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn {
             font-size: 13px;
             padding: 8px 16px;
             border-radius: 8px;
@@ -2883,6 +2883,11 @@
                         <button class="config-tab-btn" data-modality="fplaya" onclick="changeGlobalModality('fplaya', this)">🏖️ Fútbol Playa</button>
                     </div>
 
+                    <!-- Pestañas de Subcategorías/Selecciones -->
+                    <div id="jugadores-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;">
+                        <!-- Dinámico mediante JS -->
+                    </div>
+
                     <!-- Tarjeta de Filtros de Jugadores -->
                     <div class="filters-card">
 
@@ -2907,7 +2912,7 @@
                                 <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-player-search">Buscador por nombre</label>
                                 <input type="text" class="form-input" id="filter-player-search" placeholder="Buscar por nombre..." style="font-size: 12px; height: 38px; background-color: #FFFFFF;" />
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group" style="margin-bottom: 0; display: none;">
                                 <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-player-category">Categoría</label>
                                 <select class="form-select" id="filter-player-category" style="font-size: 12px; height: 38px; background-color: #FFFFFF;">
                                     <option value="ALL">Todas las categorías</option>
@@ -6702,6 +6707,7 @@
 
             let filtered = players.filter(p => {
                 const matchesModality = p.modality === currentModality;
+                const matchesSub = matchesSubModality(p, currentSubModality);
                 const matchesQuery = !query || p.name.toLowerCase().includes(query) || (p.club && p.club.toLowerCase().includes(query));
                 const matchesCat = (cat === 'ALL') || (p.category === cat);
                 const matchesStat = (stat === 'ALL') || (p.status === stat);
@@ -6711,7 +6717,7 @@
                 const matchesYear = (yearVal === 'ALL') || (String(p.birthYear) === yearVal);
                 const matchesProvince = (provVal === 'ALL') || (p.province === provVal);
 
-                return matchesModality && matchesQuery && matchesCat && matchesStat && matchesClub && matchesPos && matchesFoot && matchesYear && matchesProvince;
+                return matchesModality && matchesSub && matchesQuery && matchesCat && matchesStat && matchesClub && matchesPos && matchesFoot && matchesYear && matchesProvince;
             });
 
             const countLabel = document.getElementById('filter-count-label');
@@ -10078,8 +10084,8 @@
         }
 
         function updateSubModalitiesNav() {
-            const container = document.getElementById('dashboard-subcategory-tabs-container');
-            if (!container) return;
+            const dbContainer = document.getElementById('dashboard-subcategory-tabs-container');
+            const plContainer = document.getElementById('jugadores-subcategory-tabs-container');
             
             const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
             
@@ -10094,18 +10100,31 @@
                 localStorage.setItem('ffcv_current_submodality', currentSubModality);
                 localStorage.setItem(`ffcv_submodality_${currentModality}`, currentSubModality);
                 
-                container.innerHTML = subcategories.map(sub => {
+                const html = subcategories.map(sub => {
                     const isActive = sub.id === currentSubModality ? 'active' : '';
                     const icon = sub.icon || '⚽';
                     return `<button class="config-tab-btn ${isActive}" data-submodality="${sub.id}" onclick="changeSubModality('${sub.id}', this)">${icon} ${sub.name}</button>`;
                 }).join('');
                 
-                container.style.display = 'flex';
+                if (dbContainer) {
+                    dbContainer.innerHTML = html;
+                    dbContainer.style.display = 'flex';
+                }
+                if (plContainer) {
+                    plContainer.innerHTML = html;
+                    plContainer.style.display = 'flex';
+                }
             } else {
                 currentSubModality = '';
                 localStorage.setItem('ffcv_current_submodality', '');
-                container.style.display = 'none';
-                container.innerHTML = '';
+                if (dbContainer) {
+                    dbContainer.style.display = 'none';
+                    dbContainer.innerHTML = '';
+                }
+                if (plContainer) {
+                    plContainer.style.display = 'none';
+                    plContainer.innerHTML = '';
+                }
             }
         }
 
@@ -10114,9 +10133,20 @@
             localStorage.setItem('ffcv_current_submodality', subModId);
             localStorage.setItem(`ffcv_submodality_${currentModality}`, subModId);
             
-            const container = document.getElementById('dashboard-subcategory-tabs-container');
-            if (container) {
-                container.querySelectorAll('.config-tab-btn').forEach(b => {
+            const dbContainer = document.getElementById('dashboard-subcategory-tabs-container');
+            if (dbContainer) {
+                dbContainer.querySelectorAll('.config-tab-btn').forEach(b => {
+                    if (b.getAttribute('data-submodality') === subModId) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+            }
+
+            const plContainer = document.getElementById('jugadores-subcategory-tabs-container');
+            if (plContainer) {
+                plContainer.querySelectorAll('.config-tab-btn').forEach(b => {
                     if (b.getAttribute('data-submodality') === subModId) {
                         b.classList.add('active');
                     } else {
@@ -10127,6 +10157,7 @@
 
             updateCounts();
             renderDashboardView();
+            renderPlayersTable();
             
             if (btn) {
                 showToast(`Subcategoría: ${btn.textContent.trim()}`, 'info');
@@ -11779,7 +11810,8 @@
                     dribble: 65 + Math.floor(Math.random() * 30),
                     rating: 75 + Math.floor(Math.random() * 20),
                     phone: "+34 600 " + Math.floor(100000 + Math.random() * 900000),
-                    modality: currentModality
+                    modality: currentModality,
+                    submodality: currentSubModality || ""
                 };
                 players.push(newP);
                 playerIds.push(newId);
@@ -13815,6 +13847,29 @@
         }
 
         function ensureDemoData() {
+            // Auto-asignar submodality a jugadores existentes sin submodality
+            players.forEach(p => {
+                if (!p.submodality && p.modality && p.category) {
+                    if (p.modality === 'f11') {
+                        if (p.category === 'Regiones') p.submodality = 'f11_regiones';
+                        else if (p.category === 'Sub-14') p.submodality = 'f11_sub14';
+                        else if (p.category === 'Sub-16') p.submodality = 'f11_sub16';
+                    } else if (p.modality === 'f8' && p.category === 'Sub-12') {
+                        p.submodality = 'f8_sub12';
+                    } else if (p.modality === 'futsal') {
+                        if (p.category === 'Sub-12') p.submodality = 'futsal_sub12';
+                        else if (p.category === 'Sub-14') p.submodality = 'futsal_sub14';
+                        else if (p.category === 'Sub-16') p.submodality = 'futsal_sub16';
+                        else if (p.category === 'Sub-19') p.submodality = 'futsal_sub19';
+                    } else if (p.modality === 'fplaya') {
+                        if (p.category === 'Sub-12') p.submodality = 'fplaya_sub12';
+                        else if (p.category === 'Sub-14') p.submodality = 'fplaya_sub14';
+                        else if (p.category === 'Sub-16') p.submodality = 'fplaya_sub16';
+                        else if (p.category === 'Sub-19') p.submodality = 'fplaya_sub19';
+                    }
+                }
+            });
+
             const demoPlayers = [
                 { id: 101, name: "Aitor Pascual", club: "C.F. Gandia", category: "Regiones", position: "Mediocentro", matches: 6, status: "Seleccionado", birthYear: 2002, foot: "Diestro", province: "Valencia", pace: 80, pass: 82, defense: 75, physical: 85, rating: 81, phone: "+34 699 888 777", modality: "f11", submodality: "f11_regiones" },
                 { id: 102, name: "Josevi Calabuig", club: "Ontinyent 1931 C.F.", category: "Regiones", position: "Delantero Centro", matches: 10, status: "Seleccionado", birthYear: 2000, foot: "Diestro", province: "Valencia", pace: 85, pass: 75, defense: 50, physical: 88, rating: 83, phone: "+34 688 777 666", modality: "f11", submodality: "f11_regiones" },
