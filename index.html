@@ -2076,11 +2076,11 @@
             color: #FFFFFF !important; /* Texto blanco */
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
         }
-        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container {
+        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container {
             border-radius: 12px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
-        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn {
+        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn {
             font-size: 13px;
             padding: 8px 16px;
             border-radius: 8px;
@@ -3045,6 +3045,11 @@
                         <button class="config-tab-btn" data-modality="fplaya" onclick="changeGlobalModality('fplaya', this)">🏖️ Fútbol Playa</button>
                     </div>
 
+                    <!-- Pestañas de Subcategorías/Selecciones -->
+                    <div id="convocatorias-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;">
+                        <!-- Dinámico mediante JS -->
+                    </div>
+
                     <!-- Barra de Filtros de Convocatorias -->
                     <style>
                         .filters-card {
@@ -3132,7 +3137,7 @@
                                     <option value="Castellón">Castellón</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group" style="margin-bottom: 0; display: none;">
                                 <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-sport">Deporte</label>
                                 <select class="form-select" id="filter-call-sport" style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;">
                                     <option value="ALL">Todos</option>
@@ -3141,7 +3146,7 @@
                                     <option value="Fútbol Playa">Fútbol Playa</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="margin-bottom: 0;">
+                            <div class="form-group" style="margin-bottom: 0; display: none;">
                                 <label class="form-label" style="font-size: 11px; margin-bottom: 4px; color: rgba(15, 35, 80, 0.8);" for="filter-call-category">Categoría</label>
                                 <select class="form-select" id="filter-call-category" style="font-size: 12px; height: 38px; padding: 4px 8px; background-color: #FFFFFF;">
                                     <option value="ALL">Todas</option>
@@ -5181,6 +5186,8 @@
                                 <option value="Sub-16">Sub-16</option>
                                 <option value="Sub-14">Sub-14</option>
                                 <option value="Sub-12">Sub-12</option>
+                                <option value="Sub-19">Sub-19</option>
+                                <option value="Regiones">Regiones</option>
                                 <option value="Absoluta">Absoluta</option>
                             </select>
                         </div>
@@ -6369,7 +6376,7 @@
             if (modalId === 'modal-convocatoria') {
                 const checkList = document.getElementById('checkbox-players-list');
                 checkList.innerHTML = '';
-                players.filter(p => p.modality === currentModality).forEach(p => {
+                players.filter(p => p.modality === currentModality && matchesSubModality(p, currentSubModality)).forEach(p => {
                     checkList.innerHTML += `
                         <label style="display:flex; align-items:center; gap:8px; font-size:13px; margin-bottom:6px; cursor:pointer;">
                             <input type="checkbox" value="${p.id}" class="conv-player-checkbox" />
@@ -6377,6 +6384,23 @@
                         </label>
                     `;
                 });
+
+                // Auto-seleccionar deporte y categoría según el estado activo
+                const sportSelect = document.getElementById('call-sport');
+                const categorySelect = document.getElementById('call-category');
+
+                if (sportSelect) {
+                    if (currentModality === 'f11' || currentModality === 'f8') sportSelect.value = 'Fútbol';
+                    else if (currentModality === 'futsal') sportSelect.value = 'Fútbol Sala';
+                    else if (currentModality === 'fplaya') sportSelect.value = 'Fútbol Playa';
+                }
+
+                if (categorySelect && currentSubModality) {
+                    const subcat = (SUBMODALITIES_CONFIG[currentModality] || []).find(sub => sub.id === currentSubModality);
+                    if (subcat && subcat.filterCat) {
+                        categorySelect.value = subcat.filterCat;
+                    }
+                }
             }
         }
 
@@ -6798,6 +6822,7 @@
 
             const filteredCalls = convocatorias.filter(c => {
                 const matchesModality = c.modality === currentModality;
+                const matchesSub = matchesSubModality(c, currentSubModality);
                 const matchesSeason = (season === 'ALL') || ((c.season || '2026/2027') === season);
                 const matchesProvince = (province === 'ALL') || ((c.province || 'Valencia') === province);
                 const matchesSport = (sport === 'ALL') || ((c.sport || 'Fútbol') === sport);
@@ -10086,6 +10111,7 @@
         function updateSubModalitiesNav() {
             const dbContainer = document.getElementById('dashboard-subcategory-tabs-container');
             const plContainer = document.getElementById('jugadores-subcategory-tabs-container');
+            const cvContainer = document.getElementById('convocatorias-subcategory-tabs-container');
             
             const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
             
@@ -10114,6 +10140,10 @@
                     plContainer.innerHTML = html;
                     plContainer.style.display = 'flex';
                 }
+                if (cvContainer) {
+                    cvContainer.innerHTML = html;
+                    cvContainer.style.display = 'flex';
+                }
             } else {
                 currentSubModality = '';
                 localStorage.setItem('ffcv_current_submodality', '');
@@ -10124,6 +10154,10 @@
                 if (plContainer) {
                     plContainer.style.display = 'none';
                     plContainer.innerHTML = '';
+                }
+                if (cvContainer) {
+                    cvContainer.style.display = 'none';
+                    cvContainer.innerHTML = '';
                 }
             }
         }
@@ -10155,9 +10189,21 @@
                 });
             }
 
+            const cvContainer = document.getElementById('convocatorias-subcategory-tabs-container');
+            if (cvContainer) {
+                cvContainer.querySelectorAll('.config-tab-btn').forEach(b => {
+                    if (b.getAttribute('data-submodality') === subModId) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+            }
+
             updateCounts();
             renderDashboardView();
             renderPlayersTable();
+            renderConvocatorias();
             
             if (btn) {
                 showToast(`Subcategoría: ${btn.textContent.trim()}`, 'info');
@@ -11831,7 +11877,8 @@
                 sport,
                 category: selectedCategory,
                 gender,
-                modality: currentModality
+                modality: currentModality,
+                submodality: currentSubModality || ""
             };
             
             convocatorias.push(newCall);
@@ -11842,7 +11889,8 @@
                 date: dateStr,
                 type: 'match',
                 location: newCall.location,
-                modality: currentModality
+                modality: currentModality,
+                submodality: currentSubModality || ""
             });
 
             saveState();
@@ -13866,6 +13914,53 @@
                         else if (p.category === 'Sub-14') p.submodality = 'fplaya_sub14';
                         else if (p.category === 'Sub-16') p.submodality = 'fplaya_sub16';
                         else if (p.category === 'Sub-19') p.submodality = 'fplaya_sub19';
+                    }
+                }
+            });
+
+            // Auto-asignar submodality a convocatorias existentes sin submodality
+            convocatorias.forEach(c => {
+                if (!c.submodality && c.modality && c.category) {
+                    if (c.modality === 'f11') {
+                        if (c.category === 'Regiones') c.submodality = 'f11_regiones';
+                        else if (c.category === 'Sub-14') c.submodality = 'f11_sub14';
+                        else if (c.category === 'Sub-16') c.submodality = 'f11_sub16';
+                    } else if (c.modality === 'f8' && c.category === 'Sub-12') {
+                        c.submodality = 'f8_sub12';
+                    } else if (c.modality === 'futsal') {
+                        if (c.category === 'Sub-12') c.submodality = 'futsal_sub12';
+                        else if (c.category === 'Sub-14') c.submodality = 'futsal_sub14';
+                        else if (c.category === 'Sub-16') c.submodality = 'futsal_sub16';
+                        else if (c.category === 'Sub-19') c.submodality = 'futsal_sub19';
+                    } else if (c.modality === 'fplaya') {
+                        if (c.category === 'Sub-12') c.submodality = 'fplaya_sub12';
+                        else if (c.category === 'Sub-14') c.submodality = 'fplaya_sub14';
+                        else if (c.category === 'Sub-16') c.submodality = 'fplaya_sub16';
+                        else if (c.category === 'Sub-19') c.submodality = 'fplaya_sub19';
+                    }
+                }
+            });
+
+            // Auto-asignar submodality a eventos existentes sin submodality
+            events.forEach(e => {
+                if (!e.submodality && e.modality) {
+                    const tLower = e.title.toLowerCase();
+                    if (e.modality === 'f11') {
+                        if (tLower.includes('regiones')) e.submodality = 'f11_regiones';
+                        else if (tLower.includes('sub-14') || tLower.includes('sub14')) e.submodality = 'f11_sub14';
+                        else if (tLower.includes('sub-16') || tLower.includes('sub16')) e.submodality = 'f11_sub16';
+                    } else if (e.modality === 'f8') {
+                        e.submodality = 'f8_sub12';
+                    } else if (e.modality === 'futsal') {
+                        if (tLower.includes('sub-12') || tLower.includes('sub12')) e.submodality = 'futsal_sub12';
+                        else if (tLower.includes('sub-14') || tLower.includes('sub14')) e.submodality = 'futsal_sub14';
+                        else if (tLower.includes('sub-16') || tLower.includes('sub16')) e.submodality = 'futsal_sub16';
+                        else if (tLower.includes('sub-19') || tLower.includes('sub19')) e.submodality = 'futsal_sub19';
+                    } else if (e.modality === 'fplaya') {
+                        if (tLower.includes('sub-12') || tLower.includes('sub12')) e.submodality = 'fplaya_sub12';
+                        else if (tLower.includes('sub-14') || tLower.includes('sub14')) e.submodality = 'fplaya_sub14';
+                        else if (tLower.includes('sub-16') || tLower.includes('sub16')) e.submodality = 'fplaya_sub16';
+                        else if (tLower.includes('sub-19') || tLower.includes('sub19')) e.submodality = 'fplaya_sub19';
                     }
                 }
             });
