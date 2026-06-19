@@ -6486,7 +6486,19 @@
                 // Selección Sub-12 (Fútbol 8)
                 { time: 'Hace 8 min', text: 'Entrenamiento Oficial F8 Sub-12 finalizado', submodality: 'f8_sub12', modality: 'f8' },
                 { time: 'Hace 45 min', text: 'Convocatoria Sub-12 F8 para Copa de Campeones publicada', submodality: 'f8_sub12', modality: 'f8' },
-                { time: 'Hace 2 horas', text: 'Izan Alcañiz reportado en forma óptima', submodality: 'f8_sub12', modality: 'f8' }
+                { time: 'Hace 2 horas', text: 'Izan Alcañiz reportado en forma óptima', submodality: 'f8_sub12', modality: 'f8' },
+                // Fútbol Sala Sub-12
+                { time: 'Hace 12 min', text: 'Amistoso contra Castellón programado', submodality: 'futsal_sub12', modality: 'futsal' },
+                { time: 'Hace 3 horas', text: 'Dani Torres convocado para entrenamiento provincial', submodality: 'futsal_sub12', modality: 'futsal' },
+                // Fútbol Sala Sub-14
+                { time: 'Hace 20 min', text: 'Entrenamiento Sub-14 Futsal finalizado', submodality: 'futsal_sub14', modality: 'futsal' },
+                { time: 'Hace 5 horas', text: 'Convocatoria oficial Sub-14 Futsal publicada', submodality: 'futsal_sub14', modality: 'futsal' },
+                // Fútbol Sala Sub-16
+                { time: 'Hace 1 hora', text: 'Partido contra Selección de Murcia confirmado', submodality: 'futsal_sub16', modality: 'futsal' },
+                { time: 'Hace 6 horas', text: 'Preparación de test físicos Sub-16 completada', submodality: 'futsal_sub16', modality: 'futsal' },
+                // Fútbol Sala Sub-19
+                { time: 'Hace 15 min', text: 'Lista oficial Sub-19 Futsal de Miki Ortega publicada', submodality: 'futsal_sub19', modality: 'futsal' },
+                { time: 'Hace 4 horas', text: 'Amistoso contra Selección RFEF programado', submodality: 'futsal_sub19', modality: 'futsal' }
             ];
 
             if (!localStorage.getItem('ffcv_activities')) {
@@ -9949,7 +9961,12 @@
             'f8': [
                 { id: 'f8_sub12', name: 'Sub-12', filterCat: 'Sub-12', icon: '🏃' }
             ],
-            'futsal': [],
+            'futsal': [
+                { id: 'futsal_sub12', name: 'Sub-12', filterCat: 'Sub-12', icon: '⚽' },
+                { id: 'futsal_sub14', name: 'Sub-14', filterCat: 'Sub-14', icon: '🏃' },
+                { id: 'futsal_sub16', name: 'Sub-16', filterCat: 'Sub-16', icon: '⚡' },
+                { id: 'futsal_sub19', name: 'Sub-19', filterCat: 'Sub-19', icon: '🏆' }
+            ],
             'fplaya': []
         };
 
@@ -9991,6 +10008,30 @@
                        titleLower.includes('sub-12') || titleLower.includes('sub12') ||
                        clubLower.includes('sub-12') || clubLower.includes('sub12') ||
                        roleLower.includes('sub-12') || roleLower.includes('sub12');
+            }
+            if (subModId === 'futsal_sub12') {
+                return (catLower === 'sub-12' || catLower.includes('sub-12') || catLower.includes('alevín') || catLower.includes('alevin') ||
+                       nameLower.includes('sub-12') || nameLower.includes('sub12') ||
+                       titleLower.includes('sub-12') || titleLower.includes('sub12')) &&
+                       (item.modality === 'futsal' || item.sport === 'Fútbol Sala');
+            }
+            if (subModId === 'futsal_sub14') {
+                return (catLower === 'sub-14' || catLower.includes('sub-14') || catLower.includes('infantil') ||
+                       nameLower.includes('sub-14') || nameLower.includes('sub14') ||
+                       titleLower.includes('sub-14') || titleLower.includes('sub14')) &&
+                       (item.modality === 'futsal' || item.sport === 'Fútbol Sala');
+            }
+            if (subModId === 'futsal_sub16') {
+                return (catLower === 'sub-16' || catLower.includes('sub-16') || catLower.includes('cadete') ||
+                       nameLower.includes('sub-16') || nameLower.includes('sub16') ||
+                       titleLower.includes('sub-16') || titleLower.includes('sub16')) &&
+                       (item.modality === 'futsal' || item.sport === 'Fútbol Sala');
+            }
+            if (subModId === 'futsal_sub19') {
+                return (catLower === 'sub-19' || catLower.includes('sub-19') || catLower.includes('juvenil') ||
+                       nameLower.includes('sub-19') || nameLower.includes('sub19') ||
+                       titleLower.includes('sub-19') || titleLower.includes('sub19')) &&
+                       (item.modality === 'futsal' || item.sport === 'Fútbol Sala');
             }
             return false;
         }
@@ -13821,6 +13862,54 @@
                 { id: 201, name: "Santi Ribera", role: "Seleccionador", category: "Sub-12", license: "UEFA Pro", email: "sribera@ffcv.es", status: "Activo", sport: "Fútbol", gender: "Masculino", phone: "+34 600 555 666", titulos: "Especialista Fútbol 8 FFCV", experiencia: "8 años coordinando fútbol base y selecciones alevines.", modality: "f8", submodality: "f8_sub12" }
             ];
             demoF8Staff.forEach(ds => {
+                if (!staff.some(s => s.id === ds.id || s.name === ds.name)) {
+                    staff.push(ds);
+                }
+            });
+
+            const demoFutsalPlayers = [
+                { id: 301, name: "Dani Torres", club: "Alzira Futsal", category: "Sub-12", position: "Ala", matches: 5, status: "Seleccionado", birthYear: 2014, foot: "Diestro", province: "Valencia", pace: 82, pass: 78, defense: 64, physical: 70, rating: 78, phone: "+34 600 777 888", modality: "futsal", submodality: "futsal_sub12" },
+                { id: 302, name: "Lucas Mascaró", club: "Levante U.D. Futsal", category: "Sub-14", position: "Cierre", matches: 7, status: "Seleccionado", birthYear: 2012, foot: "Zurdo", province: "Valencia", pace: 80, pass: 82, defense: 78, physical: 74, rating: 81, phone: "+34 600 888 999", modality: "futsal", submodality: "futsal_sub14" },
+                { id: 303, name: "Hugo Peiró", club: "Elche Futsal", category: "Sub-16", position: "Pívot", matches: 6, status: "Seleccionado", birthYear: 2010, foot: "Diestro", province: "Alicante", pace: 85, pass: 74, defense: 58, physical: 80, rating: 80, phone: "+34 600 999 000", modality: "futsal", submodality: "futsal_sub16" },
+                { id: 304, name: "Álex Tarín", club: "Peñíscola Futsal", category: "Sub-19", position: "Ala-Pívot", matches: 10, status: "Seleccionado", birthYear: 2007, foot: "Diestro", province: "Castellón", pace: 86, pass: 80, defense: 70, physical: 84, rating: 83, phone: "+34 600 123 456", modality: "futsal", submodality: "futsal_sub19" }
+            ];
+            demoFutsalPlayers.forEach(dp => {
+                if (!players.some(p => p.id === dp.id || p.name === dp.name)) {
+                    players.push(dp);
+                }
+            });
+
+            const demoFutsalCalls = [
+                { id: 301, name: "Convocatoria Futsal Sub-12 - Torneo Provincial", location: "Pabellón Picassent", time: "16:30 h", status: "Confirmada", date: "2026-06-23", players: [301], season: "2026/2027", province: "Valencia", sport: "Fútbol Sala", category: "Sub-12", gender: "Masculina", modality: "futsal", submodality: "futsal_sub12" },
+                { id: 302, name: "Entrenamiento Oficial Futsal Sub-14", location: "Pabellón Picassent", time: "17:30 h", status: "Confirmada", date: "2026-06-20", players: [302], season: "2026/2027", province: "Valencia", sport: "Fútbol Sala", category: "Sub-14", gender: "Masculina", modality: "futsal", submodality: "futsal_sub14" },
+                { id: 303, name: "Convocatoria Futsal Sub-16 - Fase Autonómica", location: "Polideportivo Picassent", time: "18:00 h", status: "Confirmada", date: "2026-06-24", players: [303], season: "2026/2027", province: "Valencia", sport: "Fútbol Sala", category: "Sub-16", gender: "Masculina", modality: "futsal", submodality: "futsal_sub16" },
+                { id: 304, name: "Entrenamiento Oficial Futsal Sub-19", location: "Pabellón Miguel Monleón", time: "19:00 h", status: "Confirmada", date: "2026-06-22", players: [304], season: "2026/2027", province: "Valencia", sport: "Fútbol Sala", category: "Sub-19", gender: "Masculina", modality: "futsal", submodality: "futsal_sub19" }
+            ];
+            demoFutsalCalls.forEach(dc => {
+                if (!convocatorias.some(c => c.id === dc.id || c.name === dc.name)) {
+                    convocatorias.push(dc);
+                }
+            });
+
+            const demoFutsalEvents = [
+                { id: 301, title: "Amistoso Futsal Sub-12 vs Castellón", date: "2026-06-25", type: "match", location: "Picassent", modality: "futsal", submodality: "futsal_sub12" },
+                { id: 302, title: "Sesión Táctica Futsal Sub-14", date: "2026-06-21", type: "training", location: "Sede FFCV", modality: "futsal", submodality: "futsal_sub14" },
+                { id: 303, title: "Partido Futsal Sub-16 vs Región de Murcia", date: "2026-06-26", type: "match", location: "Pabellón Picassent", modality: "futsal", submodality: "futsal_sub16" },
+                { id: 304, title: "Amistoso Futsal Sub-19 vs Combinado RFEF", date: "2026-06-24", type: "match", location: "Las Rozas", modality: "futsal", submodality: "futsal_sub19" }
+            ];
+            demoFutsalEvents.forEach(de => {
+                if (!events.some(e => e.id === de.id || e.title === de.title)) {
+                    events.push(de);
+                }
+            });
+
+            const demoFutsalStaff = [
+                { id: 301, name: "Josema Alapont", role: "Seleccionador", category: "Sub-12", license: "UEFA B Futsal", email: "jalapont@ffcv.es", status: "Activo", sport: "Fútbol Sala", gender: "Masculino", phone: "+34 600 777 001", titulos: "Tutor Técnico de Futsal FFCV", experiencia: "5 años dirigiendo en ligas territoriales de fútbol sala base.", modality: "futsal", submodality: "futsal_sub12" },
+                { id: 302, name: "Carles Soler", role: "Seleccionador", category: "Sub-14", license: "UEFA A Futsal", email: "csoler@ffcv.es", status: "Activo", sport: "Fútbol Sala", gender: "Masculino", phone: "+34 600 777 002", titulos: "Diplomado en Educación Física", experiencia: "Director deportivo de academia futsal y seleccionador sub-14.", modality: "futsal", submodality: "futsal_sub14" },
+                { id: 303, name: "Vicent Santamaría", role: "Seleccionador", category: "Sub-16", license: "UEFA Pro Futsal", email: "vsantamaria@ffcv.es", status: "Activo", sport: "Fútbol Sala", gender: "Masculino", phone: "+34 600 777 003", titulos: "Técnico Deportivo Superior Futsal", experiencia: "Ex-jugador profesional y seleccionador sub-16 desde 2021.", modality: "futsal", submodality: "futsal_sub16" },
+                { id: 304, name: "Miki Ortega", role: "Seleccionador", category: "Sub-19", license: "UEFA Pro Futsal", email: "mortega@ffcv.es", status: "Activo", sport: "Fútbol Sala", gender: "Masculino", phone: "+34 600 777 004", titulos: "Máster de Alto Rendimiento RFEF", experiencia: "Entrenador en Primera División de Futsal y seleccionador juvenil.", modality: "futsal", submodality: "futsal_sub19" }
+            ];
+            demoFutsalStaff.forEach(ds => {
                 if (!staff.some(s => s.id === ds.id || s.name === ds.name)) {
                     staff.push(ds);
                 }
