@@ -2076,11 +2076,11 @@
             color: #FFFFFF !important; /* Texto blanco */
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
         }
-        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container {
+        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container, #informes-subcategory-tabs-container {
             border-radius: 12px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
-        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn {
+        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn, #informes-subcategory-tabs-container .config-tab-btn {
             font-size: 13px;
             padding: 8px 16px;
             border-radius: 8px;
@@ -3852,6 +3852,9 @@
                         <button class="config-tab-btn" data-modality="futsal" onclick="changeGlobalModality('futsal', this)">🏟️ Fútbol Sala</button>
                         <button class="config-tab-btn" data-modality="fplaya" onclick="changeGlobalModality('fplaya', this)">🏖️ Fútbol Playa</button>
                     </div>
+                    
+                    <!-- Contenedor de subcategorías para Informes -->
+                    <div id="informes-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;"></div>
 
                     <!-- Navegación multinivel del módulo de informes -->
                     <div id="reports-multilevel-container">
@@ -5900,29 +5903,7 @@
         ];
 
         const DEFAULT_REPORTS = [
-            // Fútbol 11
-            {
-                id: 1,
-                type: "Individual",
-                sport: "Fútbol",
-                gender: "Masculino",
-                category: "Sub-16",
-                name: "Hugo de Mateo",
-                date: "12 Jun 2026",
-                scout: "Rubén Mora",
-                rating: 4.3,
-                status: "Aprobado",
-                participation: { matches: 12, started: 10, minutes: 840, substitute: 2 },
-                techVal: 4,
-                tactVal: 5,
-                physVal: 4,
-                psycVal: 4,
-                attVal: 5,
-                socVal: 4,
-                stats: { goles: 2, asistencias: 1, recuperaciones: 45, tarjetasA: 1, tarjetasR: 0 },
-                observations: "Defensa central con gran salida de balón y liderazgo. Destaca en el juego aéreo y capacidad táctica.",
-                modality: "f11"
-            },
+            // Fútbol 11 - Selección Regiones
             {
                 id: 2,
                 type: "Individual",
@@ -5943,29 +5924,8 @@
                 socVal: 4,
                 stats: { goles: 4, asistencias: 8, recuperaciones: 32, tarjetasA: 0, tarjetasR: 0 },
                 observations: "Mediocentro organizadora con visión de juego excelente. Capacidad innata para filtrar pases de gol.",
-                modality: "f11"
-            },
-            {
-                id: 3,
-                type: "Equipo",
-                sport: "Fútbol",
-                gender: "Masculino",
-                category: "Sub-16",
-                name: "Selección Masculina Sub-16",
-                date: "10 Jun 2026",
-                scout: "José Vicente",
-                rating: 4.2,
-                status: "En Revisión",
-                teamPerformance: { played: 8, won: 6, drawn: 1, lost: 1, goalsFor: 22, goalsAgainst: 6 },
-                participation: { playersCalled: 22, totalMinutes: 720 },
-                techColectVal: 4,
-                tactColectVal: 5,
-                physColectVal: 4,
-                psycColectVal: 4,
-                discipline: { yellowCards: 4, redCards: 0, foulsCommitted: 62 },
-                groupClimVal: 4,
-                objectivesObs: "Equipo con bloque bajo muy sólido. Sufren en la espalda de los laterales si hay transiciones rápidas.",
-                modality: "f11"
+                modality: "f11",
+                submodality: "f11_regiones"
             },
             {
                 id: 4,
@@ -5987,9 +5947,104 @@
                 discipline: { yellowCards: 2, redCards: 0, foulsCommitted: 35 },
                 groupClimVal: 5,
                 objectivesObs: "Bloque muy cohesionado. Excelente progresión en transiciones y control del tempo en campo contrario.",
-                modality: "f11"
+                modality: "f11",
+                submodality: "f11_regiones"
             },
-            // Fútbol 8
+            // Fútbol 11 - Selección Sub-14
+            {
+                id: 17,
+                type: "Individual",
+                sport: "Fútbol",
+                gender: "Masculino",
+                category: "Sub-14",
+                name: "Mateo Ortiz",
+                date: "13 Jun 2026",
+                scout: "Rubén Mora",
+                rating: 4.1,
+                status: "Aprobado",
+                participation: { matches: 10, started: 8, minutes: 720, substitute: 2 },
+                techVal: 4,
+                tactVal: 4,
+                physVal: 4,
+                psycVal: 4,
+                attVal: 5,
+                socVal: 4,
+                stats: { goles: 3, asistencias: 4, recuperaciones: 15, tarjetasA: 0, tarjetasR: 0 },
+                observations: "Extremo muy veloz con gran capacidad de desborde por banda derecha. Debe mejorar el retorno defensivo.",
+                modality: "f11",
+                submodality: "f11_sub14"
+            },
+            {
+                id: 18,
+                type: "Equipo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                category: "Sub-14",
+                name: "Selección Masculina Sub-14",
+                date: "12 Jun 2026",
+                scout: "Rubén Mora",
+                rating: 4.3,
+                status: "Aprobado",
+                teamPerformance: { played: 5, won: 4, drawn: 1, lost: 0, goalsFor: 12, goalsAgainst: 3 },
+                participation: { playersCalled: 20, totalMinutes: 400 },
+                techColectVal: 4,
+                tactColectVal: 5,
+                physColectVal: 4,
+                psycColectVal: 4,
+                discipline: { yellowCards: 2, redCards: 0, foulsCommitted: 32 },
+                groupClimVal: 5,
+                objectivesObs: "Excelente progresión ofensiva. El equipo mantiene la posesión y explota los carriles laterales muy bien.",
+                modality: "f11",
+                submodality: "f11_sub14"
+            },
+            // Fútbol 11 - Selección Sub-16
+            {
+                id: 1,
+                type: "Individual",
+                sport: "Fútbol",
+                gender: "Masculino",
+                category: "Sub-16",
+                name: "Hugo de Mateo",
+                date: "12 Jun 2026",
+                scout: "Rubén Mora",
+                rating: 4.3,
+                status: "Aprobado",
+                participation: { matches: 12, started: 10, minutes: 840, substitute: 2 },
+                techVal: 4,
+                tactVal: 5,
+                physVal: 4,
+                psycVal: 4,
+                attVal: 5,
+                socVal: 4,
+                stats: { goles: 2, asistencias: 1, recuperaciones: 45, tarjetasA: 1, tarjetasR: 0 },
+                observations: "Defensa central con gran salida de balón y liderazgo. Destaca en el juego aéreo y capacidad táctica.",
+                modality: "f11",
+                submodality: "f11_sub16"
+            },
+            {
+                id: 3,
+                type: "Equipo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                category: "Sub-16",
+                name: "Selección Masculina Sub-16",
+                date: "10 Jun 2026",
+                scout: "José Vicente",
+                rating: 4.2,
+                status: "En Revisión",
+                teamPerformance: { played: 8, won: 6, drawn: 1, lost: 1, goalsFor: 22, goalsAgainst: 6 },
+                participation: { playersCalled: 22, totalMinutes: 720 },
+                techColectVal: 4,
+                tactColectVal: 5,
+                physColectVal: 4,
+                psycColectVal: 4,
+                discipline: { yellowCards: 4, redCards: 0, foulsCommitted: 62 },
+                groupClimVal: 4,
+                objectivesObs: "Equipo con bloque bajo muy sólido. Sufren en la espalda de los laterales si hay transiciones rápidas.",
+                modality: "f11",
+                submodality: "f11_sub16"
+            },
+            // Fútbol 8 - Sub-12
             {
                 id: 5,
                 type: "Individual",
@@ -6010,7 +6065,8 @@
                 socVal: 5,
                 stats: { goles: 5, asistencias: 3, recuperaciones: 12, tarjetasA: 0, tarjetasR: 0 },
                 observations: "Delantero dinámico con excelente desmarque de ruptura. Buena pegada con pierna diestra.",
-                modality: "f8"
+                modality: "f8",
+                submodality: "f8_sub12"
             },
             {
                 id: 6,
@@ -6032,7 +6088,8 @@
                 socVal: 4,
                 stats: { goles: 1, asistencias: 2, recuperaciones: 10, tarjetasA: 0, tarjetasR: 0 },
                 observations: "Extremo habilidosa con gran control en velocidad. Genera mucha amplitud en el juego de Fútbol 8.",
-                modality: "f8"
+                modality: "f8",
+                submodality: "f8_sub12"
             },
             {
                 id: 7,
@@ -6054,7 +6111,8 @@
                 discipline: { yellowCards: 1, redCards: 0, foulsCommitted: 20 },
                 groupClimVal: 5,
                 objectivesObs: "Gran circulación del balón y juego posicional. Dominan las transiciones ofensivas rápidamente.",
-                modality: "f8"
+                modality: "f8",
+                submodality: "f8_sub12"
             },
             {
                 id: 8,
@@ -6076,9 +6134,104 @@
                 discipline: { yellowCards: 0, redCards: 0, foulsCommitted: 12 },
                 groupClimVal: 4,
                 objectivesObs: "Equipo con gran espíritu competitivo. Requiere trabajar basculación y marcas en saques de esquina.",
-                modality: "f8"
+                modality: "f8",
+                submodality: "f8_sub12"
             },
-            // Fútbol Sala
+            // Fútbol Sala - Sub-12
+            {
+                id: 19,
+                type: "Individual",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                category: "Sub-12",
+                name: "Lucas Ruiz",
+                date: "17 Jun 2026",
+                scout: "Vicente Ampudia",
+                rating: 3.8,
+                status: "Aprobado",
+                participation: { matches: 5, started: 4, minutes: 80, substitute: 1 },
+                techVal: 3,
+                tactVal: 4,
+                physVal: 4,
+                psycVal: 4,
+                attVal: 4,
+                socVal: 4,
+                stats: { goles: 1, asistencias: 2, recuperaciones: 12, tarjetasA: 0, tarjetasR: 0 },
+                observations: "Cierre dinámico con buena colocación táctica en repliegue y salida posicional.",
+                modality: "futsal",
+                submodality: "futsal_sub12"
+            },
+            {
+                id: 20,
+                type: "Equipo",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                category: "Sub-12",
+                name: "Selección Masculina Futsal Sub-12",
+                date: "14 Jun 2026",
+                scout: "Vicente Ampudia",
+                rating: 4.0,
+                status: "Aprobado",
+                teamPerformance: { played: 4, won: 3, drawn: 0, lost: 1, goalsFor: 10, goalsAgainst: 5 },
+                participation: { playersCalled: 12, totalMinutes: 160 },
+                techColectVal: 4,
+                tactColectVal: 4,
+                physColectVal: 4,
+                psycColectVal: 4,
+                discipline: { yellowCards: 1, redCards: 0, foulsCommitted: 15 },
+                groupClimVal: 4,
+                objectivesObs: "Buen bloque defensivo inicial. Se debe trabajar la rapidez en las contras y definición.",
+                modality: "futsal",
+                submodality: "futsal_sub12"
+            },
+            // Fútbol Sala - Sub-14
+            {
+                id: 21,
+                type: "Individual",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                category: "Sub-14",
+                name: "Pablo Gómez",
+                date: "15 Jun 2026",
+                scout: "Rubén Mora",
+                rating: 4.2,
+                status: "Aprobado",
+                participation: { matches: 8, started: 6, minutes: 140, substitute: 2 },
+                techVal: 4,
+                tactVal: 4,
+                physVal: 4,
+                psycVal: 4,
+                attVal: 5,
+                socVal: 4,
+                stats: { goles: 4, asistencias: 3, recuperaciones: 18, tarjetasA: 1, tarjetasR: 0 },
+                observations: "Ala muy técnico y veloz con buen tiro exterior. Buena lectura de paralelas.",
+                modality: "futsal",
+                submodality: "futsal_sub14"
+            },
+            {
+                id: 22,
+                type: "Equipo",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                category: "Sub-14",
+                name: "Selección Masculina Futsal Sub-14",
+                date: "13 Jun 2026",
+                scout: "Rubén Mora",
+                rating: 4.1,
+                status: "Aprobado",
+                teamPerformance: { played: 5, won: 4, drawn: 0, lost: 1, goalsFor: 15, goalsAgainst: 8 },
+                participation: { playersCalled: 12, totalMinutes: 200 },
+                techColectVal: 4,
+                tactColectVal: 4,
+                physColectVal: 4,
+                psycColectVal: 4,
+                discipline: { yellowCards: 2, redCards: 0, foulsCommitted: 24 },
+                groupClimVal: 5,
+                objectivesObs: "Juego combinativo estructurado en rombo con transiciones ofensivas veloces. Buen clima de equipo.",
+                modality: "futsal",
+                submodality: "futsal_sub14"
+            },
+            // Fútbol Sala - Sub-16
             {
                 id: 9,
                 type: "Individual",
@@ -6099,29 +6252,8 @@
                 socVal: 5,
                 stats: { goles: 3, asistencias: 5, recuperaciones: 28, tarjetasA: 2, tarjetasR: 0 },
                 observations: "Cierre de gran presencia defensiva. Rápido en coberturas y con excelente criterio de salida.",
-                modality: "futsal"
-            },
-            {
-                id: 10,
-                type: "Individual",
-                sport: "Fútbol Sala",
-                gender: "Femenino",
-                category: "Sub-19",
-                name: "Noa Segura",
-                date: "17 Jun 2026",
-                scout: "Esther Romero",
-                rating: 4.6,
-                status: "Aprobado",
-                participation: { matches: 8, started: 8, minutes: 160, substitute: 0 },
-                techVal: 5,
-                tactVal: 4,
-                physVal: 4,
-                psycVal: 5,
-                attVal: 4,
-                socVal: 4,
-                stats: { goles: 0, asistencias: 2, recuperaciones: 15, tarjetasA: 0, tarjetasR: 0 },
-                observations: "Portera con reflejos sobresalientes. Excelente juego con los pies, facilitando la salida de presión.",
-                modality: "futsal"
+                modality: "futsal",
+                submodality: "futsal_sub16"
             },
             {
                 id: 11,
@@ -6143,7 +6275,32 @@
                 discipline: { yellowCards: 4, redCards: 1, foulsCommitted: 45 },
                 groupClimVal: 4,
                 objectivesObs: "Foco en la velocidad de rotación del rombo. Buena finalización de las jugadas en segundo palo.",
-                modality: "futsal"
+                modality: "futsal",
+                submodality: "futsal_sub16"
+            },
+            // Fútbol Sala - Sub-19
+            {
+                id: 10,
+                type: "Individual",
+                sport: "Fútbol Sala",
+                gender: "Femenino",
+                category: "Sub-19",
+                name: "Noa Segura",
+                date: "17 Jun 2026",
+                scout: "Esther Romero",
+                rating: 4.6,
+                status: "Aprobado",
+                participation: { matches: 8, started: 8, minutes: 160, substitute: 0 },
+                techVal: 5,
+                tactVal: 4,
+                physVal: 4,
+                psycVal: 5,
+                attVal: 4,
+                socVal: 4,
+                stats: { goles: 0, asistencias: 2, recuperaciones: 15, tarjetasA: 0, tarjetasR: 0 },
+                observations: "Portera con reflejos sobresalientes. Excelente juego con los pies, facilitando la salida de presión.",
+                modality: "futsal",
+                submodality: "futsal_sub19"
             },
             {
                 id: 12,
@@ -6165,9 +6322,151 @@
                 discipline: { yellowCards: 2, redCards: 0, foulsCommitted: 40 },
                 groupClimVal: 5,
                 objectivesObs: "Excelente rendimiento táctico y pegada. Grupo muy unido y enfocado en la fase de clasificación.",
-                modality: "futsal"
+                modality: "futsal",
+                submodality: "futsal_sub19"
             },
-            // Fútbol Playa
+            // Fútbol Playa - Sub-12
+            {
+                id: 23,
+                type: "Individual",
+                sport: "Fútbol Playa",
+                gender: "Masculino",
+                category: "Sub-12",
+                name: "Nico Soler",
+                date: "16 Jun 2026",
+                scout: "Vicente Ampudia",
+                rating: 3.9,
+                status: "Aprobado",
+                participation: { matches: 4, started: 3, minutes: 60, substitute: 1 },
+                techVal: 4,
+                tactVal: 3,
+                physVal: 4,
+                psycVal: 4,
+                attVal: 4,
+                socVal: 4,
+                stats: { goles: 2, asistencias: 1, recuperaciones: 8, tarjetasA: 0, tarjetasR: 0 },
+                observations: "Ala de iniciación con buena movilidad en arena. Muestra facilidad para chilenas básicas.",
+                modality: "fplaya",
+                submodality: "fplaya_sub12"
+            },
+            {
+                id: 24,
+                type: "Equipo",
+                sport: "Fútbol Playa",
+                gender: "Masculino",
+                category: "Sub-12",
+                name: "Selección Masculina Playa Sub-12",
+                date: "14 Jun 2026",
+                scout: "Vicente Ampudia",
+                rating: 4.0,
+                status: "Aprobado",
+                teamPerformance: { played: 3, won: 2, drawn: 0, lost: 1, goalsFor: 8, goalsAgainst: 5 },
+                participation: { playersCalled: 10, totalMinutes: 120 },
+                techColectVal: 4,
+                tactColectVal: 3,
+                physColectVal: 4,
+                psycColectVal: 4,
+                discipline: { yellowCards: 0, redCards: 0, foulsCommitted: 10 },
+                groupClimVal: 5,
+                objectivesObs: "Los jugadores se adaptan rápido a la inestabilidad de la arena. Excelente actitud grupal.",
+                modality: "fplaya",
+                submodality: "fplaya_sub12"
+            },
+            // Fútbol Playa - Sub-14
+            {
+                id: 25,
+                type: "Individual",
+                sport: "Fútbol Playa",
+                gender: "Masculino",
+                category: "Sub-14",
+                name: "Kike Beltrán",
+                date: "15 Jun 2026",
+                scout: "Rubén Mora",
+                rating: 4.1,
+                status: "Aprobado",
+                participation: { matches: 6, started: 5, minutes: 120, substitute: 1 },
+                techVal: 4,
+                tactVal: 4,
+                physVal: 4,
+                psycVal: 4,
+                attVal: 4,
+                socVal: 5,
+                stats: { goles: 3, asistencias: 2, recuperaciones: 11, tarjetasA: 0, tarjetasR: 0 },
+                observations: "Cierre potente, gran visión de líneas de tiro y buen pase de cuchara.",
+                modality: "fplaya",
+                submodality: "fplaya_sub14"
+            },
+            {
+                id: 26,
+                type: "Equipo",
+                sport: "Fútbol Playa",
+                gender: "Masculino",
+                category: "Sub-14",
+                name: "Selección Masculina Playa Sub-14",
+                date: "13 Jun 2026",
+                scout: "Rubén Mora",
+                rating: 4.2,
+                status: "Aprobado",
+                teamPerformance: { played: 4, won: 3, drawn: 0, lost: 1, goalsFor: 12, goalsAgainst: 7 },
+                participation: { playersCalled: 10, totalMinutes: 160 },
+                techColectVal: 4,
+                tactColectVal: 4,
+                physColectVal: 4,
+                psycColectVal: 4,
+                discipline: { yellowCards: 1, redCards: 0, foulsCommitted: 12 },
+                groupClimVal: 4,
+                objectivesObs: "Buen juego combinativo aéreo. Transiciones ofensivas rápidas y bloque ordenado.",
+                modality: "fplaya",
+                submodality: "fplaya_sub14"
+            },
+            // Fútbol Playa - Sub-16
+            {
+                id: 27,
+                type: "Individual",
+                sport: "Fútbol Playa",
+                gender: "Masculino",
+                category: "Sub-16",
+                name: "Álvaro Sanz",
+                date: "16 Jun 2026",
+                scout: "José Vicente",
+                rating: 4.4,
+                status: "Aprobado",
+                participation: { matches: 7, started: 6, minutes: 180, substitute: 1 },
+                techVal: 5,
+                tactVal: 4,
+                physVal: 4,
+                psycVal: 4,
+                attVal: 5,
+                socVal: 4,
+                stats: { goles: 5, asistencias: 3, recuperaciones: 14, tarjetasA: 1, tarjetasR: 0 },
+                observations: "Ala muy dotado técnicamente. Gran capacidad para elevar la bola y rematar acrobáticamente.",
+                modality: "fplaya",
+                submodality: "fplaya_sub16"
+            },
+            {
+                id: 28,
+                type: "Equipo",
+                sport: "Fútbol Playa",
+                gender: "Masculino",
+                category: "Sub-16",
+                name: "Selección Masculina Playa Sub-16",
+                date: "12 Jun 2026",
+                scout: "José Vicente",
+                rating: 4.3,
+                status: "Aprobado",
+                teamPerformance: { played: 5, won: 4, drawn: 0, lost: 1, goalsFor: 16, goalsAgainst: 9 },
+                participation: { playersCalled: 10, totalMinutes: 200 },
+                techColectVal: 4,
+                tactColectVal: 4,
+                physColectVal: 4,
+                psycColectVal: 5,
+                discipline: { yellowCards: 2, redCards: 0, foulsCommitted: 18 },
+                groupClimVal: 5,
+                objectivesObs: "Excelente juego aéreo colectivo. El equipo domina las voleas desde zona central y coberturas cruzadas.",
+                modality: "fplaya",
+                submodality: "fplaya_sub16"
+            },
+            // Fútbol Playa - Sub-19
             {
                 id: 13,
                 type: "Individual",
@@ -6188,7 +6487,8 @@
                 socVal: 4,
                 stats: { goles: 6, asistencias: 4, recuperaciones: 10, tarjetasA: 1, tarjetasR: 0 },
                 observations: "Ala muy potente físicamente. Gran despliegue en arena y disparo de media distancia preciso.",
-                modality: "fplaya"
+                modality: "fplaya",
+                submodality: "fplaya_sub19"
             },
             {
                 id: 14,
@@ -6210,7 +6510,8 @@
                 socVal: 4,
                 stats: { goles: 8, asistencias: 3, recuperaciones: 15, tarjetasA: 0, tarjetasR: 0 },
                 observations: "Pívot de gran agilidad en la arena. Domina la chilena y tiros de volea en suspensión.",
-                modality: "fplaya"
+                modality: "fplaya",
+                submodality: "fplaya_sub19"
             },
             {
                 id: 15,
@@ -6232,7 +6533,8 @@
                 discipline: { yellowCards: 1, redCards: 0, foulsCommitted: 15 },
                 groupClimVal: 4,
                 objectivesObs: "Equipo con alta intensidad física en arena. Falta precisión en saques rápidos del guardameta.",
-                modality: "fplaya"
+                modality: "fplaya",
+                submodality: "fplaya_sub19"
             },
             {
                 id: 16,
@@ -6254,7 +6556,8 @@
                 discipline: { yellowCards: 0, redCards: 0, foulsCommitted: 10 },
                 groupClimVal: 5,
                 objectivesObs: "Excelente juego combinativo por alto. Muy ordenadas defensivamente y veloces en repliegue.",
-                modality: "fplaya"
+                modality: "fplaya",
+                submodality: "fplaya_sub19"
             }
         ];
 
@@ -6281,10 +6584,25 @@
         let reports = JSON.parse(localStorage.getItem('ffcv_reports')) || DEFAULT_REPORTS;
         let events = JSON.parse(localStorage.getItem('ffcv_events')) || DEFAULT_EVENTS;
 
-        // Sincronizar localStorage para Informes (formato nuevo de 1 a 5 y campos sport/gender)
+        const SUBMODALITY_REPORT_STATS = {
+            'f11_regiones': { evaluated: 24, pending: 5, completed: 10 },
+            'f11_sub14': { evaluated: 28, pending: 6, completed: 12 },
+            'f11_sub16': { evaluated: 31, pending: 4, completed: 15 },
+            'f8_sub12': { evaluated: 20, pending: 3, completed: 8 },
+            'futsal_sub12': { evaluated: 15, pending: 2, completed: 6 },
+            'futsal_sub14': { evaluated: 16, pending: 4, completed: 7 },
+            'futsal_sub16': { evaluated: 18, pending: 3, completed: 9 },
+            'futsal_sub19': { evaluated: 19, pending: 2, completed: 11 },
+            'fplaya_sub12': { evaluated: 12, pending: 1, completed: 5 },
+            'fplaya_sub14': { evaluated: 13, pending: 3, completed: 6 },
+            'fplaya_sub16': { evaluated: 15, pending: 2, completed: 7 },
+            'fplaya_sub19': { evaluated: 14, pending: 2, completed: 8 }
+        };
+
+        // Sincronizar localStorage para Informes (formato nuevo con submodality)
         if (localStorage.getItem('ffcv_reports')) {
             const tempReports = JSON.parse(localStorage.getItem('ffcv_reports'));
-            if (tempReports.length < 16 || tempReports.some(r => r.position || !r.sport)) {
+            if (tempReports.length < 24 || tempReports.some(r => !r.submodality)) {
                 localStorage.setItem('ffcv_reports', JSON.stringify(DEFAULT_REPORTS));
                 reports = DEFAULT_REPORTS;
             }
@@ -7179,185 +7497,135 @@
             { name: 'Fútbol Femenino', sport: 'Fútbol', gender: 'Femenino', icon: `<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path><path d="M2 12h20"></path></svg>` },
             { name: 'Fútbol Sala Masculino', sport: 'Fútbol Sala', gender: 'Masculino', icon: `<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line><circle cx="12" cy="12" r="4"></circle></svg>` },
             { name: 'Fútbol Sala Femenino', sport: 'Fútbol Sala', gender: 'Femenino', icon: `<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"></rect><line x1="12" y1="3" x2="12" y2="21"></line><circle cx="12" cy="12" r="4"></circle></svg>` },
-            { name: 'Fútbol Playa Masculino', sport: 'Fútbol Playa', gender: 'Masculino', icon: `<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1"></path><circle cx="12" cy="10" r="4"></circle><path d="M12 2v4M12 14v4M4 10h4M16 10h4"></path></svg>` },
-            { name: 'Fútbol Playa Femenino', sport: 'Fútbol Playa', gender: 'Femenino', icon: `<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1"></path><circle cx="12" cy="10" r="4"></circle><path d="M12 2v4M12 14v4M4 10h4M16 10h4"></path></svg>` }
+            { name: 'Fútbol Playa Masculino', sport: 'Fútbol Playa', gender: 'Masculino', icon: `<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20a2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1 2.4 2.4 0 0 1 2-1 2.4 2.4 0 0 1 2 1 2.4 2.4 0 0 0 2 1 2.4 2.4 0 0 0 2-1"></path><circle cx="12" cy="10" r="4"></circle><path d="M12 2v4M12 14v4M4 10h4M16 10h4"></path></svg>` }
         ];
 
-        function getRatingLabel(rating) {
-            if (rating >= 4.6) return 'Excelente';
-            if (rating >= 3.6) return 'Notable';
-            if (rating >= 2.6) return 'Adecuado';
-            if (rating >= 1.8) return 'Mejorable';
-            return 'Muy mejorable';
+        function getTemplateName(modality, gender) {
+            if (modality === 'f11') {
+                return gender === 'Femenino' ? 'Fútbol 11 femenino' : 'Fútbol 11 masculino';
+            } else if (modality === 'futsal') {
+                return gender === 'Femenino' ? 'Fútbol Sala femenino' : 'Fútbol Sala masculino';
+            } else if (modality === 'fplaya') {
+                return gender === 'Femenino' ? 'Fútbol Playa femenino' : 'Fútbol Playa masculino';
+            } else if (modality === 'f8') {
+                return 'Fútbol 8';
+            }
+            return 'Estándar';
         }
 
-        function getStarsHtml(rating) {
-            const rounded = Math.round(rating);
-            let html = '';
-            for (let i = 1; i <= 5; i++) {
-                if (i <= rounded) {
-                    html += '<span style="color: #ff9800; font-size: 16px;">★</span>';
+        function updateTemplateName() {
+            const genderSelect = document.getElementById('new-rep-gender');
+            if (!genderSelect) return;
+            const gender = genderSelect.value;
+            const templateName = getTemplateName(currentModality, gender);
+            
+            const nameEl = document.getElementById('active-template-name');
+            if (nameEl) {
+                nameEl.textContent = templateName;
+            }
+            
+            const goalsLabel = document.getElementById('new-rep-stat-goles-label');
+            const assistsLabel = document.getElementById('new-rep-stat-asistencias-label');
+            const recupsLabel = document.getElementById('new-rep-stat-recup-label');
+            
+            if (goalsLabel && assistsLabel && recupsLabel) {
+                if (currentModality === 'fplaya') {
+                    goalsLabel.textContent = 'Goles (Chilenas/Voleas)';
+                    recupsLabel.textContent = 'Recuperaciones en Arena';
+                } else if (currentModality === 'futsal') {
+                    goalsLabel.textContent = 'Goles (Fútbol Sala)';
+                    recupsLabel.textContent = 'Recuperaciones (Intercepciones)';
+                } else if (currentModality === 'f8') {
+                    goalsLabel.textContent = 'Goles (Fútbol 8)';
+                    recupsLabel.textContent = 'Recuperaciones';
                 } else {
-                    html += '<span style="color: #ccc; font-size: 16px;">★</span>';
+                    goalsLabel.textContent = 'Goles';
+                    recupsLabel.textContent = 'Recuperaciones';
                 }
             }
-            return html;
         }
 
         function renderReports() {
-            if (reportsNav.level === 1) {
-                renderReportsLevel1();
-            } else if (reportsNav.level === 2) {
-                renderReportsLevel2();
-            } else if (reportsNav.level === 3) {
-                renderReportsLevel3();
-            }
-        }
-
-        function goReportsLevel1() {
-            reportsNav.level = 1;
-            reportsNav.group = null;
-            reportsNav.subcategory = null;
-            renderReports();
-        }
-
-        function goReportsLevel2(group) {
-            reportsNav.level = 2;
-            reportsNav.group = group;
-            reportsNav.subcategory = null;
-            renderReports();
-        }
-
-        function goReportsLevel3(subcategory) {
-            reportsNav.level = 3;
-            reportsNav.subcategory = subcategory;
-            renderReports();
-        }
-
-        function getActiveSubcategories() {
-            let activeSport = 'Fútbol';
-            if (currentModality === 'futsal') activeSport = 'Fútbol Sala';
-            else if (currentModality === 'fplaya') activeSport = 'Fútbol Playa';
-            return SUBCATEGORIES.filter(s => s.sport === activeSport);
-        }
-
-        function renderReportsLevel1() {
             const container = document.getElementById('reports-multilevel-container');
             if (!container) return;
-            
-            const indCount = reports.filter(r => r.modality === currentModality && r.type === 'Individual').length;
-            const eqCount = reports.filter(r => r.modality === currentModality && r.type === 'Equipo').length;
-            
-            container.innerHTML = `
-                <div class="reports-dashboard-grid">
-                    <div class="reports-area-card">
-                        <div>
-                            <div class="reports-area-icon">
-                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                                    <circle cx="12" cy="7" r="4" />
-                                </svg>
-                            </div>
-                            <h4 class="reports-area-title">Informes Individuales</h4>
-                            <p class="reports-area-desc">Evaluación, seguimiento técnico-táctico y ficha de rendimiento individual de jugadores y jugadoras.</p>
-                        </div>
-                        <div class="reports-area-meta">
-                            <span class="reports-area-count">${indCount} Informes</span>
-                            <button class="btn btn-primary btn-sm" onclick="goReportsLevel2('Individual')">Acceder</button>
-                        </div>
-                    </div>
 
-                    <div class="reports-area-card">
-                        <div>
-                            <div class="reports-area-icon">
-                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                </svg>
-                            </div>
-                            <h4 class="reports-area-title">Informes de Equipo</h4>
-                            <p class="reports-area-desc">Evaluación colectiva de sistemas de juego, rendimiento grupal y dinámica de las selecciones valencianas.</p>
-                        </div>
-                        <div class="reports-area-meta">
-                            <span class="reports-area-count">${eqCount} Informes</span>
-                            <button class="btn btn-primary btn-sm" onclick="goReportsLevel2('Equipo')">Acceder</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderReportsLevel2() {
-            const container = document.getElementById('reports-multilevel-container');
-            if (!container) return;
-            
-            const groupName = reportsNav.group === 'Individual' ? 'Individuales' : 'de Equipo';
-            
-            let html = `
-                <div style="display:flex; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
-                    <button class="btn btn-nav-primary btn-sm" onclick="goReportsLevel1()" style="font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;">
-                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                        Volver a Categorías
-                    </button>
-                    <h2 style="font-size:20px; font-weight:700; color:var(--primary); margin:0;">Informes ${groupName}</h2>
-                </div>
-                
-                <div class="reports-dashboard-grid">
-            `;
-            
-            const activeSubs = getActiveSubcategories();
-            activeSubs.forEach(sub => {
-                const count = reports.filter(r => r.modality === currentModality && r.type === reportsNav.group && r.sport === sub.sport && r.gender === sub.gender).length;
-                
-                html += `
-                    <div class="reports-area-card card-category-reports">
-                        <div>
-                            <div class="reports-area-icon">
-                                ${sub.icon}
-                            </div>
-                            <h4 class="reports-area-title">${sub.name}</h4>
-                            <p class="reports-area-desc">Informes de rendimiento ${groupName.toLowerCase()} para la disciplina de ${sub.sport} en categoría ${sub.gender.toLowerCase()}.</p>
-                        </div>
-                        <div class="reports-area-meta">
-                            <span class="reports-area-count">${count} Registrados</span>
-                            <button class="btn btn-primary btn-sm" onclick="goReportsLevel3('${sub.name}')">Ver Informes</button>
-                        </div>
+            const subcat = (SUBMODALITIES_CONFIG[currentModality] || []).find(sub => sub.id === currentSubModality);
+            if (!subcat) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:60px 20px; background:var(--bg-card); border:1px dashed var(--border-color); border-radius:var(--radius-lg); margin-top:20px;">
+                        <p style="color:var(--text-muted); font-size:15px;">Selecciona una modalidad y subcategoría para cargar sus informes.</p>
                     </div>
                 `;
-            });
-            
-            html += `</div>`;
-            container.innerHTML = html;
-        }
+                return;
+            }
 
-        function renderReportsLevel3() {
-            const container = document.getElementById('reports-multilevel-container');
-            if (!container) return;
+            // Default group/type to Individual if not set
+            if (!reportsNav.group) {
+                reportsNav.group = 'Individual';
+            }
+            const activeType = reportsNav.group;
+
+            // Compute submodality KPIs
+            const baseStats = SUBMODALITY_REPORT_STATS[currentSubModality] || { evaluated: 0, pending: 0, completed: 0 };
             
-            const activeSubs = getActiveSubcategories();
-            const sub = activeSubs.find(s => s.name === reportsNav.subcategory);
-            if (!sub) return;
+            const userIndividualReports = reports.filter(r => r.id > 28 && r.modality === currentModality && r.submodality === currentSubModality && r.type === 'Individual');
+            const userAddedCount = new Set(userIndividualReports.map(r => r.name)).size;
             
-            const filteredReports = reports.filter(r => r.modality === currentModality && r.type === reportsNav.group && r.sport === sub.sport && r.gender === sub.gender);
-            
+            const userAddedPending = reports.filter(r => r.id > 28 && r.modality === currentModality && r.submodality === currentSubModality && (r.status === 'Borrador' || r.status === 'En Revisión')).length;
+            const userAddedCompleted = reports.filter(r => r.id > 28 && r.modality === currentModality && r.submodality === currentSubModality && r.status === 'Aprobado').length;
+
+            const totalEvaluated = baseStats.evaluated + userAddedCount;
+            const totalPending = baseStats.pending + userAddedPending;
+            const totalCompleted = baseStats.completed + userAddedCompleted;
+
+            // Generate HTML for KPIs
             let html = `
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
-                    <div style="display:flex; align-items:center; gap:16px;">
-                        <button class="btn btn-nav-primary btn-sm" onclick="goReportsLevel2('${reportsNav.group}')" style="font-weight: 600; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;">
-                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:2px;"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                            Volver a Subcategorías
-                        </button>
-                        <h2 style="font-size:20px; font-weight:700; color:var(--primary); margin:0;">${sub.name}</h2>
+                <!-- Bloque de KPIs -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                    <div class="reports-area-card" style="min-height: auto; padding: 16px 20px; flex-direction: row; align-items: center; gap: 16px; box-shadow: var(--shadow-sm);">
+                        <div class="reports-area-icon" style="margin-bottom: 0; background-color: rgba(15, 35, 80, 0.08); color: #0F2350; flex-shrink: 0;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 24px; font-weight: 800; color: #0F2350; line-height: 1.2;">${totalEvaluated}</div>
+                            <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Jugadores Evaluados</div>
+                        </div>
                     </div>
-                    <button class="btn btn-accent btn-sm" onclick="openCreateReportModal()" style="display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+                    <div class="reports-area-card" style="min-height: auto; padding: 16px 20px; flex-direction: row; align-items: center; gap: 16px; box-shadow: var(--shadow-sm);">
+                        <div class="reports-area-icon" style="margin-bottom: 0; background-color: rgba(255, 107, 0, 0.08); color: #FF6B00; flex-shrink: 0;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 24px; font-weight: 800; color: #FF6B00; line-height: 1.2;">${totalPending}</div>
+                            <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Informes Pendientes</div>
+                        </div>
+                    </div>
+                    <div class="reports-area-card" style="min-height: auto; padding: 16px 20px; flex-direction: row; align-items: center; gap: 16px; box-shadow: var(--shadow-sm);">
+                        <div class="reports-area-icon" style="margin-bottom: 0; background-color: rgba(46, 204, 113, 0.08); color: #2ecc71; flex-shrink: 0;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" fill="none" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div>
+                            <div style="font-size: 24px; font-weight: 800; color: #2ecc71; line-height: 1.2;">${totalCompleted}</div>
+                            <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Informes Completados</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cabecera de Selección e Informes -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 16px;">
+                    <div style="display: flex; gap: 8px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 4px; border-radius: 8px;">
+                        <button class="config-tab-btn ${activeType === 'Individual' ? 'active' : ''}" onclick="changeReportType('Individual')" style="font-size: 12.5px; padding: 6px 14px; border-radius: 6px; font-weight: 600; border: none; cursor: pointer;">👤 Informes Individuales</button>
+                        <button class="config-tab-btn ${activeType === 'Equipo' ? 'active' : ''}" onclick="changeReportType('Equipo')" style="font-size: 12.5px; padding: 6px 14px; border-radius: 6px; font-weight: 600; border: none; cursor: pointer;">👥 Informes de Equipo</button>
+                    </div>
+                    <button class="btn btn-accent btn-sm" onclick="openCreateReportModal()" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; padding: 8px 16px;">
                         <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                         + Crear nuevo informe
                     </button>
                 </div>
             `;
-            
+
+            const filteredReports = reports.filter(r => r.modality === currentModality && r.submodality === currentSubModality && r.type === activeType);
+
             if (filteredReports.length === 0) {
                 html += `
                     <div style="text-align:center; padding:60px 20px; background:var(--bg-card); border:1px dashed var(--border-color); border-radius:var(--radius-lg); margin-top:20px;">
@@ -7384,7 +7652,7 @@
                                 <div>
                                     <span class="tag ${statusClass}" style="font-size:10px; margin-bottom:6px; display:inline-block;">${r.status}</span>
                                     <h4 style="font-size:16px; font-weight:700; color:var(--primary); margin:0;">${r.name}</h4>
-                                    <span style="font-size:12px; color:var(--text-muted);">${r.sport} ${r.gender} • ${r.category}</span>
+                                    <span style="font-size:12px; color:var(--text-muted);">${r.sport} ${r.gender || ''} • ${r.category}</span>
                                 </div>
                                 <div style="text-align:right;">
                                     <div style="font-size:18px; font-weight:800; color:#FF6B00; line-height:1.2;">${r.rating.toFixed(1)}</div>
@@ -7411,6 +7679,10 @@
             }
             
             container.innerHTML = html;
+        }
+        function changeReportType(type) {
+            reportsNav.group = type;
+            renderReports();
         }
 
         function generateRadarChartSvg(vals) {
@@ -7500,6 +7772,18 @@
             let html = '';
             
             if (r.type === 'Individual') {
+                const templateName = getTemplateName(r.modality, r.gender);
+                let detailGoalsLabel = 'Goles';
+                let detailRecupsLabel = 'Intercepciones';
+                if (r.modality === 'fplaya') {
+                    detailGoalsLabel = 'Goles (Playa)';
+                    detailRecupsLabel = 'Recuperaciones (Arena)';
+                } else if (r.modality === 'futsal') {
+                    detailGoalsLabel = 'Goles (Sala)';
+                } else if (r.modality === 'f8') {
+                    detailGoalsLabel = 'Goles (F8)';
+                    detailRecupsLabel = 'Recuperaciones';
+                }
                 const p = players.find(x => x.name.trim().toLowerCase() === r.name.trim().toLowerCase());
                 const clubName = p ? p.club : (r.sport === 'Fútbol Sala' ? 'Levante U.D. Futsal' : (r.sport === 'Fútbol Playa' ? 'C.D. Playas de Valencia' : 'Valencia C.F. Cadete'));
                 const birthYear = p && p.birthYear ? p.birthYear : 2010;
@@ -7987,6 +8271,7 @@
                                 <div class="report-header-info">
                                     <div class="report-badge-container">
                                         <span class="report-badge-ind">Informe Individual</span>
+                                        <span class="report-badge-ind" style="background-color: #FF6B00; color: #FFFFFF;">Plantilla: ${templateName}</span>
                                         <span class="report-badge-status ${detailStatusClass}">${displayStatusLabel}</span>
                                     </div>
                                     <h2 class="report-player-name">${r.name}</h2>
@@ -8096,7 +8381,7 @@
                                 <div class="stat-metric-card">
                                     <span class="stat-metric-icon">⚽</span>
                                     <span class="stat-metric-val">${r.stats.goles}</span>
-                                    <span class="stat-metric-label">Goles</span>
+                                    <span class="stat-metric-label">${detailGoalsLabel}</span>
                                 </div>
                                 <div class="stat-metric-card">
                                     <span class="stat-metric-icon">👟</span>
@@ -8106,7 +8391,7 @@
                                 <div class="stat-metric-card">
                                     <span class="stat-metric-icon">🛡️</span>
                                     <span class="stat-metric-val">${r.stats.recuperaciones}</span>
-                                    <span class="stat-metric-label">Intercepciones</span>
+                                    <span class="stat-metric-label">${detailRecupsLabel}</span>
                                 </div>
                                 <div class="stat-metric-card">
                                     <span class="stat-metric-icon">📊</span>
@@ -8988,17 +9273,27 @@
         }
 
         function openCreateReportModal() {
-            const sub = SUBCATEGORIES.find(s => s.name === reportsNav.subcategory);
-            if (!sub) return;
+            const subcat = (SUBMODALITIES_CONFIG[currentModality] || []).find(sub => sub.id === currentSubModality) || { name: 'Selección', filterCat: 'Sub-16' };
             
             const formBody = document.getElementById('create-report-form-body');
             const titleEl = document.getElementById('create-report-title');
             
-            titleEl.textContent = `Generar Informe: ${sub.name}`;
+            titleEl.textContent = `Generar Informe: ${subcat.name}`;
             
             let html = '';
             
-            if (reportsNav.group === 'Individual') {
+            let sport = 'Fútbol';
+            if (currentModality === 'futsal') sport = 'Fútbol Sala';
+            else if (currentModality === 'fplaya') sport = 'Fútbol Playa';
+
+            const activeType = reportsNav.group || 'Individual';
+            
+            const isSub12 = subcat.filterCat === 'Sub-12' ? 'selected' : '';
+            const isSub14 = subcat.filterCat === 'Sub-14' ? 'selected' : '';
+            const isSub16 = subcat.filterCat === 'Sub-16' ? 'selected' : '';
+            const isSub19 = (subcat.filterCat === 'Sub-19' || subcat.filterCat === 'Regiones') ? 'selected' : '';
+
+            if (activeType === 'Individual') {
                 html = `
                     <style>
                         .form-section {
@@ -9019,8 +9314,11 @@
                         }
                     </style>
                     <input type="hidden" id="new-rep-type" value="Individual">
-                    <input type="hidden" id="new-rep-sport" value="${sub.sport}">
-                    <input type="hidden" id="new-rep-gender" value="${sub.gender}">
+                    <input type="hidden" id="new-rep-sport" value="${sport}">
+                    
+                    <div style="font-size: 13.5px; font-weight: 700; color: #FF6B00; margin-bottom: 16px; background-color: rgba(255, 107, 0, 0.06); padding: 10px 14px; border-radius: 8px; border-left: 4px solid #FF6B00; display: flex; align-items: center; gap: 8px;">
+                        📁 <span>Plantilla de Evaluación: <strong id="active-template-name">...</strong></span>
+                    </div>
                     
                     <div class="form-section">
                         <div class="form-section-title">1. Datos Generales</div>
@@ -9030,12 +9328,21 @@
                                 <input type="text" class="form-input" id="new-rep-name" required placeholder="Ej: Hugo de Mateo">
                             </div>
                             <div class="form-group">
+                                <label class="form-label" for="new-rep-gender">Género</label>
+                                <select class="form-select" id="new-rep-gender" onchange="updateTemplateName()">
+                                    <option value="Masculino" selected>Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row-grid" style="margin-top: 12px;">
+                            <div class="form-group">
                                 <label class="form-label" for="new-rep-category">Categoría</label>
                                 <select class="form-select" id="new-rep-category">
-                                    <option value="Sub-12">Sub-12</option>
-                                    <option value="Sub-14">Sub-14</option>
-                                    <option value="Sub-16" selected>Sub-16</option>
-                                    <option value="Sub-19">Sub-19</option>
+                                    <option value="Sub-12" ${isSub12}>Sub-12</option>
+                                    <option value="Sub-14" ${isSub14}>Sub-14</option>
+                                    <option value="Sub-16" ${isSub16}>Sub-16</option>
+                                    <option value="Sub-19" ${isSub19}>Sub-19</option>
                                     <option value="Absoluta">Absoluta</option>
                                 </select>
                             </div>
@@ -9169,15 +9476,15 @@
                         <div class="form-section-title">9. Rendimiento Estadístico</div>
                         <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
                             <div class="form-group">
-                                <label class="form-label" for="new-rep-stat-goles">Goles</label>
+                                <label class="form-label" for="new-rep-stat-goles" id="new-rep-stat-goles-label">Goles</label>
                                 <input type="number" class="form-input" id="new-rep-stat-goles" min="0" value="0" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="new-rep-stat-asistencias">Asistencias</label>
+                                <label class="form-label" for="new-rep-stat-asistencias" id="new-rep-stat-asistencias-label">Asistencias</label>
                                 <input type="number" class="form-input" id="new-rep-stat-asistencias" min="0" value="0" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="new-rep-stat-recup">Recuperaciones (Intercepciones)</label>
+                                <label class="form-label" for="new-rep-stat-recup" id="new-rep-stat-recup-label">Recuperaciones (Intercepciones)</label>
                                 <input type="number" class="form-input" id="new-rep-stat-recup" min="0" value="20" required>
                             </div>
                         </div>
@@ -9237,23 +9544,31 @@
                         }
                     </style>
                     <input type="hidden" id="new-rep-type" value="Equipo">
-                    <input type="hidden" id="new-rep-sport" value="${sub.sport}">
-                    <input type="hidden" id="new-rep-gender" value="${sub.gender}">
+                    <input type="hidden" id="new-rep-sport" value="${sport}">
                     
                     <div class="form-section">
                         <div class="form-section-title">1. Datos Generales</div>
                         <div class="form-row-grid">
                             <div class="form-group">
                                 <label class="form-label" for="new-rep-name">Nombre del Equipo / Selección</label>
-                                <input type="text" class="form-input" id="new-rep-name" required placeholder="Ej: Selección Valenciana Sub-16">
+                                <input type="text" class="form-input" id="new-rep-name" required placeholder="Ej: Selección Valenciana Sub-16" value="${subcat.name}">
                             </div>
+                            <div class="form-group">
+                                <label class="form-label" for="new-rep-gender">Género</label>
+                                <select class="form-select" id="new-rep-gender">
+                                    <option value="Masculino" selected>Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row-grid" style="margin-top: 12px;">
                             <div class="form-group">
                                 <label class="form-label" for="new-rep-category">Categoría</label>
                                 <select class="form-select" id="new-rep-category">
-                                    <option value="Sub-12">Sub-12</option>
-                                    <option value="Sub-14">Sub-14</option>
-                                    <option value="Sub-16" selected>Sub-16</option>
-                                    <option value="Sub-19">Sub-19</option>
+                                    <option value="Sub-12" ${isSub12}>Sub-12</option>
+                                    <option value="Sub-14" ${isSub14}>Sub-14</option>
+                                    <option value="Sub-16" ${isSub16}>Sub-16</option>
+                                    <option value="Sub-19" ${isSub19}>Sub-19</option>
                                     <option value="Absoluta">Absoluta</option>
                                 </select>
                             </div>
@@ -9404,6 +9719,9 @@
             }
             
             formBody.innerHTML = html;
+            if (activeType === 'Individual') {
+                updateTemplateName();
+            }
             openModal('modal-informe');
         }
 
@@ -9431,6 +9749,7 @@
                 scout,
                 status,
                 modality: currentModality,
+                submodality: currentSubModality || "",
                 date: new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })
             };
             
@@ -10166,6 +10485,7 @@
             const cvContainer = document.getElementById('convocatorias-subcategory-tabs-container');
             const seContainer = document.getElementById('sesiones-subcategory-tabs-container');
             const moContainer = document.getElementById('modelo-subcategory-tabs-container');
+            const infContainer = document.getElementById('informes-subcategory-tabs-container');
             
             const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
             
@@ -10206,6 +10526,10 @@
                     moContainer.innerHTML = html;
                     moContainer.style.display = 'flex';
                 }
+                if (infContainer) {
+                    infContainer.innerHTML = html;
+                    infContainer.style.display = 'flex';
+                }
             } else {
                 currentSubModality = '';
                 localStorage.setItem('ffcv_current_submodality', '');
@@ -10228,6 +10552,10 @@
                 if (moContainer) {
                     moContainer.style.display = 'none';
                     moContainer.innerHTML = '';
+                }
+                if (infContainer) {
+                    infContainer.style.display = 'none';
+                    infContainer.innerHTML = '';
                 }
             }
         }
@@ -10292,6 +10620,17 @@
                 });
             }
 
+            const infContainer = document.getElementById('informes-subcategory-tabs-container');
+            if (infContainer) {
+                infContainer.querySelectorAll('.config-tab-btn').forEach(b => {
+                    if (b.getAttribute('data-submodality') === subModId) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+            }
+
             updateCounts();
             renderDashboardView();
             renderPlayersTable();
@@ -10299,6 +10638,9 @@
             renderSessions();
             if (typeof renderGameModel === 'function') {
                 renderGameModel();
+            }
+            if (typeof renderReports === 'function') {
+                renderReports();
             }
             
             if (btn) {
