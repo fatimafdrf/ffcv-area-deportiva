@@ -6498,7 +6498,19 @@
                 { time: 'Hace 6 horas', text: 'Preparación de test físicos Sub-16 completada', submodality: 'futsal_sub16', modality: 'futsal' },
                 // Fútbol Sala Sub-19
                 { time: 'Hace 15 min', text: 'Lista oficial Sub-19 Futsal de Miki Ortega publicada', submodality: 'futsal_sub19', modality: 'futsal' },
-                { time: 'Hace 4 horas', text: 'Amistoso contra Selección RFEF programado', submodality: 'futsal_sub19', modality: 'futsal' }
+                { time: 'Hace 4 horas', text: 'Amistoso contra Selección RFEF programado', submodality: 'futsal_sub19', modality: 'futsal' },
+                // Fútbol Playa Sub-12
+                { time: 'Hace 5 min', text: 'Entrenamiento Sub-12 Playa finalizado', submodality: 'fplaya_sub12', modality: 'fplaya' },
+                { time: 'Hace 2 horas', text: 'Convocatoria Sub-12 Fútbol Playa publicada', submodality: 'fplaya_sub12', modality: 'fplaya' },
+                // Fútbol Playa Sub-14
+                { time: 'Hace 25 min', text: 'Entrenamiento Sub-14 Playa programado', submodality: 'fplaya_sub14', modality: 'fplaya' },
+                { time: 'Hace 4 horas', text: 'Seguimiento técnico Sub-14 completado', submodality: 'fplaya_sub14', modality: 'fplaya' },
+                // Fútbol Playa Sub-16
+                { time: 'Hace 1 hora', text: 'Convocatoria Sub-16 Fútbol Playa publicada', submodality: 'fplaya_sub16', modality: 'fplaya' },
+                { time: 'Hace 6 horas', text: 'Informe Sub-16 Playa de Javier Moratal guardado', submodality: 'fplaya_sub16', modality: 'fplaya' },
+                // Fútbol Playa Sub-19
+                { time: 'Hace 15 min', text: 'Lista oficial Sub-19 Fútbol Playa Copa Territorial', submodality: 'fplaya_sub19', modality: 'fplaya' },
+                { time: 'Hace 3 horas', text: 'Preparación campeonato Sub-19 Playa iniciada', submodality: 'fplaya_sub19', modality: 'fplaya' }
             ];
 
             if (!localStorage.getItem('ffcv_activities')) {
@@ -9967,7 +9979,12 @@
                 { id: 'futsal_sub16', name: 'Sub-16', filterCat: 'Sub-16', icon: '⚡' },
                 { id: 'futsal_sub19', name: 'Sub-19', filterCat: 'Sub-19', icon: '🏆' }
             ],
-            'fplaya': []
+            'fplaya': [
+                { id: 'fplaya_sub12', name: 'Sub-12', filterCat: 'Sub-12', icon: '⚽' },
+                { id: 'fplaya_sub14', name: 'Sub-14', filterCat: 'Sub-14', icon: '🏃' },
+                { id: 'fplaya_sub16', name: 'Sub-16', filterCat: 'Sub-16', icon: '⚡' },
+                { id: 'fplaya_sub19', name: 'Sub-19', filterCat: 'Sub-19', icon: '🏆' }
+            ]
         };
 
         function matchesSubModality(item, subModId) {
@@ -10032,6 +10049,30 @@
                        nameLower.includes('sub-19') || nameLower.includes('sub19') ||
                        titleLower.includes('sub-19') || titleLower.includes('sub19')) &&
                        (item.modality === 'futsal' || item.sport === 'Fútbol Sala');
+            }
+            if (subModId === 'fplaya_sub12') {
+                return (catLower === 'sub-12' || catLower.includes('sub-12') || catLower.includes('alevín') || catLower.includes('alevin') ||
+                       nameLower.includes('sub-12') || nameLower.includes('sub12') ||
+                       titleLower.includes('sub-12') || titleLower.includes('sub12')) &&
+                       (item.modality === 'fplaya' || item.sport === 'Fútbol Playa' || item.sport === 'Playa');
+            }
+            if (subModId === 'fplaya_sub14') {
+                return (catLower === 'sub-14' || catLower.includes('sub-14') || catLower.includes('infantil') ||
+                       nameLower.includes('sub-14') || nameLower.includes('sub14') ||
+                       titleLower.includes('sub-14') || titleLower.includes('sub14')) &&
+                       (item.modality === 'fplaya' || item.sport === 'Fútbol Playa' || item.sport === 'Playa');
+            }
+            if (subModId === 'fplaya_sub16') {
+                return (catLower === 'sub-16' || catLower.includes('sub-16') || catLower.includes('cadete') ||
+                       nameLower.includes('sub-16') || nameLower.includes('sub16') ||
+                       titleLower.includes('sub-16') || titleLower.includes('sub16')) &&
+                       (item.modality === 'fplaya' || item.sport === 'Fútbol Playa' || item.sport === 'Playa');
+            }
+            if (subModId === 'fplaya_sub19') {
+                return (catLower === 'sub-19' || catLower.includes('sub-19') || catLower.includes('juvenil') ||
+                       nameLower.includes('sub-19') || nameLower.includes('sub19') ||
+                       titleLower.includes('sub-19') || titleLower.includes('sub19')) &&
+                       (item.modality === 'fplaya' || item.sport === 'Fútbol Playa' || item.sport === 'Playa');
             }
             return false;
         }
@@ -13910,6 +13951,54 @@
                 { id: 304, name: "Miki Ortega", role: "Seleccionador", category: "Sub-19", license: "UEFA Pro Futsal", email: "mortega@ffcv.es", status: "Activo", sport: "Fútbol Sala", gender: "Masculino", phone: "+34 600 777 004", titulos: "Máster de Alto Rendimiento RFEF", experiencia: "Entrenador en Primera División de Futsal y seleccionador juvenil.", modality: "futsal", submodality: "futsal_sub19" }
             ];
             demoFutsalStaff.forEach(ds => {
+                if (!staff.some(s => s.id === ds.id || s.name === ds.name)) {
+                    staff.push(ds);
+                }
+            });
+
+            const demoFplayaPlayers = [
+                { id: 401, name: "Carlos Ortiz", club: "Platges de Moncofa", category: "Sub-12", position: "Universal", matches: 6, status: "Seleccionado", birthYear: 2014, foot: "Diestro", province: "Castellón", pace: 80, pass: 75, defense: 65, physical: 78, rating: 77, phone: "+34 600 111 001", modality: "fplaya", submodality: "fplaya_sub12" },
+                { id: 402, name: "Rubén Climent", club: "C.D. Playas de Valencia", category: "Sub-14", position: "Ala", matches: 8, status: "Seleccionado", birthYear: 2012, foot: "Diestro", province: "Valencia", pace: 84, pass: 76, defense: 60, physical: 72, rating: 79, phone: "+34 600 111 002", modality: "fplaya", submodality: "fplaya_sub14" },
+                { id: 403, name: "Héctor Soler", club: "Playa de Gandia", category: "Sub-16", position: "Cierre", matches: 7, status: "Seleccionado", birthYear: 2010, foot: "Diestro", province: "Valencia", pace: 78, pass: 80, defense: 82, physical: 84, rating: 81, phone: "+34 600 111 003", modality: "fplaya", submodality: "fplaya_sub16" },
+                { id: 404, name: "Hugo Fenoll", club: "Alicante Beach Soccer", category: "Sub-19", position: "Pívot", matches: 9, status: "Seleccionado", birthYear: 2007, foot: "Zurdo", province: "Alicante", pace: 86, pass: 78, defense: 55, physical: 88, rating: 82, phone: "+34 600 111 004", modality: "fplaya", submodality: "fplaya_sub19" }
+            ];
+            demoFplayaPlayers.forEach(dp => {
+                if (!players.some(p => p.id === dp.id || p.name === dp.name)) {
+                    players.push(dp);
+                }
+            });
+
+            const demoFplayaCalls = [
+                { id: 401, name: "Convocatoria Sub-12 Fútbol Playa - Provincial", location: "Playa Gurugú Castellón", time: "10:30 h", status: "Confirmada", date: "2026-06-25", players: [401], season: "2026/2027", province: "Castellón", sport: "Fútbol Playa", category: "Sub-12", gender: "Masculina", modality: "fplaya", submodality: "fplaya_sub12" },
+                { id: 402, name: "Convocatoria Sub-14 Fútbol Playa - Arena Alboraya", location: "Playa la Patacona", time: "09:30 h", status: "Confirmada", date: "2026-06-23", players: [402], season: "2026/2027", province: "Valencia", sport: "Fútbol Playa", category: "Sub-14", gender: "Masculina", modality: "fplaya", submodality: "fplaya_sub14" },
+                { id: 403, name: "Convocatoria Sub-16 Fútbol Playa - Microciclo", location: "Playa de Gandia", time: "18:00 h", status: "Confirmada", date: "2026-06-21", players: [403], season: "2026/2027", province: "Valencia", sport: "Fútbol Playa", category: "Sub-16", gender: "Masculina", modality: "fplaya", submodality: "fplaya_sub16" },
+                { id: 404, name: "Convocatoria Sub-19 Fútbol Playa - Campeonato Territorial", location: "Playa de San Juan", time: "19:00 h", status: "Confirmada", date: "2026-06-24", players: [404], season: "2026/2027", province: "Alicante", sport: "Fútbol Playa", category: "Sub-19", gender: "Masculina", modality: "fplaya", submodality: "fplaya_sub19" }
+            ];
+            demoFplayaCalls.forEach(dc => {
+                if (!convocatorias.some(c => c.id === dc.id || c.name === dc.name)) {
+                    convocatorias.push(dc);
+                }
+            });
+
+            const demoFplayaEvents = [
+                { id: 401, title: "Entrenamiento Sub-12 Playa", date: "2026-06-26", type: "training", location: "Castellón", modality: "fplaya", submodality: "fplaya_sub12" },
+                { id: 402, title: "Entrenamiento Sub-14 Playa", date: "2026-06-24", type: "training", location: "Alboraya", modality: "fplaya", submodality: "fplaya_sub14" },
+                { id: 403, title: "Microciclo de Entrenamiento Sub-16 Playa", date: "2026-06-22", type: "training", location: "Gandia", modality: "fplaya", submodality: "fplaya_sub16" },
+                { id: 404, title: "Preparación Campeonato Sub-19 Playa", date: "2026-06-25", type: "training", location: "Alicante", modality: "fplaya", submodality: "fplaya_sub19" }
+            ];
+            demoFplayaEvents.forEach(de => {
+                if (!events.some(e => e.id === de.id || e.title === de.title)) {
+                    events.push(de);
+                }
+            });
+
+            const demoFplayaStaff = [
+                { id: 401, name: "Pedro Barea", role: "Seleccionador", category: "Sub-12", license: "UEFA B Playa", email: "pbarea@ffcv.es", status: "Activo", sport: "Fútbol Playa", gender: "Masculino", phone: "+34 600 888 001", titulos: "Tutor Técnico de Playa FFCV", experiencia: "4 años dirigiendo en ligas territoriales de fútbol playa base.", modality: "fplaya", submodality: "fplaya_sub12" },
+                { id: 402, name: "Marcos Navarro", role: "Seleccionador", category: "Sub-14", license: "UEFA A Playa", email: "mnavarro@ffcv.es", status: "Activo", sport: "Fútbol Playa", gender: "Masculino", phone: "+34 600 888 002", titulos: "Preparador Físico FFCV", experiencia: "Entrenador sub-14 fútbol playa.", modality: "fplaya", submodality: "fplaya_sub14" },
+                { id: 403, name: "Javier Moratal", role: "Seleccionador", category: "Sub-16", license: "UEFA Pro Playa", email: "jmoratal@ffcv.es", status: "Activo", sport: "Fútbol Playa", gender: "Masculino", phone: "+34 600 888 003", titulos: "Director de Escuela Playa", experiencia: "Coordinador de fútbol playa territorial.", modality: "fplaya", submodality: "fplaya_sub16" },
+                { id: 404, name: "Kike Sánchis", role: "Seleccionador", category: "Sub-19", license: "UEFA Pro Playa", email: "ksanchis@ffcv.es", status: "Activo", sport: "Fútbol Playa", gender: "Masculino", phone: "+34 600 888 004", titulos: "Seleccionador Territorial Absoluto", experiencia: "10 años en el staff técnico de la FFCV.", modality: "fplaya", submodality: "fplaya_sub19" }
+            ];
+            demoFplayaStaff.forEach(ds => {
                 if (!staff.some(s => s.id === ds.id || s.name === ds.name)) {
                     staff.push(ds);
                 }
