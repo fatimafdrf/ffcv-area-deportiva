@@ -2076,11 +2076,11 @@
             color: #FFFFFF !important; /* Texto blanco */
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
         }
-        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container {
+        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container {
             border-radius: 12px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
-        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn {
+        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn {
             font-size: 13px;
             padding: 8px 16px;
             border-radius: 8px;
@@ -3513,11 +3513,16 @@
                     </div>
 
                     <!-- Pestañas de Modalidad Deportiva -->
-                    <div class="config-tabs-container" style="margin-top: 0; margin-bottom: 24px;">
-                        <button class="config-tab-btn active" onclick="setGameModelCategory('f11', this)">⚽ Fútbol 11</button>
-                        <button class="config-tab-btn" onclick="setGameModelCategory('f8', this)">⚽ Fútbol 8</button>
-                        <button class="config-tab-btn" onclick="setGameModelCategory('futsal', this)">🏟️ Fútbol Sala</button>
-                        <button class="config-tab-btn" onclick="setGameModelCategory('fplaya', this)">🏖️ Fútbol Playa</button>
+                    <div class="config-tabs-container modality-tabs-container" style="margin-top: 0; margin-bottom: 24px;">
+                        <button class="config-tab-btn active" data-modality="f11" onclick="changeGlobalModality('f11', this)">⚽ Fútbol 11</button>
+                        <button class="config-tab-btn" data-modality="f8" onclick="changeGlobalModality('f8', this)">⚽ Fútbol 8</button>
+                        <button class="config-tab-btn" data-modality="futsal" onclick="changeGlobalModality('futsal', this)">🏟️ Fútbol Sala</button>
+                        <button class="config-tab-btn" data-modality="fplaya" onclick="changeGlobalModality('fplaya', this)">🏖️ Fútbol Playa</button>
+                    </div>
+
+                    <!-- Pestañas de Subcategorías/Selecciones -->
+                    <div id="modelo-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;">
+                        <!-- Dinámico mediante JS -->
                     </div>
 
                     <div class="tactic-layout">
@@ -10160,6 +10165,7 @@
             const plContainer = document.getElementById('jugadores-subcategory-tabs-container');
             const cvContainer = document.getElementById('convocatorias-subcategory-tabs-container');
             const seContainer = document.getElementById('sesiones-subcategory-tabs-container');
+            const moContainer = document.getElementById('modelo-subcategory-tabs-container');
             
             const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
             
@@ -10196,6 +10202,10 @@
                     seContainer.innerHTML = html;
                     seContainer.style.display = 'flex';
                 }
+                if (moContainer) {
+                    moContainer.innerHTML = html;
+                    moContainer.style.display = 'flex';
+                }
             } else {
                 currentSubModality = '';
                 localStorage.setItem('ffcv_current_submodality', '');
@@ -10214,6 +10224,10 @@
                 if (seContainer) {
                     seContainer.style.display = 'none';
                     seContainer.innerHTML = '';
+                }
+                if (moContainer) {
+                    moContainer.style.display = 'none';
+                    moContainer.innerHTML = '';
                 }
             }
         }
@@ -10267,11 +10281,25 @@
                 });
             }
 
+            const moContainer = document.getElementById('modelo-subcategory-tabs-container');
+            if (moContainer) {
+                moContainer.querySelectorAll('.config-tab-btn').forEach(b => {
+                    if (b.getAttribute('data-submodality') === subModId) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+            }
+
             updateCounts();
             renderDashboardView();
             renderPlayersTable();
             renderConvocatorias();
             renderSessions();
+            if (typeof renderGameModel === 'function') {
+                renderGameModel();
+            }
             
             if (btn) {
                 showToast(`Subcategoría: ${btn.textContent.trim()}`, 'info');
@@ -10333,6 +10361,7 @@
                 else if (viewId === 'convocatorias') renderConvocatorias();
                 else if (viewId === 'planificacion') renderPlanning();
                 else if (viewId === 'sesiones') renderSessions();
+                else if (viewId === 'modelo') renderGameModel();
                 else if (viewId === 'informes') renderReports();
                 else if (viewId === 'calendario') renderCalendar();
                 else if (viewId === 'staff') {
@@ -10343,6 +10372,9 @@
                 else if (viewId === 'documentacion') {
                     updateDocumentCounts();
                 }
+            }
+            if (typeof renderGameModel === 'function') {
+                renderGameModel();
             }
             
             if (btn) {
@@ -10644,6 +10676,583 @@
         let activeCategory = 'f11';
         let activeSystem = '1433';
         let activePhase = 'ofensivo';
+
+        const SUBMODALITY_MODEL_DATA = {
+            'f11_regiones': {
+                name: "Selección Regiones F11",
+                description: "Modelo de juego adaptado para la Selección de Regiones de Fútbol 11, orientado a la detección y desarrollo de talento territorial.",
+                systems: ['1442', '1433'],
+                defaultSystem: '1442',
+                phaseCardData: {
+                    'ofensivo': 'Juego exterior, llegadas por banda y centros precisos a zona de remate.',
+                    'defensivo': 'Basculaciones, repliegue ordenado y bloque medio estrecho.',
+                    'transiciones': 'Salida vertical y veloz buscando los dos delanteros referencia.',
+                    'abp': 'Saques de esquina zonales, bloqueos en faltas e incorporaciones potentes.',
+                    'plan': 'Control de partido, dominio de tiempos y juego táctico de contención.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Regiones F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Amplitud exterior mediante interiores y laterales ofensivos.<br>2. Juego directo controlado buscando segundas jugadas de los puntas.<br>3. Finalización rápida acumulando hasta tres rematadores.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Regiones F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Presión en bloque medio bloqueando los pasillos interiores.<br>2. Basculaciones y coberturas colectivas ante centros.<br>3. Repliegue ordenado al superar línea de medios.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Regiones F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Def-Of: Balón directo al espacio a la espalda de centrales rivales.<br>2. Of-Def: Repliegue inmediato y reorganización de la línea de 4.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Regiones F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Córners defensivos con marcaje zonal mixto.<br>2. Faltas ofensivas laterales buscando al segundo palo.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Regiones F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Mantener solidez atrás y aprovechar jugadas de balón parado.</p>
+                    `
+                },
+                systemFeatures: {
+                    '1442': {
+                        fortalezas: ["Excelente equilibrio defensivo con dos líneas de cuatro", "Presencia constante de dos rematadores en el área", "Facilidad para presionar la salida del rival"],
+                        vigilar: ["Posible inferioridad en el centro del campo ante sistemas de 3 mediocentros", "Distancia excesiva entre delanteros y mediocampo", "Coberturas de los interiores a los laterales"],
+                        recomendado: "Recomendado para equipos compactos que priorizan la solidez defensiva y las transiciones rápidas por fuera."
+                    },
+                    '1433': {
+                        fortalezas: ["Amplitud garantizada por los extremos", "Facilidad para triangular en zona ofensiva", "Presión alta de los tres atacantes"],
+                        vigilar: ["Espacios a la espalda de los laterales si suben a la vez", "Transiciones rápidas del rival si se pierde el balón en salida"],
+                        recomendado: "Indicado para dominar a través de la posesión y someter al rival en su propio campo."
+                    }
+                }
+            },
+            'f11_sub14': {
+                name: "Selección Sub-14 F11",
+                description: "Modelo de juego orientado al aprendizaje de conceptos colectivos, priorizando el juego combinativo y el desarrollo técnico.",
+                systems: ['1433', '14231'],
+                defaultSystem: '1433',
+                phaseCardData: {
+                    'ofensivo': 'Salida limpia en corto desde portero, circulaciones rápidas y juego asociativo.',
+                    'defensivo': 'Presión alta tras pérdida, reducción de espacios y anticipación.',
+                    'transiciones': 'Progresión combinada ordenada tras robo y reorganización posicional rápida.',
+                    'abp': 'Iniciación a jugadas ensayadas, desmarques de distracción y juego de estrategia sencillo.',
+                    'plan': 'Foco en la toma de decisiones correcta y asimilación de roles sobre el resultado.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-14 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Inicio de juego asociativo desde el área propia.<br>2. Búsqueda de superioridades numéricas locales (triangulaciones).<br>3. Desmarques de apoyo para ofrecer líneas de pase limpias.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-14 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Presión coordinada en campo rival para recuperar rápido.<br>2. Orientación de la marca y posicionamiento perfilado corporal.<br>3. Foco en la anticipación y no cometer faltas innecesarias.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-14 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Robo: Conservación del balón antes que verticalidad forzada.<br>2. Pérdida: Presión inmediata sobre el balón.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-14 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Defensivo: Defensa individual/mixta aprendiendo asignación.<br>2. Ofensivo: Foco en la ejecución técnica del centro o pase.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-14 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Rotaciones para asegurar minutos de calidad y crecimiento integral.</p>
+                    `
+                },
+                systemFeatures: {
+                    '1433': {
+                        fortalezas: ["Ideal para asimilar apoyos diagonales y el tercer hombre", "Facilidad para mantener el balón en campo contrario", "Amplitud máxima con los extremos pegados a línea"],
+                        vigilar: ["Fragilidad en transiciones defensivas si los medios no cierran", "Exposición del portero si la línea defensiva es muy alta"],
+                        recomendado: "Recomendado para fomentar el fútbol asociativo, la creatividad técnica y el entendimiento táctico inicial."
+                    },
+                    '14231': {
+                        fortalezas: ["Mayor seguridad en bloque de iniciación con doble pivote", "Líneas de pase fáciles con media punta y dos bandas", "Estructura defensiva sólida y de fácil retorno"],
+                        vigilar: ["Aislamiento de la punta si la línea de mediapuntas no sube", "Falta de profundidad si los extremos no rompen en diagonal"],
+                        recomendado: "Adecuado para partidos donde se requiere mayor seguridad en fase defensiva o control interlineal."
+                    }
+                }
+            },
+            'f11_sub16': {
+                name: "Selección Sub-16 F11",
+                description: "Modelo enfocado en la especialización táctica avanzada, el rigor estructural y el juego dinámico de alta velocidad.",
+                systems: ['14231', '1433', '1352'],
+                defaultSystem: '14231',
+                phaseCardData: {
+                    'ofensivo': 'Ataque posicional de alta movilidad, ocupación de pasillos internos y desmarques de ruptura.',
+                    'defensivo': 'Presión tras pérdida extrema (5 segundos), bloque compacto y vigilancias estrechas.',
+                    'transiciones': 'Despliegues verticales con transiciones ofensivas letales por dentro y por fuera.',
+                    'abp': 'Diseños de jugadas complejas (bloqueos, aclarados) y defensa mixta/zonal coordinada.',
+                    'plan': 'Planes específicos según perfil rival, variaciones de presión e intensidad competitiva.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-16 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Circulación de balón a alta velocidad para desorganizar al rival.<br>2. Intercambio de posiciones y rotaciones de extremos y media punta.<br>3. Romper líneas rivales mediante conducciones del central o pases filtrados.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-16 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Presión tras pérdida organizada, acosando al poseedor inmediatamente.<br>2. Achique de espacios empujando la línea defensiva hacia adelante.<br>3. Vigilancias individuales estrechas a los delanteros rivales.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-16 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Robo: Salida explosiva hacia adelante en 3-4 pases rápidos.<br>2. Pérdida: Presión para forzar patada del rival y recuperar de cabeza.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-16 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Ofensivos con bloqueos indirectos y ataques a zonas ciegas.<br>2. Defensivos con cobertura mixta rigurosa coordinando fuera de juego.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-16 F11):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Someter al rival desde los primeros minutos con presión asfixiante.</p>
+                    `
+                },
+                systemFeatures: {
+                    '14231': {
+                        fortalezas: ["Gran equilibrio entre líneas defensivas y ofensivas", "Libertad de movimiento para el mediapunta", "Extrema solidez en el doble pivote"],
+                        vigilar: ["Esfuerzo físico alto para los mediapuntas en el retorno", "Espacio libre lateral si los bandas no apoyan al lateral"],
+                        recomendado: "Sistema óptimo para maximizar el control interlineal y contar con transiciones letales."
+                    },
+                    '1433': {
+                        fortalezas: ["Amplitud máxima", "Fácil asociación en campo rival", "Gran presión en bloque alto"],
+                        vigilar: ["Espacios a la espalda de los laterales", "Transiciones rápidas del rival"],
+                        recomendado: "Recomendado cuando se busca superioridad numérica ofensiva y posesiones prolongadas."
+                    },
+                    '1352': {
+                        fortalezas: ["Defensa central muy compacta (3 centrales)", "Llegada al ataque con carrileros largos", "Presencia de dos delanteros en remate"],
+                        vigilar: ["Exigencia física extrema en bandas", "Intervalos entre centrales si son atraídos a banda"],
+                        recomendado: "Indicado para frenar equipos con ataques potentes por el centro y explotar las bandas con carrileros."
+                    }
+                }
+            },
+            'f8_sub12': {
+                name: "Selección Sub-12 F8",
+                description: "Modelo de juego orientado al desarrollo técnico, ocupación lógica de espacios y comprensión básica del juego combinativo en Fútbol 8.",
+                systems: ['f8_1322', 'f8_1331'],
+                defaultSystem: 'f8_1322',
+                phaseCardData: {
+                    'ofensivo': 'Progresión asociativa, apoyos dinámicos y triangulaciones constantes.',
+                    'defensivo': 'Repliegue en bloque medio, ayudas mutuas y protección de la portería propia.',
+                    'transiciones': 'Salidas ordenadas tras recuperación y repliegues veloces tras pérdida.',
+                    'abp': 'Saques de banda lógicos, córners directos y faltas sencillas ensayadas.',
+                    'plan': 'Adaptar el ritmo de juego y las distancias de pase al tamaño de la cancha.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-12 F8):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Circulación de balón entre la línea de 3 defensores.<br>2. Apoyos de los centrocampistas ofreciéndose constantemente de cara.<br>3. Ocupación de carriles exteriores por los interiores y finalización de delanteros.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-12 F8):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Agrupamiento rápido por detrás de la línea del balón.<br>2. Coberturas mutuas y comunicación entre defensas.<br>3. Presión en zona de balón sin desarmar la estructura.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-12 F8):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Def-Of: Pase de seguridad para estabilizar y luego avanzar.<br>2. Of-Def: Vuelta rápida al carril central defensivo.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-12 F8):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Lanzamientos directos de falta y saques de esquina altos.<br>2. Defensa en zona vigilando marcas al primer palo.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-12 F8):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Fomentar la diversión táctica y la asimilación del juego en equipo.</p>
+                    `
+                },
+                systemFeatures: {
+                    'f8_1322': {
+                        fortalezas: ["Gran solidez central con 3 defensores fijos", "Facilidad para presionar con los dos delanteros en salida rival", "Transiciones fáciles en campo medio"],
+                        vigilar: ["Poco juego exterior si los interiores no abren el campo", "Exposición de los centrales en bandas si los laterales son atraídos"],
+                        recomendado: "Estructura idónea para iniciar al jugador en el posicionamiento táctico equilibrado."
+                    },
+                    'f8_1331': {
+                        fortalezas: ["Amplitud defensiva y ofensiva garantizada", "Conexión clara con el punta de referencia", "Fácil asociación en campo contrario"],
+                        vigilar: ["Intervalo entre el único punta y la línea de centrocampistas", "Exceso de responsabilidades defensivas del centrocampista central"],
+                        recomendado: "Ideal para equipos asociativos con mediapuntas dinámicos y gran juego de bandas."
+                    }
+                }
+            },
+            'futsal_sub12': {
+                name: "Selección Sub-12 Futsal",
+                description: "Modelo de fútbol sala base enfocado a la asimilación técnica del pase, control de suela y colocación en rombo.",
+                systems: ['fs_22', 'fs_31'],
+                defaultSystem: 'fs_22',
+                phaseCardData: {
+                    'ofensivo': 'Control orientado de suela, pases tensos y movilidad básica.',
+                    'defensivo': 'Marcaje al hombre sencillo, ayudas en media pista y bloque bajo.',
+                    'transiciones': 'Repliegue inmediato y contraataques rápidos tras recuperación.',
+                    'abp': 'Saques de esquina y banda al segundo palo de forma simple.',
+                    'plan': 'Rotaciones completas de quintetos para mantener ritmo alto.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-12 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Controlar siempre con la suela para asegurar la posesión.<br>2. Apoyos constantes en paralelo y diagonal.<br>3. Ocupación en cuadrado o rombo básico.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-12 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Marcaje estricto al par asignado.<br>2. No perder de vista el balón ni la espalda.<br>3. Coberturas rápidas del cierre.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-12 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Repliegue de emergencia al centro de pista.<br>2. Transición ofensiva rápida en 2v1.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-12 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Saque de esquina al jugador libre que llega en carrera.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-12 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Mantener alta intensidad con rotaciones cortas.</p>
+                    `
+                },
+                systemFeatures: {
+                    'fs_22': {
+                        fortalezas: ["Estructura simple y equilibrada para iniciación", "Espacios claros de ataque", "Retorno defensivo rápido"],
+                        vigilar: ["Juego estático si no hay desmarques cruzados", "Intervalos centrales desprotegidos"],
+                        recomendado: "Recomendado para jugadores en edad temprana para fijar roles defensivos y ofensivos básicos."
+                    },
+                    'fs_31': {
+                        fortalezas: ["Conexión clara con el pivot de espaldas", "Alas con carriles libres para regate", "Mucha seguridad defensiva con el cierre fijo"],
+                        vigilar: ["Aislamiento del pivot si las alas no acompañan", "Retorno físico exigente para los laterales"],
+                        recomendado: "Adecuado para aprender la rotación de inicio y descarga en pivot."
+                    }
+                }
+            },
+            'futsal_sub14': {
+                name: "Selección Sub-14 Futsal",
+                description: "Modelo táctico de fútbol sala orientado a las transiciones rápidas y el inicio del juego combinativo en rombo (3-1).",
+                systems: ['fs_31', 'fs_40'],
+                defaultSystem: 'fs_31',
+                phaseCardData: {
+                    'ofensivo': 'Rotación inicial en 3-1, paralelas profundas y aclarados para el 1v1.',
+                    'defensivo': 'Presión individual en 3/4, defensa de cambios orientada y bloque ordenado.',
+                    'transiciones': 'Contraataques veloces buscando superioridad espacial en área rival.',
+                    'abp': 'Saques de esquina directos al bloqueador o disparos a media distancia.',
+                    'plan': 'Gestión de la posesión y control del desgaste físico en pista.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-14 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Salida de presión en 3-1 con pase al pivot y apoyos de alas.<br>2. Paralelas rápidas buscando la espalda del defensor.<br>3. Bloqueos indirectos para liberar líneas de tiro.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-14 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Presión sobre el pasador rival para forzar fallos.<br>2. Defensa de los cruces con cambios de marca comunicados.<br>3. Coberturas activas del pivot en primera línea.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-14 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Def-Of: Contraataques buscando abrir rápido por banda.<br>2. Of-Def: Repliegue al centro para proteger zona de disparo.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-14 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Saques de banda ensayados en paralelo.<br>2. Córners buscando tiro del ala al segundo palo.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-14 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Posesiones seguras y presión alta en pista rival.</p>
+                    `
+                },
+                systemFeatures: {
+                    'fs_31': {
+                        fortalezas: ["Estructura sólida en rombo", "Punto de anclaje claro con el pivot", "Alas profundas en banda"],
+                        vigilar: ["Pivot estático que facilite el marcaje del cierre rival", "Espacio central descubierto en contragolpes"],
+                        recomendado: "Sistema estándar para consolidar transiciones combinativas y apoyos cortos."
+                    },
+                    'fs_40': {
+                        fortalezas: ["Espacio a la espalda de la defensa rival para rupturas", "Movilidad constante de los cuatro jugadores", "Atracción de marcas para pases al hueco"],
+                        vigilar: ["Pérdidas de balón en media cancha sin coberturas", "Exigencia física muy alta"],
+                        recomendado: "Óptimo para desarmar bloques defensivos rivales muy hundidos mediante movilidad."
+                    }
+                }
+            },
+            'futsal_sub16': {
+                name: "Selección Sub-16 Futsal",
+                description: "Modelo táctico especializado en la movilidad extrema, el juego en falso pivot (4-0) y la presión tras pérdida coordinada.",
+                systems: ['fs_40', 'fs_31'],
+                defaultSystem: 'fs_40',
+                phaseCardData: {
+                    'ofensivo': 'Rotaciones constantes en 4-0, saques rápidos y juego dinámico interlineal.',
+                    'defensivo': 'Presión individual estricta a toda la pista, coberturas y anticipaciones constantes.',
+                    'transiciones': 'Transición ultra-rápida finalizando en el segundo palo en superioridades.',
+                    'abp': 'Jugadas ensayadas complejas con bloqueos, pantallas y bloqueos de pivot.',
+                    'plan': 'Alternar presiones y ritmo de rotaciones según faltas acumuladas.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-16 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Movilidad de los 4 jugadores en carriles dinámicos.<br>2. Atraer al rival para romper en pase largo en diagonal.<br>3. Finalizar jugadas siempre con entrada al segundo palo.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-16 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Presión alta individual incomodando la salida del meta.<br>2. Basculación defensiva y cambios de marca coordinados.<br>3. Coberturas rápidas al compañero superado en banda.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-16 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Def-Of: Salida rápida tras recuperación, desmarques de ruptura.<br>2. Of-Def: Presión de 3 segundos para recuperar o temporizar.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-16 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Saques de banda y esquina buscando bloqueos del pivot.<br>2. Libres indirectos en zona de peligro.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-16 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Intensidad extrema y rotación alta de cuartetos.</p>
+                    `
+                },
+                systemFeatures: {
+                    'fs_40': {
+                        fortalezas: ["Movilidad infinita que descoloca defensas", "Líneas de pase continuas", "Facilidad para salidas de presión"],
+                        vigilar: ["Riesgo de contra si se pierde en zona baja", "Falta de presencia en área para rebotes"],
+                        recomendado: "Sistema idóneo para plantillas dinámicas y rápidas con gran nivel de lectura táctica."
+                    },
+                    'fs_31': {
+                        fortalezas: ["Sencillez en la fijación del cierre rival", "Descargas rápidas de cara", "Solidez posicional en media pista"],
+                        vigilar: ["Lectura predecible si no hay apoyos diagonales", "Desgaste de pivot"],
+                        recomendado: "Recomendado como sistema alternativo para fijar defensas móviles."
+                    }
+                }
+            },
+            'futsal_sub19': {
+                name: "Selección Sub-19 Futsal",
+                description: "Modelo de juego avanzado de alta competición, dominando las rotaciones complejas, el juego de 5 y la estrategia ofensiva.",
+                systems: ['fs_31', 'fs_portero'],
+                defaultSystem: 'fs_31',
+                phaseCardData: {
+                    'ofensivo': 'Rotaciones paralelas y diagonales rápidas, juego de 5 estructurado y tiro exterior.',
+                    'defensivo': 'Defensa zonal en rombo ante juego de 5, presión alta asfixiante individual.',
+                    'transiciones': 'Contragolpe letal en 2-3 toques y repliegue de bloqueo defensivo.',
+                    'abp': 'Estrategia avanzada con bloqueos dinámicos y pantallas al portero.',
+                    'plan': 'Gestión de la fatiga, control estricto de faltas y superioridad 5vs4.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-19 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Rotaciones avanzadas (paralelas, diagonales y aclarados).<br>2. Superioridad 5v4 paciente circulando el balón al primer toque.<br>3. Tiros exteriores buscando rebotes o desvíos del pivot.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-19 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Presión alta orientada a forzar el pelotazo del portero.<br>2. Defensa del 5v4 en bloque bajo en rombo o cuadrado.<br>3. Agresividad controlada en duelos individuales de banda.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-19 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Def-Of: Contragolpe letal en 2-3 pases buscando culminación al segundo palo.<br>2. Of-Def: Repliegue inmediato en zona con bloqueo del cierre.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-19 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Córners ensayados de volea o jugada corta.<br>2. Saques de banda con bloqueo dinámico.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-19 Futsal):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Controlar faltas acumuladas y explotar el portero-jugador.</p>
+                    `
+                },
+                systemFeatures: {
+                    'fs_31': {
+                        fortalezas: ["Control estructural, anclaje seguro en pivot", "Equilibrio defensivo", "Salidas ordenadas"],
+                        vigilar: ["Rápido desgaste físico del pivot en forcejeos", "Pases de salida interceptados"],
+                        recomendado: "Recomendado como sistema base en partidos de alta intensidad táctica."
+                    },
+                    'fs_portero': {
+                        fortalezas: ["Superioridad numérica constante 5v4", "Sometimiento total del rival en su área", "Desgaste psicológico del oponente"],
+                        vigilar: ["Tiros a puerta vacía si se pierde el balón", "Fatiga mental por la precisión exigida"],
+                        recomendado: "Recomendado para remontar marcadores adversos o adormecer el partido en fases finales."
+                    }
+                }
+            },
+            'fplaya_sub12': {
+                name: "Selección Sub-12 Fútbol Playa",
+                description: "Modelo de iniciación a las dinámicas en arena, priorizando la técnica aérea básica y la familiarización con la inestabilidad de la arena.",
+                systems: ['fp_121', 'fp_13'],
+                defaultSystem: 'fp_121',
+                phaseCardData: {
+                    'ofensivo': 'Juego de pie levantado, pases de cuchara cortos y remates directos.',
+                    'defensivo': 'Marcaje al hombre sencillo, ayudas ante regates y bloque central.',
+                    'transiciones': 'Repliegues rápidos y contras sencillas buscando el pivot.',
+                    'abp': 'Lanzamientos directos altos de falta, saques de banda de aire.',
+                    'plan': 'Rotaciones frecuentes (cada 2 minutos) para mitigar fatiga.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-12 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Intentar mantener el balón en el aire con pases de cuchara.<br>2. Remates sencillos a puerta sin dejar botar el esférico.<br>3. Descarga rápida con el portero para tiros lejanos.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-12 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Marcaje estrecho al rival directo en arena.<br>2. Intercepción de líneas de tiro dobladas.<br>3. Coberturas defensivas rápidas del universal.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-12 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Def-Of: Pase de seguridad al portero o lanzamiento directo al pivot.<br>2. Of-Def: Repliegue al centro tapando al lanzador.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-12 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Saques de banda elevados buscando remate alto.<br>2. Lanzamiento directo de falta levantando arena.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-12 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Divertirse adaptando el golpeo aéreo a la inestabilidad de la arena.</p>
+                    `
+                },
+                systemFeatures: {
+                    'fp_121': {
+                        fortalezas: ["Estructura clásica y equilibrada en arena", "Fácil de asimilar roles de ala y pivot", "Cierre claro por el centro"],
+                        vigilar: ["Hundimiento excesivo del pivot", "Agotamiento rápido de las alas"],
+                        recomendado: "Recomendado para sentar las bases tácticas del fútbol playa posicional."
+                    },
+                    'fp_13': {
+                        fortalezas: ["Llegada masiva de 3 atacantes", "Descarga directa al pivot", "Presión alta de los tres atacantes"],
+                        vigilar: ["Espacio defensivo despoblado si las bandas no bajan", "Vulnerabilidad en transiciones del rival"],
+                        recomendado: "Útil en fases de partido de total dominio ofensivo."
+                    }
+                }
+            },
+            'fplaya_sub14': {
+                name: "Selección Sub-14 Fútbol Playa",
+                description: "Modelo de fútbol playa orientado al control de aire, saques rápidos del meta y transiciones ofensivas cortas.",
+                systems: ['fp_13', 'fp_22'],
+                defaultSystem: 'fp_13',
+                phaseCardData: {
+                    'ofensivo': 'Pases aéreos a la cabeza o pecho de pivot, chilenas y remates rápidos.',
+                    'defensivo': 'Presión en zona media, bloqueando el pasillo de tiro directo rival.',
+                    'transiciones': 'Contraataque veloz tras robo finalizando al primer toque.',
+                    'abp': 'Faltas directas levantando montículo de arena, córners bombeados.',
+                    'plan': 'Gestión del esfuerzo y sustituciones rápidas en pista.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-14 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Pases altos en cuchara para evitar el freno de la arena.<br>2. Pivot de espaldas fijando defensores y descargando rápido.<br>3. Tiros cruzados incomodando el bote del balón ante el portero.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-14 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Marcaje al hombre cubriendo la línea de tiro.<br>2. Bloquear saques de meta rivales rápidos.<br>3. Coberturas cruzadas en el centro.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-14 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Def-Of: Robo y salida rápida buscando las bandas de aire.<br>2. Of-Def: Repliegue inmediato bloqueando las diagonales de tiro.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-14 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Córners bombeados al segundo palo buscando la volea.<br>2. Libres directos lejanos con montículo.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-14 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Mantener rotación constante y no dejar botar el balón en área propia.</p>
+                    `
+                },
+                systemFeatures: {
+                    'fp_13': {
+                        fortalezas: ["Presión constante en salida del portero rival", "Puntos de apoyo claros por fuera", "Finalizaciones muy rápidas"],
+                        vigilar: ["Gran exigencia física del único defensor (cierre)", "Exposición ante regates rápidos en transición"],
+                        recomendado: "Recomendado para explotar la superioridad aérea con pivots corpulentos."
+                    },
+                    'fp_22': {
+                        fortalezas: ["Máxima cobertura de carriles", "Sencillo retorno defensivo en parejas", "Distribución espacial óptima"],
+                        vigilar: ["Falta de un pivote claro para la descarga", "Juego muy predecible por el centro"],
+                        recomendado: "Sistema idóneo para mantener un bloque compacto y consistente."
+                    }
+                }
+            },
+            'fplaya_sub16': {
+                name: "Selección Sub-16 Fútbol Playa",
+                description: "Modelo táctico enfocado en el dominio del juego aéreo, remates acrobáticos (chilenas y tijeretas) y fuerza en desplazamientos.",
+                systems: ['fp_22', 'fp_121'],
+                defaultSystem: 'fp_22',
+                phaseCardData: {
+                    'ofensivo': 'Juego aéreo total, chilenas acrobáticas, autopases altos y remates de volea.',
+                    'defensivo': 'Marcaje al hombre riguroso, taponamiento estricto de líneas de tiro.',
+                    'transiciones': 'Contraataque inmediato de área a área, finalización de volea.',
+                    'abp': 'Lanzamiento de faltas directas con montículo y córners elevados al rematador.',
+                    'plan': 'Cambios tácticos según el estado físico de los quintetos.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-16 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Autopases levantando el balón para chilenas o voleas directas.<br>2. Cambios de juego constantes en el aire de banda a banda.<br>3. Incorporación ofensiva del portero como lanzador lejanos.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-16 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Marcaje individual asfixiante impidiendo que levanten el balón.<br>2. Bloqueo de la línea de tiro del ejecutor con el cuerpo.<br>3. Presión en zona de arena profunda para ahogar la salida.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-16 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Def-Of: Salida rápida hacia el universal o pivot en diagonal aérea.<br>2. Of-Def: Transición defensiva al hombre con marcajes escalonados.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-16 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Lanzamientos directos bombeados de falta.<br>2. Saques de esquina de aire buscando el desvío acrobático.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-16 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Mantener bloque táctico equilibrado en transiciones y desgaste del rival.</p>
+                    `
+                },
+                systemFeatures: {
+                    'fp_22': {
+                        fortalezas: ["Equilibrio posicional excelente", "Fácil cobertura de las parejas", "Gran solidez defensiva central"],
+                        vigilar: ["Dificultad para generar juego aéreo estático", "Vigilancias interlineales si el rival desborda en el 1v1"],
+                        recomendado: "Adecuado para frenar rivales físicos y mantener solidez defensiva en arena blanda."
+                    },
+                    'fp_121': {
+                        fortalezas: ["Estructura flexible para chilenas de pivot", "Salida rápida en rombo", "Cierre claro del universal"],
+                        vigilar: ["Exceso de espacio libre en los laterales ante contras", "Retornos muy físicos de las alas"],
+                        recomendado: "Recomendado cuando se dispone de un pivot habilidoso en el juego aéreo acrobático."
+                    }
+                }
+            },
+            'fplaya_sub19': {
+                name: "Selección Sub-19 Fútbol Playa",
+                description: "Modelo de alta competición especializado en estrategias avanzadas de juego aéreo, balón parado y rotación de quintetos.",
+                systems: ['fp_121', 'fp_13', 'fp_22'],
+                defaultSystem: 'fp_121',
+                phaseCardData: {
+                    'ofensivo': 'Rotaciones dinámicas de aire, estrategias complejas con portero y tiros lejanos.',
+                    'defensivo': 'Marcaje al hombre extrema, taponamiento y anticipación al pivot.',
+                    'transiciones': 'Robo y disparo inmediato sin bote de balón, repliegue intensivo.',
+                    'abp': 'Faltas directas ensayadas, bloqueos al portero y tiros a bote pronto.',
+                    'plan': 'Gestión de la fatiga, dirección del viento y estado de la arena.'
+                },
+                principles: {
+                    'ofensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Ofensivos (Sub-19 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Ataque posicional de aire con combinaciones rápidas de pecho/cabeza.<br>2. Chilenas y tijeretas acrobáticas cruzadas al palo largo.<br>3. Uso táctico del portero saliendo a media pista para disparar.</p>
+                    `,
+                    'defensivo': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Principios Defensivos (Sub-19 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Bloqueo al pivot impidiendo la recepción aérea cómoda.<br>2. Defensa de chilenas guardando la distancia reglamentaria para evitar faltas.<br>3. Presión asfixiante tras pérdida para ahogar la salida rival.</p>
+                    `,
+                    'transiciones': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Transiciones (Sub-19 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Def-Of: Robo y disparo inmediato sin bote de balón.<br>2. Of-Def: Repliegue intensivo al centro con marcajes asfixiantes.</p>
+                    `,
+                    'abp': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">ABP Estrategia (Sub-19 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Faltas ensayadas con bloqueos dinámicos.<br>2. Tiros de córner a bote pronto.</p>
+                    `,
+                    'plan': `
+                        <strong style="color: #0f1e46; font-size: 14px; font-weight: 700;">Plan de Partido (Sub-19 Playa):</strong>
+                        <p style="margin-top:6px; color: #374151; font-weight: 400; line-height: 1.55;">1. Gestión del viento y sustituciones tácticas rápidas.</p>
+                    `
+                },
+                systemFeatures: {
+                    'fp_121': {
+                        fortalezas: ["Control total de las bandas por las alas", "Anclaje seguro con el pivot de aire", "Cierre bien protegido por el central"],
+                        vigilar: ["Riesgo de contra rápida si las alas se suman al remate a la vez", "Desgaste del cierre ante pivots corpulentos"],
+                        recomendado: "Sistema base para torneos competitivos de fútbol playa de alto nivel."
+                    },
+                    'fp_13': {
+                        fortalezas: ["Presión constante en salida del portero rival", "Puntos de apoyo claros por fuera", "Finalizaciones muy rápidas"],
+                        vigilar: ["Gran exigencia física del único defensor (cierre)", "Exposición ante regates rápidos en transición"],
+                        recomendado: "Recomendado para fases de partido donde se busca remontar o dominar ofensivamente."
+                    },
+                    'fp_22': {
+                        fortalezas: ["Máxima cobertura de carriles", "Sencillo retorno defensivo en parejas", "Distribución espacial óptima"],
+                        vigilar: ["Falta de un pivote claro para la descarga", "Juego muy predecible por el centro"],
+                        recomendado: "Excelente alternativa para defender marcadores favorables."
+                    }
+                }
+            }
+        };
 
         const CATEGORY_SYSTEMS = {
             'f11': ['1433', '1442', '1352', '14231', '14141'],
@@ -11546,7 +12155,15 @@
             const contentDiv = document.getElementById('system-features-content');
             if (!contentDiv) return;
             
-            const features = SYSTEM_FEATURES[system] || SYSTEM_FEATURES['1433'];
+            const subModId = currentSubModality || (currentModality === 'f11' ? 'f11_regiones' : (currentModality === 'f8' ? 'f8_sub12' : (currentModality === 'futsal' ? 'futsal_sub12' : 'fplaya_sub12')));
+            const modelData = SUBMODALITY_MODEL_DATA[subModId];
+            
+            let features;
+            if (modelData && modelData.systemFeatures && modelData.systemFeatures[system]) {
+                features = modelData.systemFeatures[system];
+            } else {
+                features = SYSTEM_FEATURES[system] || SYSTEM_FEATURES['1433'];
+            }
             
             let html = `
                 <!-- Fortalezas -->
@@ -11575,7 +12192,8 @@
                     <ul style="margin: 0; padding-left: 16px; font-size: 14px; color: #374151; font-weight: 400; line-height: 1.5; opacity: 1; display: flex; flex-direction: column; gap: 4px;">
             `;
             
-            features.vigilar.forEach(v => {
+            const vigilarList = features.vigilar || features.vigilando || [];
+            vigilarList.forEach(v => {
                 html += `<li>${v}</li>`;
             });
             
@@ -11590,12 +12208,88 @@
                         <span style="font-size: 16px; font-weight: 600; color: #1D4ED8; text-transform: uppercase; letter-spacing: 0.5px;">Uso recomendado</span>
                     </div>
                     <p style="margin: 0; font-size: 14px; color: #374151; font-weight: 400; line-height: 1.5; opacity: 1; padding-left: 4px;">
-                        ${features.recomendado}
+                        ${features.recomendado || features.uso || ''}
                     </p>
                 </div>
             `;
             
             contentDiv.innerHTML = html;
+        }
+
+        function renderGameModel() {
+            const subModId = currentSubModality || (currentModality === 'f11' ? 'f11_regiones' : (currentModality === 'f8' ? 'f8_sub12' : (currentModality === 'futsal' ? 'futsal_sub12' : 'fplaya_sub12')));
+            
+            const modelData = SUBMODALITY_MODEL_DATA[subModId];
+            if (!modelData) return;
+            
+            // 1. Update pitch visual style (lines & background)
+            updatePitchVisualStyle(currentModality);
+            
+            // 2. Systems list & active system selection
+            const container = document.getElementById('tactic-system-selector-container');
+            if (container) {
+                container.innerHTML = '';
+                modelData.systems.forEach(system => {
+                    const btn = document.createElement('button');
+                    btn.className = 'tactic-system-btn';
+                    if (system === activeSystem) {
+                        btn.classList.add('active');
+                    }
+                    const label = SYSTEM_LABELS[system] || system;
+                    btn.textContent = label;
+                    btn.onclick = function() {
+                        setTacticSystem(system, btn);
+                    };
+                    container.appendChild(btn);
+                });
+            }
+            
+            // Ensure active system is valid for the selected submodality
+            if (!modelData.systems.includes(activeSystem)) {
+                activeSystem = modelData.defaultSystem;
+                // Update button active state
+                if (container) {
+                    container.querySelectorAll('.tactic-system-btn').forEach(btn => {
+                        const label = SYSTEM_LABELS[activeSystem] || activeSystem;
+                        if (btn.textContent.trim() === label.trim()) {
+                            btn.classList.add('active');
+                        } else {
+                            btn.classList.remove('active');
+                        }
+                    });
+                }
+            }
+            
+            // 3. Update tactic phase descriptions (cards)
+            const cards = document.querySelectorAll('.tactic-cards-grid .tactic-card');
+            cards.forEach(card => {
+                const onclickAttr = card.getAttribute('onclick');
+                if (onclickAttr) {
+                    const match = onclickAttr.match(/selectTacticPhase\('([^']+)'/);
+                    if (match && match[1]) {
+                        const phase = match[1];
+                        const descSpan = card.querySelector('.tactic-card-desc');
+                        if (descSpan && modelData.phaseCardData[phase]) {
+                            descSpan.textContent = modelData.phaseCardData[phase];
+                        }
+                    }
+                }
+            });
+            
+            // 4. Update the detailed text of the active phase
+            const detailsDiv = document.getElementById('tactic-phase-details');
+            if (detailsDiv && modelData.principles[activePhase]) {
+                detailsDiv.innerHTML = modelData.principles[activePhase];
+            }
+            
+            // 5. Update system features (fortalezas, vigilar, recomendado)
+            updateSystemFeatures(activeSystem);
+            
+            // 6. Update pitch player representation
+            updatePitchRepresentation();
+            
+            // 7. Update mini tactic preview
+            updateMiniTacticPreview(activeSystem);
         }
 
         function renderTacticSystemSelector() {
@@ -11723,9 +12417,18 @@
             activePhase = phase;
             
             const detailsDiv = document.getElementById('tactic-phase-details');
-            const phaseKey = activeCategory + '_' + phase;
-            if (detailsDiv && TACTIC_PHASES_INFO[phaseKey]) {
-                detailsDiv.innerHTML = TACTIC_PHASES_INFO[phaseKey];
+            const subModId = currentSubModality || (currentModality === 'f11' ? 'f11_regiones' : (currentModality === 'f8' ? 'f8_sub12' : (currentModality === 'futsal' ? 'futsal_sub12' : 'fplaya_sub12')));
+            const modelData = SUBMODALITY_MODEL_DATA[subModId];
+            
+            if (detailsDiv) {
+                if (modelData && modelData.principles && modelData.principles[phase]) {
+                    detailsDiv.innerHTML = modelData.principles[phase];
+                } else {
+                    const phaseKey = activeCategory + '_' + phase;
+                    if (TACTIC_PHASES_INFO[phaseKey]) {
+                        detailsDiv.innerHTML = TACTIC_PHASES_INFO[phaseKey];
+                    }
+                }
             }
 
             updatePitchRepresentation();
