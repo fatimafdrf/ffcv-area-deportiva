@@ -2076,6 +2076,15 @@
             color: #FFFFFF !important; /* Texto blanco */
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
         }
+        #dashboard-subcategory-tabs-container {
+            border-radius: 12px;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+        }
+        #dashboard-subcategory-tabs-container .config-tab-btn {
+            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
 
         /* Vista Informes de Rendimiento */
         .card-category-reports {
@@ -2694,6 +2703,11 @@
                         <button class="config-tab-btn" data-modality="f8" onclick="changeGlobalModality('f8', this)">⚽ Fútbol 8</button>
                         <button class="config-tab-btn" data-modality="futsal" onclick="changeGlobalModality('futsal', this)">🏟️ Fútbol Sala</button>
                         <button class="config-tab-btn" data-modality="fplaya" onclick="changeGlobalModality('fplaya', this)">🏖️ Fútbol Playa</button>
+                    </div>
+
+                    <!-- Sub-pestañas de Selección (Segunda fila) -->
+                    <div id="dashboard-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;">
+                        <!-- Se poblará dinámicamente -->
                     </div>
 
                     <!-- Contenido Secundario -->
@@ -6413,10 +6427,16 @@
         
         // Contar ítems y actualizar etiquetas de cabecera/tarjetas
         function updateCounts() {
-            const numPlayers = players.length;
-            const numCalls = convocatorias.length;
-            const numTrainings = sessions.length + 11;
-            const numReports = reports.length;
+            const activeSub = currentSubModality;
+            const filteredPlayers = players.filter(p => p.modality === currentModality && matchesSubModality(p, activeSub));
+            const filteredCalls = convocatorias.filter(c => c.modality === currentModality && matchesSubModality(c, activeSub));
+            const filteredSessions = sessions.filter(s => s.modality === currentModality && matchesSubModality(s, activeSub));
+            const filteredReports = reports.filter(r => r.modality === currentModality && matchesSubModality(r, activeSub));
+
+            const numPlayers = filteredPlayers.length;
+            const numCalls = filteredCalls.length;
+            const numTrainings = filteredSessions.length + (activeSub ? 0 : 11);
+            const numReports = filteredReports.length;
 
             const elPlayers = document.getElementById('count-players');
             if (elPlayers) elPlayers.textContent = numPlayers;
@@ -6451,19 +6471,36 @@
             if (!container) return;
 
             let activities = JSON.parse(localStorage.getItem('ffcv_activities')) || [
-                { time: 'Hace 5 min', text: 'Convocatoria Sub-16 creada' },
-                { time: 'Hace 20 min', text: 'Informe de scouting añadido' },
-                { time: 'Hace 1 hora', text: 'Jugador registrado' },
-                { time: 'Hace 3 horas', text: 'Sesión de entrenamiento añadida' },
-                { time: 'Hace 5 horas', text: 'Documento subido a biblioteca' }
+                // Selección Regiones
+                { time: 'Hace 10 min', text: 'Lista Oficial de Selección Regiones publicada', submodality: 'f11_regiones', modality: 'f11' },
+                { time: 'Hace 1 hora', text: 'Amistoso contra Tercera RFEF programado', submodality: 'f11_regiones', modality: 'f11' },
+                { time: 'Hace 4 horas', text: 'Aitor Pascual convocado por Rubén Mora', submodality: 'f11_regiones', modality: 'f11' },
+                // Selección Sub-14
+                { time: 'Hace 15 min', text: 'Entrenamiento Sub-14 en Picassent finalizado', submodality: 'f11_sub14', modality: 'f11' },
+                { time: 'Hace 2 horas', text: 'Lista de convocados Sub-14 actualizada', submodality: 'f11_sub14', modality: 'f11' },
+                { time: 'Hace 6 horas', text: 'Nico Beltrán reportado en observación activa', submodality: 'f11_sub14', modality: 'f11' },
+                // Selección Sub-16
+                { time: 'Hace 5 min', text: 'Entrenamiento Sub-16 programado', submodality: 'f11_sub16', modality: 'f11' },
+                { time: 'Hace 30 min', text: 'Ficha médica de Hugo de Mateo actualizada', submodality: 'f11_sub16', modality: 'f11' },
+                { time: 'Hace 3 horas', text: 'Marc Rodríguez reportado de baja por lesión', submodality: 'f11_sub16', modality: 'f11' }
             ];
 
             if (!localStorage.getItem('ffcv_activities')) {
                 localStorage.setItem('ffcv_activities', JSON.stringify(activities));
             }
 
+            let filtered = activities.filter(act => {
+                const matchesMod = !act.modality || act.modality === currentModality;
+                if (!matchesMod) return false;
+                
+                if (currentSubModality) {
+                    return act.submodality === currentSubModality;
+                }
+                return true;
+            });
+
             container.innerHTML = '';
-            activities.forEach(act => {
+            filtered.forEach(act => {
                 container.innerHTML += `
                     <div class="timeline-item">
                         <span class="timeline-dot"></span>
@@ -6472,20 +6509,22 @@
                     </div>
                 `;
             });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:15px; color:var(--text-muted); font-size:12px;">No hay actividad reciente registrada para esta selección.</div>`;
+            }
         }
 
         function addRecentActivity(text) {
-            let activities = JSON.parse(localStorage.getItem('ffcv_activities')) || [
-                { time: 'Hace 5 min', text: 'Convocatoria Sub-16 creada' },
-                { time: 'Hace 20 min', text: 'Informe de scouting añadido' },
-                { time: 'Hace 1 hora', text: 'Jugador registrado' },
-                { time: 'Hace 3 horas', text: 'Sesión de entrenamiento añadida' },
-                { time: 'Hace 5 horas', text: 'Documento subido a biblioteca' }
-            ];
-
-            activities.unshift({ time: 'Hace un momento', text: text });
-            if (activities.length > 8) {
-                activities = activities.slice(0, 8);
+            let activities = JSON.parse(localStorage.getItem('ffcv_activities')) || [];
+            activities.unshift({ 
+                time: 'Hace un momento', 
+                text: text,
+                modality: currentModality,
+                submodality: currentSubModality || ""
+            });
+            if (activities.length > 25) {
+                activities = activities.slice(0, 25);
             }
             localStorage.setItem('ffcv_activities', JSON.stringify(activities));
             renderRecentActivity();
@@ -6496,7 +6535,7 @@
             const convContainer = document.getElementById('dashboard-convocatorias-list');
             if (convContainer) {
                 convContainer.innerHTML = '';
-                const sortedCalls = convocatorias.filter(c => c.modality === currentModality).sort((a, b) => new Date(b.date) - new Date(a.date));
+                const sortedCalls = convocatorias.filter(c => c.modality === currentModality && matchesSubModality(c, currentSubModality)).sort((a, b) => new Date(b.date) - new Date(a.date));
                 sortedCalls.slice(0, 3).forEach(c => {
                     let statusClass = 'tag-success';
                     if (c.status === 'Visionado') statusClass = 'tag-info';
@@ -6515,7 +6554,7 @@
                     `;
                 });
                 if (sortedCalls.length === 0) {
-                    convContainer.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No hay convocatorias.</td></tr>`;
+                    convContainer.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">No hay convocatorias para esta selección.</td></tr>`;
                 }
             }
 
@@ -6523,7 +6562,7 @@
             const eventsContainer = document.getElementById('dashboard-events-list');
             if (eventsContainer) {
                 eventsContainer.innerHTML = '';
-                const sortedEvents = events.filter(e => e.modality === currentModality).sort((a, b) => new Date(a.date) - new Date(b.date));
+                const sortedEvents = events.filter(e => e.modality === currentModality && matchesSubModality(e, currentSubModality)).sort((a, b) => new Date(a.date) - new Date(b.date));
                 sortedEvents.slice(0, 4).forEach(e => {
                     let dayNum = '12';
                     let monthStr = 'JUN';
@@ -6563,7 +6602,7 @@
                     `;
                 });
                 if (sortedEvents.length === 0) {
-                    eventsContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:12px; padding:10px;">No hay eventos programados.</p>`;
+                    eventsContainer.innerHTML = `<p style="text-align:center; color:var(--text-muted); font-size:12px; padding:10px;">No hay eventos programados para esta selección.</p>`;
                 }
             }
 
@@ -9614,7 +9653,8 @@
                 date,
                 type,
                 location,
-                modality: currentModality
+                modality: currentModality,
+                submodality: currentSubModality || ""
             };
 
             events.push(newEvent);
@@ -9655,6 +9695,7 @@
                 foot,
                 province,
                 modality: currentModality,
+                submodality: currentSubModality || "",
                 pace: 70 + Math.floor(Math.random() * 25),
                 pass: 70 + Math.floor(Math.random() * 25),
                 defense: 70 + Math.floor(Math.random() * 25),
@@ -9716,7 +9757,8 @@
                 sport,
                 category,
                 gender,
-                modality: currentModality
+                modality: currentModality,
+                submodality: currentSubModality || ""
             };
 
             convocatorias.push(newCall);
@@ -9728,7 +9770,8 @@
                 date: date,
                 type: status === 'Visionado' ? 'scouting' : 'match',
                 location: location,
-                modality: currentModality
+                modality: currentModality,
+                submodality: currentSubModality || ""
             });
 
             addRecentActivity(`Convocatoria ${category} creada`);
@@ -9891,10 +9934,116 @@
 
         // --- ESTADO GLOBAL DE MODALIDAD Y SINCRONIZACIÓN ---
         let currentModality = localStorage.getItem('ffcv_current_modality') || 'f11';
+        let currentSubModality = localStorage.getItem('ffcv_current_submodality') || '';
+
+        const SUBMODALITIES_CONFIG = {
+            'f11': [
+                { id: 'f11_regiones', name: 'Selección Regiones', filterCat: 'Regiones', icon: '🏆' },
+                { id: 'f11_sub14', name: 'Selección Sub-14', filterCat: 'Sub-14', icon: '🏃' },
+                { id: 'f11_sub16', name: 'Selección Sub-16', filterCat: 'Sub-16', icon: '🏃' }
+            ],
+            'f8': [],
+            'futsal': [],
+            'fplaya': []
+        };
+
+        function matchesSubModality(item, subModId) {
+            if (!subModId) return true;
+            if (item.submodality === subModId) return true;
+            
+            const category = item.category || '';
+            const name = item.name || '';
+            const title = item.title || '';
+            const club = item.club || '';
+            const role = item.role || '';
+            
+            const catLower = category.toLowerCase();
+            const nameLower = name.toLowerCase();
+            const titleLower = title.toLowerCase();
+            const clubLower = club.toLowerCase();
+            const roleLower = role.toLowerCase();
+
+            if (subModId === 'f11_regiones') {
+                return catLower.includes('region') || catLower.includes('región') || catLower.includes('senior') || catLower.includes('amateur') ||
+                       nameLower.includes('region') || nameLower.includes('región') || nameLower.includes('amateur') ||
+                       titleLower.includes('region') || titleLower.includes('región') || titleLower.includes('amateur') ||
+                       clubLower.includes('region') || clubLower.includes('región') || clubLower.includes('amateur');
+            }
+            if (subModId === 'f11_sub14') {
+                return catLower === 'sub-14' || catLower.includes('sub-14') || catLower.includes('infantil') ||
+                       nameLower.includes('sub-14') || nameLower.includes('sub14') ||
+                       titleLower.includes('sub-14') || titleLower.includes('sub14');
+            }
+            if (subModId === 'f11_sub16') {
+                return catLower === 'sub-16' || catLower.includes('sub-16') || catLower.includes('cadete') ||
+                       nameLower.includes('sub-16') || nameLower.includes('sub16') ||
+                       titleLower.includes('sub-16') || titleLower.includes('sub16');
+            }
+            return false;
+        }
+
+        function updateSubModalitiesNav() {
+            const container = document.getElementById('dashboard-subcategory-tabs-container');
+            if (!container) return;
+            
+            const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
+            
+            if (subcategories.length > 0) {
+                let savedSub = localStorage.getItem(`ffcv_submodality_${currentModality}`);
+                
+                if (!savedSub || !subcategories.some(sub => sub.id === savedSub)) {
+                    savedSub = subcategories[0].id;
+                }
+                
+                currentSubModality = savedSub;
+                localStorage.setItem('ffcv_current_submodality', currentSubModality);
+                localStorage.setItem(`ffcv_submodality_${currentModality}`, currentSubModality);
+                
+                container.innerHTML = subcategories.map(sub => {
+                    const isActive = sub.id === currentSubModality ? 'active' : '';
+                    const icon = sub.icon || '⚽';
+                    return `<button class="config-tab-btn ${isActive}" data-submodality="${sub.id}" onclick="changeSubModality('${sub.id}', this)">${icon} ${sub.name}</button>`;
+                }).join('');
+                
+                container.style.display = 'flex';
+            } else {
+                currentSubModality = '';
+                localStorage.setItem('ffcv_current_submodality', '');
+                container.style.display = 'none';
+                container.innerHTML = '';
+            }
+        }
+
+        function changeSubModality(subModId, btn) {
+            currentSubModality = subModId;
+            localStorage.setItem('ffcv_current_submodality', subModId);
+            localStorage.setItem(`ffcv_submodality_${currentModality}`, subModId);
+            
+            const container = document.getElementById('dashboard-subcategory-tabs-container');
+            if (container) {
+                container.querySelectorAll('.config-tab-btn').forEach(b => {
+                    if (b.getAttribute('data-submodality') === subModId) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+            }
+
+            updateCounts();
+            renderDashboardView();
+            
+            if (btn) {
+                showToast(`Subcategoría: ${btn.textContent.trim()}`, 'info');
+            }
+        }
 
         function changeGlobalModality(modality, btn) {
             currentModality = modality;
             localStorage.setItem('ffcv_current_modality', modality);
+            
+            // Actualizar navegación de submodalidades
+            updateSubModalitiesNav();
             
             // Sincronizar todos los contenedores de pestañas en el documento
             document.querySelectorAll('.modality-tabs-container').forEach(container => {
@@ -9935,6 +10084,7 @@
             }
 
             // Re-renderizar la vista que se encuentre activa en ese momento
+            updateCounts();
             const activeView = document.querySelector('.view.active');
             if (activeView) {
                 const viewId = activeView.id.replace('view-', '');
@@ -13569,12 +13719,75 @@
             }
         }
 
+        function ensureDemoData() {
+            const demoPlayers = [
+                { id: 101, name: "Aitor Pascual", club: "C.F. Gandia", category: "Regiones", position: "Mediocentro", matches: 6, status: "Seleccionado", birthYear: 2002, foot: "Diestro", province: "Valencia", pace: 80, pass: 82, defense: 75, physical: 85, rating: 81, phone: "+34 699 888 777", modality: "f11", submodality: "f11_regiones" },
+                { id: 102, name: "Josevi Calabuig", club: "Ontinyent 1931 C.F.", category: "Regiones", position: "Delantero Centro", matches: 10, status: "Seleccionado", birthYear: 2000, foot: "Diestro", province: "Valencia", pace: 85, pass: 75, defense: 50, physical: 88, rating: 83, phone: "+34 688 777 666", modality: "f11", submodality: "f11_regiones" },
+                { id: 103, name: "Vicente Palau", club: "F.C. Jove Español", category: "Regiones", position: "Defensa Central", matches: 4, status: "En Observación", birthYear: 2001, foot: "Diestro", province: "Alicante", pace: 78, pass: 72, defense: 84, physical: 86, rating: 80, phone: "+34 677 666 555", modality: "f11", submodality: "f11_regiones" },
+                { id: 104, name: "Pau Cabanes", club: "Levante U.D. Infantil", category: "Sub-14", position: "Extremo", matches: 5, status: "Seleccionado", birthYear: 2012, foot: "Diestro", province: "Valencia", pace: 88, pass: 78, defense: 48, physical: 70, rating: 80, phone: "+34 622 111 000", modality: "f11", submodality: "f11_sub14" },
+                { id: 105, name: "Nico Beltrán", club: "Valencia C.F. Infantil", category: "Sub-14", position: "Mediocentro", matches: 8, status: "Seleccionado", birthYear: 2012, foot: "Diestro", province: "Valencia", pace: 80, pass: 85, defense: 72, physical: 74, rating: 82, phone: "+34 633 222 111", modality: "f11", submodality: "f11_sub14" },
+                { id: 106, name: "Mario Soler", club: "Elche C.F. Infantil", category: "Sub-14", position: "Portero", matches: 3, status: "En Observación", birthYear: 2012, foot: "Diestro", province: "Alicante", pace: 75, pass: 70, defense: 80, physical: 78, rating: 77, phone: "+34 644 333 222", modality: "f11", submodality: "f11_sub14" },
+                { id: 107, name: "Daniel Bernabeu", club: "Hércules C.F. Cadete", category: "Sub-16", position: "Lateral Izquierdo", matches: 7, status: "Seleccionado", birthYear: 2010, foot: "Zurdo", province: "Alicante", pace: 84, pass: 78, defense: 80, physical: 82, rating: 81, phone: "+34 655 444 333", modality: "f11", submodality: "f11_sub16" }
+            ];
+            demoPlayers.forEach(dp => {
+                if (!players.some(p => p.id === dp.id || p.name === dp.name)) {
+                    players.push(dp);
+                }
+            });
+
+            const demoCalls = [
+                { id: 101, name: "Convocatoria Selección de Regiones - Fase Autonómica", location: "Ciudad Deportiva Picassent", time: "19:00 h", status: "Confirmada", date: "2026-06-28", players: [101, 102], season: "2026/2027", province: "Valencia", sport: "Fútbol", category: "Regiones", gender: "Masculina", modality: "f11", submodality: "f11_regiones" },
+                { id: 102, name: "Entrenamiento Oficial Selección de Regiones", location: "Campo Miguel Monleón", time: "18:30 h", status: "Confirmada", date: "2026-06-20", players: [101, 102, 103], season: "2026/2027", province: "Valencia", sport: "Fútbol", category: "Regiones", gender: "Masculina", modality: "f11", submodality: "f11_regiones" },
+                { id: 103, name: "Entrenamiento Oficial Sub-14 Masculino", location: "Ciudad Deportiva Picassent", time: "16:30 h", status: "Confirmada", date: "2026-06-19", players: [104, 105], season: "2026/2027", province: "Valencia", sport: "Fútbol", category: "Sub-14", gender: "Masculina", modality: "f11", submodality: "f11_sub14" },
+                { id: 104, name: "Prueba de Captación Sub-14", location: "Ciudad Deportiva Picassent", time: "16:00 h", status: "Pendiente de cerrar lista", date: "2026-06-25", players: [104, 105, 106], season: "2026/2027", province: "Valencia", sport: "Fútbol", category: "Sub-14", gender: "Masculina", modality: "f11", submodality: "f11_sub14" },
+                { id: 105, name: "Entrenamiento Oficial Sub-16 Masculino", location: "Ciudad Deportiva Picassent", time: "17:30 h", status: "Confirmada", date: "2026-06-18", players: [1, 2, 5, 107], season: "2026/2027", province: "Valencia", sport: "Fútbol", category: "Sub-16", gender: "Masculina", modality: "f11", submodality: "f11_sub16" }
+            ];
+            demoCalls.forEach(dc => {
+                if (!convocatorias.some(c => c.id === dc.id || c.name === dc.name)) {
+                    convocatorias.push(dc);
+                }
+            });
+
+            const demoEvents = [
+                { id: 101, title: "Partido: Selección Regiones vs Combinado 3ª RFEF", date: "2026-06-22", type: "match", location: "Picassent", modality: "f11", submodality: "f11_regiones" },
+                { id: 102, title: "Reunión Técnica: Staff Selección de Regiones", date: "2026-06-24", type: "staff", location: "Sede central FFCV", modality: "f11", submodality: "f11_regiones" },
+                { id: 103, title: "Amistoso: Selección Sub-14 vs Valencia C.F. Infantil", date: "2026-06-23", type: "match", location: "Picassent", modality: "f11", submodality: "f11_sub14" },
+                { id: 104, title: "Test Físicos de Velocidad Sub-14", date: "2026-06-20", type: "training", location: "Picassent", modality: "f11", submodality: "f11_sub14" },
+                { id: 105, title: "Amistoso: Selección Sub-16 vs Villarreal C.F. Cadete", date: "2026-06-24", type: "match", location: "Picassent", modality: "f11", submodality: "f11_sub16" },
+                { id: 106, title: "Sesión de Vídeo Táctico Sub-16", date: "2026-06-18", type: "training", location: "Picassent", modality: "f11", submodality: "f11_sub16" }
+            ];
+            demoEvents.forEach(de => {
+                if (!events.some(e => e.id === de.id || e.title === de.title)) {
+                    events.push(de);
+                }
+            });
+
+            const demoStaff = [
+                { id: 101, name: "Rubén Mora", role: "Seleccionador", category: "Regiones", license: "UEFA Pro", email: "rmora@ffcv.es", status: "Activo", sport: "Fútbol", gender: "Masculino", phone: "+34 600 111 222", titulos: "Director de Fútbol Base FFCV", experiencia: "10 años en selecciones territoriales.", modality: "f11", submodality: "f11_regiones" },
+                { id: 102, name: "Enrique Alcaide", role: "Preparador Físico", category: "Regiones", license: "Licenciado en CAFD", email: "ealcaide@ffcv.es", status: "Activo", sport: "Fútbol", gender: "Masculino", phone: "+34 600 222 333", titulos: "Máster de Preparación Física RFEF", experiencia: "Preparador físico en Tercera y Segunda B.", modality: "f11", submodality: "f11_regiones" },
+                { id: 103, name: "Juanjo García", role: "Delegado", category: "Regiones", license: "Delegado Federativo", email: "jgarcia@ffcv.es", status: "Activo", sport: "Fútbol", gender: "Masculino", phone: "+34 600 333 444", titulos: "Curso de Gestión y Administración", experiencia: "12 años como delegado del CNSA.", modality: "f11", submodality: "f11_regiones" }
+            ];
+            demoStaff.forEach(ds => {
+                if (!staff.some(s => s.id === ds.id || s.name === ds.name)) {
+                    staff.push(ds);
+                }
+            });
+
+            localStorage.setItem('ffcv_players', JSON.stringify(players));
+            localStorage.setItem('ffcv_calls', JSON.stringify(convocatorias));
+            localStorage.setItem('ffcv_events', JSON.stringify(events));
+            localStorage.setItem('ffcv_staff', JSON.stringify(staff));
+        }
+
         /* ==========================================================================
            E. ARRANCAR APLICACIÓN
            ========================================================================== */
         window.addEventListener('DOMContentLoaded', () => {
             initDefaultUsers();
             checkAuthSession();
+            
+            // Inyectar datos demo
+            ensureDemoData();
             
             updateCounts();
             renderDashboardView();
