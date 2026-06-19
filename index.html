@@ -6482,7 +6482,11 @@
                 // Selección Sub-16
                 { time: 'Hace 5 min', text: 'Entrenamiento Sub-16 programado', submodality: 'f11_sub16', modality: 'f11' },
                 { time: 'Hace 30 min', text: 'Ficha médica de Hugo de Mateo actualizada', submodality: 'f11_sub16', modality: 'f11' },
-                { time: 'Hace 3 horas', text: 'Marc Rodríguez reportado de baja por lesión', submodality: 'f11_sub16', modality: 'f11' }
+                { time: 'Hace 3 horas', text: 'Marc Rodríguez reportado de baja por lesión', submodality: 'f11_sub16', modality: 'f11' },
+                // Selección Sub-12 (Fútbol 8)
+                { time: 'Hace 8 min', text: 'Entrenamiento Oficial F8 Sub-12 finalizado', submodality: 'f8_sub12', modality: 'f8' },
+                { time: 'Hace 45 min', text: 'Convocatoria Sub-12 F8 para Copa de Campeones publicada', submodality: 'f8_sub12', modality: 'f8' },
+                { time: 'Hace 2 horas', text: 'Izan Alcañiz reportado en forma óptima', submodality: 'f8_sub12', modality: 'f8' }
             ];
 
             if (!localStorage.getItem('ffcv_activities')) {
@@ -9942,7 +9946,9 @@
                 { id: 'f11_sub14', name: 'Selección Sub-14', filterCat: 'Sub-14', icon: '🏃' },
                 { id: 'f11_sub16', name: 'Selección Sub-16', filterCat: 'Sub-16', icon: '🏃' }
             ],
-            'f8': [],
+            'f8': [
+                { id: 'f8_sub12', name: 'Sub-12', filterCat: 'Sub-12', icon: '🏃' }
+            ],
             'futsal': [],
             'fplaya': []
         };
@@ -9978,6 +9984,13 @@
                 return catLower === 'sub-16' || catLower.includes('sub-16') || catLower.includes('cadete') ||
                        nameLower.includes('sub-16') || nameLower.includes('sub16') ||
                        titleLower.includes('sub-16') || titleLower.includes('sub16');
+            }
+            if (subModId === 'f8_sub12') {
+                return catLower === 'sub-12' || catLower.includes('sub-12') || catLower.includes('alevín') || catLower.includes('alevin') ||
+                       nameLower.includes('sub-12') || nameLower.includes('sub12') ||
+                       titleLower.includes('sub-12') || titleLower.includes('sub12') ||
+                       clubLower.includes('sub-12') || clubLower.includes('sub12') ||
+                       roleLower.includes('sub-12') || roleLower.includes('sub12');
             }
             return false;
         }
@@ -13768,6 +13781,46 @@
                 { id: 103, name: "Juanjo García", role: "Delegado", category: "Regiones", license: "Delegado Federativo", email: "jgarcia@ffcv.es", status: "Activo", sport: "Fútbol", gender: "Masculino", phone: "+34 600 333 444", titulos: "Curso de Gestión y Administración", experiencia: "12 años como delegado del CNSA.", modality: "f11", submodality: "f11_regiones" }
             ];
             demoStaff.forEach(ds => {
+                if (!staff.some(s => s.id === ds.id || s.name === ds.name)) {
+                    staff.push(ds);
+                }
+            });
+
+            const demoF8Players = [
+                { id: 201, name: "Izan Alcañiz", club: "Levante U.D. Alevín", category: "Sub-12", position: "Mediapunta", matches: 6, status: "Seleccionado", birthYear: 2014, foot: "Diestro", province: "Valencia", pace: 84, pass: 81, defense: 60, physical: 72, rating: 80, phone: "+34 611 222 333", modality: "f8", submodality: "f8_sub12" },
+                { id: 202, name: "Pau Climent", club: "Valencia C.F. Alevín", category: "Sub-12", position: "Extremo", matches: 7, status: "Seleccionado", birthYear: 2014, foot: "Zurdo", province: "Valencia", pace: 87, pass: 78, defense: 52, physical: 68, rating: 79, phone: "+34 622 333 444", modality: "f8", submodality: "f8_sub12" },
+                { id: 203, name: "Marc Carbonell", club: "Villarreal C.F. Alevín", category: "Sub-12", position: "Portero", matches: 4, status: "En Observación", birthYear: 2014, foot: "Diestro", province: "Castellón", pace: 70, pass: 72, defense: 83, physical: 75, rating: 78, phone: "+34 633 444 555", modality: "f8", submodality: "f8_sub12" }
+            ];
+            demoF8Players.forEach(dp => {
+                if (!players.some(p => p.id === dp.id || p.name === dp.name)) {
+                    players.push(dp);
+                }
+            });
+
+            const demoF8Calls = [
+                { id: 201, name: "Convocatoria Selección Sub-12 F8 - Copa de Campeones", location: "Ciudad Deportiva Picassent", time: "17:30 h", status: "Confirmada", date: "2026-06-21", players: [201, 202], season: "2026/2027", province: "Valencia", sport: "Fútbol", category: "Sub-12", gender: "Masculina", modality: "f8", submodality: "f8_sub12" },
+                { id: 202, name: "Entrenamiento Provincial F8 Sub-12", location: "Campo Picassent", time: "18:00 h", status: "Confirmada", date: "2026-06-25", players: [201, 202, 203], season: "2026/2027", province: "Valencia", sport: "Fútbol", category: "Sub-12", gender: "Masculina", modality: "f8", submodality: "f8_sub12" }
+            ];
+            demoF8Calls.forEach(dc => {
+                if (!convocatorias.some(c => c.id === dc.id || c.name === dc.name)) {
+                    convocatorias.push(dc);
+                }
+            });
+
+            const demoF8Events = [
+                { id: 201, title: "Partido: Selección F8 Sub-12 vs Cataluña", date: "2026-06-20", type: "match", location: "Campo federativo", modality: "f8", submodality: "f8_sub12" },
+                { id: 202, title: "Jornada Técnica de Tecnificación F8 Sub-12", date: "2026-06-22", type: "training", location: "Picassent", modality: "f8", submodality: "f8_sub12" }
+            ];
+            demoF8Events.forEach(de => {
+                if (!events.some(e => e.id === de.id || e.title === de.title)) {
+                    events.push(de);
+                }
+            });
+
+            const demoF8Staff = [
+                { id: 201, name: "Santi Ribera", role: "Seleccionador", category: "Sub-12", license: "UEFA Pro", email: "sribera@ffcv.es", status: "Activo", sport: "Fútbol", gender: "Masculino", phone: "+34 600 555 666", titulos: "Especialista Fútbol 8 FFCV", experiencia: "8 años coordinando fútbol base y selecciones alevines.", modality: "f8", submodality: "f8_sub12" }
+            ];
+            demoF8Staff.forEach(ds => {
                 if (!staff.some(s => s.id === ds.id || s.name === ds.name)) {
                     staff.push(ds);
                 }
