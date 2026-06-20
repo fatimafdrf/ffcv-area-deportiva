@@ -2076,11 +2076,11 @@
             color: #FFFFFF !important; /* Texto blanco */
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
         }
-        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container, #informes-subcategory-tabs-container {
+        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container, #informes-subcategory-tabs-container, #calendario-subcategory-tabs-container {
             border-radius: 12px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
-        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn, #informes-subcategory-tabs-container .config-tab-btn {
+        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn, #informes-subcategory-tabs-container .config-tab-btn, #calendario-subcategory-tabs-container .config-tab-btn {
             font-size: 13px;
             padding: 8px 16px;
             border-radius: 8px;
@@ -3889,6 +3889,11 @@
                         <button class="config-tab-btn" data-modality="f8" onclick="changeGlobalModality('f8', this)">⚽ Fútbol 8</button>
                         <button class="config-tab-btn" data-modality="futsal" onclick="changeGlobalModality('futsal', this)">🏟️ Fútbol Sala</button>
                         <button class="config-tab-btn" data-modality="fplaya" onclick="changeGlobalModality('fplaya', this)">🏖️ Fútbol Playa</button>
+                    </div>
+
+                    <!-- Pestañas de Subcategoría (Calendario) -->
+                    <div id="calendario-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;">
+                        <!-- Se renderiza dinámicamente mediante JS -->
                     </div>
 
                     <div class="calendar-layout">
@@ -6573,18 +6578,54 @@
 
         const DEFAULT_EVENTS = [
             // Fútbol 11
-            { id: 1, title: "Entrenamiento Sub-16 F11", date: "2026-06-18", type: "training", location: "Picassent", modality: "f11" },
-            { id: 2, title: "Visionado Villarreal vs Castellón F11", date: "2026-06-25", type: "scouting", location: "Castellón", modality: "f11" },
-            { id: 3, title: "Reunión Dirección F11 FFCV", date: "2026-06-12", type: "staff", location: "Sede central FFCV", modality: "f11" },
+            // Selección Regiones
+            { id: 1, title: "Entrenamiento Selección Regiones F11", date: "2026-06-03", type: "training", location: "Picassent", modality: "f11", submodality: "f11_regiones" },
+            { id: 2, title: "Fase Nacional Copa Regiones", date: "2026-06-14", type: "match", location: "Camp Federatiu", modality: "f11", submodality: "f11_regiones" },
+            { id: 3, title: "Reunión Preparatoria Regiones", date: "2026-06-22", type: "staff", location: "Sede central FFCV", modality: "f11", submodality: "f11_regiones" },
+            // Selección Sub-14
+            { id: 4, title: "Entrenamiento Sub-14 F11", date: "2026-06-05", type: "training", location: "Picassent", modality: "f11", submodality: "f11_sub14" },
+            { id: 5, title: "Convocatoria Sub-14 F11", date: "2026-06-11", type: "scouting", location: "Campo de Picassent", modality: "f11", submodality: "f11_sub14" },
+            { id: 6, title: "Partido amistoso Sub-14", date: "2026-06-17", type: "match", location: "Picassent", modality: "f11", submodality: "f11_sub14" },
+            // Selección Sub-16
+            { id: 7, title: "Microciclo Sub-16 F11", date: "2026-06-08", type: "training", location: "Picassent", modality: "f11", submodality: "f11_sub16" },
+            { id: 8, title: "Partido preparación Sub-16", date: "2026-06-15", type: "match", location: "Alzira", modality: "f11", submodality: "f11_sub16" },
+            { id: 9, title: "Jornada técnica Sub-16", date: "2026-06-24", type: "staff", location: "Sede FFCV", modality: "f11", submodality: "f11_sub16" },
+
             // Fútbol 8
-            { id: 4, title: "Amistoso F8 Sub-12 vs Catalunya", date: "2026-06-20", type: "match", location: "Campo federativo", modality: "f8" },
-            { id: 5, title: "Entrenamiento Provincial F8", date: "2026-06-22", type: "training", location: "Picassent", modality: "f8" },
+            // Sub-12
+            { id: 10, title: "Entrenamiento Sub-12 F8", date: "2026-06-04", type: "training", location: "El Planter", modality: "f8", submodality: "f8_sub12" },
+            { id: 11, title: "Tecnificación Sub-12", date: "2026-06-12", type: "scouting", location: "Picassent", modality: "f8", submodality: "f8_sub12" },
+            { id: 12, title: "Jornada formativa F8", date: "2026-06-20", type: "training", location: "Campo federativo", modality: "f8", submodality: "f8_sub12" },
+
             // Fútbol Sala
-            { id: 6, title: "Entrenamiento Futsal Sub-19 Fem", date: "2026-06-19", type: "training", location: "Pabellón Picassent", modality: "futsal" },
-            { id: 7, title: "Concentración Futsal Sub-16 Masc", date: "2026-06-24", type: "match", location: "Pabellón Alzira", modality: "futsal" },
+            // Sub-12
+            { id: 13, title: "Entrenamiento FS Sub-12", date: "2026-06-02", type: "training", location: "Pabellón Torrent", modality: "futsal", submodality: "futsal_sub12" },
+            { id: 14, title: "Jornada Detección FS Sub-12", date: "2026-06-16", type: "scouting", location: "Pabellón Alzira", modality: "futsal", submodality: "futsal_sub12" },
+            // Sub-14
+            { id: 15, title: "Entrenamiento FS Sub-14", date: "2026-06-09", type: "training", location: "Pabellón Picassent", modality: "futsal", submodality: "futsal_sub14" },
+            { id: 16, title: "Amistoso FS Sub-14 vs Murcia", date: "2026-06-23", type: "match", location: "Pabellón Calpe", modality: "futsal", submodality: "futsal_sub14" },
+            // Sub-16
+            { id: 17, title: "Entrenamiento FS Sub-16", date: "2026-06-10", type: "training", location: "Pabellón Alzira", modality: "futsal", submodality: "futsal_sub16" },
+            { id: 18, title: "Concentración FS Sub-16", date: "2026-06-18", type: "training", location: "Complejo Alzira", modality: "futsal", submodality: "futsal_sub16" },
+            { id: 19, title: "Campeonato FS Sub-16", date: "2026-06-25", type: "match", location: "Pabellón Torrent", modality: "futsal", submodality: "futsal_sub16" },
+            // Sub-19
+            { id: 20, title: "Entrenamiento Futsal Sub-19 Fem", date: "2026-06-19", type: "training", location: "Pabellón Picassent", modality: "futsal", submodality: "futsal_sub19" },
+            { id: 21, title: "Reunión Staff Futsal Sub-19", date: "2026-06-26", type: "staff", location: "Pabellón Torrent", modality: "futsal", submodality: "futsal_sub19" },
+
             // Fútbol Playa
-            { id: 8, title: "Sesión Técnica Playa Sub-19 Masc", date: "2026-06-21", type: "training", location: "Arena Picassent", modality: "fplaya" },
-            { id: 9, title: "Entrenamiento Playa Femenino", date: "2026-06-26", type: "training", location: "Playa de la Malvarrosa", modality: "fplaya" }
+            // Sub-12
+            { id: 22, title: "Entrenamiento Playa Sub-12", date: "2026-06-01", type: "training", location: "Arena Picassent", modality: "fplaya", submodality: "fplaya_sub12" },
+            { id: 23, title: "Minitorneo Playa Sub-12", date: "2026-06-15", type: "match", location: "Playa Patacona", modality: "fplaya", submodality: "fplaya_sub12" },
+            // Sub-14
+            { id: 24, title: "Entrenamiento Playa Sub-14", date: "2026-06-04", type: "training", location: "Arena Picassent", modality: "fplaya", submodality: "fplaya_sub14" },
+            { id: 25, title: "Jornada Captación Playa Sub-14", date: "2026-06-18", type: "scouting", location: "Playa Malvarrosa", modality: "fplaya", submodality: "fplaya_sub14" },
+            // Sub-16
+            { id: 26, title: "Entrenamiento Playa Sub-16", date: "2026-06-11", type: "training", location: "Arena Picassent", modality: "fplaya", submodality: "fplaya_sub16" },
+            { id: 27, title: "Fase Autonómica Playa Sub-16", date: "2026-06-25", type: "match", location: "Playa San Juan", modality: "fplaya", submodality: "fplaya_sub16" },
+            // Sub-19
+            { id: 28, title: "Entrenamiento Playa Sub-19", date: "2026-06-09", type: "training", location: "Playa Malvarrosa", modality: "fplaya", submodality: "fplaya_sub19" },
+            { id: 29, title: "Campeonato Playa Sub-19", date: "2026-06-21", type: "match", location: "Arena Picassent", modality: "fplaya", submodality: "fplaya_sub19" },
+            { id: 30, title: "Jornada técnica Playa Sub-19", date: "2026-06-28", type: "staff", location: "Sede central FFCV", modality: "fplaya", submodality: "fplaya_sub19" }
         ];
 
         // Cargar o Inicializar Datos
@@ -6592,7 +6633,12 @@
         let convocatorias = JSON.parse(localStorage.getItem('ffcv_calls')) || DEFAULT_CALLS;
         let sessions = JSON.parse(localStorage.getItem('ffcv_sessions')) || DEFAULT_SESSIONS;
         let reports = JSON.parse(localStorage.getItem('ffcv_reports')) || DEFAULT_REPORTS;
-        let events = JSON.parse(localStorage.getItem('ffcv_events')) || DEFAULT_EVENTS;
+        
+        let events = JSON.parse(localStorage.getItem('ffcv_events')) || [];
+        if (events.length < 20 || events.some(e => !e.submodality)) {
+            events = DEFAULT_EVENTS;
+            localStorage.setItem('ffcv_events', JSON.stringify(events));
+        }
 
         const SUBMODALITY_REPORT_STATS = {
             'f11_regiones': { evaluated: 24, pending: 5, completed: 10 },
@@ -10044,11 +10090,12 @@
             const filterEl = document.getElementById('calendar-event-filter');
             const filterVal = filterEl ? filterEl.value : 'ALL';
 
-            // Filtrar todos los eventos de la base de datos por tipo y por modalidad
+            // Filtrar todos los eventos de la base de datos por tipo, modalidad y submodalidad
             const filteredEvents = events.filter(e => {
                 const matchesModality = e.modality === currentModality;
+                const matchesSubmodality = !currentSubModality || e.submodality === currentSubModality;
                 const matchesType = (filterVal === 'ALL') || (e.type === filterVal);
-                return matchesModality && matchesType;
+                return matchesModality && matchesSubmodality && matchesType;
             });
 
             // Actualizar el contador del badge en el panel de filtros
@@ -10091,7 +10138,7 @@
 
         function selectCalendarDay(dateStr) {
             document.getElementById('event-date').value = dateStr;
-            const dayEvents = events.filter(e => e.modality === currentModality && e.date === dateStr);
+            const dayEvents = events.filter(e => e.modality === currentModality && (!currentSubModality || e.submodality === currentSubModality) && e.date === dateStr);
             
             if (dayEvents.length > 0) {
                 const list = dayEvents.map(e => `- ${e.title} (${e.location})`).join('\n');
@@ -10517,6 +10564,7 @@
             const seContainer = document.getElementById('sesiones-subcategory-tabs-container');
             const moContainer = document.getElementById('modelo-subcategory-tabs-container');
             const infContainer = document.getElementById('informes-subcategory-tabs-container');
+            const calContainer = document.getElementById('calendario-subcategory-tabs-container');
             
             const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
             
@@ -10561,6 +10609,10 @@
                     infContainer.innerHTML = html;
                     infContainer.style.display = 'flex';
                 }
+                if (calContainer) {
+                    calContainer.innerHTML = html;
+                    calContainer.style.display = 'flex';
+                }
             } else {
                 currentSubModality = '';
                 localStorage.setItem('ffcv_current_submodality', '');
@@ -10587,6 +10639,10 @@
                 if (infContainer) {
                     infContainer.style.display = 'none';
                     infContainer.innerHTML = '';
+                }
+                if (calContainer) {
+                    calContainer.style.display = 'none';
+                    calContainer.innerHTML = '';
                 }
             }
         }
@@ -10662,6 +10718,17 @@
                 });
             }
 
+            const calContainer = document.getElementById('calendario-subcategory-tabs-container');
+            if (calContainer) {
+                calContainer.querySelectorAll('.config-tab-btn').forEach(b => {
+                    if (b.getAttribute('data-submodality') === subModId) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+            }
+
             updateCounts();
             renderDashboardView();
             renderPlayersTable();
@@ -10672,6 +10739,9 @@
             }
             if (typeof renderReports === 'function') {
                 renderReports();
+            }
+            if (typeof renderCalendar === 'function') {
+                renderCalendar();
             }
             
             if (btn) {
