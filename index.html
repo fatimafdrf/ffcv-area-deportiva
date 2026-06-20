@@ -1425,8 +1425,9 @@
            ========================================================================== */
         .calendar-layout {
             display: grid;
-            grid-template-columns: 2.5fr 1fr;
+            grid-template-columns: 1fr 300px;
             gap: 28px;
+            align-items: start;
         }
 
         .calendar-card {
@@ -1435,6 +1436,7 @@
             border: 1px solid var(--border-color);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-md);
+            width: 100%;
         }
 
         .calendar-nav {
@@ -1442,11 +1444,13 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .calendar-grid {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            grid-template-columns: repeat(7, minmax(100px, 1fr));
             gap: 8px;
         }
 
@@ -1461,14 +1465,15 @@
         }
 
         .calendar-day {
-            min-height: 85px;
+            min-height: 100px;
             background-color: var(--bg-app);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-sm);
-            padding: 6px;
+            padding: 8px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
+            gap: 6px;
             cursor: pointer;
             transition: var(--transition-base);
         }
@@ -1486,12 +1491,12 @@
         }
 
         .calendar-day.today {
-            border: 2px solid var(--primary);
+            border: 2px solid var(--accent);
             background-color: #FFFFFF;
         }
 
         .day-num {
-            font-weight: 600;
+            font-weight: 700;
             font-size: 13px;
             color: var(--text-main);
         }
@@ -1499,33 +1504,47 @@
         .day-events {
             display: flex;
             flex-direction: column;
-            gap: 3px;
-            margin-top: 6px;
+            gap: 4px;
+            width: 100%;
         }
 
         .day-event-dot {
-            font-size: 9px;
-            padding: 2px 4px;
-            border-radius: 3px;
+            font-size: 10px;
+            padding: 3px 6px;
+            border-radius: 6px;
             font-weight: 600;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            display: block;
+            max-width: 100%;
+            line-height: 1.2;
+            border: 1px solid transparent;
+            transition: var(--transition-base);
         }
 
         .event-type-match {
-            background-color: var(--warning-light);
-            color: var(--warning);
+            background-color: rgba(245, 158, 11, 0.08);
+            color: #D97706;
+            border-color: rgba(245, 158, 11, 0.2);
         }
 
         .event-type-training {
-            background-color: var(--info-light);
-            color: var(--info);
+            background-color: rgba(14, 165, 233, 0.08);
+            color: #0284C7;
+            border-color: rgba(14, 165, 233, 0.2);
         }
 
         .event-type-scouting {
-            background-color: var(--success-light);
-            color: var(--success);
+            background-color: rgba(16, 185, 129, 0.08);
+            color: #059669;
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .event-type-staff {
+            background-color: rgba(99, 102, 241, 0.08);
+            color: #4F46E5;
+            border-color: rgba(99, 102, 241, 0.2);
         }
 
         /* ==========================================================================
@@ -1790,13 +1809,80 @@
         /* ==========================================================================
            13. DISEÑO RESPONSIVO (MEDIA QUERIES)
            ========================================================================== */
+        @media (max-width: 1250px) {
+            .calendar-layout {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
         @media (max-width: 1100px) {
-            .split-grid, .calendar-layout, .convocatorias-grid {
+            .split-grid, .convocatorias-grid {
                 grid-template-columns: 1fr;
             }
             
             .convocatoria-detail-card {
                 position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .calendar-weekday {
+                display: none;
+            }
+            .calendar-day.empty {
+                display: none;
+            }
+            .calendar-day {
+                min-height: auto;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 16px;
+                padding: 10px 16px;
+                background-color: var(--bg-card);
+                border: 1px solid var(--border-color);
+            }
+            .calendar-day.today {
+                border: 2px solid var(--accent);
+            }
+            .day-num {
+                font-size: 14px;
+                min-width: 32px;
+                height: 32px;
+                background-color: rgba(10, 37, 64, 0.08);
+                color: var(--primary) !important;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+            }
+            .calendar-day.today .day-num {
+                background-color: var(--accent);
+                color: #FFFFFF !important;
+            }
+            .day-events {
+                margin-top: 0;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .calendar-day:not(.has-events) {
+                padding: 6px 16px;
+                background-color: transparent;
+                border-style: dashed;
+                opacity: 0.6;
+            }
+            .calendar-day:not(.has-events) .day-events {
+                display: none;
             }
         }
 
@@ -10126,7 +10212,7 @@
                 });
 
                 grid.innerHTML += `
-                    <div class="calendar-day ${isToday ? 'today' : ''}" onclick="selectCalendarDay('${dateStr}')">
+                    <div class="calendar-day ${isToday ? 'today' : ''} ${dayEvents.length > 0 ? 'has-events' : ''}" onclick="selectCalendarDay('${dateStr}')">
                         <span class="day-num">${day}</span>
                         <div class="day-events">
                             ${eventsHtml}
