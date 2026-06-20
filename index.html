@@ -7500,6 +7500,27 @@
             }
         }
 
+        function getRatingLabel(rating) {
+            if (rating >= 4.6) return 'Excelente';
+            if (rating >= 3.6) return 'Notable';
+            if (rating >= 2.6) return 'Adecuado';
+            if (rating >= 1.8) return 'Mejorable';
+            return 'Muy mejorable';
+        }
+
+        function getStarsHtml(rating) {
+            const rounded = Math.round(rating);
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rounded) {
+                    html += '<span style="color: #ff9800; font-size: 16px;">★</span>';
+                } else {
+                    html += '<span style="color: #ccc; font-size: 16px;">★</span>';
+                }
+            }
+            return html;
+        }
+
         // 5. Informes View (Incluye gráficos circulares SVG dinámicos para estadísticas individuales)
         // 5. Informes View (Sistema multinivel y responsive de Informes de Rendimiento)
         const SUBCATEGORIES = [
