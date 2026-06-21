@@ -2162,11 +2162,11 @@
             color: #FFFFFF !important; /* Texto blanco */
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
         }
-        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container, #informes-subcategory-tabs-container, #calendario-subcategory-tabs-container {
+        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container, #informes-subcategory-tabs-container, #calendario-subcategory-tabs-container, #staff-subcategory-tabs-container {
             border-radius: 12px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
-        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn, #informes-subcategory-tabs-container .config-tab-btn, #calendario-subcategory-tabs-container .config-tab-btn {
+        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn, #informes-subcategory-tabs-container .config-tab-btn, #calendario-subcategory-tabs-container .config-tab-btn, #staff-subcategory-tabs-container .config-tab-btn {
             font-size: 13px;
             padding: 8px 16px;
             border-radius: 8px;
@@ -4225,6 +4225,9 @@
                         <button class="config-tab-btn" data-modality="futsal" onclick="changeGlobalModality('futsal', this)">🏟️ Fútbol Sala</button>
                         <button class="config-tab-btn" data-modality="fplaya" onclick="changeGlobalModality('fplaya', this)">🏖️ Fútbol Playa</button>
                     </div>
+
+                    <!-- Pestañas de Subcategoría por Modalidad -->
+                    <div id="staff-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;"></div>
 
                     <!-- Sub-Navegación del Staff (Oculto para navegación jerárquica limpia de 3 niveles) -->
                     <div style="display: none; gap: 10px; margin-top: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; flex-wrap: wrap;">
@@ -10651,6 +10654,7 @@
             const moContainer = document.getElementById('modelo-subcategory-tabs-container');
             const infContainer = document.getElementById('informes-subcategory-tabs-container');
             const calContainer = document.getElementById('calendario-subcategory-tabs-container');
+            const staffContainer = document.getElementById('staff-subcategory-tabs-container');
             
             const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
             
@@ -10699,6 +10703,10 @@
                     calContainer.innerHTML = html;
                     calContainer.style.display = 'flex';
                 }
+                if (staffContainer) {
+                    staffContainer.innerHTML = html;
+                    staffContainer.style.display = 'flex';
+                }
             } else {
                 currentSubModality = '';
                 localStorage.setItem('ffcv_current_submodality', '');
@@ -10729,6 +10737,10 @@
                 if (calContainer) {
                     calContainer.style.display = 'none';
                     calContainer.innerHTML = '';
+                }
+                if (staffContainer) {
+                    staffContainer.style.display = 'none';
+                    staffContainer.innerHTML = '';
                 }
             }
         }
@@ -10815,6 +10827,17 @@
                 });
             }
 
+            const staffContainer = document.getElementById('staff-subcategory-tabs-container');
+            if (staffContainer) {
+                staffContainer.querySelectorAll('.config-tab-btn').forEach(b => {
+                    if (b.getAttribute('data-submodality') === subModId) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+            }
+
             updateCounts();
             renderDashboardView();
             renderPlayersTable();
@@ -10828,6 +10851,11 @@
             }
             if (typeof renderCalendar === 'function') {
                 renderCalendar();
+            }
+            if (typeof renderStaff === 'function') {
+                const activeStaffTab = document.querySelector('#view-staff [id^="btn-staff-tab-"].active');
+                const activeStaffTabId = activeStaffTab ? activeStaffTab.id.replace('btn-staff-tab-', '') : 'areas';
+                switchStaffSubTab(activeStaffTabId || 'areas');
             }
             
             if (btn) {
@@ -10894,9 +10922,9 @@
                 else if (viewId === 'informes') renderReports();
                 else if (viewId === 'calendario') renderCalendar();
                 else if (viewId === 'staff') {
-                    const activeStaffTab = document.querySelector('#view-staff button.active');
+                    const activeStaffTab = document.querySelector('#view-staff [id^="btn-staff-tab-"].active');
                     const activeStaffTabId = activeStaffTab ? activeStaffTab.id.replace('btn-staff-tab-', '') : 'areas';
-                    switchStaffSubTab(activeStaffTabId);
+                    switchStaffSubTab(activeStaffTabId || 'areas');
                 }
                 else if (viewId === 'documentacion') {
                     updateDocumentCounts();
@@ -13732,6 +13760,7 @@
         }
 
         function renderStaff() {
+            updateSubModalitiesNav();
             initStaffFiltersListeners();
             switchStaffSubTab('areas');
         }
@@ -13839,13 +13868,52 @@
             return false;
         }
 
+        function memberMatchesSubModality(member, targetSubModalityId) {
+            if (!targetSubModalityId) return true;
+            
+            let targetModality = 'f11';
+            if (targetSubModalityId.startsWith('f8_')) targetModality = 'f8';
+            else if (targetSubModalityId.startsWith('futsal_')) targetModality = 'futsal';
+            else if (targetSubModalityId.startsWith('fplaya_')) targetModality = 'fplaya';
+            
+            if (!memberMatchesModality(member, targetModality)) {
+                return false;
+            }
+            
+            const sport = member.sport;
+            const category = member.category;
+            
+            // Global/structural staff matches all subcategories within their modality
+            if (sport === 'Todos los deportes' || sport === 'Todos' || sport === 'Todos/as' || 
+                category === 'General FFCV' || category === 'Todas las categorías' || category === 'Todas' ||
+                category === 'Femenina' || category === 'Masculina') {
+                return true;
+            }
+            
+            const subcatConfig = (SUBMODALITIES_CONFIG[targetModality] || []).find(sub => sub.id === targetSubModalityId);
+            if (!subcatConfig) return false;
+            
+            const filterCat = subcatConfig.filterCat;
+            if (category && filterCat) {
+                return category.toLowerCase().includes(filterCat.toLowerCase());
+            }
+            
+            return false;
+        }
+
         function renderStaffAreasDashboard() {
             const container = document.getElementById('staff-subview-areas');
             if (!container) return;
             
             activeStaffRoleFilter = 'ALL';
 
-            const filteredStaff = staff.filter(m => memberMatchesModality(m, currentModality));
+            const filteredStaff = staff.filter(m => {
+                if (currentSubModality) {
+                    return memberMatchesSubModality(m, currentSubModality);
+                } else {
+                    return memberMatchesModality(m, currentModality);
+                }
+            });
 
             const orgCount = filteredStaff.filter(m => m.role.includes('Director') || m.role.includes('Coordinador') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable') || m.role === 'Director técnico').length;
             const coordCount = filteredStaff.filter(m => m.role.includes('Coordinador') || m.role.includes('Coordinación')).length;
@@ -14100,6 +14168,7 @@
 
             const filtered = staff.filter(m => {
                 const matchesModality = memberMatchesModality(m, currentModality);
+                const matchesSub = currentSubModality ? memberMatchesSubModality(m, currentSubModality) : true;
                 const mSport = m.sport || 'Fútbol';
                 const mGender = m.gender || 'Masculino';
                 
@@ -14131,7 +14200,7 @@
                     matchesRole = (m.role === activeStaffRoleFilter);
                 }
                 
-                return matchesModality && matchesSport && matchesCat && matchesGender && matchesRole;
+                return matchesModality && matchesSub && matchesSport && matchesCat && matchesGender && matchesRole;
             });
 
             const label = document.getElementById('staff-filter-count-label');
@@ -15108,9 +15177,9 @@
             localStorage.setItem('ffcv_staff', JSON.stringify(staff));
             saveState();
             
-            const activeTab = document.querySelector('#view-staff button.active');
+            const activeTab = document.querySelector('#view-staff [id^="btn-staff-tab-"].active');
             const activeTabId = activeTab ? activeTab.id.replace('btn-staff-tab-', '') : 'areas';
-            switchStaffSubTab(activeTabId);
+            switchStaffSubTab(activeTabId || 'areas');
             
             document.getElementById('modal-add-staff-temp').remove();
             showToast(`${name} añadido al staff de selecciones`, 'success');
