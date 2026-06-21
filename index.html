@@ -2162,11 +2162,11 @@
             color: #FFFFFF !important; /* Texto blanco */
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
         }
-        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container, #informes-subcategory-tabs-container, #calendario-subcategory-tabs-container, #staff-subcategory-tabs-container {
+        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container, #informes-subcategory-tabs-container, #calendario-subcategory-tabs-container {
             border-radius: 12px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
-        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn, #informes-subcategory-tabs-container .config-tab-btn, #calendario-subcategory-tabs-container .config-tab-btn, #staff-subcategory-tabs-container .config-tab-btn {
+        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn, #informes-subcategory-tabs-container .config-tab-btn, #calendario-subcategory-tabs-container .config-tab-btn {
             font-size: 13px;
             padding: 8px 16px;
             border-radius: 8px;
@@ -4224,11 +4224,6 @@
                         <button class="config-tab-btn" data-modality="f8" onclick="changeGlobalModality('f8', this)">⚽ Fútbol 8</button>
                         <button class="config-tab-btn" data-modality="futsal" onclick="changeGlobalModality('futsal', this)">🏟️ Fútbol Sala</button>
                         <button class="config-tab-btn" data-modality="fplaya" onclick="changeGlobalModality('fplaya', this)">🏖️ Fútbol Playa</button>
-                    </div>
-
-                    <!-- Pestañas de Subcategoría (Staff) -->
-                    <div id="staff-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;">
-                        <!-- Se renderiza dinámicamente mediante JS -->
                     </div>
 
                     <!-- Sub-Navegación del Staff (Oculto para navegación jerárquica limpia de 3 niveles) -->
@@ -10542,19 +10537,19 @@
                 { id: 'f11_sub16', name: 'Selección Sub-16', filterCat: 'Sub-16', icon: '🏃' }
             ],
             'f8': [
-                { id: 'f8_sub12', name: 'Selección Sub-12', filterCat: 'Sub-12', icon: '🏃' }
+                { id: 'f8_sub12', name: 'Sub-12', filterCat: 'Sub-12', icon: '🏃' }
             ],
             'futsal': [
-                { id: 'futsal_sub12', name: 'Selección Sub-12', filterCat: 'Sub-12', icon: '⚽' },
-                { id: 'futsal_sub14', name: 'Selección Sub-14', filterCat: 'Sub-14', icon: '🏃' },
-                { id: 'futsal_sub16', name: 'Selección Sub-16', filterCat: 'Sub-16', icon: '⚡' },
-                { id: 'futsal_sub19', name: 'Selección Sub-19', filterCat: 'Sub-19', icon: '🏆' }
+                { id: 'futsal_sub12', name: 'Sub-12', filterCat: 'Sub-12', icon: '⚽' },
+                { id: 'futsal_sub14', name: 'Sub-14', filterCat: 'Sub-14', icon: '🏃' },
+                { id: 'futsal_sub16', name: 'Sub-16', filterCat: 'Sub-16', icon: '⚡' },
+                { id: 'futsal_sub19', name: 'Sub-19', filterCat: 'Sub-19', icon: '🏆' }
             ],
             'fplaya': [
-                { id: 'fplaya_sub12', name: 'Selección Sub-12', filterCat: 'Sub-12', icon: '⚽' },
-                { id: 'fplaya_sub14', name: 'Selección Sub-14', filterCat: 'Sub-14', icon: '🏃' },
-                { id: 'fplaya_sub16', name: 'Selección Sub-16', filterCat: 'Sub-16', icon: '⚡' },
-                { id: 'fplaya_sub19', name: 'Selección Sub-19', filterCat: 'Sub-19', icon: '🏆' }
+                { id: 'fplaya_sub12', name: 'Sub-12', filterCat: 'Sub-12', icon: '⚽' },
+                { id: 'fplaya_sub14', name: 'Sub-14', filterCat: 'Sub-14', icon: '🏃' },
+                { id: 'fplaya_sub16', name: 'Sub-16', filterCat: 'Sub-16', icon: '⚡' },
+                { id: 'fplaya_sub19', name: 'Sub-19', filterCat: 'Sub-19', icon: '🏆' }
             ]
         };
 
@@ -10656,7 +10651,6 @@
             const moContainer = document.getElementById('modelo-subcategory-tabs-container');
             const infContainer = document.getElementById('informes-subcategory-tabs-container');
             const calContainer = document.getElementById('calendario-subcategory-tabs-container');
-            const staffContainer = document.getElementById('staff-subcategory-tabs-container');
             
             const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
             
@@ -10705,10 +10699,6 @@
                     calContainer.innerHTML = html;
                     calContainer.style.display = 'flex';
                 }
-                if (staffContainer) {
-                    staffContainer.innerHTML = html;
-                    staffContainer.style.display = 'flex';
-                }
             } else {
                 currentSubModality = '';
                 localStorage.setItem('ffcv_current_submodality', '');
@@ -10739,10 +10729,6 @@
                 if (calContainer) {
                     calContainer.style.display = 'none';
                     calContainer.innerHTML = '';
-                }
-                if (staffContainer) {
-                    staffContainer.style.display = 'none';
-                    staffContainer.innerHTML = '';
                 }
             }
         }
@@ -10829,17 +10815,6 @@
                 });
             }
 
-            const staffContainer = document.getElementById('staff-subcategory-tabs-container');
-            if (staffContainer) {
-                staffContainer.querySelectorAll('.config-tab-btn').forEach(b => {
-                    if (b.getAttribute('data-submodality') === subModId) {
-                        b.classList.add('active');
-                    } else {
-                        b.classList.remove('active');
-                    }
-                });
-            }
-
             updateCounts();
             renderDashboardView();
             renderPlayersTable();
@@ -10853,13 +10828,6 @@
             }
             if (typeof renderCalendar === 'function') {
                 renderCalendar();
-            }
-            
-            const activeView = document.querySelector('.view.active');
-            if (activeView && activeView.id === 'view-staff') {
-                const activeStaffTab = document.querySelector('#view-staff button.active');
-                const activeStaffTabId = activeStaffTab ? activeStaffTab.id.replace('btn-staff-tab-', '') : 'areas';
-                switchStaffSubTab(activeStaffTabId);
             }
             
             if (btn) {
@@ -13370,76 +13338,22 @@
            D.10 IMPLEMENTACIÓN DEL STAFF TÉCNICO EN JS
            ========================================================================== */
         const DEFAULT_STAFF = [
-            // --- FÚTBOL 11 ---
-            // Selección Regiones
             { 
                 id: 1, 
-                name: "Carlos Ortiz", 
-                role: "Seleccionador", 
-                category: "Regiones", 
+                name: "Rubén Mora", 
+                role: "Director Deportivo", 
+                category: "General FFCV", 
                 license: "UEFA Pro", 
-                email: "cortiz@ffcv.es", 
+                email: "rmora@ffcv.es", 
                 status: "Activo",
                 sport: "Fútbol",
                 gender: "Masculino",
-                phone: "+34 612 111 222",
-                titulos: "UEFA Pro Licencia, Graduado en CAFYD",
-                experiencia: "Ex-seleccionador nacional amateur y director metodológico.",
-                modality: "f11",
-                submodality: "f11_regiones"
+                phone: "+34 612 987 654",
+                titulos: "UEFA Pro Licencia, Licenciatura en Ciencias de la Actividad Física y del Deporte, Máster Profesional en Dirección de Entidades Deportivas",
+                experiencia: "12 años como director metodológico en academias LFP, ex-seleccionador territorial FFCV y asesor técnico de la RFEF."
             },
             { 
                 id: 2, 
-                name: "Álvaro Ruiz", 
-                role: "Preparador Físico", 
-                category: "Regiones", 
-                license: "Lic. CAFYD", 
-                email: "aruiz@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol",
-                gender: "Masculino",
-                phone: "+34 612 222 333",
-                titulos: "Graduado en CAFYD, Especialidad Alto Rendimiento",
-                experiencia: "Preparador físico de plantillas de Tercera División y torneos territoriales.",
-                modality: "f11",
-                submodality: "f11_regiones"
-            },
-            // Selección Sub-14
-            { 
-                id: 3, 
-                name: "Luis Sánchez", 
-                role: "Seleccionador", 
-                category: "Sub-14", 
-                license: "UEFA Pro", 
-                email: "lsanchez@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol",
-                gender: "Femenino",
-                phone: "+34 656 789 012",
-                titulos: "UEFA Pro Licencia, Máster en Dirección Metodológica",
-                experiencia: "Seleccionador de la Selección Valenciana Valenta Sub-14 de fútbol femenino.",
-                modality: "f11",
-                submodality: "f11_sub14"
-            },
-            { 
-                id: 4, 
-                name: "María López", 
-                role: "Segundo Entrenador", 
-                category: "Sub-14", 
-                license: "UEFA A", 
-                email: "mlopez@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol",
-                gender: "Femenino",
-                phone: "+34 677 555 666",
-                titulos: "UEFA A Licencia, Especialista en Táctica Femenina",
-                experiencia: "Asistente técnico de la Selección Valenciana Valenta Sub-14.",
-                modality: "f11",
-                submodality: "f11_sub14"
-            },
-            // Selección Sub-16
-            { 
-                id: 5, 
                 name: "Paco Marí", 
                 role: "Seleccionador", 
                 category: "Sub-16", 
@@ -13450,12 +13364,10 @@
                 gender: "Masculino",
                 phone: "+34 623 876 543",
                 titulos: "UEFA Pro Licencia, Especialista en Táctica y Análisis de Juego (RFEF)",
-                experiencia: "Seleccionador de la Selección Valenciana Masculina Sub-16. Ex-entrenador formativo de la FFCV.",
-                modality: "f11",
-                submodality: "f11_sub16"
+                experiencia: "Seleccionador de la Selección Valenciana Masculina Sub-16 de fútbol. Ex-entrenador formativo en canteras de la Comunidad Valenciana."
             },
             { 
-                id: 6, 
+                id: 3, 
                 name: "Jose Vicente", 
                 role: "Analista Técnico", 
                 category: "Sub-16", 
@@ -13465,366 +13377,25 @@
                 sport: "Fútbol",
                 gender: "Masculino",
                 phone: "+34 634 765 432",
-                titulos: "UEFA A Licencia, Certificación Profesional en Nacsport y Longomatch",
-                experiencia: "Analista de rendimiento en C.D. Castellón y scout territorial.",
-                modality: "f11",
-                submodality: "f11_sub16"
+                titulos: "UEFA A Licencia, Certificación Profesional en Nacsport y Longomatch, Curso Avanzado de Scouting RFEF",
+                experiencia: "Analista de rendimiento en C.D. Castellón, redactor de informes de scouting territorial para campeonatos nacionales de selecciones."
             },
             { 
-                id: 7, 
-                name: "Fernando Luna", 
-                role: "Seleccionador", 
-                category: "Sub-16", 
-                license: "UEFA Pro", 
-                email: "fluna@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol",
-                gender: "Femenino",
-                phone: "+34 677 890 123",
-                titulos: "UEFA Pro Licencia, Graduado en CAFYD",
-                experiencia: "Seleccionador de la Selección Valenciana Valenta Sub-16.",
-                modality: "f11",
-                submodality: "f11_sub16"
-            },
-            {
-                id: 8,
-                name: "Carlos Martínez",
-                role: "Segundo Entrenador",
-                category: "Sub-16",
-                license: "UEFA A",
-                email: "cmartinez@ffcv.es",
-                status: "Activo",
-                sport: "Fútbol",
-                gender: "Masculino",
-                phone: "+34 677 111 222",
-                titulos: "UEFA A Licencia, Graduado en CAFYD",
-                experiencia: "Asistente de campo y preparador metodológico de juveniles.",
-                modality: "f11",
-                submodality: "f11_sub16"
-            },
-
-            // --- FÚTBOL 8 ---
-            // Selección Sub-12
-            { 
-                id: 9, 
-                name: "Alberto Ortega", 
-                role: "Seleccionador", 
-                category: "Sub-12", 
-                license: "UEFA A", 
-                email: "aortega@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol",
-                gender: "Masculino",
-                phone: "+34 654 321 098",
-                titulos: "UEFA A Licencia, Especialista en Fútbol Base",
-                experiencia: "Entrenador formador en escuelas de fútbol base territoriales.",
-                modality: "f8",
-                submodality: "f8_sub12"
-            },
-            { 
-                id: 10, 
-                name: "Marcos Vales", 
-                role: "Segundo Entrenador", 
-                category: "Sub-12", 
-                license: "UEFA B", 
-                email: "mvales@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol",
-                gender: "Masculino",
-                phone: "+34 654 432 109",
-                titulos: "UEFA B Licencia, Especialista en Psicopedagogía Infantil",
-                experiencia: "Entrenador en fútbol 8 con amplia experiencia metodológica.",
-                modality: "f8",
-                submodality: "f8_sub12"
-            },
-            { 
-                id: 11, 
-                name: "Raúl Castro", 
-                role: "Fisioterapeuta", 
-                category: "Sub-12", 
-                license: "Diplomado Fisioterapia", 
-                email: "rcastro@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol",
-                gender: "Masculino",
-                phone: "+34 654 543 210",
-                titulos: "Diplomado en Fisioterapia (UV), Máster en Fisioterapia Deportiva",
-                experiencia: "Fisioterapeuta en torneos juveniles de fútbol base.",
-                modality: "f8",
-                submodality: "f8_sub12"
-            },
-
-            // --- FÚTBOL SALA ---
-            // Selección Sub-12
-            { 
-                id: 12, 
-                name: "Toni Puerto", 
-                role: "Seleccionador", 
-                category: "Sub-12", 
-                license: "Nivel 2 Fútbol Sala", 
-                email: "tpuerto@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Sala",
-                gender: "Masculino",
-                phone: "+34 611 222 333",
-                titulos: "Técnico Deportivo Nivel 2 Fútbol Sala",
-                experiencia: "Seleccionador de la Selección Valenciana Futsal Sub-12 base.",
-                modality: "futsal",
-                submodality: "futsal_sub12"
-            },
-            { 
-                id: 13, 
-                name: "Juan Ramón", 
-                role: "Delegado", 
-                category: "Sub-12", 
-                license: "Oficial Futsal FFCV", 
-                email: "jramon@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Sala",
-                gender: "Masculino",
-                phone: "+34 611 333 444",
-                titulos: "Delegado Federativo de Fútbol Sala",
-                experiencia: "Coordinador de delegaciones territoriales para torneos de España.",
-                modality: "futsal",
-                submodality: "futsal_sub12"
-            },
-            // Selección Sub-14
-            { 
-                id: 14, 
-                name: "Mavi Sansano", 
-                role: "Seleccionador", 
-                category: "Sub-14", 
-                license: "Nivel 2 Fútbol Sala", 
-                email: "msansano@ffcv.es", 
-                status: "En Concentración",
-                sport: "Fútbol Sala",
-                gender: "Femenino",
-                phone: "+34 699 012 345",
-                titulos: "Técnico Deportivo Nivel 2 Fútbol Sala",
-                experiencia: "Seleccionadora de la Selección Valenciana Futsal Valenta Sub-14.",
-                modality: "futsal",
-                submodality: "futsal_sub14"
-            },
-            { 
-                id: 15, 
-                name: "Sofía Martínez", 
-                role: "Fisioterapeuta", 
-                category: "Sub-14", 
-                license: "Fisioterapia Deportiva", 
-                email: "smartinez@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Sala",
-                gender: "Femenino",
-                phone: "+34 699 123 456",
-                titulos: "Graduada en Fisioterapia, Especialista en Readaptación Futsal",
-                experiencia: "Fisioterapeuta de campo y readaptadora en clubes de fútbol sala femenino.",
-                modality: "futsal",
-                submodality: "futsal_sub14"
-            },
-            // Selección Sub-16
-            { 
-                id: 16, 
-                name: "Patxi Aguilar", 
-                role: "Seleccionador", 
-                category: "Sub-16", 
-                license: "Nivel 3 Fútbol Sala", 
-                email: "paguilar@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Sala",
-                gender: "Masculino",
-                phone: "+34 688 901 234",
-                titulos: "Entrenador Nacional Nivel 3 Fútbol Sala",
-                experiencia: "Seleccionador de la Selección Valenciana Futsal Sub-16 masculina.",
-                modality: "futsal",
-                submodality: "futsal_sub16"
-            },
-            { 
-                id: 17, 
-                name: "Ana Cabello", 
-                role: "Seleccionador", 
-                category: "Sub-16", 
-                license: "Nivel 2 Fútbol Sala", 
-                email: "acabello@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Sala",
-                gender: "Femenino",
-                phone: "+34 666 123 456",
-                titulos: "Técnico Deportivo Nivel 2 Fútbol Sala, Psicóloga Deportiva",
-                experiencia: "Seleccionadora de la Selección Valenciana Futsal Valenta Sub-16.",
-                modality: "futsal",
-                submodality: "futsal_sub16"
-            },
-            // Selección Sub-19
-            { 
-                id: 18, 
-                name: "Javier Almería", 
-                role: "Seleccionador", 
-                category: "Sub-19", 
-                license: "Nivel 3 Fútbol Sala", 
-                email: "jalmeria@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Sala",
-                gender: "Masculino",
-                phone: "+34 666 222 333",
-                titulos: "Nivel 3 Futsal RFEF, Coordinador de Academias LNFS",
-                experiencia: "Ex-entrenador nacional en divisiones de honor juveniles de fútbol sala.",
-                modality: "futsal",
-                submodality: "futsal_sub19"
-            },
-            { 
-                id: 19, 
-                name: "Hugo Beltrán", 
-                role: "Preparador Físico", 
-                category: "Sub-19", 
-                license: "Prep. Física Futsal", 
-                email: "hbeltran@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Sala",
-                gender: "Masculino",
-                phone: "+34 666 333 444",
-                titulos: "Graduado en CAFYD, Máster en Alto Rendimiento Futsal",
-                experiencia: "Encargado de la preparación de juveniles en torneos de España.",
-                modality: "futsal",
-                submodality: "futsal_sub19"
-            },
-
-            // --- FÚTBOL PLAYA ---
-            // Selección Sub-12
-            { 
-                id: 20, 
-                name: "Brais Méndez", 
-                role: "Seleccionador", 
-                category: "Sub-12", 
-                license: "Entrenador Playa", 
-                email: "bmendez@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Playa",
-                gender: "Masculino",
-                phone: "+34 633 111 222",
-                titulos: "Técnico Especialista en Fútbol Playa RFEF",
-                experiencia: "Ex-jugador nacional de playa y formador en escuelas base.",
-                modality: "fplaya",
-                submodality: "fplaya_sub12"
-            },
-            { 
-                id: 21, 
-                name: "Clara Peña", 
-                role: "Fisioterapeuta", 
-                category: "Sub-12", 
-                license: "Fisioterapia Deportiva", 
-                email: "cpena@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Playa",
-                gender: "Femenino",
-                phone: "+34 633 222 333",
-                titulos: "Graduada en Fisioterapia, Especialista en Arena y Playa",
-                experiencia: "Atención médica preventiva en campeonatos autonómicos de playa.",
-                modality: "fplaya",
-                submodality: "fplaya_sub12"
-            },
-            // Selección Sub-14
-            { 
-                id: 22, 
-                name: "Iván Pastor", 
-                role: "Seleccionador", 
-                category: "Sub-14", 
-                license: "Entrenador Playa RFEF", 
-                email: "ipastor@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Playa",
-                gender: "Masculino",
-                phone: "+34 633 333 444",
-                titulos: "Curso Superior de Fútbol Playa RFEF",
-                experiencia: "Seleccionador autonómico con varios torneos nacionales de playa.",
-                modality: "fplaya",
-                submodality: "fplaya_sub14"
-            },
-            { 
-                id: 23, 
-                name: "Diego Solas", 
-                role: "Segundo Entrenador", 
-                category: "Sub-14", 
-                license: "Entrenador Base", 
-                email: "dsolas@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Playa",
-                gender: "Masculino",
-                phone: "+34 633 444 555",
-                titulos: "Técnico deportivo base en arena y de deportes alternativos",
-                experiencia: "Preparador de selecciones juveniles territoriales de arena.",
-                modality: "fplaya",
-                submodality: "fplaya_sub14"
-            },
-            // Selección Sub-16
-            { 
-                id: 24, 
-                name: "Mateo Silva", 
-                role: "Seleccionador", 
-                category: "Sub-16", 
-                license: "Entrenador Nacional Playa", 
-                email: "msilva@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Playa",
-                gender: "Masculino",
-                phone: "+34 633 555 666",
-                titulos: "Especialista Nacional en Táctica de Fútbol Playa",
-                experiencia: "Seleccionador de la Comunidad Valenciana Sub-16 de fútbol playa.",
-                modality: "fplaya",
-                submodality: "fplaya_sub16"
-            },
-            { 
-                id: 25, 
-                name: "Lucas Rivas", 
-                role: "Analista", 
-                category: "Sub-16", 
-                license: "Videoanálisis Playa", 
-                email: "lrivas@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Playa",
-                gender: "Masculino",
-                phone: "+34 633 666 777",
-                titulos: "Certificado Analista Técnico RFEF",
-                experiencia: "Informes de scouting y análisis de selecciones en torneos autonómicos.",
-                modality: "fplaya",
-                submodality: "fplaya_sub16"
-            },
-            // Selección Sub-19
-            { 
-                id: 26, 
-                name: "Kike Boned", 
-                role: "Seleccionador", 
-                category: "Sub-19", 
-                license: "Entrenador Nacional", 
-                email: "kboned@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Playa",
-                gender: "Masculino",
-                phone: "+34 633 777 888",
-                titulos: "Entrenador Nacional Fútbol Playa y Sala, Histórico RFEF",
-                experiencia: "Director metodológico e instructor de torneos juveniles de playa FFCV.",
-                modality: "fplaya",
-                submodality: "fplaya_sub19"
-            },
-            { 
-                id: 27, 
+                id: 4, 
                 name: "Sara Gómez", 
                 role: "Preparador Físico", 
                 category: "Sub-19", 
-                license: "CAFYD - Playa", 
-                email: "sgomez_playa@ffcv.es", 
-                status: "Activo",
-                sport: "Fútbol Playa",
+                license: "Lic. CAFYD - Prep. Física", 
+                email: "sgomez@ffcv.es", 
+                status: "De Vacaciones",
+                sport: "Fútbol",
                 gender: "Femenino",
-                phone: "+34 633 888 999",
-                titulos: "Graduada CAFYD, Especialidad en Preparación Física en Arena",
-                experiencia: "Preparadora física oficial para los combinados autonómicos de playa FFCV.",
-                modality: "fplaya",
-                submodality: "fplaya_sub19"
+                phone: "+34 645 654 321",
+                titulos: "Graduada en CAFYD (UV), Máster en Alto Rendimiento Deportivo (COE), Especialidad en Prevención de Lesiones",
+                experiencia: "Preparadora física en Levante U.D. Femenino, encargada del control de cargas GPS de las selecciones femeninas de la FFCV."
             },
-
-            // --- CARGOS ESTRUCTURALES Y RESPONSABLES GLOBALES ---
             {
-                id: 28,
+                id: 5,
                 name: "Jordi Lucena",
                 role: "Vicepresidente / Responsable Área Deportiva",
                 category: "Todas las categorías",
@@ -13835,10 +13406,10 @@
                 gender: "Masculino",
                 phone: "+34 600 111 222",
                 titulos: "Vicepresidente FFCV, Responsable del Área Deportiva",
-                experiencia: "Trayectoria en la directiva y control federativo de selecciones territoriales."
+                experiencia: "Amplia trayectoria en la gestión directiva de la Federación de Fútbol de la Comunidad Valenciana."
             },
             {
-                id: 29,
+                id: 6,
                 name: "José Gómez",
                 role: "Responsable Área Integridad",
                 category: "Todas las categorías",
@@ -13849,10 +13420,10 @@
                 gender: "Masculino",
                 phone: "+34 600 222 333",
                 titulos: "Responsable del Área de Integridad FFCV",
-                experiencia: "Cumplimiento normativo y prevención de integridad de la federación."
+                experiencia: "Especialista en normativas deportivas, cumplimiento y prevención en el ámbito federativo."
             },
             {
-                id: 30,
+                id: 7,
                 name: "José Gómez",
                 role: "Director técnico",
                 category: "Todas las categorías",
@@ -13863,10 +13434,10 @@
                 gender: "Masculino",
                 phone: "+34 600 333 444",
                 titulos: "Director Técnico de Fútbol Sala de la FFCV",
-                experiencia: "Gestor metodológico de las selecciones de futsal autonómicas."
+                experiencia: "Gestor deportivo y entrenador de fútbol sala con dilatada experiencia en selecciones autonómicas."
             },
             {
-                id: 31,
+                id: 8,
                 name: "Rubén Mora",
                 role: "Director técnico",
                 category: "Todas las categorías",
@@ -13877,10 +13448,10 @@
                 gender: "Masculino",
                 phone: "+34 600 444 555",
                 titulos: "Director Técnico de Fútbol de la FFCV",
-                experiencia: "Coordinador general y director técnico de las Selecciones FFCV."
+                experiencia: "Coordinador general y director técnico de las Selecciones FFCV, ex-entrenador nacional."
             },
             {
-                id: 32,
+                id: 9,
                 name: "J. Luis Mengual",
                 role: "Coordinación",
                 category: "Todas las categorías",
@@ -13891,10 +13462,10 @@
                 gender: "Masculino",
                 phone: "+34 600 555 666",
                 titulos: "Coordinador de Fútbol Sala FFCV",
-                experiencia: "Logística y organización de campeonatos nacionales de futsal."
+                experiencia: "Organizador de competiciones y logística para las selecciones autonómicas de fútbol sala."
             },
             {
-                id: 33,
+                id: 10,
                 name: "Esther Romero",
                 role: "Coordinación sección Femenina",
                 category: "Femenina",
@@ -13905,10 +13476,10 @@
                 gender: "Femenino",
                 phone: "+34 600 666 777",
                 titulos: "Coordinadora de la Sección Femenina FFCV",
-                experiencia: "Exjugadora profesional y gestora enfocada en el desarrollo del fútbol femenino."
+                experiencia: "Exjugadora profesional y gestora enfocada en el desarrollo y promoción del fútbol femenino territorial."
             },
             {
-                id: 34,
+                id: 11,
                 name: "Rubén Mora",
                 role: "Coordinación sección masculina",
                 category: "Masculina",
@@ -13919,28 +13490,246 @@
                 gender: "Masculino",
                 phone: "+34 600 777 888",
                 titulos: "Coordinador de la Sección Masculina FFCV",
-                experiencia: "Coordinación y gestión logística de selecciones masculinas."
+                experiencia: "Gestión de convocatorias, entrenamientos y logística de las selecciones masculinas autonómicas."
+            },
+            {
+                id: 12,
+                name: "Luis Sánchez",
+                role: "Seleccionador",
+                category: "Sub-14",
+                license: "UEFA Pro",
+                email: "lsanchez@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 656 789 012",
+                titulos: "UEFA Pro Licencia, Máster en Dirección Metodológica",
+                experiencia: "Seleccionador de la Selección Valenciana Valenta Sub-14 de fútbol femenino. Amplio recorrido en fútbol formativo."
+            },
+            {
+                id: 13,
+                name: "Fernando Luna",
+                role: "Seleccionador",
+                category: "Sub-16",
+                license: "UEFA Pro",
+                email: "fluna@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 677 890 123",
+                titulos: "UEFA Pro Licencia, Graduado en Ciencias de la Actividad Física y del Deporte",
+                experiencia: "Seleccionador de la Selección Valenciana Valenta Sub-16 de fútbol femenino. Especialista en alto rendimiento."
+            },
+            {
+                id: 14,
+                name: "Patxi Aguilar",
+                role: "Seleccionador",
+                category: "Sub-16",
+                license: "Nivel 3 Fútbol Sala",
+                email: "paguilar@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                phone: "+34 688 901 234",
+                titulos: "Entrenador Nacional Nivel 3 Fútbol Sala, Especialista en Análisis Táctico Futsal",
+                experiencia: "Seleccionador de la Selección Valenciana Futsal Sub-16 masculina. Dilatada trayectoria en la LNFS."
+            },
+            {
+                id: 15,
+                name: "Mavi Sansano",
+                role: "Seleccionador",
+                category: "Sub-14",
+                license: "Nivel 2 Fútbol Sala",
+                email: "msansano@ffcv.es",
+                status: "En Concentración",
+                sport: "Fútbol Sala",
+                gender: "Femenino",
+                phone: "+34 699 012 345",
+                titulos: "Técnico Deportivo Nivel 2 Fútbol Sala",
+                experiencia: "Seleccionadora de la Selección Valenciana Futsal Valenta Sub-14. Especialista en etapas de perfeccionamiento."
+            },
+            {
+                id: 16,
+                name: "Ana Cabello",
+                role: "Seleccionador",
+                category: "Sub-16",
+                license: "Nivel 2 Fútbol Sala",
+                email: "acabello@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol Sala",
+                gender: "Femenino",
+                phone: "+34 666 123 456",
+                titulos: "Técnico Deportivo Nivel 2 Fútbol Sala, Licenciada en Psicología Deportiva",
+                experiencia: "Seleccionadora de la Selección Valenciana Futsal Valenta Sub-16. Especialista en psicología del deporte formativo."
+            },
+            {
+                id: 17,
+                name: "Toni Puerto",
+                role: "Seleccionador",
+                category: "Sub-12",
+                license: "Nivel 2 Fútbol Sala",
+                email: "tpuerto@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol Sala",
+                gender: "Masculino",
+                phone: "+34 611 222 333",
+                titulos: "Técnico Deportivo Nivel 2 Fútbol Sala, Especialista en Etapas de Iniciación",
+                experiencia: "Seleccionador de la Selección Valenciana Futsal Sub-12 masculina. Entrenador formador con gran bagaje en futsal base."
+            },
+            {
+                id: 18,
+                name: "Carlos Martínez",
+                role: "Segundo Entrenador",
+                category: "Sub-16",
+                license: "UEFA A",
+                email: "cmartinez@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 677 111 222",
+                titulos: "UEFA A Licencia, Graduado en Ciencias de la Actividad Física y del Deporte",
+                experiencia: "Ex-entrenador formativo en el fútbol base valenciano y asistente de campo."
+            },
+            {
+                id: 19,
+                name: "David Serrano",
+                role: "Entrenador/a Asistente",
+                category: "Sub-19",
+                license: "UEFA B",
+                email: "dserrano@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 677 333 444",
+                titulos: "UEFA B Licencia, Especialista en Análisis Táctico",
+                experiencia: "Asistente técnico en el Villarreal C.F. cantera y preparador de metodología."
+            },
+            {
+                id: 20,
+                name: "María López",
+                role: "Segundo Entrenador",
+                category: "Sub-14",
+                license: "UEFA A",
+                email: "mlopez@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 677 555 666",
+                titulos: "UEFA A Licencia, Especialista en Táctica Femenina",
+                experiencia: "Asistente técnico de la Selección Valenciana Valenta Sub-14."
+            },
+            {
+                id: 21,
+                name: "Roberto Soler",
+                role: "Entrenador de Porteros",
+                category: "Sub-16",
+                license: "UEFA Especialista en Porteros",
+                email: "rsoler@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 655 444 333",
+                titulos: "UEFA Goalkeeper B, Entrenador Nacional Nivel 2",
+                experiencia: "6 años en la escuela del Levante U.D. como responsable de la preparación de porteros."
+            },
+            {
+                id: 22,
+                name: "Ángela Ruíz",
+                role: "Entrenador de Porteros",
+                category: "Sub-19",
+                license: "UEFA Especialista en Porteros",
+                email: "aruiz@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 655 555 666",
+                titulos: "UEFA Goalkeeper A, Licenciada en Ciencias de la Actividad Física",
+                experiencia: "Preparadora de porteras de las selecciones autonómicas Valenta."
+            },
+            {
+                id: 23,
+                name: "Manuel Ortiz",
+                role: "Asistente / Utillero/a",
+                category: "Sub-16",
+                license: "Utillaje Deportivo FFCV",
+                email: "mortiz@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 688 111 222",
+                titulos: "Certificado de Logística y Equipamiento Deportivo",
+                experiencia: "8 años como encargado de material en clubes de Tercera División y selecciones base."
+            },
+            {
+                id: 24,
+                name: "Carla Sanz",
+                role: "Asistente / Utillero/a",
+                category: "Sub-19",
+                license: "Utillaje Deportivo FFCV",
+                email: "csanz@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 688 333 444",
+                titulos: "Técnica en Gestión Deportiva y Operaciones Logísticas",
+                experiencia: "Asistente de material en canteras de Primera División femenina."
+            },
+            {
+                id: 25,
+                name: "Pablo Ruiz",
+                role: "Analista",
+                category: "Sub-16",
+                license: "UEFA B - Videoanálisis",
+                email: "pruiz@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Masculino",
+                phone: "+34 699 111 222",
+                titulos: "Curso Nacional de Analista de Fútbol (RFEF)",
+                experiencia: "4 años de experiencia en análisis de juego en Tercera División."
+            },
+            {
+                id: 26,
+                name: "Elena Gómez",
+                role: "Analista",
+                category: "Sub-19",
+                license: "UEFA A - Videoanálisis",
+                email: "egomez@ffcv.es",
+                status: "Activo",
+                sport: "Fútbol",
+                gender: "Femenino",
+                phone: "+34 699 333 444",
+                titulos: "Máster en Big Data Deportivo",
+                experiencia: "Analista de rendimiento y video en clubes de Liga F."
             }
         ];
 
-        // Cargar o Inicializar Datos
-        let players = JSON.parse(localStorage.getItem('ffcv_players')) || DEFAULT_PLAYERS;
-        let convocatorias = JSON.parse(localStorage.getItem('ffcv_calls')) || DEFAULT_CALLS;
-        let sessions = JSON.parse(localStorage.getItem('ffcv_sessions')) || DEFAULT_SESSIONS;
-        let reports = JSON.parse(localStorage.getItem('ffcv_reports')) || DEFAULT_REPORTS;
-        
-        let events = JSON.parse(localStorage.getItem('ffcv_events')) || [];
-        if (events.length < 20 || events.some(e => !e.submodality)) {
-            events = DEFAULT_EVENTS;
-            localStorage.setItem('ffcv_events', JSON.stringify(events));
-        }
-
-        let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || [];
-        if (staff.length < 20 || staff.some(m => !m.submodality && m.category && m.category.includes('Sub'))) {
-            staff = DEFAULT_STAFF;
-            localStorage.setItem('ffcv_staff', JSON.stringify(staff));
-        }
+        let staff = JSON.parse(localStorage.getItem('ffcv_staff')) || DEFAULT_STAFF;
+        // Inicializar modalidades de staff de forma robusta
+        staff.forEach((m, idx) => {
+            if (!m.modality) {
+                if (m.sport === 'Fútbol Sala') m.modality = 'futsal';
+                else if (m.sport === 'Fútbol Playa') m.modality = 'fplaya';
+                else {
+                    if (idx % 2 === 0) m.modality = 'f11';
+                    else m.modality = 'f8';
+                }
+            }
+        });
         let activeStaffRoleFilter = 'ALL';
+
+        // Sincronizar localStorage si no contiene a Paco Marí, o si no contiene entrenadores asistentes, o si no contiene entrenadores de porteros, o si no contiene utilleros, o si no contiene a Pablo Ruiz
+        if (localStorage.getItem('ffcv_staff')) {
+            const tempStaff = JSON.parse(localStorage.getItem('ffcv_staff'));
+            if (!tempStaff.some(m => m.name === "Paco Marí") || 
+                !tempStaff.some(m => m.role.includes('Entrenador') || m.role.includes('Asistente')) ||
+                !tempStaff.some(m => m.role.includes('Portero') || m.role.includes('Portera')) ||
+                !tempStaff.some(m => m.role.includes('Utillero') || m.role.includes('Utillera')) ||
+                !tempStaff.some(m => m.name === "Pablo Ruiz")) {
+                localStorage.setItem('ffcv_staff', JSON.stringify(DEFAULT_STAFF));
+                staff = DEFAULT_STAFF;
+            }
+        }
 
         function renderStaff() {
             initStaffFiltersListeners();
@@ -14035,18 +13824,6 @@
         function memberMatchesModality(member, targetModality) {
             const sport = member.sport;
             const category = member.category;
-            
-            // First check if the sport of the member is incompatible with the targetModality
-            if (sport && sport !== 'Todos los deportes' && sport !== 'Todos' && sport !== 'Todos/as') {
-                if (targetModality === 'f11' || targetModality === 'f8') {
-                    if (sport !== 'Fútbol') return false;
-                } else if (targetModality === 'futsal') {
-                    if (sport !== 'Fútbol Sala' && sport !== 'Futsal') return false;
-                } else if (targetModality === 'fplaya') {
-                    if (sport !== 'Fútbol Playa' && sport !== 'Playa') return false;
-                }
-            }
-            
             if (sport === 'Todos los deportes' || sport === 'Todos' || sport === 'Todos/as' || category === 'General FFCV' || category === 'Todas las categorías') {
                 return true;
             }
@@ -14062,32 +13839,13 @@
             return false;
         }
 
-        function memberMatchesSubModality(member, subModId) {
-            if (!memberMatchesModality(member, currentModality)) return false;
-            if (!subModId) return true;
-            if (member.submodality === subModId) return true;
-            
-            const cat = member.category || '';
-            const sport = member.sport || '';
-            if (cat === 'General FFCV' || cat === 'Todas las categorías' || sport === 'Todos los deportes') {
-                return true;
-            }
-            
-            const subModConfig = (SUBMODALITIES_CONFIG[currentModality] || []).find(sub => sub.id === subModId);
-            if (subModConfig) {
-                const filterCat = subModConfig.filterCat;
-                if (cat.includes(filterCat)) return true;
-            }
-            return false;
-        }
-
         function renderStaffAreasDashboard() {
             const container = document.getElementById('staff-subview-areas');
             if (!container) return;
             
             activeStaffRoleFilter = 'ALL';
 
-            const filteredStaff = staff.filter(m => memberMatchesSubModality(m, currentSubModality));
+            const filteredStaff = staff.filter(m => memberMatchesModality(m, currentModality));
 
             const orgCount = filteredStaff.filter(m => m.role.includes('Director') || m.role.includes('Coordinador') || m.role.includes('Coordinación') || m.role.includes('Vicepresidente') || m.role.includes('Responsable') || m.role === 'Director técnico').length;
             const coordCount = filteredStaff.filter(m => m.role.includes('Coordinador') || m.role.includes('Coordinación')).length;
@@ -14276,146 +14034,7 @@
         }
 
         function renderStaffOrganigram() {
-            const wrapper = document.getElementById('organigram-wrapper-source');
-            if (!wrapper) return;
-
-            // Fetch staff members matching the active subcategory
-            const filteredStaff = staff.filter(m => memberMatchesSubModality(m, currentSubModality));
-            
-            // VP Jordi Lucena
-            const vp = staff.find(m => m.id === 28) || { name: "Jordi Lucena", role: "Vicepresidente - Responsable Área Deportiva" };
-            
-            // Level 2 (Modality specific directors)
-            let level2Html = '';
-            if (currentModality === 'f11' || currentModality === 'f8') {
-                const dt = staff.find(m => m.id === 31) || { name: "Rubén Mora", role: "Director Técnico Fútbol" };
-                const coordM = staff.find(m => m.id === 34) || { name: "Rubén Mora", role: "Coordinación Masculina" };
-                const coordF = staff.find(m => m.id === 33) || { name: "Esther Romero", role: "Coordinación Femenina" };
-                level2Html = `
-                    <div style="display: flex; gap: 20px; justify-content: center; width: 100%; flex-wrap: wrap;">
-                        <div class="org-box" style="background-color: var(--accent); border-radius: 12px; padding: 14px 20px; min-width: 200px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
-                            <div style="font-size: 10px; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; opacity: 0.9;">Director Técnico Fútbol</div>
-                            <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">${dt.name}</div>
-                        </div>
-                        <div class="org-box" style="background-color: #1E3A5F; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 14px 20px; min-width: 200px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
-                            <div style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Coordinador Masculino</div>
-                            <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">${coordM.name}</div>
-                        </div>
-                        <div class="org-box" style="background-color: #1E3A5F; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 14px 20px; min-width: 200px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
-                            <div style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Coordinadora Femenina</div>
-                            <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">${coordF.name}</div>
-                        </div>
-                    </div>
-                `;
-            } else if (currentModality === 'futsal') {
-                const dt = staff.find(m => m.id === 30) || { name: "José Gómez", role: "Director Técnico Fútbol Sala" };
-                const coord = staff.find(m => m.id === 32) || { name: "J. Luis Mengual", role: "Coordinador Fútbol Sala" };
-                level2Html = `
-                    <div style="display: flex; gap: 20px; justify-content: center; width: 100%; flex-wrap: wrap;">
-                        <div class="org-box" style="background-color: var(--accent); border-radius: 12px; padding: 14px 20px; min-width: 220px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
-                            <div style="font-size: 10px; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; opacity: 0.9;">Director Técnico Futsal</div>
-                            <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">${dt.name}</div>
-                        </div>
-                        <div class="org-box" style="background-color: #1E3A5F; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 14px 20px; min-width: 220px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
-                            <div style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Coordinación Futsal</div>
-                            <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">${coord.name}</div>
-                        </div>
-                    </div>
-                `;
-            } else if (currentModality === 'fplaya') {
-                const pb = staff.find(m => m.name === "Pedro Barea") || { name: "Pedro Barea", role: "Tutor Técnico de Playa" };
-                level2Html = `
-                    <div style="display: flex; gap: 20px; justify-content: center; width: 100%; flex-wrap: wrap;">
-                        <div class="org-box" style="background-color: var(--accent); border-radius: 12px; padding: 14px 20px; min-width: 240px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" onclick="openOrganigramLightbox()">
-                            <div style="font-size: 10px; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; opacity: 0.9;">Tutor Técnico Fútbol Playa</div>
-                            <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">${pb.name}</div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Level 3 (Selection Body)
-            const selectioners = filteredStaff.filter(m => m.role === 'Seleccionador');
-            const assistants = filteredStaff.filter(m => (m.role.includes('Entrenador') || m.role.includes('Asistente')) && m.role !== 'Seleccionador');
-            const staffOthers = filteredStaff.filter(m => m.role !== 'Seleccionador' && !(m.role.includes('Entrenador') || m.role.includes('Asistente')) && m.id < 28); // Excluding global roles id >= 28
-
-            let level3Html = '';
-            
-            if (selectioners.length > 0) {
-                const selectionerBoxes = selectioners.map(sel => `
-                    <div class="org-box" style="background-color: #1E3A5F; border: 2px solid var(--accent); border-radius: 12px; padding: 12px 20px; min-width: 220px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.25);" onclick="openRoleSpecificModal(${sel.id})">
-                        <div style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">Seleccionador/a</div>
-                        <div style="font-size: 15px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">${sel.name}</div>
-                        <div style="font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px;">${sel.category} (${sel.license})</div>
-                    </div>
-                `).join('');
-
-                const teamBoxes = [...assistants, ...staffOthers].map(member => {
-                    let roleColor = 'var(--accent)';
-                    if (member.role === 'Preparador Físico') roleColor = '#137333';
-                    if (member.role.includes('Fisio')) roleColor = '#b06000';
-                    if (member.role.includes('Analista')) roleColor = '#b06000';
-                    if (member.role === 'Delegado') roleColor = '#c5221f';
-
-                    return `
-                        <div class="org-box" style="background-color: #1E3A5F; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 10px 14px; min-width: 170px; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.15);" onclick="openRoleSpecificModal(${member.id})">
-                            <div style="font-size: 9px; font-weight: 700; color: ${roleColor}; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px;">${member.role}</div>
-                            <div style="font-size: 13px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">${member.name}</div>
-                            <div style="font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 2px;">${member.category}</div>
-                        </div>
-                    `;
-                }).join('');
-
-                level3Html = `
-                    <div style="display: flex; flex-direction: column; align-items: center; width: 100%; gap: 16px;">
-                        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                            ${selectionerBoxes}
-                        </div>
-                        ${teamBoxes.length > 0 ? `
-                            <div style="width: 2px; height: 16px; background-color: rgba(255,255,255,0.25);"></div>
-                            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; width: 100%;">
-                                ${teamBoxes}
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            } else {
-                level3Html = `
-                    <div style="color: rgba(255,255,255,0.6); font-size: 14px; padding: 10px; border: 1px dashed rgba(255,255,255,0.2); border-radius: 8px;">
-                        No hay staff específico registrado para esta selección.
-                    </div>
-                `;
-            }
-
-            // Construct full wrapper
-            const subcat = (SUBMODALITIES_CONFIG[currentModality] || []).find(sub => sub.id === currentSubModality) || { name: 'Selección' };
-            
-            wrapper.innerHTML = `
-                <!-- Nivel 1 -->
-                <div class="org-level level-1" style="display: flex; flex-direction: column; align-items: center; width: 100%; position: relative;">
-                    <div class="org-box" style="background-color: #1E3A5F; border: 2px solid var(--accent); border-radius: 12px; padding: 16px 24px; min-width: 260px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.25);" onclick="openOrganigramLightbox()">
-                        <div style="font-size: 10px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Vicepresidente - Responsable Área Deportiva</div>
-                        <div style="font-size: 17px; font-weight: 700; color: #FFFFFF; font-family: 'Outfit', sans-serif;">${vp.name}</div>
-                    </div>
-                </div>
-
-                <!-- Línea vertical del Nivel 1 al Nivel 2 -->
-                <div style="width: 2px; height: 20px; background-color: rgba(255,255,255,0.25);"></div>
-
-                <!-- Nivel 2 (Directores y Coordinadores de la modalidad) -->
-                ${level2Html}
-
-                <!-- Línea vertical del Nivel 2 al Nivel 3 -->
-                <div style="width: 2px; height: 20px; background-color: rgba(255,255,255,0.25);"></div>
-
-                <!-- Nivel 3: Cuerpo Técnico de la Selección -->
-                <div style="width: 100%; background-color: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: inset 0 1px 4px rgba(0,0,0,0.1);">
-                    <div style="font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px;">
-                        Organigrama Específico: ${subcat.name}
-                    </div>
-                    ${level3Html}
-                </div>
-            `;
+            // No se requiere renderizado dinámico del organigrama porque se muestra la maquetación HTML/CSS estática en el sub-view
         }
 
         function openOrganigramLightbox() {
@@ -14480,7 +14099,7 @@
             const genderVal = document.getElementById('filter-staff-gender') ? document.getElementById('filter-staff-gender').value : 'ALL';
 
             const filtered = staff.filter(m => {
-                const matchesModality = memberMatchesSubModality(m, currentSubModality);
+                const matchesModality = memberMatchesModality(m, currentModality);
                 const mSport = m.sport || 'Fútbol';
                 const mGender = m.gender || 'Masculino';
                 
@@ -15415,7 +15034,6 @@
                                 <select class="form-select" id="staff-category">
                                     <option value="General FFCV">General FFCV</option>
                                     <option value="Absoluta">Absoluta</option>
-                                    <option value="Regiones">Regiones (F11)</option>
                                     <option value="Sub-19">Sub-19</option>
                                     <option value="Sub-16">Sub-16</option>
                                     <option value="Sub-14">Sub-14</option>
@@ -15470,43 +15088,6 @@
             const experiencia = document.getElementById('staff-experiencia').value || "Experiencia en el fútbol territorial.";
             const email = name.toLowerCase().split(' ').join('') + "@ffcv.es";
             
-            // Map the selected category and sport to the correct modality/submodality
-            let mappedModality = currentModality;
-            let mappedSubmodality = "";
-
-            if (sport === 'Fútbol') {
-                if (category === 'Regiones') {
-                    mappedModality = 'f11';
-                    mappedSubmodality = 'f11_regiones';
-                } else if (category === 'Sub-14') {
-                    mappedModality = 'f11';
-                    mappedSubmodality = 'f11_sub14';
-                } else if (category === 'Sub-16') {
-                    mappedModality = 'f11';
-                    mappedSubmodality = 'f11_sub16';
-                } else if (category === 'Sub-12') {
-                    mappedModality = 'f8';
-                    mappedSubmodality = 'f8_sub12';
-                } else {
-                    mappedModality = 'f11';
-                    mappedSubmodality = 'f11_sub16'; // Fallback
-                }
-            } else if (sport === 'Fútbol Sala') {
-                mappedModality = 'futsal';
-                if (category === 'Sub-12') mappedSubmodality = 'futsal_sub12';
-                else if (category === 'Sub-14') mappedSubmodality = 'futsal_sub14';
-                else if (category === 'Sub-16') mappedSubmodality = 'futsal_sub16';
-                else if (category === 'Sub-19') mappedSubmodality = 'futsal_sub19';
-                else mappedSubmodality = 'futsal_sub16'; // Fallback
-            } else if (sport === 'Fútbol Playa') {
-                mappedModality = 'fplaya';
-                if (category === 'Sub-12') mappedSubmodality = 'fplaya_sub12';
-                else if (category === 'Sub-14') mappedSubmodality = 'fplaya_sub14';
-                else if (category === 'Sub-16') mappedSubmodality = 'fplaya_sub16';
-                else if (category === 'Sub-19') mappedSubmodality = 'fplaya_sub19';
-                else mappedSubmodality = 'fplaya_sub16'; // Fallback
-            }
-
             const newMember = {
                 id: staff.length + 1,
                 name,
@@ -15519,8 +15100,7 @@
                 titulos,
                 experiencia,
                 email,
-                modality: mappedModality,
-                submodality: mappedSubmodality,
+                modality: currentModality,
                 status: "Activo"
             };
             
