@@ -15415,6 +15415,7 @@
                                 <select class="form-select" id="staff-category">
                                     <option value="General FFCV">General FFCV</option>
                                     <option value="Absoluta">Absoluta</option>
+                                    <option value="Regiones">Regiones (F11)</option>
                                     <option value="Sub-19">Sub-19</option>
                                     <option value="Sub-16">Sub-16</option>
                                     <option value="Sub-14">Sub-14</option>
@@ -15469,6 +15470,43 @@
             const experiencia = document.getElementById('staff-experiencia').value || "Experiencia en el fútbol territorial.";
             const email = name.toLowerCase().split(' ').join('') + "@ffcv.es";
             
+            // Map the selected category and sport to the correct modality/submodality
+            let mappedModality = currentModality;
+            let mappedSubmodality = "";
+
+            if (sport === 'Fútbol') {
+                if (category === 'Regiones') {
+                    mappedModality = 'f11';
+                    mappedSubmodality = 'f11_regiones';
+                } else if (category === 'Sub-14') {
+                    mappedModality = 'f11';
+                    mappedSubmodality = 'f11_sub14';
+                } else if (category === 'Sub-16') {
+                    mappedModality = 'f11';
+                    mappedSubmodality = 'f11_sub16';
+                } else if (category === 'Sub-12') {
+                    mappedModality = 'f8';
+                    mappedSubmodality = 'f8_sub12';
+                } else {
+                    mappedModality = 'f11';
+                    mappedSubmodality = 'f11_sub16'; // Fallback
+                }
+            } else if (sport === 'Fútbol Sala') {
+                mappedModality = 'futsal';
+                if (category === 'Sub-12') mappedSubmodality = 'futsal_sub12';
+                else if (category === 'Sub-14') mappedSubmodality = 'futsal_sub14';
+                else if (category === 'Sub-16') mappedSubmodality = 'futsal_sub16';
+                else if (category === 'Sub-19') mappedSubmodality = 'futsal_sub19';
+                else mappedSubmodality = 'futsal_sub16'; // Fallback
+            } else if (sport === 'Fútbol Playa') {
+                mappedModality = 'fplaya';
+                if (category === 'Sub-12') mappedSubmodality = 'fplaya_sub12';
+                else if (category === 'Sub-14') mappedSubmodality = 'fplaya_sub14';
+                else if (category === 'Sub-16') mappedSubmodality = 'fplaya_sub16';
+                else if (category === 'Sub-19') mappedSubmodality = 'fplaya_sub19';
+                else mappedSubmodality = 'fplaya_sub16'; // Fallback
+            }
+
             const newMember = {
                 id: staff.length + 1,
                 name,
@@ -15481,8 +15519,8 @@
                 titulos,
                 experiencia,
                 email,
-                modality: currentModality,
-                submodality: currentSubModality || "",
+                modality: mappedModality,
+                submodality: mappedSubmodality,
                 status: "Activo"
             };
             
