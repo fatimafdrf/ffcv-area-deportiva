@@ -2162,11 +2162,11 @@
             color: #FFFFFF !important; /* Texto blanco */
             box-shadow: 0 4px 12px rgba(255, 107, 0, 0.35); /* Sombra suave naranja */
         }
-        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container, #informes-subcategory-tabs-container, #calendario-subcategory-tabs-container, #staff-subcategory-tabs-container {
+        #dashboard-subcategory-tabs-container, #jugadores-subcategory-tabs-container, #convocatorias-subcategory-tabs-container, #sesiones-subcategory-tabs-container, #modelo-subcategory-tabs-container, #informes-subcategory-tabs-container, #calendario-subcategory-tabs-container, #staff-subcategory-tabs-container, #documentacion-subcategory-tabs-container {
             border-radius: 12px;
             box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
         }
-        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn, #informes-subcategory-tabs-container .config-tab-btn, #calendario-subcategory-tabs-container .config-tab-btn, #staff-subcategory-tabs-container .config-tab-btn {
+        #dashboard-subcategory-tabs-container .config-tab-btn, #jugadores-subcategory-tabs-container .config-tab-btn, #convocatorias-subcategory-tabs-container .config-tab-btn, #sesiones-subcategory-tabs-container .config-tab-btn, #modelo-subcategory-tabs-container .config-tab-btn, #informes-subcategory-tabs-container .config-tab-btn, #calendario-subcategory-tabs-container .config-tab-btn, #staff-subcategory-tabs-container .config-tab-btn, #documentacion-subcategory-tabs-container .config-tab-btn {
             font-size: 13px;
             padding: 8px 16px;
             border-radius: 8px;
@@ -4653,6 +4653,9 @@
                         <button class="config-tab-btn" data-modality="fplaya" onclick="changeGlobalModality('fplaya', this)">🏖️ Fútbol Playa</button>
                     </div>
 
+                    <!-- Pestañas de Subcategoría por Modalidad -->
+                    <div id="documentacion-subcategory-tabs-container" class="config-tabs-container" style="display: none; margin-top: -12px; margin-bottom: 24px; background-color: #F8FAFC; border: 1px solid var(--border-color); padding: 6px; gap: 8px;"></div>
+
                     <!-- Dashboard Documental (Resumen de Ficheros) -->
                     <div class="docs-summary-grid">
                         <div class="docs-summary-card">
@@ -6862,6 +6865,10 @@
             if (viewId === 'informes') renderReports();
             if (viewId === 'calendario') renderCalendar();
             if (viewId === 'staff') renderStaff();
+            if (viewId === 'documentacion') {
+                updateSubModalitiesNav();
+                updateDocumentCounts();
+            }
         }
 
         // Hamburguesa en móviles
@@ -10655,6 +10662,7 @@
             const infContainer = document.getElementById('informes-subcategory-tabs-container');
             const calContainer = document.getElementById('calendario-subcategory-tabs-container');
             const staffContainer = document.getElementById('staff-subcategory-tabs-container');
+            const docContainer = document.getElementById('documentacion-subcategory-tabs-container');
             
             const subcategories = SUBMODALITIES_CONFIG[currentModality] || [];
             
@@ -10707,6 +10715,10 @@
                     staffContainer.innerHTML = html;
                     staffContainer.style.display = 'flex';
                 }
+                if (docContainer) {
+                    docContainer.innerHTML = html;
+                    docContainer.style.display = 'flex';
+                }
             } else {
                 currentSubModality = '';
                 localStorage.setItem('ffcv_current_submodality', '');
@@ -10741,6 +10753,10 @@
                 if (staffContainer) {
                     staffContainer.style.display = 'none';
                     staffContainer.innerHTML = '';
+                }
+                if (docContainer) {
+                    docContainer.style.display = 'none';
+                    docContainer.innerHTML = '';
                 }
             }
         }
@@ -10838,6 +10854,17 @@
                 });
             }
 
+            const docContainer = document.getElementById('documentacion-subcategory-tabs-container');
+            if (docContainer) {
+                docContainer.querySelectorAll('.config-tab-btn').forEach(b => {
+                    if (b.getAttribute('data-submodality') === subModId) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+            }
+
             updateCounts();
             renderDashboardView();
             renderPlayersTable();
@@ -10856,6 +10883,9 @@
                 const activeStaffTab = document.querySelector('#view-staff [id^="btn-staff-tab-"].active');
                 const activeStaffTabId = activeStaffTab ? activeStaffTab.id.replace('btn-staff-tab-', '') : 'areas';
                 switchStaffSubTab(activeStaffTabId || 'areas');
+            }
+            if (typeof updateDocumentCounts === 'function') {
+                updateDocumentCounts();
             }
             
             if (btn) {
@@ -15228,6 +15258,9 @@
             const newRow = document.createElement('div');
             newRow.className = 'modern-doc-card';
             newRow.setAttribute('data-modality', currentModality);
+            if (currentSubModality) {
+                newRow.setAttribute('data-submodality', currentSubModality);
+            }
             newRow.style.animation = 'fadeIn 0.4s ease-out';
             
             let formatClass = 'modern-doc-format-pdf';
@@ -15266,7 +15299,19 @@
                 
                 cards.forEach(card => {
                     const modAttr = card.getAttribute('data-modality') || 'f11,f8,futsal,fplaya';
-                    if (modAttr.split(',').includes(currentModality)) {
+                    const subAttr = card.getAttribute('data-submodality');
+                    
+                    const matchesMod = modAttr.split(',').includes(currentModality);
+                    let matchesSub = true;
+                    if (currentSubModality) {
+                        if (subAttr) {
+                            matchesSub = subAttr.split(',').includes(currentSubModality);
+                        } else {
+                            matchesSub = currentSubModality.startsWith(currentModality);
+                        }
+                    }
+                    
+                    if (matchesMod && matchesSub) {
                         card.style.display = 'flex';
                         countVisible++;
                     } else {
