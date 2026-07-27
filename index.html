@@ -1998,35 +1998,37 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            gap: 12px;
+            gap: 10px;
             color: #FFFFFF;
         }
         .builder-header-bar {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
-            background: rgba(10, 37, 64, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 12px;
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: var(--radius-md);
-            padding: 12px 18px;
+            padding: 8px 16px;
+            backdrop-filter: blur(8px);
         }
         .builder-header-bar .form-group {
             margin-bottom: 0 !important;
         }
         .builder-header-bar .form-label {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 11px;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 10.5px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .builder-header-bar .form-input,
         .builder-header-bar .form-select {
-            background: rgba(255, 255, 255, 0.07) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            background: rgba(255, 255, 255, 0.06) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
             color: #FFFFFF !important;
-            font-size: 13px !important;
-            height: 36px !important;
+            font-size: 12.5px !important;
+            height: 32px !important;
+            padding: 4px 10px !important;
         }
         .builder-header-bar .form-input:focus,
         .builder-header-bar .form-select:focus {
@@ -2038,8 +2040,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 6px;
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 5px;
         }
         .builder-tab-bar .tabs-left {
             display: flex;
@@ -2048,37 +2050,72 @@
         }
         .builder-tab-bar .tabs-right {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
         .builder-workspace {
             display: grid;
-            grid-template-columns: 7fr 3fr;
-            gap: 16px;
+            grid-template-columns: 1fr 270px;
+            gap: 12px;
             flex: 1;
             min-height: 0;
         }
         .builder-pitch-area {
-            background: #111e15;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: var(--radius-md);
-            box-shadow: inset 0 0 40px rgba(0,0,0,0.6);
+            background: radial-gradient(circle at center, #163620 0%, #08140c 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: var(--radius-lg);
+            box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.85), 0 10px 25px rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             position: relative;
-            padding: 12px;
+            padding: 6px;
             min-height: 320px;
             overflow: hidden;
         }
+        .builder-pitch-area .pitch {
+            height: 94%;
+            width: auto;
+            max-width: 96%;
+            aspect-ratio: 2.2 / 3;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.35);
+            border: 2px solid rgba(255, 255, 255, 0.85);
+            background: linear-gradient(to bottom, #194a25 0%, #0d2a13 100%);
+        }
+        .builder-pitch-area .pitch.pitch-half {
+            aspect-ratio: 2.2 / 1.5 !important;
+            height: 82%;
+            width: auto;
+        }
+        /* Líneas tácticas vectoriales ultra-finas para el constructor */
+        .builder-pitch-area .pitch-center-line {
+            height: 1.5px;
+            background-color: rgba(255, 255, 255, 0.75);
+        }
+        .builder-pitch-area .pitch-center-circle,
+        .builder-pitch-area .pitch-penalty-top,
+        .builder-pitch-area .pitch-penalty-bottom {
+            border-width: 1.5px;
+            border-color: rgba(255, 255, 255, 0.75);
+        }
+        .builder-pitch-area .pitch-goal-top,
+        .builder-pitch-area .pitch-goal-bottom {
+            border-width: 1.2px;
+            border-color: rgba(255, 255, 255, 0.8);
+        }
+        .builder-pitch-area .pitch-center-spot {
+            width: 6px;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
         .builder-sidebar {
-            background: rgba(10, 37, 64, 0.25);
+            background: rgba(10, 37, 64, 0.35);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: var(--radius-md);
-            padding: 14px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
             overflow-y: auto;
             max-height: 100%;
         }
@@ -2086,39 +2123,49 @@
             margin-bottom: 0;
         }
         .builder-sidebar .form-label {
-            color: rgba(255, 255, 255, 0.75);
-            font-size: 11.5px;
-            margin-bottom: 4px;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 10.5px;
+            margin-bottom: 2px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
         .builder-sidebar .form-input,
         .builder-sidebar .form-select,
         .builder-sidebar textarea {
             background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
             color: #FFFFFF !important;
-            font-size: 12.5px !important;
+            font-size: 12px !important;
+        }
+        .builder-sidebar .form-input,
+        .builder-sidebar .form-select {
+            height: 30px !important;
+            padding: 2px 8px !important;
+            border-radius: 4px !important;
         }
         .builder-sidebar textarea {
-            line-height: 1.4;
+            line-height: 1.35;
             resize: none;
-            height: 60px;
+            height: 48px !important;
+            padding: 4px 8px !important;
+            border-radius: 4px !important;
         }
         .builder-toolbar {
             display: flex;
             justify-content: center;
             gap: 4px;
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(15, 23, 42, 0.92);
             border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 40px;
-            padding: 4px 14px;
+            border-radius: 8px;
+            padding: 2px 10px;
             position: absolute;
-            bottom: 12px;
+            bottom: 8px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
             width: max-content;
             max-width: 95%;
             overflow-x: auto;
@@ -2138,21 +2185,23 @@
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             user-select: none;
         }
         .builder-tool-btn:hover {
-            color: #FFFFFF;
+            color: var(--accent);
             background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
         }
         .builder-tool-btn.disabled,
         .builder-tool-btn[disabled] {
-            opacity: 0.3;
+            opacity: 0.2;
             cursor: not-allowed !important;
         }
         .builder-tool-btn.disabled:hover {
             background: transparent;
             color: rgba(255, 255, 255, 0.65);
+            transform: none;
         }
         .builder-tool-btn svg {
             width: 18px;
