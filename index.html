@@ -4034,6 +4034,73 @@
                      ========================================================================== -->
                 <section class="view" id="view-informes">
                     <style>
+                        /* Estilos del Asistente IA de Voz */
+                        .voice-wave-container {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            gap: 6px;
+                            height: 60px;
+                            margin: 20px 0;
+                            background-color: #F8FAFC;
+                            border-radius: var(--radius-md);
+                            border: 1px solid var(--border-color);
+                        }
+                        .voice-wave-bar {
+                            width: 6px;
+                            height: 12px;
+                            background-color: var(--accent);
+                            border-radius: 3px;
+                            transition: height 0.1s ease;
+                        }
+                        .voice-wave-bar.animating {
+                            animation: pulseWave 1.2s infinite ease-in-out;
+                        }
+                        .voice-wave-bar:nth-child(1) { animation-delay: 0.1s; }
+                        .voice-wave-bar:nth-child(2) { animation-delay: 0.2s; }
+                        .voice-wave-bar:nth-child(3) { animation-delay: 0.3s; }
+                        .voice-wave-bar:nth-child(4) { animation-delay: 0.4s; }
+                        .voice-wave-bar:nth-child(5) { animation-delay: 0.5s; }
+                        .voice-wave-bar:nth-child(6) { animation-delay: 0.4s; }
+                        .voice-wave-bar:nth-child(7) { animation-delay: 0.3s; }
+                        .voice-wave-bar:nth-child(8) { animation-delay: 0.2s; }
+                        .voice-wave-bar:nth-child(9) { animation-delay: 0.1s; }
+
+                        @keyframes pulseWave {
+                            0%, 100% { height: 12px; }
+                            50% { height: 48px; }
+                        }
+
+                        .voice-pulse-dot {
+                            width: 10px;
+                            height: 10px;
+                            border-radius: 50%;
+                            background-color: var(--danger);
+                            display: inline-block;
+                            animation: pulseRed 1.5s infinite;
+                            margin-right: 6px;
+                            vertical-align: middle;
+                        }
+                        @keyframes pulseRed {
+                            0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+                            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+                            100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+                        }
+
+                        .badge-ai-suggested {
+                            background-color: rgba(10, 37, 64, 0.05);
+                            color: var(--primary);
+                            font-size: 11px;
+                            font-weight: 700;
+                            padding: 2px 6px;
+                            border-radius: 4px;
+                            border: 1px dashed var(--border-color);
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 4px;
+                            margin-left: 8px;
+                        }
+
                         #reports-multilevel-container {
                             width: 100%;
                         }
@@ -5691,6 +5758,32 @@
                     <button type="submit" class="btn btn-accent">Guardar Informe</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal: Asistente IA de Informes -->
+    <div class="modal-overlay" id="modal-ai-assistant">
+        <div class="modal-card" style="max-width: 750px; width: 90%; position: relative;">
+            <div class="modal-header" style="background-color: var(--primary); color: #FFFFFF; border-radius: var(--radius-lg) var(--radius-lg) 0 0; padding: 18px 24px;">
+                <h3 class="modal-title" style="color: #FFFFFF; display: flex; align-items: center; gap: 8px; font-size: 18px;">
+                    🤖 Asistente IA de Informes
+                </h3>
+                <button class="close-btn" onclick="closeAIAssistantModal()" aria-label="Cerrar modal" style="color: #FFFFFF; opacity: 0.8; transition: var(--transition-base);">
+                    <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2" style="width: 20px; height: 20px;"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                </button>
+            </div>
+            
+            <div style="background-color: #FFF0E6; color: #E05A00; padding: 10px 24px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255, 107, 0, 0.15);">
+                ℹ️ <span>Prototipo Local: Esta versión estructura sus dictados a partir del análisis de texto local sin almacenamiento remoto de voz.</span>
+            </div>
+
+            <div class="modal-body" id="ai-assistant-modal-body" style="max-height: 65vh; overflow-y: auto; padding: 24px;">
+                <!-- Rellenado dinámicamente mediante JS -->
+            </div>
+            
+            <div class="modal-footer" id="ai-assistant-modal-footer" style="padding: 16px 24px; display: flex; justify-content: space-between; border-top: 1px solid var(--border-color); background-color: var(--bg-app); border-radius: 0 0 var(--radius-lg) var(--radius-lg);">
+                <!-- Rellenado dinámicamente mediante JS -->
+            </div>
         </div>
     </div>
 
@@ -8179,10 +8272,15 @@
                         <button class="config-tab-btn ${activeType === 'Individual' ? 'active' : ''}" onclick="changeReportType('Individual')" style="font-size: 12.5px; padding: 6px 14px; border-radius: 6px; font-weight: 600; border: none; cursor: pointer;">👤 Informes Individuales</button>
                         <button class="config-tab-btn ${activeType === 'Equipo' ? 'active' : ''}" onclick="changeReportType('Equipo')" style="font-size: 12.5px; padding: 6px 14px; border-radius: 6px; font-weight: 600; border: none; cursor: pointer;">👥 Informes de Equipo</button>
                     </div>
-                    <button class="btn btn-accent btn-sm" onclick="openCreateReportModal()" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; padding: 8px 16px;">
-                        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                        + Crear nuevo informe
-                    </button>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <button class="btn btn-primary btn-sm" onclick="openAIAssistantModal()" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; padding: 8px 16px; background-color: var(--primary); border: 1px solid var(--border-color); color: #FFFFFF;">
+                            🤖 Asistente IA
+                        </button>
+                        <button class="btn btn-accent btn-sm" onclick="openCreateReportModal()" style="display:inline-flex; align-items:center; gap:6px; font-weight:600; padding: 8px 16px;">
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            Crear nuevo informe
+                        </button>
+                    </div>
                 </div>
             `;
 
@@ -8192,7 +8290,10 @@
                 html += `
                     <div style="text-align:center; padding:60px 20px; background:var(--bg-card); border:1px dashed var(--border-color); border-radius:var(--radius-lg); margin-top:20px;">
                         <p style="color:var(--text-muted); font-size:15px; margin-bottom:12px;">No se han encontrado informes registrados en esta categoría.</p>
-                        <button class="btn btn-outline btn-sm" onclick="openCreateReportModal()">Crear el primer informe</button>
+                        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                            <button class="btn btn-outline btn-sm" onclick="openCreateReportModal()">Crear el primer informe</button>
+                            <button class="btn btn-primary btn-sm" onclick="openAIAssistantModal()" style="background-color: var(--primary); color: #FFFFFF; border: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px;">🤖 Crear con Asistente IA</button>
+                        </div>
                     </div>
                 `;
             } else {
@@ -8991,6 +9092,23 @@
                                 <p class="final-valuation-text">${r.observations || 'Sin observaciones adicionales de la dirección deportiva.'}</p>
                             </div>
                         </div>
+
+                        ${r.isAI && r.aiDetails ? `
+                        <!-- Detalle IA Premium -->
+                        <div style="background-color: rgba(10, 37, 64, 0.03); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; margin-top: 16px;">
+                            <h3 style="font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 14px; border-bottom: 2px solid var(--accent); padding-bottom: 4px; text-transform: uppercase;">
+                                🤖 Desglose del Asistente IA
+                            </h3>
+                            <div style="display: flex; flex-direction: column; gap: 14px; font-size: 12.5px; line-height: 1.5; color: var(--text-main);">
+                                <div><strong>Aspectos Técnicos:</strong> ${r.aiDetails.aspectosTecnicos || 'Sin valoración registrada.'}</div>
+                                <div><strong>Aspectos Tácticos:</strong> ${r.aiDetails.aspectosTacticos || 'Sin valoración registrada.'}</div>
+                                <div><strong>Aspectos Físicos:</strong> ${r.aiDetails.aspectosFisicos || 'Sin valoración registrada.'}</div>
+                                <div><strong>Aspectos Psicológicos:</strong> ${r.aiDetails.aspectosPsicologicos || 'Sin valoración registrada.'}</div>
+                                <div><strong>Recomendaciones:</strong> ${r.aiDetails.recomendaciones || 'Sin valoración registrada.'}</div>
+                                <div><strong>Plan de Mejora:</strong> ${r.aiDetails.planMejora || 'Sin valoración registrada.'}</div>
+                            </div>
+                        </div>
+                        ` : ''}
 
                         <!-- 8. Resumen Final -->
                         <div class="closing-summary-card">
@@ -10403,6 +10521,928 @@
             closeModal('modal-informe');
             renderReports();
             showToast('Informe deportivo guardado con éxito', 'success');
+        }
+
+        // ==========================================================================
+        // ASISTENTE IA DE INFORMES – LÓGICA DE CONTROL
+        // ==========================================================================
+        let aiRecognition = null;
+        let aiRecognitionActive = false;
+        let aiRecognitionPaused = false;
+        let aiTranscriptText = "";
+        let aiTimerInterval = null;
+        let aiTimerSeconds = 0;
+        let aiCurrentStep = 1;
+        let aiSimulatedVolumeInterval = null;
+
+        // Form data parsed
+        let aiSelectedPlayerId = "";
+        let aiSelectedModality = "";
+        let aiSelectedSubmodality = "";
+        let aiSelectedEvent = "";
+        let aiSelectedDate = "";
+        let aiParsedResult = null;
+
+        function openAIAssistantModal() {
+            aiCurrentStep = 1;
+            aiTranscriptText = "";
+            aiTimerSeconds = 0;
+            aiRecognitionActive = false;
+            aiRecognitionPaused = false;
+            
+            // Set default date
+            const today = new Date().toISOString().split('T')[0];
+            aiSelectedDate = today;
+            
+            // Auto detect current tab state if loaded inside a subcategory
+            aiSelectedModality = currentModality || "f11";
+            aiSelectedSubmodality = currentSubModality || "";
+            
+            renderAIStep(1);
+            openModal('modal-ai-assistant');
+        }
+
+        function closeAIAssistantModal() {
+            stopAIRecording(true); // stop capture and cleanup SpeechRecognition
+            closeModal('modal-ai-assistant');
+        }
+
+        function renderAIStep(step) {
+            aiCurrentStep = step;
+            const body = document.getElementById('ai-assistant-modal-body');
+            const footer = document.getElementById('ai-assistant-modal-footer');
+            if (!body || !footer) return;
+
+            if (step === 1) {
+                // PASO 1: Configuración de Datos
+                const modalitySelectOptions = `
+                    <option value="f11" ${aiSelectedModality === 'f11' ? 'selected' : ''}>⚽ Fútbol 11</option>
+                    <option value="f8" ${aiSelectedModality === 'f8' ? 'selected' : ''}>⚽ Fútbol 8</option>
+                    <option value="futsal" ${aiSelectedModality === 'futsal' ? 'selected' : ''}>🏟️ Fútbol Sala</option>
+                    <option value="fplaya" ${aiSelectedModality === 'fplaya' ? 'selected' : ''}>🏖️ Fútbol Playa</option>
+                `;
+
+                // Load players for the selects
+                const filteredPlayers = players.filter(p => p.modality === aiSelectedModality);
+                let playerSelectOptions = '<option value="">-- Seleccionar Jugador --</option>';
+                filteredPlayers.forEach(p => {
+                    playerSelectOptions += `<option value="${p.id}" ${aiSelectedPlayerId == p.id ? 'selected' : ''}>${p.name} (${p.club}) - ${p.category}</option>`;
+                });
+
+                // Load submodalities config
+                const subcats = SUBMODALITIES_CONFIG[aiSelectedModality] || [];
+                let submodalitySelectOptions = '<option value="">-- Seleccionar Selección --</option>';
+                subcats.forEach(sub => {
+                    submodalitySelectOptions += `<option value="${sub.id}" ${aiSelectedSubmodality === sub.id ? 'selected' : ''}>${sub.name}</option>`;
+                });
+
+                // Load events (convocatorias/sessions) matching modality
+                const matchedCalls = convocatorias.filter(c => c.modality === aiSelectedModality);
+                const matchedSessions = sessions.filter(s => s.modality === aiSelectedModality);
+                let eventSelectOptions = '<option value="">-- Seleccionar Evento (Opcional) --</option>';
+                
+                matchedCalls.forEach(c => {
+                    eventSelectOptions += `<option value="Call:${c.id}" ${aiSelectedEvent === 'Call:'+c.id ? 'selected' : ''}>📅 Convocatoria: ${c.name} (${c.date})</option>`;
+                });
+                matchedSessions.forEach(s => {
+                    eventSelectOptions += `<option value="Session:${s.id}" ${aiSelectedEvent === 'Session:'+s.id ? 'selected' : ''}>🏋️ Sesión: ${s.title} (${s.date})</option>`;
+                });
+
+                body.innerHTML = `
+                    <style>
+                        .form-grid-ai {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 16px;
+                        }
+                        @media (max-width: 550px) {
+                            .form-grid-ai { grid-template-columns: 1fr; }
+                        }
+                    </style>
+                    <div style="display:flex; flex-direction:column; gap:16px;">
+                        <h4 style="font-size:15px; font-weight:700; color:var(--primary); margin-bottom:4px;">Paso 1: Información del Jugador y Contexto</h4>
+                        <div class="form-grid-ai">
+                            <div class="form-group">
+                                <label class="form-label" for="ai-player-select">Jugador</label>
+                                <select class="form-select" id="ai-player-select" onchange="onAIPlayerChange(this.value)">
+                                    ${playerSelectOptions}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="ai-modality-select">Modalidad</label>
+                                <select class="form-select" id="ai-modality-select" onchange="onAIModalityChange(this.value)">
+                                    ${modalitySelectOptions}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-grid-ai">
+                            <div class="form-group">
+                                <label class="form-label" for="ai-submodality-select">Selección / Categoría</label>
+                                <select class="form-select" id="ai-submodality-select" onchange="aiSelectedSubmodality = this.value">
+                                    ${submodalitySelectOptions}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="ai-date-input">Fecha del Informe</label>
+                                <input type="date" class="form-input" id="ai-date-input" value="${aiSelectedDate}" onchange="aiSelectedDate = this.value">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="ai-event-select">Partido o entrenamiento (Opcional)</label>
+                            <select class="form-select" id="ai-event-select" onchange="aiSelectedEvent = this.value">
+                                ${eventSelectOptions}
+                            </select>
+                        </div>
+                    </div>
+                `;
+
+                footer.innerHTML = `
+                    <button type="button" class="btn btn-outline" onclick="closeAIAssistantModal()">Cancelar</button>
+                    <button type="button" class="btn btn-accent" onclick="goToAIStep(2)" ${!aiSelectedPlayerId ? 'disabled' : ''} id="ai-next-btn-step1">Siguiente</button>
+                `;
+
+            } else if (step === 2) {
+                // PASO 2: Grabación de voz / Entrada manual
+                const p = players.find(x => x.id == aiSelectedPlayerId);
+                const playerName = p ? p.name : "";
+                const subcat = (SUBMODALITIES_CONFIG[aiSelectedModality] || []).find(x => x.id === aiSelectedSubmodality);
+                const subcatName = subcat ? subcat.name : "";
+
+                body.innerHTML = `
+                    <div style="display:flex; flex-direction:column; gap:16px; text-align:center;">
+                        <div style="background-color: var(--bg-app); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px; font-size:13px; text-align:left;">
+                            👤 <strong>Jugador a evaluar:</strong> ${playerName} <br>
+                            🏆 <strong>Selección:</strong> ${subcatName} (${aiSelectedModality.toUpperCase()}) <br>
+                            📅 <strong>Fecha:</strong> ${aiSelectedDate}
+                        </div>
+                        
+                        <div style="margin: 10px 0;">
+                            <span style="font-size:13px; font-weight:700; color:var(--text-muted); display:block; margin-bottom:8px;">DICTAR VALORACIÓN TÉCNICA</span>
+                            
+                            <div class="voice-wave-container" id="ai-voice-wave-container">
+                                <div class="voice-wave-bar"></div>
+                                <div class="voice-wave-bar"></div>
+                                <div class="voice-wave-bar"></div>
+                                <div class="voice-wave-bar"></div>
+                                <div class="voice-wave-bar"></div>
+                                <div class="voice-wave-bar"></div>
+                                <div class="voice-wave-bar"></div>
+                                <div class="voice-wave-bar"></div>
+                                <div class="voice-wave-bar"></div>
+                            </div>
+                            
+                            <div style="font-size: 28px; font-weight: 800; color: var(--primary); font-family: monospace; margin: 10px 0;" id="ai-chronometer">
+                                00:00
+                            </div>
+                            
+                            <div style="display:flex; justify-content:center; gap:12px; margin-top:16px;">
+                                <button class="btn btn-accent" id="ai-record-btn" onclick="toggleAIRecording()" style="min-width:180px; padding: 12px 24px;">
+                                    🎙️ Comenzar Dictado
+                                </button>
+                                <button class="btn btn-outline" id="ai-pause-btn" onclick="toggleAIPause()" style="display:none;">
+                                    ⏸️ Pausar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="border-top: 1px solid var(--border-color); padding-top:16px; text-align:left; margin-top:8px;">
+                            <span style="font-size:12.5px; font-weight:700; color:var(--primary); display:block; margin-bottom:6px;">Alternativa: Escribir o Cargar Ejemplo para pruebas</span>
+                            <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Si no deseas dictar o tu navegador no dispone de micrófono, escribe en la caja de abajo o carga un texto demo:</p>
+                            
+                            <div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+                                <button class="btn btn-outline btn-sm" onclick="loadAIDemoText(1)" style="font-size:11px;">📋 Cargar Ejemplo 1 (Juan - Central)</button>
+                                <button class="btn btn-outline btn-sm" onclick="loadAIDemoText(2)" style="font-size:11px;">📋 Cargar Ejemplo 2 (Lucas - Mediocentro)</button>
+                            </div>
+
+                            <textarea class="form-input" id="ai-manual-textarea" placeholder="Escribe o pega aquí la valoración del jugador para procesar..." style="width:100%; height:100px; font-family:inherit; resize:none; padding:10px;" oninput="onAIManualTextChange(this.value)"></textarea>
+                        </div>
+                    </div>
+                `;
+
+                footer.innerHTML = `
+                    <button type="button" class="btn btn-outline" onclick="goToAIStep(1)">Atrás</button>
+                    <button type="button" class="btn btn-accent" onclick="goToAIStep(3)" id="ai-step2-next-btn" disabled>Siguiente</button>
+                `;
+
+                // Set focus text if already filled
+                if (aiTranscriptText) {
+                    document.getElementById('ai-manual-textarea').value = aiTranscriptText;
+                    document.getElementById('ai-step2-next-btn').removeAttribute('disabled');
+                }
+
+                initAISpeechRecognition();
+
+            } else if (step === 3) {
+                // PASO 3: Revisión del Borrador
+                body.innerHTML = `
+                    <div style="display:flex; flex-direction:column; gap:16px;">
+                        <h4 style="font-size:15px; font-weight:700; color:var(--primary);">Paso 3: Revisión del Borrador</h4>
+                        <p style="font-size:13px; color:var(--text-muted); margin:0;">Corrige los errores ortográficos o añade anotaciones al dictado antes de estructurar el borrador:</p>
+                        
+                        <textarea class="form-input" id="ai-final-transcript-textarea" style="width:100%; height:200px; font-family:inherit; padding:12px; line-height:1.6;" oninput="aiTranscriptText = this.value">${aiTranscriptText}</textarea>
+                    </div>
+                `;
+
+                footer.innerHTML = `
+                    <button type="button" class="btn btn-outline" onclick="goToAIStep(2)">Atrás</button>
+                    <button type="button" class="btn btn-accent" onclick="processAITranscript()">Organizar valoración</button>
+                `;
+
+            } else if (step === 4) {
+                // PASO 4: Pantalla de Carga
+                body.innerHTML = `
+                    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:50px 20px; gap:20px; text-align:center;">
+                        <div style="width:50px; height:50px; border:4px solid rgba(10, 37, 64, 0.1); border-top-color:#FF6B00; border-radius:50%; animation:spin 1s linear infinite;"></div>
+                        <div>
+                            <h4 style="font-size:16px; font-weight:700; color:var(--primary); margin-bottom:6px;" id="ai-loading-title">Estructurando borrador localmente...</h4>
+                            <p style="font-size:13px; color:var(--text-muted);" id="ai-loading-desc">Organizando valoración por apartados.</p>
+                        </div>
+                    </div>
+                    <style>
+                        @keyframes spin {
+                            to { transform: rotate(360deg); }
+                        }
+                    </style>
+                `;
+                footer.innerHTML = `
+                    <button type="button" class="btn btn-outline" disabled>Atrás</button>
+                    <button type="button" class="btn btn-accent" disabled>Organizar valoración</button>
+                `;
+
+            } else if (step === 5) {
+                // PASO 5: Vista Previa del Borrador
+                const p = players.find(x => x.id == aiSelectedPlayerId);
+                const playerName = p ? p.name : "";
+                
+                // Get active logged in user for scout name
+                const user = JSON.parse(localStorage.getItem('ffcv_logged_in_user'));
+                const scoutName = user ? `${user.name} ${user.surname}` : "";
+
+                body.innerHTML = `
+                    <style>
+                        .preview-section {
+                            border: 1px solid var(--border-color);
+                            border-radius: var(--radius-md);
+                            padding: 16px;
+                            margin-bottom: 16px;
+                            background: var(--bg-app);
+                        }
+                        .preview-section-title {
+                            font-size: 13px;
+                            font-weight: 700;
+                            color: var(--primary);
+                            border-bottom: 2px solid #FF6B00;
+                            padding-bottom: 4px;
+                            margin-bottom: 12px;
+                            text-transform: uppercase;
+                        }
+                        .suggested-label-wrapper {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            margin-bottom: 4px;
+                        }
+                    </style>
+                    <div style="display:flex; flex-direction:column; gap:16px;">
+                        <div style="background-color: #E0F2FE; color: #0369A1; padding:12px; border-radius:var(--radius-md); border-left: 4px solid #0EA5E9; font-size:12.5px;">
+                            💡 <strong>Revisión obligatoria:</strong> Se ha clasificado el texto para estructurar el borrador. <strong>Por favor, selecciona las notas numéricas correspondientes y valida los textos de cada apartado.</strong>
+                        </div>
+                        
+                        <!-- 1. Datos Generales -->
+                        <div class="preview-section">
+                            <div class="preview-section-title">1. Datos Generales</div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                <div class="form-group">
+                                    <label class="form-label">Nombre del Jugador</label>
+                                    <input type="text" class="form-input" id="ai-prev-name" value="${playerName}" required readonly style="background-color:#E2E8F0;">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Scout / Evaluador</label>
+                                    <input type="text" class="form-input" id="ai-prev-scout" value="${scoutName}" placeholder="Introducir evaluador manualmente">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. Valoraciones Deportivas (Confirmación Obligatoria, sin preselección) -->
+                        <div class="preview-section">
+                            <div class="preview-section-title">2. Valoraciones Numéricas (Confirmación Obligatoria)</div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                                <div class="form-group">
+                                    <label class="form-label">Valoración Técnica</label>
+                                    <select class="form-select" id="ai-prev-val-tech">
+                                        <option value="" selected>-- Seleccionar valoración --</option>
+                                        <option value="1">1 - Muy mejorable</option>
+                                        <option value="2">2 - Mejorable</option>
+                                        <option value="3">3 - Adecuado</option>
+                                        <option value="4">4 - Notable</option>
+                                        <option value="5">5 - Excelente</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Valoración Táctica</label>
+                                    <select class="form-select" id="ai-prev-val-tact">
+                                        <option value="" selected>-- Seleccionar valoración --</option>
+                                        <option value="1">1 - Muy mejorable</option>
+                                        <option value="2">2 - Mejorable</option>
+                                        <option value="3">3 - Adecuado</option>
+                                        <option value="4">4 - Notable</option>
+                                        <option value="5">5 - Excelente</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;">
+                                <div class="form-group">
+                                    <label class="form-label">Valoración Física</label>
+                                    <select class="form-select" id="ai-prev-val-phys">
+                                        <option value="" selected>-- Seleccionar valoración --</option>
+                                        <option value="1">1 - Muy mejorable</option>
+                                        <option value="2">2 - Mejorable</option>
+                                        <option value="3">3 - Adecuado</option>
+                                        <option value="4">4 - Notable</option>
+                                        <option value="5">5 - Excelente</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Valoración Psicológica</label>
+                                    <select class="form-select" id="ai-prev-val-psyc">
+                                        <option value="" selected>-- Seleccionar valoración --</option>
+                                        <option value="1">1 - Muy mejorable</option>
+                                        <option value="2">2 - Mejorable</option>
+                                        <option value="3">3 - Adecuado</option>
+                                        <option value="4">4 - Notable</option>
+                                        <option value="5">5 - Excelente</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px;">
+                                <div class="form-group">
+                                    <label class="form-label">Valoración Actitudinal</label>
+                                    <select class="form-select" id="ai-prev-val-att">
+                                        <option value="" selected>-- Seleccionar valoración --</option>
+                                        <option value="1">1 - Muy mejorable</option>
+                                        <option value="2">2 - Mejorable</option>
+                                        <option value="3">3 - Adecuado</option>
+                                        <option value="4">4 - Notable</option>
+                                        <option value="5">5 - Excelente</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Valoración Social</label>
+                                    <select class="form-select" id="ai-prev-val-soc">
+                                        <option value="" selected>-- Seleccionar valoración --</option>
+                                        <option value="1">1 - Muy mejorable</option>
+                                        <option value="2">2 - Mejorable</option>
+                                        <option value="3">3 - Adecuado</option>
+                                        <option value="4">4 - Notable</option>
+                                        <option value="5">5 - Excelente</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. Apartados del Informe -->
+                        <div class="preview-section">
+                            <div class="preview-section-title">3. Apartados Detallados</div>
+                            <div class="form-group">
+                                <label class="form-label">Valoración General / Conclusión</label>
+                                <textarea class="form-input" id="ai-prev-conclusion" style="height:90px; font-family:inherit; line-height:1.5;">${aiParsedResult.conclusion}</textarea>
+                            </div>
+                            <div class="form-group" style="margin-top:12px;">
+                                <label class="form-label">Aspectos Técnicos</label>
+                                <textarea class="form-input" id="ai-prev-tecnico" style="height:70px; font-family:inherit; line-height:1.5;">${aiParsedResult.tecnico}</textarea>
+                            </div>
+                            <div class="form-group" style="margin-top:12px;">
+                                <label class="form-label">Aspectos Tácticos</label>
+                                <textarea class="form-input" id="ai-prev-tactico" style="height:70px; font-family:inherit; line-height:1.5;">${aiParsedResult.tactico}</textarea>
+                            </div>
+                            <div class="form-group" style="margin-top:12px;">
+                                <label class="form-label">Aspectos Físicos</label>
+                                <textarea class="form-input" id="ai-prev-fisico" style="height:70px; font-family:inherit; line-height:1.5;">${aiParsedResult.fisico}</textarea>
+                            </div>
+                            <div class="form-group" style="margin-top:12px;">
+                                <label class="form-label">Aspectos Psicológicos</label>
+                                <textarea class="form-input" id="ai-prev-psicologico" style="height:70px; font-family:inherit; line-height:1.5;">${aiParsedResult.psicologico}</textarea>
+                            </div>
+                            <div class="form-group" style="margin-top:12px;">
+                                <label class="form-label">Fortalezas</label>
+                                <textarea class="form-input" id="ai-prev-strengths" style="height:70px; font-family:inherit; line-height:1.5;">${aiParsedResult.strengths}</textarea>
+                            </div>
+                            <div class="form-group" style="margin-top:12px;">
+                                <label class="form-label">Aspectos de Mejora</label>
+                                <textarea class="form-input" id="ai-prev-weaknesses" style="height:70px; font-family:inherit; line-height:1.5;">${aiParsedResult.weaknesses}</textarea>
+                            </div>
+                            <div class="form-group" style="margin-top:12px;">
+                                <label class="form-label">Recomendaciones</label>
+                                <textarea class="form-input" id="ai-prev-recomendaciones" style="height:70px; font-family:inherit; line-height:1.5;">${aiParsedResult.recomendaciones}</textarea>
+                            </div>
+                            <div class="form-group" style="margin-top:12px;">
+                                <label class="form-label">Plan de Mejora</label>
+                                <textarea class="form-input" id="ai-prev-plan" style="height:70px; font-family:inherit; line-height:1.5;">${aiParsedResult.planMejora}</textarea>
+                            </div>
+                        </div>
+                        
+                        <!-- 4. Datos Estadísticos e Información de Cierre (Inputs vacíos por defecto) -->
+                        <div class="preview-section">
+                            <div class="preview-section-title">4. Datos Administrativos y Estadísticos</div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+                                <div class="form-group">
+                                    <label class="form-label">Potencial</label>
+                                    <select class="form-select" id="ai-prev-potential">
+                                        <option value="" selected>-- Seleccionar potencial --</option>
+                                        <option value="Élite Nacional">Élite Nacional</option>
+                                        <option value="Alto Potencial">Alto Potencial</option>
+                                        <option value="Destacado">Destacado</option>
+                                        <option value="En Desarrollo">En Desarrollo</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Próxima Revisión</label>
+                                    <input type="text" class="form-input" id="ai-prev-next-review" value="" placeholder="Ej: Próxima convocatoria">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Cargo Evaluador</label>
+                                    <input type="text" class="form-input" id="ai-prev-scout-role" value="" placeholder="Ej: Analista FFCV">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                footer.innerHTML = `
+                    <button type="button" class="btn btn-outline" onclick="goToAIStep(3)">Atrás</button>
+                    <button type="button" class="btn btn-accent" onclick="saveAIReport()">Guardar Borrador</button>
+                `;
+            }
+        }
+
+        function onAIPlayerChange(val) {
+            aiSelectedPlayerId = val;
+            if (!val) {
+                document.getElementById('ai-next-btn-step1').setAttribute('disabled', 'true');
+                return;
+            }
+            document.getElementById('ai-next-btn-step1').removeAttribute('disabled');
+            
+            // Look up player
+            const p = players.find(x => x.id == val);
+            if (p) {
+                aiSelectedModality = p.modality;
+                // find category submodality matching
+                const subcats = SUBMODALITIES_CONFIG[p.modality] || [];
+                const sub = subcats.find(s => s.filterCat === p.category);
+                if (sub) {
+                    aiSelectedSubmodality = sub.id;
+                } else if (subcats.length > 0) {
+                    aiSelectedSubmodality = subcats[0].id;
+                }
+                
+                // Redraw Step 1 to update dropdown selections
+                renderAIStep(1);
+            }
+        }
+
+        function onAIModalityChange(val) {
+            aiSelectedModality = val;
+            // set default submodality
+            const subcats = SUBMODALITIES_CONFIG[val] || [];
+            if (subcats.length > 0) {
+                aiSelectedSubmodality = subcats[0].id;
+            } else {
+                aiSelectedSubmodality = "";
+            }
+            aiSelectedPlayerId = "";
+            renderAIStep(1);
+        }
+
+        function goToAIStep(step) {
+            if (step === 2) {
+                // Validate players select
+                if (!aiSelectedPlayerId) return;
+            }
+            renderAIStep(step);
+        }
+
+        function loadAIDemoText(demoId) {
+            let text = "";
+            if (demoId === 1) {
+                text = "Juan ha realizado un gran partido. Muy sólido en defensa, excelente en las coberturas y muy concentrado durante todo el encuentro. Debe mejorar la salida de balón y utilizar más la pierna izquierda. Ha terminado físicamente muy bien y ha demostrado liderazgo en los momentos difíciles.";
+            } else if (demoId === 2) {
+                text = "Lucas ha estado muy activo en el centro del campo. Ha distribuido con criterio, filtrando pases a la espalda. Tácticamente inteligente en el posicionamiento defensivo, aunque físicamente le costó terminar el partido. Actitud inmejorable.";
+            }
+            
+            aiTranscriptText = text;
+            const textarea = document.getElementById('ai-manual-textarea');
+            if (textarea) {
+                textarea.value = text;
+            }
+            const nextBtn = document.getElementById('ai-step2-next-btn');
+            if (nextBtn) {
+                nextBtn.removeAttribute('disabled');
+            }
+        }
+
+        function onAIManualTextChange(val) {
+            aiTranscriptText = val;
+            const nextBtn = document.getElementById('ai-step2-next-btn');
+            if (nextBtn) {
+                if (val.trim().length > 0) {
+                    nextBtn.removeAttribute('disabled');
+                } else {
+                    nextBtn.setAttribute('disabled', 'true');
+                }
+            }
+        }
+
+        // SPEECH RECOGNITION API INTEGRATION
+        function initAISpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const btn = document.getElementById('ai-record-btn');
+            
+            if (!SpeechRecognition) {
+                if (btn) btn.innerHTML = "🎙️ Micrófono no compatible";
+                return;
+            }
+
+            if (!aiRecognition) {
+                aiRecognition = new SpeechRecognition();
+                aiRecognition.continuous = true;
+                aiRecognition.interimResults = true;
+                aiRecognition.lang = 'es-ES';
+
+                aiRecognition.onresult = function(event) {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            finalTranscript += event.results[i][0].transcript;
+                        } else {
+                            interimTranscript += event.results[i][0].transcript;
+                        }
+                    }
+                    const text = (aiTranscriptText + ' ' + finalTranscript + ' ' + interimTranscript).trim();
+                    const textarea = document.getElementById('ai-manual-textarea');
+                    if (textarea) {
+                        textarea.value = text;
+                    }
+                    const nextBtn = document.getElementById('ai-step2-next-btn');
+                    if (nextBtn) {
+                        if (text.length > 0) nextBtn.removeAttribute('disabled');
+                    }
+                };
+
+                aiRecognition.onerror = function(event) {
+                    console.error("Speech recognition error:", event.error);
+                    stopAIRecording(true);
+                    showToast('Error en grabación de audio: ' + event.error, 'danger');
+                };
+
+                aiRecognition.onend = function() {
+                    if (aiRecognitionActive && !aiRecognitionPaused) {
+                        // Restart recognition if it ends unexpectedly while active
+                        try {
+                            aiRecognition.start();
+                        } catch (e) {}
+                    }
+                };
+            }
+        }
+
+        function toggleAIRecording() {
+            if (!aiRecognition) {
+                showToast("El navegador no soporta captura de voz. Por favor, escribe manualmente.", "info");
+                return;
+            }
+
+            const recBtn = document.getElementById('ai-record-btn');
+            const pauseBtn = document.getElementById('ai-pause-btn');
+            
+            if (!aiRecognitionActive) {
+                // START
+                try {
+                    aiRecognition.start();
+                    aiRecognitionActive = true;
+                    aiRecognitionPaused = false;
+                    
+                    if (recBtn) recBtn.innerHTML = "🛑 Finalizar Dictado";
+                    if (pauseBtn) {
+                        pauseBtn.style.display = "inline-flex";
+                        pauseBtn.innerHTML = "⏸️ Pausar";
+                    }
+                    
+                    // Start timer
+                    aiTimerSeconds = 0;
+                    updateAITimer();
+                    aiTimerInterval = setInterval(() => {
+                        aiTimerSeconds++;
+                        updateAITimer();
+                    }, 1000);
+
+                    // Start soundwave animation
+                    document.querySelectorAll('.voice-wave-bar').forEach(bar => {
+                        bar.classList.add('animating');
+                    });
+                    
+                    // Simulate volume activity
+                    aiSimulatedVolumeInterval = setInterval(() => {
+                        document.querySelectorAll('.voice-wave-bar').forEach(bar => {
+                            const val = Math.random() * 40 + 8;
+                            bar.style.height = val + 'px';
+                        });
+                    }, 150);
+
+                } catch (e) {
+                    showToast("Error al iniciar micrófono. Comprueba los permisos.", "danger");
+                    stopAIRecording(true);
+                }
+            } else {
+                // FINISH / STOP
+                const textarea = document.getElementById('ai-manual-textarea');
+                if (textarea) {
+                    aiTranscriptText = textarea.value;
+                }
+                stopAIRecording(false);
+                goToAIStep(3);
+            }
+        }
+
+        function toggleAIPause() {
+            const pauseBtn = document.getElementById('ai-pause-btn');
+            if (!aiRecognitionActive) return;
+
+            if (!aiRecognitionPaused) {
+                // PAUSE
+                aiRecognitionPaused = true;
+                try {
+                    aiRecognition.stop();
+                } catch(e) {}
+                
+                if (pauseBtn) pauseBtn.innerHTML = "▶️ Reanudar";
+                
+                // Stop timer & animation
+                clearInterval(aiTimerInterval);
+                clearInterval(aiSimulatedVolumeInterval);
+                document.querySelectorAll('.voice-wave-bar').forEach(bar => {
+                    bar.classList.remove('animating');
+                    bar.style.height = '12px';
+                });
+            } else {
+                // RESUME
+                aiRecognitionPaused = false;
+                try {
+                    aiRecognition.start();
+                } catch(e) {}
+                
+                if (pauseBtn) pauseBtn.innerHTML = "⏸️ Pausar";
+                
+                // Resume timer & animation
+                aiTimerInterval = setInterval(() => {
+                    aiTimerSeconds++;
+                    updateAITimer();
+                }, 1000);
+                
+                document.querySelectorAll('.voice-wave-bar').forEach(bar => {
+                    bar.classList.add('animating');
+                });
+                aiSimulatedVolumeInterval = setInterval(() => {
+                    document.querySelectorAll('.voice-wave-bar').forEach(bar => {
+                        const val = Math.random() * 40 + 8;
+                        bar.style.height = val + 'px';
+                    });
+                }, 150);
+            }
+        }
+
+        function stopAIRecording(cancel = false) {
+            clearInterval(aiTimerInterval);
+            clearInterval(aiSimulatedVolumeInterval);
+            
+            if (aiRecognition) {
+                try {
+                    aiRecognition.stop();
+                } catch(e) {}
+            }
+            
+            aiRecognitionActive = false;
+            aiRecognitionPaused = false;
+            
+            const recBtn = document.getElementById('ai-record-btn');
+            const pauseBtn = document.getElementById('ai-pause-btn');
+            if (recBtn) recBtn.innerHTML = "🎙️ Comenzar Dictado";
+            if (pauseBtn) pauseBtn.style.display = "none";
+            
+            document.querySelectorAll('.voice-wave-bar').forEach(bar => {
+                bar.classList.remove('animating');
+                bar.style.height = '12px';
+            });
+
+            if (cancel) {
+                aiTranscriptText = "";
+            }
+        }
+
+        function updateAITimer() {
+            const min = String(Math.floor(aiTimerSeconds / 60)).padStart(2, '0');
+            const sec = String(aiTimerSeconds % 60).padStart(2, '0');
+            const el = document.getElementById('ai-chronometer');
+            if (el) el.innerHTML = `<span class="voice-pulse-dot"></span> ${min}:${sec}`;
+        }
+
+        function processAITranscript() {
+            if (!aiTranscriptText || aiTranscriptText.trim().length === 0) {
+                showToast("Por favor, introduce una transcripción válida.", "warning");
+                return;
+            }
+            
+            // Go to loading step
+            goToAIStep(4);
+            
+            setTimeout(() => {
+                // Parse text locally
+                aiParsedResult = parseTranscriptLocal(aiTranscriptText);
+                
+                // Transition to Step 5
+                goToAIStep(5);
+            }, 2000);
+        }
+
+        function parseTranscriptLocal(text) {
+            const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 0);
+            
+            let tactico = [];
+            let tecnico = [];
+            let fisico = [];
+            let psicologico = [];
+            let strengths = [];
+            let weaknesses = [];
+            let recomendaciones = [];
+            let planMejora = [];
+            
+            // Keyword classification rules
+            sentences.forEach(s => {
+                const sl = s.toLowerCase();
+                
+                // Táctico
+                if (sl.includes("defensa") || sl.includes("coberturas") || sl.includes("táctico") || sl.includes("posicionamiento") || sl.includes("colocación") || sl.includes("basculación") || sl.includes("repliegue") || sl.includes("presión") || sl.includes("línea")) {
+                    tactico.push(s);
+                }
+                
+                // Técnico
+                if (sl.includes("balón") || sl.includes("salida") || sl.includes("pase") || sl.includes("control") || sl.includes("pierna") || sl.includes("izquierda") || sl.includes("derecha") || sl.includes("técnico") || sl.includes("chute") || sl.includes("regate") || sl.includes("remate")) {
+                    tecnico.push(s);
+                }
+                
+                // Físico
+                if (sl.includes("físico") || sl.includes("físicamente") || sl.includes("resistencia") || sl.includes("cansado") || sl.includes("agotado") || sl.includes("ritmo") || sl.includes("velocidad") || sl.includes("fuerza")) {
+                    fisico.push(s);
+                }
+                
+                // Psicológico / Actitudinal
+                if (sl.includes("concentrado") || sl.includes("liderazgo") || sl.includes("difícil") || sl.includes("psicológico") || sl.includes("calma") || sl.includes("mente") || sl.includes("actitud") || sl.includes("luchadora") || sl.includes("ánimo") || sl.includes("concentración")) {
+                    psicologico.push(s);
+                }
+                
+                // Fortalezas
+                if (sl.includes("gran") || sl.includes("buen") || sl.includes("excelente") || sl.includes("sólido") || sl.includes("destaca") || sl.includes("soberbio") || sl.includes("bien") || sl.includes("liderazgo")) {
+                    strengths.push(s);
+                }
+                
+                // Debilidades
+                if (sl.includes("mejorar") || sl.includes("debe") || sl.includes("cuesta") || sl.includes("flojo") || sl.includes("perder") || sl.includes("falta") || sl.includes("fallo")) {
+                    weaknesses.push(s);
+                }
+
+                // Recomendaciones
+                if (sl.includes("recomiendo") || sl.includes("recomienda") || sl.includes("recomendación") || sl.includes("debería") || sl.includes("aconsejo")) {
+                    recomendaciones.push(s);
+                }
+
+                // Plan de Mejora
+                if (sl.includes("plan de mejora") || sl.includes("trabajo de mejora") || sl.includes("planificar") || sl.includes("plan de entrenamiento")) {
+                    planMejora.push(s);
+                }
+            });
+
+            return {
+                tactico: tactico.join(" ") || "Sin valoración registrada.",
+                tecnico: tecnico.join(" ") || "Sin valoración registrada.",
+                fisico: fisico.join(" ") || "Sin valoración registrada.",
+                psicologico: psicologico.join(" ") || "Sin valoración registrada.",
+                strengths: strengths.join(" ") || "Sin valoración registrada.",
+                weaknesses: weaknesses.join(" ") || "Sin valoración registrada.",
+                recomendaciones: recomendaciones.join(" ") || "Sin valoración registrada.",
+                planMejora: planMejora.join(" ") || "Sin valoración registrada.",
+                conclusion: text
+            };
+        }
+
+        function saveAIReport() {
+            const p = players.find(x => x.id == aiSelectedPlayerId);
+            if (!p) return;
+
+            const name = p.name;
+            const category = p.category;
+            const scout = document.getElementById('ai-prev-scout').value;
+            const status = "Borrador"; // Save as Borrador (Draft) strictly
+            
+            const techValStr = document.getElementById('ai-prev-val-tech').value;
+            const tactValStr = document.getElementById('ai-prev-val-tact').value;
+            const physValStr = document.getElementById('ai-prev-val-phys').value;
+            const psycValStr = document.getElementById('ai-prev-val-psyc').value;
+            const attValStr = document.getElementById('ai-prev-val-att').value;
+            const socValStr = document.getElementById('ai-prev-val-soc').value;
+
+            // Block saving if mandatory numerical ratings are not confirmed
+            if (!techValStr || !tactValStr || !physValStr || !psycValStr || !attValStr || !socValStr) {
+                showToast('Por favor, selecciona una valoración numérica para todos los aspectos obligatorios.', 'warning');
+                return;
+            }
+
+            if (!scout.trim()) {
+                showToast('Por favor, introduce el nombre del evaluador.', 'warning');
+                return;
+            }
+
+            const techVal = parseInt(techValStr);
+            const tactVal = parseInt(tactValStr);
+            const physVal = parseInt(physValStr);
+            const psycVal = parseInt(psycValStr);
+            const attVal = parseInt(attValStr);
+            const socVal = parseInt(socValStr);
+            const rating = (techVal + tactVal + physVal + psycVal + attVal + socVal) / 6;
+
+            const potential = document.getElementById('ai-prev-potential').value || "";
+            const nextReview = document.getElementById('ai-prev-next-review').value || "";
+            const scoutRole = document.getElementById('ai-prev-scout-role').value || "";
+
+            // Text areas
+            const strengths = document.getElementById('ai-prev-strengths').value;
+            const weaknesses = document.getElementById('ai-prev-weaknesses').value;
+            const goals = document.getElementById('ai-prev-plan').value;
+            const observations = document.getElementById('ai-prev-conclusion').value;
+
+            const nextId = reports.length > 0 ? Math.max(...reports.map(r => r.id)) + 1 : 1;
+            
+            // Build report structure compatible with standard individual report
+            let newReport = {
+                id: nextId,
+                type: 'Individual',
+                sport: aiSelectedModality === 'futsal' ? 'Fútbol Sala' : (aiSelectedModality === 'fplaya' ? 'Fútbol Playa' : 'Fútbol'),
+                gender: p.gender || 'Masculino',
+                category: category,
+                name: name,
+                scout: scout,
+                status: status,
+                modality: aiSelectedModality,
+                submodality: aiSelectedSubmodality || "",
+                date: new Date(aiSelectedDate).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }),
+                rating: rating,
+                participation: { 
+                    matches: p.matches || "", 
+                    started: "", 
+                    minutes: "", 
+                    substitute: "" 
+                },
+                techVal: techVal,
+                tactVal: tactVal,
+                physVal: physVal,
+                psycVal: psycVal,
+                attVal: attVal,
+                socVal: socVal,
+                stats: { 
+                    goles: "", 
+                    asistencias: "", 
+                    recuperaciones: "", 
+                    tarjetasA: "", 
+                    tarjetasR: "" 
+                },
+                scoutRole: scoutRole,
+                potential: potential,
+                nextReview: nextReview,
+                strengths: strengths,
+                weaknesses: weaknesses,
+                goals: goals,
+                observations: observations,
+                
+                // AI Extended tags (fully compatible, ignored by old renderers)
+                isAI: true,
+                aiDetails: {
+                    valoracionGeneral: observations,
+                    aspectosTecnicos: document.getElementById('ai-prev-tecnico').value,
+                    aspectosTacticos: document.getElementById('ai-prev-tactico').value,
+                    aspectosFisicos: document.getElementById('ai-prev-fisico').value,
+                    aspectosPsicologicos: document.getElementById('ai-prev-psicologico').value,
+                    recomendaciones: document.getElementById('ai-prev-recomendaciones').value,
+                    planMejora: goals,
+                    conclusion: observations
+                }
+            };
+
+            reports.push(newReport);
+            addRecentActivity(`Informe IA creado para ${name}`);
+            saveState();
+            closeAIAssistantModal();
+            renderReports();
+            showToast('Informe estructurado por Asistente IA guardado con éxito', 'success');
         }
 
         function openPlayerFicha(playerId) {
