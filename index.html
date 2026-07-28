@@ -6040,7 +6040,7 @@
                                     <div class="pitch-goal-top"></div>
                                     <div class="pitch-goal-bottom"></div>
                                     <!-- Capa SVG principal para objetos tácticos (Fase 1) -->
-                                    <svg class="builder-svg-layer" id="builder-svg-canvas" viewBox="0 0 1100 1500" onclick="handleBuilderCanvasClick(event)" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: auto; z-index: 5; background: transparent;">
+                                    <svg class="builder-svg-layer" id="builder-svg-canvas" viewBox="0 0 1100 1500" onclick="handleBuilderCanvasClick(event)" onpointermove="handleBuilderCanvasPointerMove(event)" onpointerup="handleBuilderCanvasPointerUp(event)" onpointercancel="handleBuilderCanvasPointerCancel(event)" onlostpointercapture="handleBuilderCanvasLostPointerCapture(event)" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: auto; z-index: 5; background: transparent; touch-action: none;">
                                         <!-- Capas lógicas de visualización -->
                                         <g id="svg-layer-background"></g>
                                         <g id="svg-layer-zones"></g>
@@ -7889,6 +7889,11 @@
         }
 
         function closeModal(modalId) {
+            if (modalId === 'modal-sesion') {
+                if (typeof cancelActiveBuilderDrag === 'function') {
+                    cancelActiveBuilderDrag();
+                }
+            }
             document.getElementById(modalId).classList.remove('active');
         }
 
@@ -15377,6 +15382,7 @@
         let builderActiveTaskIndex = 0;
 
         function openSessionBuilderModal() {
+            cancelActiveBuilderDrag();
             // Reset general fields
             document.getElementById('builder-session-name').value = '';
 
@@ -15423,6 +15429,7 @@
         }
 
         function builderAddTask() {
+            cancelActiveBuilderDrag();
             if (builderTasks.length >= 5) {
                 showToast("Máximo 5 tareas por sesión.", "warning");
                 return;
@@ -15451,6 +15458,7 @@
         }
 
         function builderDuplicateActiveTask() {
+            cancelActiveBuilderDrag();
             if (builderTasks.length >= 5) {
                 showToast("Máximo 5 tareas por sesión.", "warning");
                 return;
@@ -15471,6 +15479,7 @@
         }
 
         function builderDeleteActiveTask() {
+            cancelActiveBuilderDrag();
             if (builderTasks.length <= 1) {
                 showToast("Una sesión debe contener al menos una tarea.", "warning");
                 return;
@@ -15500,6 +15509,7 @@
                 btn.style.cursor = 'pointer';
                 btn.innerText = task.name || `Tarea ${index + 1}`;
                 btn.onclick = () => {
+                    cancelActiveBuilderDrag();
                     saveActiveTaskFromForm();
                     builderActiveTaskIndex = index;
                     renderBuilderTaskTabs();
@@ -15558,14 +15568,7 @@
             t.modality = document.getElementById('builder-task-modality').value;
             t.fieldType = document.getElementById('builder-task-field-type').value;
 
-            const currentObjects = Array.isArray(builderEditorState.objects)
-                ? builderEditorState.objects
-                : [];
-
-            t.tacticalObjects = currentObjects.map(object => ({
-                ...object,
-                metadata: { ...object.metadata }
-            }));
+            syncBuilderObjectsToActiveTask();
         }
 
         function loadActiveTaskValues() {
@@ -15806,7 +15809,18 @@
         const builderEditorState = {
             objects: [],
             selectedObjectId: null,
-            activeTool: null
+            activeTool: null,
+            draggedObjectId: null,
+            dragPointerId: null,
+            dragOffsetX: 0,
+            dragOffsetY: 0,
+            dragStartClientX: 0,
+            dragStartClientY: 0,
+            dragOriginX: 0,
+            dragOriginY: 0,
+            isDragging: false,
+            suppressNextCanvasClick: false,
+            suppressTimerId: null
         };
 
         /**
@@ -15863,6 +15877,8 @@
 
             group.setAttribute('data-object-id', tacticalObject.id);
             group.setAttribute('data-object-type', tacticalObject.type);
+            group.setAttribute('onpointerdown', 'handleBuilderObjectPointerDown(event)');
+            group.setAttribute('style', 'cursor: move; touch-action: none;');
             group.setAttribute(
                 'transform',
                 `translate(${tacticalObject.x} ${tacticalObject.y}) rotate(${tacticalObject.rotation}) scale(${tacticalObject.scale})`
@@ -16033,6 +16049,15 @@
         }
 
         function handleBuilderCanvasClick(event) {
+            if (builderEditorState.suppressNextCanvasClick === true) {
+                builderEditorState.suppressNextCanvasClick = false;
+                if (builderEditorState.suppressTimerId !== null) {
+                    clearTimeout(builderEditorState.suppressTimerId);
+                    builderEditorState.suppressTimerId = null;
+                }
+                return false;
+            }
+
             const target = event ? event.target : null;
 
             const objectGroup =
@@ -16055,7 +16080,272 @@
             return selectBuilderObject(null);
         }
 
+        function getBuilderSvgPoint(event) {
+            const canvas = document.getElementById('builder-svg-canvas');
+            if (!canvas) return null;
+            try {
+                const pt = canvas.createSVGPoint();
+                pt.x = event.clientX;
+                pt.y = event.clientY;
+                const ctm = canvas.getScreenCTM();
+                if (ctm) {
+                    const globalPoint = pt.matrixTransform(ctm.inverse());
+                    return { x: globalPoint.x, y: globalPoint.y };
+                }
+            } catch (e) {
+                console.error("Error in getBuilderSvgPoint:", e);
+            }
+            return null;
+        }
+
+        function getBuilderMovementBoundaries() {
+            if (builderActiveTaskIndex < 0 || builderActiveTaskIndex >= builderTasks.length) {
+                return { minX: 16, maxX: 1084, minY: 16, maxY: 1484 };
+            }
+            const activeTask = builderTasks[builderActiveTaskIndex];
+            const isHalf = activeTask && activeTask.fieldType === 'medio';
+            return {
+                minX: 16,
+                maxX: 1084,
+                minY: 16,
+                maxY: isHalf ? 734 : 1484
+            };
+        }
+
+        function handleBuilderObjectPointerDown(event) {
+            if (!event) return;
+            if (!event.isPrimary) return;
+            if (event.button !== 0) return;
+            if (builderEditorState.dragPointerId !== null) return;
+
+            const target = event.target;
+            const objectGroup = target && typeof target.closest === 'function'
+                ? target.closest('[data-object-id]')
+                : null;
+            if (!objectGroup) return;
+
+            const objectId = objectGroup.getAttribute('data-object-id');
+            const objectsLayer = document.getElementById('svg-layer-objects');
+            if (!objectsLayer || !objectsLayer.contains(objectGroup)) return;
+
+            const tacticalObject = builderEditorState.objects.find(obj => obj.id === objectId);
+            if (!tacticalObject) return;
+
+            const svgCoords = getBuilderSvgPoint(event);
+            if (svgCoords === null) return;
+
+            selectBuilderObject(objectId);
+
+            if (tacticalObject.locked === true) {
+                return;
+            }
+
+            builderEditorState.draggedObjectId = objectId;
+            builderEditorState.dragPointerId = event.pointerId;
+            builderEditorState.dragStartClientX = event.clientX;
+            builderEditorState.dragStartClientY = event.clientY;
+            builderEditorState.dragOriginX = tacticalObject.x;
+            builderEditorState.dragOriginY = tacticalObject.y;
+            builderEditorState.dragOffsetX = svgCoords.x - tacticalObject.x;
+            builderEditorState.dragOffsetY = svgCoords.y - tacticalObject.y;
+            builderEditorState.isDragging = false;
+
+            if (builderEditorState.suppressTimerId) {
+                clearTimeout(builderEditorState.suppressTimerId);
+                builderEditorState.suppressTimerId = null;
+            }
+
+            const canvas = document.getElementById('builder-svg-canvas');
+            if (canvas && typeof canvas.setPointerCapture === 'function') {
+                try {
+                    canvas.setPointerCapture(event.pointerId);
+                } catch (e) {
+                    console.error("Failed to set pointer capture:", e);
+                }
+            }
+
+            event.stopPropagation();
+        }
+
+        function handleBuilderCanvasPointerMove(event) {
+            if (!event) return;
+            if (builderEditorState.dragPointerId !== event.pointerId) return;
+
+            const objectId = builderEditorState.draggedObjectId;
+            const tacticalObject = builderEditorState.objects.find(obj => obj.id === objectId);
+            if (!tacticalObject) return;
+
+            const dxClient = event.clientX - builderEditorState.dragStartClientX;
+            const dyClient = event.clientY - builderEditorState.dragStartClientY;
+            const distance = Math.hypot(dxClient, dyClient);
+
+            if (!builderEditorState.isDragging) {
+                if (distance >= 3) {
+                    builderEditorState.isDragging = true;
+                } else {
+                    return;
+                }
+            }
+
+            const svgCoords = getBuilderSvgPoint(event);
+            if (svgCoords === null) return;
+            let targetX = svgCoords.x - builderEditorState.dragOffsetX;
+            let targetY = svgCoords.y - builderEditorState.dragOffsetY;
+
+            const bounds = getBuilderMovementBoundaries();
+            if (targetX < bounds.minX) targetX = bounds.minX;
+            if (targetX > bounds.maxX) targetX = bounds.maxX;
+            if (targetY < bounds.minY) targetY = bounds.minY;
+            if (targetY > bounds.maxY) targetY = bounds.maxY;
+
+            const moved = moveBuilderObject(objectId, targetX, targetY);
+            if (moved) {
+                renderBuilderObjects();
+            }
+        }
+
+        function handleBuilderCanvasPointerUp(event) {
+            if (!event) return;
+            if (builderEditorState.dragPointerId !== event.pointerId) return;
+
+            const objectId = builderEditorState.draggedObjectId;
+            const wasDragging = builderEditorState.isDragging;
+            const pointerId = event.pointerId;
+
+            if (wasDragging === true) {
+                syncBuilderObjectsToActiveTask();
+            }
+
+            resetBuilderDragState();
+
+            if (wasDragging) {
+                if (builderEditorState.suppressTimerId) {
+                    clearTimeout(builderEditorState.suppressTimerId);
+                }
+                builderEditorState.suppressNextCanvasClick = true;
+                builderEditorState.suppressTimerId = setTimeout(() => {
+                    builderEditorState.suppressNextCanvasClick = false;
+                    builderEditorState.suppressTimerId = null;
+                }, 0);
+            }
+
+            const canvas = document.getElementById('builder-svg-canvas');
+            if (canvas) {
+                let hasCapture = true;
+                if (typeof canvas.hasPointerCapture === 'function') {
+                    hasCapture = canvas.hasPointerCapture(pointerId);
+                }
+                if (hasCapture && typeof canvas.releasePointerCapture === 'function') {
+                    try {
+                        canvas.releasePointerCapture(pointerId);
+                    } catch (e) {
+                        // Ignore
+                    }
+                }
+            }
+        }
+
+        function handleBuilderCanvasPointerCancel(event) {
+            if (!event) return;
+            if (builderEditorState.dragPointerId !== event.pointerId) return;
+            cancelActiveBuilderDrag();
+        }
+
+        function handleBuilderCanvasLostPointerCapture(event) {
+            if (!event) return;
+            if (builderEditorState.dragPointerId === null) return;
+            if (builderEditorState.dragPointerId === event.pointerId) {
+                cancelActiveBuilderDrag();
+            }
+        }
+
+        function moveBuilderObject(objectId, x, y) {
+            if (!Number.isFinite(x) || !Number.isFinite(y)) return false;
+            const tacticalObject = builderEditorState.objects.find(obj => obj.id === objectId);
+            if (!tacticalObject) return false;
+            if (tacticalObject.locked === true) return false;
+
+            tacticalObject.x = x;
+            tacticalObject.y = y;
+            return true;
+        }
+
+        function syncBuilderObjectsToActiveTask() {
+            if (builderActiveTaskIndex < 0 || builderActiveTaskIndex >= builderTasks.length) return false;
+            const activeTask = builderTasks[builderActiveTaskIndex];
+            if (!activeTask) return false;
+
+            const currentObjects = Array.isArray(builderEditorState.objects)
+                ? builderEditorState.objects
+                : [];
+
+            activeTask.tacticalObjects = currentObjects.map(object => ({
+                ...object,
+                metadata: { ...object.metadata }
+            }));
+            return true;
+        }
+
+        function resetBuilderDragState() {
+            builderEditorState.draggedObjectId = null;
+            builderEditorState.dragPointerId = null;
+            builderEditorState.dragOffsetX = 0;
+            builderEditorState.dragOffsetY = 0;
+            builderEditorState.dragStartClientX = 0;
+            builderEditorState.dragStartClientY = 0;
+            builderEditorState.dragOriginX = 0;
+            builderEditorState.dragOriginY = 0;
+            builderEditorState.isDragging = false;
+        }
+
+        function cancelActiveBuilderDrag() {
+            const objectId = builderEditorState.draggedObjectId;
+            const pointerId = builderEditorState.dragPointerId;
+            if (objectId === null || pointerId === null) return false;
+
+            const tacticalObject = builderEditorState.objects.find(obj => obj.id === objectId);
+            let dragOriginX = 0;
+            let dragOriginY = 0;
+            if (tacticalObject) {
+                dragOriginX = builderEditorState.dragOriginX;
+                dragOriginY = builderEditorState.dragOriginY;
+            }
+
+            let objectRestored = false;
+            if (tacticalObject) {
+                const restored = moveBuilderObject(objectId, dragOriginX, dragOriginY);
+                if (!restored) {
+                    tacticalObject.x = dragOriginX;
+                    tacticalObject.y = dragOriginY;
+                }
+                objectRestored = true;
+            }
+
+            if (objectRestored) {
+                renderBuilderObjects();
+            }
+
+            resetBuilderDragState();
+
+            const canvas = document.getElementById('builder-svg-canvas');
+            if (canvas) {
+                let hasCapture = true;
+                if (typeof canvas.hasPointerCapture === 'function') {
+                    hasCapture = canvas.hasPointerCapture(pointerId);
+                }
+                if (hasCapture && typeof canvas.releasePointerCapture === 'function') {
+                    try {
+                        canvas.releasePointerCapture(pointerId);
+                    } catch (e) {
+                        // ignore
+                    }
+                }
+            }
+            return true;
+        }
+
         function saveNewConstructorSession() {
+            cancelActiveBuilderDrag();
             saveActiveTaskFromForm();
 
             const titleInput = document.getElementById('builder-session-name').value.trim();
