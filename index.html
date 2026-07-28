@@ -6054,7 +6054,7 @@
 
                             <!-- Barra de Herramientas Inferior (Estática para futura pizarra) -->
                             <div class="builder-toolbar">
-                                <button type="button" class="builder-tool-btn" title="Añadir Jugador" disabled>
+                                <button type="button" class="builder-tool-btn" title="Añadir Jugador" onclick="addBuilderPlayer()">
                                     <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                                     <span>Jugador</span>
                                 </button>
@@ -15930,6 +15930,56 @@
             renderBuilderObjects();
 
             return true;
+        }
+
+        function addBuilderPlayer() {
+            if (
+                builderActiveTaskIndex < 0 ||
+                builderActiveTaskIndex >= builderTasks.length
+            ) {
+                return false;
+            }
+
+            const activeTask = builderTasks[builderActiveTaskIndex];
+
+            const currentObjects = Array.isArray(builderEditorState.objects)
+                ? builderEditorState.objects
+                : [];
+
+            let maxIndex = 0;
+
+            currentObjects.forEach(object => {
+                if (!object || typeof object.id !== 'string') {
+                    return;
+                }
+
+                const match = /^player-(\d+)$/.exec(object.id);
+
+                if (!match) {
+                    return;
+                }
+
+                const objectIndex = Number.parseInt(match[1], 10);
+
+                if (objectIndex > maxIndex) {
+                    maxIndex = objectIndex;
+                }
+            });
+
+            const playerObject = createTacticalObject({
+                id: `player-${maxIndex + 1}`,
+                type: 'player',
+                x: SVG_LOGICAL_WIDTH / 2,
+                y: activeTask.fieldType === 'medio'
+                    ? SVG_LOGICAL_HEIGHT_HALF / 2
+                    : SVG_LOGICAL_HEIGHT_FULL / 2,
+                rotation: 0,
+                scale: 1,
+                locked: false,
+                metadata: {}
+            });
+
+            return addBuilderObject(playerObject);
         }
 
         function saveNewConstructorSession() {
