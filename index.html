@@ -15742,6 +15742,16 @@
             };
         }
 
+        /**
+         * Estado lógico del Constructor Táctico.
+         * El DOM y el SVG no son fuentes de verdad.
+         */
+        const builderEditorState = {
+            objects: [],
+            selectedObjectId: null,
+            activeTool: null
+        };
+
         function saveNewConstructorSession() {
             saveActiveTaskFromForm();
 
