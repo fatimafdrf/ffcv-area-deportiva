@@ -15655,6 +15655,93 @@
             };
         }
 
+        /**
+         * @typedef {Object} TacticalObject
+         * @property {string} id
+         * @property {string} type
+         * @property {number} x
+         * @property {number} y
+         * @property {number} rotation
+         * @property {number} scale
+         * @property {boolean} locked
+         * @property {Object} metadata
+         */
+
+        /**
+         * Crea un objeto táctico plano.
+         * @param {Object} params
+         * @param {string} params.id
+         * @param {string} params.type
+         * @param {number} [params.x=0]
+         * @param {number} [params.y=0]
+         * @param {number} [params.rotation=0]
+         * @param {number} [params.scale=1]
+         * @param {boolean} [params.locked=false]
+         * @param {Object} [params.metadata={}]
+         * @returns {TacticalObject}
+         */
+        function createTacticalObject({
+            id,
+            type,
+            x = 0,
+            y = 0,
+            rotation = 0,
+            scale = 1,
+            locked = false,
+            metadata = {}
+        }) {
+            if (typeof id !== 'string' || id.trim() === '') {
+                throw new Error("createTacticalObject: 'id' debe ser una cadena no vacía.");
+            }
+
+            if (typeof type !== 'string' || type.trim() === '') {
+                throw new Error("createTacticalObject: 'type' debe ser una cadena no vacía.");
+            }
+
+            if (typeof x !== 'number' || !Number.isFinite(x)) {
+                throw new Error("createTacticalObject: 'x' debe ser un número finito.");
+            }
+
+            if (typeof y !== 'number' || !Number.isFinite(y)) {
+                throw new Error("createTacticalObject: 'y' debe ser un número finito.");
+            }
+
+            if (typeof rotation !== 'number' || !Number.isFinite(rotation)) {
+                throw new Error("createTacticalObject: 'rotation' debe ser un número finito.");
+            }
+
+            if (
+                typeof scale !== 'number'
+                || !Number.isFinite(scale)
+                || scale <= 0
+            ) {
+                throw new Error("createTacticalObject: 'scale' debe ser un número finito mayor que cero.");
+            }
+
+            if (typeof locked !== 'boolean') {
+                throw new Error("createTacticalObject: 'locked' debe ser un booleano.");
+            }
+
+            if (
+                typeof metadata !== 'object'
+                || metadata === null
+                || Array.isArray(metadata)
+            ) {
+                throw new Error("createTacticalObject: 'metadata' debe ser un objeto no nulo y no array.");
+            }
+
+            return {
+                id,
+                type,
+                x,
+                y,
+                rotation,
+                scale,
+                locked,
+                metadata: { ...metadata }
+            };
+        }
+
         function saveNewConstructorSession() {
             saveActiveTaskFromForm();
 
