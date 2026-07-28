@@ -15752,6 +15752,24 @@
             activeTool: null
         };
 
+        /**
+         * Regenera la capa SVG de objetos desde el estado lógico del editor.
+         * Los renderizadores visuales por tipo se incorporarán en evoluciones posteriores.
+         */
+        function renderBuilderObjects() {
+            const layers = getBuilderSvgLayers();
+
+            if (!layers.objects) {
+                return;
+            }
+
+            if (!Array.isArray(builderEditorState.objects)) {
+                return;
+            }
+
+            layers.objects.replaceChildren();
+        }
+
         function saveNewConstructorSession() {
             saveActiveTaskFromForm();
 
