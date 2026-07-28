@@ -6040,7 +6040,7 @@
                                     <div class="pitch-goal-top"></div>
                                     <div class="pitch-goal-bottom"></div>
                                     <!-- Capa SVG principal para objetos tácticos (Fase 1) -->
-                                    <svg class="builder-svg-layer" id="builder-svg-canvas" viewBox="0 0 1100 1500" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: auto; z-index: 5; background: transparent;">
+                                    <svg class="builder-svg-layer" id="builder-svg-canvas" viewBox="0 0 1100 1500" onclick="handleBuilderCanvasClick(event)" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: auto; z-index: 5; background: transparent;">
                                         <!-- Capas lógicas de visualización -->
                                         <g id="svg-layer-background"></g>
                                         <g id="svg-layer-zones"></g>
@@ -15868,6 +15868,21 @@
                 `translate(${tacticalObject.x} ${tacticalObject.y}) rotate(${tacticalObject.rotation}) scale(${tacticalObject.scale})`
             );
 
+            if (tacticalObject.id === builderEditorState.selectedObjectId) {
+                const selectionRing = document.createElementNS(
+                    SVG_NAMESPACE,
+                    'circle'
+                );
+
+                selectionRing.setAttribute('r', '20');
+                selectionRing.setAttribute('fill', 'none');
+                selectionRing.setAttribute('stroke', '#2563eb');
+                selectionRing.setAttribute('stroke-width', '3');
+                selectionRing.setAttribute('pointer-events', 'none');
+
+                group.appendChild(selectionRing);
+            }
+
             marker.setAttribute('r', '16');
             marker.setAttribute('fill', '#1f2937');
             marker.setAttribute('stroke', '#ffffff');
@@ -15980,6 +15995,64 @@
             });
 
             return addBuilderObject(playerObject);
+        }
+
+        function selectBuilderObject(objectId) {
+            if (objectId !== null) {
+                if (
+                    typeof objectId !== 'string' ||
+                    objectId.trim() === ''
+                ) {
+                    return false;
+                }
+
+                const currentObjects = Array.isArray(builderEditorState.objects)
+                    ? builderEditorState.objects
+                    : [];
+
+                const exists = currentObjects.some(
+                    object =>
+                        object &&
+                        typeof object === 'object' &&
+                        object.id === objectId
+                );
+
+                if (!exists) {
+                    return false;
+                }
+            }
+
+            if (builderEditorState.selectedObjectId === objectId) {
+                return true;
+            }
+
+            builderEditorState.selectedObjectId = objectId;
+            renderBuilderObjects();
+
+            return true;
+        }
+
+        function handleBuilderCanvasClick(event) {
+            const target = event ? event.target : null;
+
+            const objectGroup =
+                target && typeof target.closest === 'function'
+                    ? target.closest('[data-object-id]')
+                    : null;
+
+            const objectsLayer = document.getElementById('svg-layer-objects');
+
+            if (
+                objectGroup &&
+                objectsLayer &&
+                typeof objectsLayer.contains === 'function' &&
+                objectsLayer.contains(objectGroup)
+            ) {
+                const objectId = objectGroup.getAttribute('data-object-id');
+                return selectBuilderObject(objectId);
+            }
+
+            return selectBuilderObject(null);
         }
 
         function saveNewConstructorSession() {
