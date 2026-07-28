@@ -15823,6 +15823,61 @@
             container.appendChild(group);
         }
 
+        /**
+         * Añade un objeto táctico válido al estado del editor y regenera el SVG.
+         * @param {TacticalObject} tacticalObject - Objeto táctico plano a añadir.
+         * @returns {boolean} True si la operación fue aceptada y renderizada, false en caso contrario.
+         */
+        function addBuilderObject(tacticalObject) {
+            if (!Array.isArray(builderEditorState.objects)) {
+                return false;
+            }
+
+            if (!tacticalObject || typeof tacticalObject !== 'object') {
+                return false;
+            }
+
+            if (tacticalObject.type !== 'player') {
+                return false;
+            }
+
+            if (
+                typeof tacticalObject.id !== 'string' ||
+                tacticalObject.id.trim() === '' ||
+                typeof tacticalObject.type !== 'string' ||
+                tacticalObject.type.trim() === '' ||
+                !Number.isFinite(tacticalObject.x) ||
+                !Number.isFinite(tacticalObject.y) ||
+                !Number.isFinite(tacticalObject.rotation) ||
+                !Number.isFinite(tacticalObject.scale) ||
+                tacticalObject.scale <= 0 ||
+                typeof tacticalObject.locked !== 'boolean' ||
+                typeof tacticalObject.metadata !== 'object' ||
+                tacticalObject.metadata === null ||
+                Array.isArray(tacticalObject.metadata) ||
+                Object.getPrototypeOf(tacticalObject.metadata) !== Object.prototype
+            ) {
+                return false;
+            }
+
+            const idExists = builderEditorState.objects.some(
+                object => object && object.id === tacticalObject.id
+            );
+
+            if (idExists) {
+                return false;
+            }
+
+            builderEditorState.objects.push({
+                ...tacticalObject,
+                metadata: { ...tacticalObject.metadata }
+            });
+
+            renderBuilderObjects();
+
+            return true;
+        }
+
         function saveNewConstructorSession() {
             saveActiveTaskFromForm();
 
