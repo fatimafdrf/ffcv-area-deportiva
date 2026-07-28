@@ -15371,6 +15371,7 @@
         const SVG_LOGICAL_WIDTH = 1100;
         const SVG_LOGICAL_HEIGHT_FULL = 1500;
         const SVG_LOGICAL_HEIGHT_HALF = 750;
+        const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
         let builderTasks = [];
         let builderActiveTaskIndex = 0;
@@ -15754,7 +15755,6 @@
 
         /**
          * Regenera la capa SVG de objetos desde el estado lógico del editor.
-         * Los renderizadores visuales por tipo se incorporarán en evoluciones posteriores.
          */
         function renderBuilderObjects() {
             const layers = getBuilderSvgLayers();
@@ -15768,6 +15768,57 @@
             }
 
             layers.objects.replaceChildren();
+
+            builderEditorState.objects.forEach((tacticalObject) => {
+                if (
+                    tacticalObject &&
+                    typeof tacticalObject === 'object' &&
+                    tacticalObject.type === 'player'
+                ) {
+                    renderBuilderPlayer(layers.objects, tacticalObject);
+                }
+            });
+        }
+
+        /**
+         * Renderiza un jugador táctico.
+         * @param {SVGElement} container - Capa SVG de objetos.
+         * @param {TacticalObject} tacticalObject - Objeto táctico de tipo jugador.
+         */
+        function renderBuilderPlayer(container, tacticalObject) {
+            if (!container || typeof container.appendChild !== 'function') {
+                return;
+            }
+
+            if (
+                typeof tacticalObject.id !== 'string' ||
+                !tacticalObject.id.trim() ||
+                !Number.isFinite(tacticalObject.x) ||
+                !Number.isFinite(tacticalObject.y) ||
+                !Number.isFinite(tacticalObject.rotation) ||
+                !Number.isFinite(tacticalObject.scale) ||
+                tacticalObject.scale <= 0
+            ) {
+                return;
+            }
+
+            const group = document.createElementNS(SVG_NAMESPACE, 'g');
+            const marker = document.createElementNS(SVG_NAMESPACE, 'circle');
+
+            group.setAttribute('data-object-id', tacticalObject.id);
+            group.setAttribute('data-object-type', tacticalObject.type);
+            group.setAttribute(
+                'transform',
+                `translate(${tacticalObject.x} ${tacticalObject.y}) rotate(${tacticalObject.rotation}) scale(${tacticalObject.scale})`
+            );
+
+            marker.setAttribute('r', '16');
+            marker.setAttribute('fill', '#1f2937');
+            marker.setAttribute('stroke', '#ffffff');
+            marker.setAttribute('stroke-width', '2');
+
+            group.appendChild(marker);
+            container.appendChild(group);
         }
 
         function saveNewConstructorSession() {
