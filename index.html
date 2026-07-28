@@ -2073,6 +2073,15 @@
             min-height: 320px;
             overflow: hidden;
         }
+        .builder-pitch-canvas-wrapper {
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
         .builder-pitch-area .pitch {
             height: 96%;
             width: auto;
@@ -6021,7 +6030,7 @@
                         <div class="builder-pitch-area" id="builder-pitch-area-container">
 
                             <!-- Terreno de juego visual centrado -->
-                            <div class="pitch-container" style="padding: 0; width: 100%; height: 100%; box-shadow: none; border: none; background: transparent; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <div class="builder-pitch-canvas-wrapper">
                                 <div class="pitch" id="builder-pitch-canvas" style="transform-origin: center; transition: all 0.25s ease;">
                                     <div class="pitch-center-line"></div>
                                     <div class="pitch-center-circle"></div>
