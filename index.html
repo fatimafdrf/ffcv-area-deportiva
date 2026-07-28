@@ -15411,7 +15411,8 @@
                     description: "",
                     observations: "",
                     modality: mod,
-                    fieldType: "completo"
+                    fieldType: "completo",
+                    tacticalObjects: []
                 }
             ];
             builderActiveTaskIndex = 0;
@@ -15441,7 +15442,8 @@
                 description: "",
                 observations: "",
                 modality: mod,
-                fieldType: "completo"
+                fieldType: "completo",
+                tacticalObjects: []
             });
             builderActiveTaskIndex = builderTasks.length - 1;
             renderBuilderTaskTabs();
@@ -15555,6 +15557,15 @@
             t.observations = document.getElementById('builder-task-observations').value;
             t.modality = document.getElementById('builder-task-modality').value;
             t.fieldType = document.getElementById('builder-task-field-type').value;
+
+            const currentObjects = Array.isArray(builderEditorState.objects)
+                ? builderEditorState.objects
+                : [];
+
+            t.tacticalObjects = currentObjects.map(object => ({
+                ...object,
+                metadata: { ...object.metadata }
+            }));
         }
 
         function loadActiveTaskValues() {
@@ -15574,6 +15585,49 @@
             document.getElementById('builder-task-observations').value = t.observations || '';
             document.getElementById('builder-task-modality').value = t.modality || 'f11';
             document.getElementById('builder-task-field-type').value = t.fieldType || 'completo';
+
+            const sourceObjects = Array.isArray(t.tacticalObjects)
+                ? t.tacticalObjects
+                : [];
+
+            const loadedObjectIds = new Set();
+
+            builderEditorState.objects = sourceObjects
+                .filter(object => {
+                    if (
+                        !object ||
+                        typeof object !== 'object' ||
+                        typeof object.id !== 'string' ||
+                        object.id.trim() === '' ||
+                        object.type !== 'player' ||
+                        !Number.isFinite(object.x) ||
+                        !Number.isFinite(object.y) ||
+                        !Number.isFinite(object.rotation) ||
+                        !Number.isFinite(object.scale) ||
+                        object.scale <= 0 ||
+                        typeof object.locked !== 'boolean' ||
+                        typeof object.metadata !== 'object' ||
+                        object.metadata === null ||
+                        Array.isArray(object.metadata) ||
+                        Object.getPrototypeOf(object.metadata) !== Object.prototype
+                    ) {
+                        return false;
+                    }
+
+                    if (loadedObjectIds.has(object.id)) {
+                        return false;
+                    }
+
+                    loadedObjectIds.add(object.id);
+                    return true;
+                })
+                .map(object => ({
+                    ...object,
+                    metadata: { ...object.metadata }
+                }));
+
+            builderEditorState.selectedObjectId = null;
+            builderEditorState.activeTool = null;
 
             updateBuilderPitch();
         }
