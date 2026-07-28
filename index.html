@@ -2074,18 +2074,19 @@
             overflow: hidden;
         }
         .builder-pitch-area .pitch {
-            height: 94%;
+            height: 96%;
             width: auto;
-            max-width: 96%;
+            max-width: 98%;
             aspect-ratio: 2.2 / 3;
             box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.35);
             border: 2px solid rgba(255, 255, 255, 0.85);
             background: linear-gradient(to bottom, #194a25 0%, #0d2a13 100%);
         }
         .builder-pitch-area .pitch.pitch-half {
-            aspect-ratio: 2.2 / 1.5 !important;
-            height: 82%;
+            height: 96%;
             width: auto;
+            max-width: 98%;
+            aspect-ratio: 2.2 / 1.5;
         }
         /* Líneas tácticas vectoriales ultra-finas para el constructor */
         .builder-pitch-area .pitch-center-line {
@@ -2160,7 +2161,7 @@
             border-radius: 8px;
             padding: 2px 10px;
             position: absolute;
-            bottom: 8px;
+            bottom: 4px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
@@ -2209,6 +2210,93 @@
             stroke: currentColor;
             stroke-width: 2px;
             fill: none;
+        }
+        /* Media Queries específicas del Constructor Táctico (Comportamiento Responsivo) */
+        @media (max-width: 1024px) {
+            #modal-sesion .modal-body {
+                overflow-y: auto !important;
+                overflow-x: hidden;
+            }
+            #modal-sesion .builder-container {
+                height: auto;
+                min-height: 100%;
+            }
+            #modal-sesion .builder-workspace {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto;
+                height: auto;
+                min-height: 0;
+            }
+            #modal-sesion .builder-sidebar {
+                max-height: none;
+                overflow-y: visible;
+            }
+            .builder-pitch-area {
+                min-height: 460px;
+                padding: 10px;
+            }
+        }
+        @media (max-width: 768px) {
+            #modal-sesion .modal-header {
+                padding: 8px 12px !important;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            #modal-sesion .modal-title {
+                flex: 1 1 180px;
+                min-width: 0;
+                font-size: 13px;
+                line-height: 1.25;
+            }
+            #modal-sesion .modal-header > div {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex-shrink: 0;
+            }
+            #modal-sesion .builder-header-bar {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 8px;
+                padding: 8px;
+            }
+            #modal-sesion .builder-tab-bar {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            #modal-sesion .builder-tab-bar .tabs-left {
+                flex-wrap: wrap;
+                overflow-x: visible;
+            }
+            .builder-pitch-area {
+                min-height: 380px;
+                padding: 6px;
+            }
+            .builder-pitch-area .pitch {
+                width: 98%;
+                height: auto;
+                aspect-ratio: 2.2 / 3;
+            }
+            .builder-pitch-area .pitch.pitch-half {
+                aspect-ratio: 2.2 / 1.5 !important;
+                width: 98%;
+                height: auto;
+            }
+            .builder-toolbar {
+                width: 96%;
+                max-width: 96%;
+                padding: 2px 6px;
+                bottom: 6px;
+            }
+            .builder-tool-btn {
+                width: 44px;
+                height: 40px;
+                font-size: 8px;
+            }
+        }
+        @media (max-width: 480px) {
+            #modal-sesion .builder-header-bar {
+                grid-template-columns: 1fr;
+            }
         }
         /* Grass stripes */
         .pitch::before {
@@ -5933,8 +6021,8 @@
                         <div class="builder-pitch-area" id="builder-pitch-area-container">
 
                             <!-- Terreno de juego visual centrado -->
-                            <div class="pitch-container" style="padding: 0; width: 100%; height: calc(100% - 70px); box-shadow: none; border: none; background: transparent; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                                <div class="pitch" id="builder-pitch-canvas" style="transform: scale(0.95); transform-origin: center; transition: all 0.25s ease;">
+                            <div class="pitch-container" style="padding: 0; width: 100%; height: 100%; box-shadow: none; border: none; background: transparent; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                <div class="pitch" id="builder-pitch-canvas" style="transform-origin: center; transition: all 0.25s ease;">
                                     <div class="pitch-center-line"></div>
                                     <div class="pitch-center-circle"></div>
                                     <div class="pitch-center-spot"></div>
