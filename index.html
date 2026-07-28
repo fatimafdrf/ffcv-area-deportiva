@@ -6044,7 +6044,7 @@
                                         <!-- Capas lógicas de visualización -->
                                         <g id="svg-layer-background"></g>
                                         <g id="svg-layer-zones"></g>
-                                        <g id="svg-layer-drawings"></g>
+                                        <g id="svg-layer-draw"></g>
                                         <g id="svg-layer-objects"></g>
                                         <g id="svg-layer-selection"></g>
                                         <g id="svg-layer-interaction"></g>
@@ -15641,6 +15641,18 @@
             } else {
                 svgCanvas.setAttribute('viewBox', `0 0 ${SVG_LOGICAL_WIDTH} ${SVG_LOGICAL_HEIGHT_FULL}`);
             }
+        }
+
+        function getBuilderSvgLayers() {
+            return {
+                canvas: document.getElementById('builder-svg-canvas'),
+                background: document.getElementById('svg-layer-background'),
+                zones: document.getElementById('svg-layer-zones'),
+                draw: document.getElementById('svg-layer-draw'),
+                objects: document.getElementById('svg-layer-objects'),
+                selection: document.getElementById('svg-layer-selection'),
+                interaction: document.getElementById('svg-layer-interaction')
+            };
         }
 
         function saveNewConstructorSession() {
